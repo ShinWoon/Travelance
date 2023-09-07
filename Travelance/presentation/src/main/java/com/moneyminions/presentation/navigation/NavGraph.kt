@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.moneyminions.presentation.screen.example.ExampleScreen
 import com.moneyminions.presentation.screen.home.HomeScreen
+import com.moneyminions.presentation.screen.travellist.TravelListScreen
 
 @Composable
 fun NavGraph(
@@ -25,6 +26,11 @@ fun NavGraph(
             route = Screen.Home.route
         ){
             HomeScreen(navController = navController)
+        }
+        composable(
+            route = Screen.TravelList.route
+        ){
+            TravelListScreen(navController = navController)
         }
     }
 } // End of setUpNavGraph

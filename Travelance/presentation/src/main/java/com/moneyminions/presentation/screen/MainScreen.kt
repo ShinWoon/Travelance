@@ -52,6 +52,7 @@ fun MainScreen(
 fun MainBottomNavigationBar(navController: NavHostController) {
     val backStackEntry = navController.currentBackStackEntryAsState()
     val bottomNavItems = listOf(
+        BottomNavItem.TravelList,
         BottomNavItem.Home
     )
     NavigationBar(
