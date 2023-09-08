@@ -16,6 +16,7 @@ val PinkLight = Color(0xFFFCAEAE)
 val PinkLightest = Color(0xFFFFEADD)
 
 val DarkerGray = Color(0xFF3F3F3F)
+val DarkGrayMiddle = Color(0xFF595959)
 val DarkGray = Color(0xFF797979)
 val TextGray = Color(0xFF919191)
 val Gray = Color(0xFFC1C1C1)
@@ -27,3 +28,5 @@ val BlueDarkest = Color(0xFF00518B)
 val BlueMiddle = Color(0xFF284F9C)
 val BlueLighter = Color(0xFF4263A3)
 val BlueLightest = Color(0xFF8596B8)
+
+val GreenMiddle = Color(0xFF00B672)
