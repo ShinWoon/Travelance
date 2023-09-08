@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.moneyminions.presentation.common.text.CustomTextStyle.bigTitleTextStyle
+//import com.moneyminions.presentation.common.text.CustomTextStyle.bigTitleTextStyle
 
 @Composable
 fun HomeScreen(
@@ -75,7 +75,7 @@ fun TopComponent() {
         ) {
             Text(
                 text = "여행 이름",
-                style = bigTitleTextStyle,
+//                style = bigTitleTextStyle,
             )
             
             IconButton(
