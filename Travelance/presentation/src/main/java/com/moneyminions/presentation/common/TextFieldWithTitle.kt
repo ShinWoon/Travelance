@@ -57,7 +57,7 @@ fun TextFieldWithTitle(
     ) {
         Text(
             text = title,
-            style = CustomTextStyle.pretendardBoldBlack16,
+            style = CustomTextStyle.pretendardBold16,
             modifier = Modifier.layoutId("textTitle")
         )
         Spacer(
@@ -72,7 +72,8 @@ fun TextFieldWithTitle(
             placeholder = {
                 Text(
                     text = hint?:"",
-                    style = CustomTextStyle.pretendardRegularGaphGray12
+                    style = CustomTextStyle.pretendardRegular12,
+                    color = GraphGray
                 )
             },
             singleLine = true,
