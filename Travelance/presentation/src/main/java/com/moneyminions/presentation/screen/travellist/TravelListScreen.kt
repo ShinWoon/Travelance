@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.viewmodel.travellist.TravelListViewModel
 import kotlinx.coroutines.NonDisposableHandle.parent
 
@@ -50,7 +51,9 @@ fun TravelListScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         Button(
-            onClick = {},
+            onClick = {
+                navController.navigate(Screen.CreateTravel.route)
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .layoutId("addButton")

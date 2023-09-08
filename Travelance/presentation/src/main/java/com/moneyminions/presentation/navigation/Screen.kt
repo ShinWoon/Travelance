@@ -13,4 +13,8 @@ sealed class Screen(val name: String, val route: String) {
         name = "TravelList",
         route = "travel_list_screen"
     )
+    object CreateTravel: Screen(
+        name = "CreateTravel",
+        route = "create_travel_screen"
+    )
 }

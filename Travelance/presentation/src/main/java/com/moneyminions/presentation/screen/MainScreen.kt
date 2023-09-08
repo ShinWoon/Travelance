@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.screen
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -15,9 +16,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -31,13 +34,14 @@ var startDestination: String = Screen.Home.route //나중에 viewModel로 빼야
 fun MainScreen(
     navController: NavHostController
 ){
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
 
     Scaffold(
-        topBar = {
-            MainHeader(navController = navController)
-        },
         bottomBar = {
-            MainBottomNavigationBar(navController = navController)
+            if(currentRoute == null || isBottomNavItem(currentRoute!!)) {
+                MainBottomNavigationBar(navController = navController)
+            }
         },
     ) {
         Surface(
@@ -45,6 +49,13 @@ fun MainScreen(
         ) {
             NavGraph(navController = navController, startDestination = startDestination)
         }
+    }
+}
+
+fun isBottomNavItem(route: String): Boolean{
+    return when(route){
+        BottomNavItem.Home.route, BottomNavItem.TravelList.route -> true
+        else -> false
     }
 }
 
@@ -90,27 +101,6 @@ fun MainBottomNavigationBar(navController: NavHostController) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MainHeader(navController: NavHostController) {
-    TopAppBar(
-        title = {
-            Text(
-                "Compose 아키텍처"
-            )
-        },
-        navigationIcon = {
-            IconButton(onClick = {
-                navController.popBackStack()
-            }) {
-                Image(
-                    imageVector = Icons.Filled.ArrowBack,
-                    contentDescription = "뒤로가기"
-                )
-            }
-        }
-    )
-}
 
 @Preview(showBackground = true)
 @Composable
