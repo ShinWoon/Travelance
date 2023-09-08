@@ -29,9 +29,9 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold16
+import com.moneyminions.presentation.common.CustomTextStyle.pretendardLight12
 import com.moneyminions.presentation.common.MinionProfile
-import com.moneyminions.presentation.common.text.CustomTextStyle.regularTextStyle
-import com.moneyminions.presentation.common.text.CustomTextStyle.regularTitleTextStyle
 import com.moneyminions.presentation.screen.home.view.MainComponentPageOne
 import com.moneyminions.presentation.screen.home.view.TopComponent
 
@@ -43,7 +43,7 @@ fun HomeScreen(
     
     Surface(
         modifier = Modifier
-            .padding(horizontal = 16.dp)
+            .padding(16.dp, 16.dp, 16.dp, 0.dp)
             .verticalScroll(scrollableState),
     ) {
         Home()
@@ -142,8 +142,8 @@ fun FriendComponent() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ){
-            Text(text = "친구들", style = regularTitleTextStyle)
-            Text(text = "친구 추가", style = regularTextStyle)
+            Text(text = "친구들", style = pretendardBold16)
+            Text(text = "친구 추가", style = pretendardLight12)
         }
         
         Spacer(modifier = Modifier.height(8.dp))

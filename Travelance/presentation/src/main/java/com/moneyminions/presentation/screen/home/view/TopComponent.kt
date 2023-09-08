@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.moneyminions.presentation.R
-import com.moneyminions.presentation.common.text.CustomTextStyle
+import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold20
 import com.moneyminions.presentation.theme.CardLightGray
 
 @Composable
@@ -36,7 +36,7 @@ fun TopComponent() {
         ) {
             Text(
                 text = "여행 이름",
-                style = CustomTextStyle.regularTitleTextStyle,
+                style = pretendardBold20,
             )
             
             IconButton(

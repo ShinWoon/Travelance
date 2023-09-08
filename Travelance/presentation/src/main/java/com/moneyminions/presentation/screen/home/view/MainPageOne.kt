@@ -28,7 +28,9 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.moneyminions.presentation.R
-import com.moneyminions.presentation.common.text.CustomTextStyle
+import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold16
+import com.moneyminions.presentation.common.CustomTextStyle.pretendardLight12
+import com.moneyminions.presentation.common.CustomTextStyle.pretendardSemiBold16
 import com.moneyminions.presentation.screen.home.DotsIndicator
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.PinkDarkest
@@ -53,8 +55,8 @@ fun MainComponentPageOne(pagerState: PagerState) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(text = "사용 현황", style = CustomTextStyle.smallTitleTextStyle)
-                Text(text = "300,000원", style = CustomTextStyle.smallTitleTextStyle)
+                Text(text = "사용 현황", style = pretendardBold16)
+                Text(text = "300,000원", style = pretendardBold16)
             }
             
             DoughnutChart()
@@ -163,10 +165,10 @@ fun MoneyAmountComponent(
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = title,
-                style = CustomTextStyle.regularTextStyle
+                style = pretendardLight12
             )
         }
         
-        Text(text = money, style = CustomTextStyle.littleTitleTextStyle)
+        Text(text = money, style = pretendardSemiBold16)
     }
 }
