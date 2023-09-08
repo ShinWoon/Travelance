@@ -5,78 +5,154 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.sp
 import com.moneyminions.presentation.R
+import com.moneyminions.presentation.theme.GraphGray
 
 object CustomTextStyle {
 
-    val pretendardBoldBlack20 = TextStyle(
+    val pretendardBold20 = TextStyle(
         fontFamily = FontFamily(Font(R.font.pretendard_bold)),
         fontSize = 20.sp,
         letterSpacing = 2.sp
     )
 
-    val pretendardBoldBlack16 = TextStyle(
+    val pretendardBold16 = TextStyle(
         fontFamily = FontFamily(Font(R.font.pretendard_bold)),
         fontSize = 16.sp,
         letterSpacing = 2.sp
     )
-    
-    val regularTitleTextStyle = TextStyle(
+
+    val pretendardBold12 = TextStyle(
         fontFamily = FontFamily(Font(R.font.pretendard_bold)),
+        fontSize = 12.sp,
+        letterSpacing = 2.sp
+    )
+
+    val pretendardBold08 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_bold)),
+        fontSize = 8.sp,
+        letterSpacing = 2.sp
+    )
+
+    val pretendardSemiBold20 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_semi_bold)),
         fontSize = 20.sp,
-        letterSpacing = 2.sp,
-    )
-    
-    val littleTitleTextStyle = TextStyle(
-        fontFamily = FontFamily(Font(R.font.pretendard_bold)),
-        fontSize = 14.sp,
-        letterSpacing = 2.sp,
+        letterSpacing = 2.sp
     )
 
-    val smallTitleTextStyle = TextStyle(
-        fontFamily = FontFamily(Font(R.font.pretendard_bold)),
+    val pretendardSemiBold16 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_semi_bold)),
         fontSize = 16.sp,
+        letterSpacing = 2.sp
     )
 
-    val regularTextStyle = TextStyle(
+    val pretendardSemiBold12 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_semi_bold)),
+        fontSize = 12.sp,
+        letterSpacing = 2.sp
+    )
+
+    val pretendardSemiBold08 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_semi_bold)),
+        fontSize = 8.sp,
+        letterSpacing = 2.sp
+    )
+
+    val pretendardRegular20 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+        fontSize = 20.sp,
+        letterSpacing = 2.sp
+    )
+
+    val pretendardRegular16 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+        fontSize = 16.sp,
+        letterSpacing = 2.sp
+    )
+
+    val pretendardRegular12 = TextStyle(
         fontFamily = FontFamily(Font(R.font.pretendard_regular)),
         fontSize = 12.sp,
+        letterSpacing = 2.sp
     )
 
-    val grayLightTextStyle = TextStyle(
-        fontFamily = FontFamily(Font(R.font.pretendard_light)),
-        fontSize = 8.sp,
-        // 회색 설정해줘야 함
-    )
-
-    val blackLightTextStyle = TextStyle(
-        fontFamily = FontFamily(Font(R.font.pretendard_light)),
-        fontSize = 8.sp,
-    )
-
-    val whiteButtonTextStyle = TextStyle(
-        fontFamily = FontFamily(Font(R.font.pretendard_bold)),
-        fontSize = 24.sp,
-        // 색 하얗게
-    )
-
-    val blackButtonTextStyle = TextStyle(
-        fontFamily = FontFamily(Font(R.font.pretendard_bold)),
-        fontSize = 24.sp,
-    )
-
-    val smallWhiteButtonTextStyle = TextStyle(
-        fontFamily = FontFamily(Font(R.font.pretendard_semi_bold)),
-        fontSize = 16.sp,
-        // 색 하얗게
-    )
-
-    val smallBlackButtonTextStyle = TextStyle(
-        fontFamily = FontFamily(Font(R.font.pretendard_semi_bold)),
-        fontSize = 16.sp,
-    )
-
-    val pretendardRegularGaphGray12 = TextStyle(
+    val pretendardRegular08 = TextStyle(
         fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-        fontSize = 12.sp
+        fontSize = 8.sp,
+        letterSpacing = 2.sp
     )
+
+    val pretendardMedium20 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+        fontSize = 20.sp,
+        letterSpacing = 2.sp
+    )
+
+    val pretendardMedium16 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+        fontSize = 16.sp,
+        letterSpacing = 2.sp
+    )
+
+    val pretendardMedium12 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+        fontSize = 12.sp,
+        letterSpacing = 2.sp
+    )
+
+    val pretendardMedium08 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+        fontSize = 8.sp,
+        letterSpacing = 2.sp
+    )
+
+    val pretendardLight20 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_light)),
+        fontSize = 20.sp,
+        letterSpacing = 2.sp
+    )
+
+    val pretendardLight16 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_light)),
+        fontSize = 16.sp,
+        letterSpacing = 2.sp
+    )
+
+    val pretendardLight12 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_light)),
+        fontSize = 12.sp,
+        letterSpacing = 2.sp
+    )
+
+    val pretendardLight08 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_light)),
+        fontSize = 8.sp,
+        letterSpacing = 2.sp
+    )
+
+    val pretendardThin20 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_thin)),
+        fontSize = 20.sp,
+        letterSpacing = 2.sp
+    )
+
+    val pretendardThin16 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_thin)),
+        fontSize = 16.sp,
+        letterSpacing = 2.sp
+    )
+
+    val pretendardThin12 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_thin)),
+        fontSize = 12.sp,
+        letterSpacing = 2.sp
+    )
+
+    val pretendardThin08 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_thin)),
+        fontSize = 8.sp,
+        letterSpacing = 2.sp
+    )
+
+
+
 }

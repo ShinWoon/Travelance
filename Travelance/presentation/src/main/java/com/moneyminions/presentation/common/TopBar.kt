@@ -60,7 +60,7 @@ fun TopBar(
         )
         Text(
             text = title,
-            style = CustomTextStyle.pretendardBoldBlack20,
+            style = CustomTextStyle.pretendardBold20,
             modifier = Modifier.layoutId("titleText")
         )
         Divider(

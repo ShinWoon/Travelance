@@ -23,4 +23,16 @@ class CreateTravelViewModel @Inject constructor(
         _travelBudget.value = budget
     }
 
+    private val _startDate = mutableStateOf("")
+    val startDate: State<String> = _startDate
+    fun setStartDate(date: String){
+        _startDate.value = date
+    }
+
+    private val _endDate = mutableStateOf("")
+    val endDate: State<String> = _endDate
+    fun setEndDate(date: String){
+        _endDate.value = date
+    }
+
 }
