@@ -1,4 +1,4 @@
-package com.moneyminions.presentation.common.text
+package com.moneyminions.presentation.common
 
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -8,14 +8,16 @@ import com.moneyminions.presentation.R
 
 object CustomTextStyle {
 
-    val appBarTextStyle = TextStyle(
-        fontFamily = FontFamily(Font(R.font.pretendard_extra_bold)),
-        fontSize = 32.sp,
+    val pretendardBoldBlack20 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_bold)),
+        fontSize = 20.sp,
+        letterSpacing = 2.sp
     )
 
-    val bigTitleTextStyle = TextStyle(
+    val pretendardBoldBlack16 = TextStyle(
         fontFamily = FontFamily(Font(R.font.pretendard_bold)),
-        fontSize = 24.sp,
+        fontSize = 16.sp,
+        letterSpacing = 2.sp
     )
     
     val regularTitleTextStyle = TextStyle(
@@ -71,5 +73,10 @@ object CustomTextStyle {
     val smallBlackButtonTextStyle = TextStyle(
         fontFamily = FontFamily(Font(R.font.pretendard_semi_bold)),
         fontSize = 16.sp,
+    )
+
+    val pretendardRegularGaphGray12 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+        fontSize = 12.sp
     )
 }

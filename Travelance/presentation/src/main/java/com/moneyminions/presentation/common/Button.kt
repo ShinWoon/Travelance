@@ -1,4 +1,4 @@
-package com.moneyminions.presentation.common.button
+package com.moneyminions.presentation.common
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.moneyminions.presentation.common.text.CustomTextStyle.littleTitleTextStyle
-import com.moneyminions.presentation.common.text.CustomTextStyle.regularTitleTextStyle
+import com.moneyminions.presentation.common.CustomTextStyle.littleTitleTextStyle
+import com.moneyminions.presentation.common.CustomTextStyle.pretendardBoldBlack20
 import com.moneyminions.presentation.theme.Gray
 import com.moneyminions.presentation.theme.PinkDarkest
 
@@ -38,7 +38,7 @@ fun MinionPrimaryButton(
         elevation = ButtonDefaults.buttonElevation(4.dp),
         enabled = isEnabled.value,
     ) {
-        Text(text = content, style = regularTitleTextStyle)
+        Text(text = content, style = pretendardBoldBlack20)
     }
 }
 
