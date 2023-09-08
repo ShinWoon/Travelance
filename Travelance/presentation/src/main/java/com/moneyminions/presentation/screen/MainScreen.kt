@@ -38,9 +38,6 @@ fun MainScreen(
     val currentRoute = navBackStackEntry?.destination?.route
 
     Scaffold(
-        topBar = {
-            MainHeader(navController = navController)
-        },
         bottomBar = {
             if(currentRoute == null || isBottomNavItem(currentRoute!!)) {
                 MainBottomNavigationBar(navController = navController)
@@ -104,27 +101,6 @@ fun MainBottomNavigationBar(navController: NavHostController) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MainHeader(navController: NavHostController) {
-    TopAppBar(
-        title = {
-            Text(
-                "Compose 아키텍처"
-            )
-        },
-        navigationIcon = {
-            IconButton(onClick = {
-                navController.popBackStack()
-            }) {
-                Image(
-                    imageVector = Icons.Filled.ArrowBack,
-                    contentDescription = "뒤로가기"
-                )
-            }
-        }
-    )
-}
 
 @Preview(showBackground = true)
 @Composable
