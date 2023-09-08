@@ -3,6 +3,7 @@ package com.moneyminions.presentation.screen.travellist
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,29 +34,34 @@ fun TravelListScreen(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(16.dp, 16.dp, 16.dp, 0.dp),
     ) {
-        Button(
-            onClick = {
-                navController.navigate(Screen.CreateTravel.route)
-            },
-            modifier = modifier
-                .fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(CardLightGray),
-            shape = RoundedCornerShape(12.dp),
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_add),
-                contentDescription = "add travel",
-                tint = PinkDarkest,
-                modifier = modifier.padding(vertical = 16.dp),
-            )
-        }
         LazyColumn(
             modifier = modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
             content = {
+                item {
+                    Button(
+                        onClick = {
+                            navController.navigate(Screen.CreateTravel.route)
+                        },
+                        colors = ButtonDefaults.buttonColors(CardLightGray),
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .padding(0.dp, 0.dp, 0.dp, 4.dp),
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_add),
+                            contentDescription = "add travel",
+                            tint = PinkDarkest,
+                            modifier = modifier
+                                .size(6.dp)
+                                .padding(vertical = 16.dp),
+                        )
+                    }
+                }
                 items(10) {
                     TravelCardView(
                         modifier = modifier,
