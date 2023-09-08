@@ -1,6 +1,6 @@
 package com.moneyminions.presentation.screen.travellist
 
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -18,10 +18,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.moneyminions.presentation.R
+import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.travellist.view.TravelCardView
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.PinkDarkest
-import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.viewmodel.travellist.TravelListViewModel
 
 @Composable
@@ -36,7 +36,9 @@ fun TravelListScreen(
             .padding(16.dp),
     ) {
         Button(
-            onClick = {},
+            onClick = {
+                navController.navigate(Screen.CreateTravel.route)
+            },
             modifier = modifier
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(CardLightGray),
