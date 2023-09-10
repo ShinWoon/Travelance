@@ -38,7 +38,7 @@ import com.moneyminions.presentation.theme.PinkLightest
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun MainComponentPageOne(pagerState: PagerState) {
+fun GraphPage(pagerState: PagerState) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
@@ -47,7 +47,6 @@ fun MainComponentPageOne(pagerState: PagerState) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            
             Row(
                 modifier = Modifier
                     .padding(16.dp)
@@ -58,38 +57,34 @@ fun MainComponentPageOne(pagerState: PagerState) {
                 Text(text = "사용 현황", style = pretendardBold16)
                 Text(text = "300,000원", style = pretendardBold16)
             }
-            
+
             DoughnutChart()
-            
+
             Spacer(modifier = Modifier.height(16.dp))
-            
-            Row (
+
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.SpaceAround
+                horizontalArrangement = Arrangement.SpaceAround,
             ) {
                 MoneyAmountComponent(title = "사용 금액", money = "180,000원")
                 MoneyAmountComponent(title = "남은 금액", money = "120,000원")
             }
-            
+
             Spacer(modifier = Modifier.height(16.dp))
-            
+
             DotsIndicator(
                 totalDots = 3,
                 selectedIndex = pagerState.currentPage,
                 selectedColor = PinkDarkest,
-                unSelectedColor = PinkLightest
+                unSelectedColor = PinkLightest,
             )
-            
+
             Spacer(modifier = Modifier.height(16.dp))
-            
         }
     }
 }
-
-
-
 
 // 도넛 차트
 @Composable
@@ -99,24 +94,24 @@ fun DoughnutChart(
         Color(0xFFFF6384),
         Color(0xFFFFCE56),
         Color(0xFF36A2EB),
-        Color(0xFF448AFF)
+        Color(0xFF448AFF),
     ),
     size: Dp = 180.dp,
-    thickness: Dp = 54.dp
+    thickness: Dp = 54.dp,
 ) {
     // Sum of all the values
     val sumOfValues = values.sum()
-    
+
     // Calculate each proportion
     val proportions = values.map {
         it * 100 / sumOfValues
     }
-    
+
     // Convert each proportion to angle
     val sweepAngles = proportions.map {
         360 * it / 100
     }
-    
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -125,17 +120,17 @@ fun DoughnutChart(
     ) {
         Canvas(
             modifier = Modifier
-                .size(size = size)
+                .size(size = size),
         ) {
             var startAngle = -90f
-            
+
             for (i in values.indices) {
                 drawArc(
                     color = colors[i],
                     startAngle = startAngle,
                     sweepAngle = sweepAngles[i],
                     useCenter = false,
-                    style = Stroke(width = thickness.toPx(), cap = StrokeCap.Butt)
+                    style = Stroke(width = thickness.toPx(), cap = StrokeCap.Butt),
                 )
                 startAngle += sweepAngles[i]
             }
@@ -146,29 +141,31 @@ fun DoughnutChart(
 @Composable
 fun MoneyAmountComponent(
     title: String,
-    money: String = "0원"
+    money: String = "0원",
 ) {
-    
-    val dotColor = if(title == "사용 금액") painterResource(id = R.drawable.ic_pink_dot)
-    else painterResource(id = R.drawable.ic_lightgray_dot)
-    
+    val dotColor = if (title == "사용 금액") {
+        painterResource(id = R.drawable.ic_pink_dot)
+    } else {
+        painterResource(id = R.drawable.ic_lightgray_dot)
+    }
+
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Row (
-            verticalAlignment = Alignment.CenterVertically
-        ){
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             Image(
                 painter = dotColor,
-                contentDescription = "dot"
+                contentDescription = "dot",
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = title,
-                style = pretendardLight12
+                style = pretendardLight12,
             )
         }
-        
+
         Text(text = money, style = pretendardSemiBold16)
     }
 }
