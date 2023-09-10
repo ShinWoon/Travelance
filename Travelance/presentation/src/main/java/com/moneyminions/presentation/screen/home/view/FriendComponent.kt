@@ -18,31 +18,31 @@ import com.moneyminions.presentation.common.MinionProfile
 @Composable
 fun FriendComponent() {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
-        Row (
+        Row(
             modifier = Modifier
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ){
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
             Text(text = "친구들", style = CustomTextStyle.pretendardBold16)
             Text(text = "친구 추가", style = CustomTextStyle.pretendardLight12)
         }
-        
+
         Spacer(modifier = Modifier.height(8.dp))
-    
+
         /**
          * todo 사용자 정보로 처리해야함
          */
-        
+
         /**
          * todo 사용자 정보로 처리해야함
          */
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             items(10) {
                 MinionProfile()
