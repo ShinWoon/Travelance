@@ -57,7 +57,7 @@ fun Home() {
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(scrollableState)
-            .padding(16.dp, 16.dp, 16.dp, 0.dp),
+            .padding(16.dp, 16.dp, 16.dp, 16.dp),
     ) {
         
         TopComponent()
@@ -72,8 +72,18 @@ fun Home() {
         ) { page ->
             when (page) {
                 0 -> GraphPage(pagerState, cardHeight)
-                1 -> UseMoneyPage(pagerState, cardHeight, title = "전체 내역") // todo 1, 2 페이지 변경 필요
-                2 -> UseMoneyPage(pagerState, cardHeight,  title = "나의 전체 내역")
+                1 -> UseMoneyPage(
+                    pagerState,
+                    cardHeight,
+                    title = "전체 내역",
+                    money = 24000
+                )
+                2 -> UseMoneyPage(
+                    pagerState,
+                    cardHeight,
+                    title = "나의 전체 내역",
+                    money = 24000
+                )
             }
         }
 

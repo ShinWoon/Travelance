@@ -17,6 +17,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +36,10 @@ import com.moneyminions.presentation.theme.CardLightGray
 private const val TAG = "BottomComponent"
 @Composable
 fun BottomCardContainer() {
+    
+    // 수기 입력 State
+    var openHandWritingDialog by remember { mutableStateOf(false) }
+    
     Column(
         modifier = Modifier.fillMaxWidth(),
     ) {
@@ -39,21 +47,24 @@ fun BottomCardContainer() {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            // 수기 입력
             BottomItem(
                 modifier = Modifier.weight(1f),
                 title = "수기 입력",
-                context = "여행 준비 내역과 현금 지물 내역을 입력해 봐요",
+                context = "여행 준비 내역과 현금 지물 내역을 입력해 봐요.",
                 icon = painterResource(id = R.drawable.ic_money),
                 action = {
                     Log.d(TAG, "BottomCardContainer: clicked")
-                    
+                    openHandWritingDialog = true
+//                    HandWritingDialog(openHandWritingDialog)
                 }
             )
             Spacer(modifier = Modifier.width(8.dp))
+            // 필독
             BottomItem(
                 modifier = Modifier.weight(1f),
                 title = "필독",
-                context = "친구들에게 알리고 싶은 내용을 입력하고 확인해 봐요",
+                context = "친구들에게 알리고 싶은 내용을 입력하고 확인해 봐요.",
                 icon = painterResource(id = R.drawable.ic_speaker),
                 action = {
                     Log.d(TAG, "BottomCardContainer: clicked")
@@ -65,6 +76,7 @@ fun BottomCardContainer() {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            // 발자취 (지도)
             BottomItem(
                 modifier = Modifier.weight(1f),
                 title = "발자취",
@@ -75,6 +87,7 @@ fun BottomCardContainer() {
                 }
             )
             Spacer(modifier = Modifier.width(8.dp))
+            // 게임
             BottomItem(
                 modifier = Modifier.weight(1f),
                 title = "게임",
