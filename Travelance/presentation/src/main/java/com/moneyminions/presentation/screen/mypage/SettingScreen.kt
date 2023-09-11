@@ -21,8 +21,7 @@ fun SettingScreen(
     navController: NavHostController
 ){
     Column (
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ){
         TopBar(
             navController = navController,
