@@ -23,6 +23,7 @@ val Gray = Color(0xFFC1C1C1)
 val LightGray = Color(0xFFF6F7F9)
 val CardLightGray = Color(0xFFF9F9F9)
 val GraphGray = Color(0xFFD3D5D8)
+val BottomBarGray = Color(0xFFECEBEB)
 
 val BlueDarkest = Color(0xFF00518B)
 val BlueMiddle = Color(0xFF284F9C)
@@ -30,3 +31,6 @@ val BlueLighter = Color(0xFF4263A3)
 val BlueLightest = Color(0xFF8596B8)
 
 val GreenMiddle = Color(0xFF00B672)
+
+val White = Color(0xFFFFFFFF)
+val Black = Color(0xFF000000)
