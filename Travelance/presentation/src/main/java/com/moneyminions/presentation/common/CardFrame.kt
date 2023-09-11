@@ -47,19 +47,19 @@ fun CardFrame(
         val logo = createRefFor("logo")
 
         constrain(name){
-            top.linkTo(parent.top, margin = 8.dp)
-            start.linkTo(parent.start, margin = 8.dp)
+            top.linkTo(parent.top, margin = 16.dp)
+            start.linkTo(parent.start, margin = 16.dp)
         }
         constrain(number){
-            start.linkTo(parent.start, margin = 8.dp)
-            bottom.linkTo(parent.bottom, margin = 16.dp)
+            start.linkTo(parent.start, margin = 16.dp)
+            bottom.linkTo(parent.bottom, margin = 24.dp)
         }
         constrain(company){
-            end.linkTo(parent.end, margin = 8.dp)
-            bottom.linkTo(parent.bottom, margin = 16.dp)
+            end.linkTo(parent.end, margin = 16.dp)
+            bottom.linkTo(parent.bottom, margin = 24.dp)
         }
         constrain(logo){
-            end.linkTo(company.start, margin = 8.dp)
+            end.linkTo(company.start, margin = 16.dp)
             bottom.linkTo(company.bottom)
         }
     }
@@ -96,14 +96,14 @@ fun CardFrame(
                 modifier = Modifier.layoutId("name")
             )
             Text(
-                text = number,
-                style = CustomTextStyle.pretendardBold20,
+                text = formatNumberWithHyphens(number),
+                style = CustomTextStyle.pretendardBold16,
                 color = Color.White,
                 modifier = Modifier.layoutId("number")
             )
             Text(
                 text = company,
-                style = CustomTextStyle.pretendardSemiBold12,
+                style = CustomTextStyle.pretendardSemiBold08,
                 color = Color.White,
                 modifier = Modifier.layoutId("company")
             )
@@ -115,6 +115,17 @@ fun CardFrame(
             )
         }
     }
+}
+
+fun formatNumberWithHyphens(number: String): String {
+    val formattedNumber = StringBuilder()
+    for (i in number.indices) {
+        if (i > 0 && i % 4 == 0) {
+            formattedNumber.append('-')
+        }
+        formattedNumber.append(number[i])
+    }
+    return formattedNumber.toString()
 }
 
 @Preview(showBackground = true)

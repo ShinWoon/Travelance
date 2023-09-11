@@ -17,4 +17,12 @@ sealed class Screen(val name: String, val route: String) {
         name = "CreateTravel",
         route = "create_travel_screen"
     )
+    object MyPage: Screen(
+        name = "MyPage",
+        route = "my_page_screen"
+    )
+    object Setting: Screen(
+        name = "Setting",
+        route = "setting_screen"
+    )
 }

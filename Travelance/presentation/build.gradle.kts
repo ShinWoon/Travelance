@@ -101,4 +101,8 @@ dependencies {
 
     //calendar
     implementation("com.kizitonwose.calendar:compose:2.4.0-beta01")
+
+    // https://mvnrepository.com/artifact/androidx.viewpager2/viewpager2
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
+
 }
