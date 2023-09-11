@@ -59,7 +59,7 @@ fun UseMoneyPage(
 
             LazyColumn(
                 modifier = Modifier
-                    .weight(8f)
+                    .weight(9.5f)
                     .padding(horizontal = 32.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
