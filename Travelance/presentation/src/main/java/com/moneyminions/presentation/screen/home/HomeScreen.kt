@@ -1,10 +1,8 @@
 package com.moneyminions.presentation.screen.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,10 +14,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -29,25 +24,17 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
-import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold16
-import com.moneyminions.presentation.common.CustomTextStyle.pretendardLight12
-import com.moneyminions.presentation.common.MinionProfile
-import com.moneyminions.presentation.screen.home.view.MainComponentPageOne
+import com.moneyminions.presentation.screen.home.view.BottomCardContainer
+import com.moneyminions.presentation.screen.home.view.FriendComponent
+import com.moneyminions.presentation.screen.home.view.GraphPage
 import com.moneyminions.presentation.screen.home.view.TopComponent
+import com.moneyminions.presentation.screen.home.view.UseMoneyPage
 
 @Composable
 fun HomeScreen(
     navController: NavHostController,
 ) {
-    val scrollableState = rememberScrollState()
-    
-    Surface(
-        modifier = Modifier
-            .padding(16.dp, 16.dp, 16.dp, 0.dp)
-            .verticalScroll(scrollableState),
-    ) {
-        Home()
-    }
+    Home()
 }
 
 @Preview(showBackground = true)
@@ -61,34 +48,43 @@ fun HomePreview() {
 fun Home() {
     // Pager State
     val pagerState = rememberPagerState()
+    val scrollableState = rememberScrollState()
+    
+    // Main Card Height
+    val cardHeight = 440.dp
     
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(scrollableState)
+            .padding(horizontal = 16.dp),
     ) {
         TopComponent()
-        
+
         Spacer(modifier = Modifier.height(8.dp))
-        
+
         // Pager
         HorizontalPager(
             modifier = Modifier.fillMaxWidth(),
             count = 3,
-            state = pagerState
+            state = pagerState,
         ) { page ->
             when (page) {
-                0 -> MainComponentPageOne(pagerState)
-                1 -> MainComponentPageOne(pagerState)  //todo 1, 2 페이지 변경 필요
-                2 -> MainComponentPageOne(pagerState)
+                0 -> GraphPage(pagerState, cardHeight)
+                1 -> UseMoneyPage(pagerState, cardHeight, title = "전체 내역") // todo 1, 2 페이지 변경 필요
+                2 -> UseMoneyPage(pagerState, cardHeight,  title = "나의 전체 내역")
             }
         }
-    
+
         Spacer(modifier = Modifier.height(16.dp))
-        
+
         FriendComponent()
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        BottomCardContainer()
     }
 }
-
 
 // dot indicator
 @Composable
@@ -98,68 +94,32 @@ fun DotsIndicator(
     selectedColor: Color,
     unSelectedColor: Color,
 ) {
-    
     LazyRow(
         modifier = Modifier
             .wrapContentWidth()
-            .wrapContentHeight()
-    
+            .wrapContentHeight(),
+
     ) {
-        
         items(totalDots) { index ->
             if (index == selectedIndex) {
                 Box(
                     modifier = Modifier
                         .size(8.dp)
                         .clip(CircleShape)
-                        .background(selectedColor)
+                        .background(selectedColor),
                 )
             } else {
                 Box(
                     modifier = Modifier
                         .size(8.dp)
                         .clip(CircleShape)
-                        .background(unSelectedColor)
+                        .background(unSelectedColor),
                 )
             }
-            
+
             if (index != totalDots - 1) {
                 Spacer(modifier = Modifier.padding(horizontal = 2.dp))
             }
         }
     }
-}
-
-
-@Composable
-fun FriendComponent() {
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Row (
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ){
-            Text(text = "친구들", style = pretendardBold16)
-            Text(text = "친구 추가", style = pretendardLight12)
-        }
-        
-        Spacer(modifier = Modifier.height(8.dp))
-    
-        /**
-         * todo 사용자 정보로 처리해야함
-         */
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(10) {
-                MinionProfile()
-            }
-        }
-    }
-
 }
