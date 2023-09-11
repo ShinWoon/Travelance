@@ -153,6 +153,11 @@ object CustomTextStyle {
         letterSpacing = 2.sp
     )
 
+    val pretendardBold24 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_bold)),
+        fontSize = 24.sp,
+        letterSpacing = 2.sp
+    )
 
 
 }
