@@ -80,6 +80,9 @@ dependencies {
 
     //livedata
     implementation("androidx.compose.runtime:runtime-livedata:1.5.0")
+    
+    implementation("androidx.compose.runtime:runtime-android:1.5.0")
+    implementation("androidx.compose.runtime:runtime-rxjava2:1.3.3")
 
     //Hilt
     var dagger_version = "2.45"
