@@ -32,12 +32,6 @@ object CustomTextStyle {
         letterSpacing = 2.sp,
     )
 
-    val pretendardBold14 = TextStyle(
-        fontFamily = FontFamily(Font(R.font.pretendard_bold)),
-        fontSize = 14.sp,
-        letterSpacing = 2.sp
-    )
-
     val pretendardBold12 = TextStyle(
         fontFamily = FontFamily(Font(R.font.pretendard_bold)),
         fontSize = 12.sp,

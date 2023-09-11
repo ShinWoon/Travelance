@@ -57,8 +57,9 @@ fun Home() {
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(scrollableState)
-            .padding(horizontal = 16.dp),
+            .padding(16.dp, 16.dp, 16.dp, 0.dp),
     ) {
+        
         TopComponent()
 
         Spacer(modifier = Modifier.height(8.dp))
