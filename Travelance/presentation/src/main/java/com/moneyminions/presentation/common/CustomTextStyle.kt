@@ -110,6 +110,12 @@ object CustomTextStyle {
         letterSpacing = 2.sp,
     )
 
+    val pretendardRegular10 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+        fontSize = 10.sp,
+        letterSpacing = 2.sp,
+    )
+
     val pretendardRegular08 = TextStyle(
         fontFamily = FontFamily(Font(R.font.pretendard_regular)),
         fontSize = 8.sp,
