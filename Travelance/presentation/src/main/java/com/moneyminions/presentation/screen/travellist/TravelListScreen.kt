@@ -47,9 +47,10 @@ fun TravelListScreen(
                             navController.navigate(Screen.CreateTravel.route)
                         },
                         colors = ButtonDefaults.buttonColors(CardLightGray),
-                        shape = RoundedCornerShape(12.dp),
+                        shape = RoundedCornerShape(16.dp),
                         modifier = modifier
                             .fillMaxWidth()
+                            .wrapContentHeight()
                             .padding(0.dp, 0.dp, 0.dp, 4.dp),
                     ) {
                         Icon(
@@ -57,10 +58,32 @@ fun TravelListScreen(
                             contentDescription = "add travel",
                             tint = PinkDarkest,
                             modifier = modifier
-                                .size(6.dp)
-                                .padding(vertical = 16.dp),
+                                .padding(vertical = 10.dp)
+                                .size(24.dp),
                         )
                     }
+                }
+                item {
+                    TravelCardView(
+                        modifier = modifier,
+                        travelName = "룰루랄라",
+                        travelStart = "2023.07.23",
+                        travelEnd = "2023.07.30",
+                        done = "yet",
+                        moneyAmount = 5500000,
+                        iconId = R.drawable.ic_camera,
+                    )
+                }
+                item {
+                    TravelCardView(
+                        modifier = modifier,
+                        travelName = "룰루랄라",
+                        travelStart = "2023.07.23",
+                        travelEnd = "2023.07.30",
+                        done = "doing",
+                        moneyAmount = 5500000,
+                        iconId = R.drawable.ic_camera,
+                    )
                 }
                 items(10) {
                     TravelCardView(

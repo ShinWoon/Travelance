@@ -178,12 +178,7 @@ fun SettlementStateView(done: String, modifier: Modifier) {
             }
 
             "doing" -> {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_circle),
-                    tint = PinkDarkest,
-                    contentDescription = "second settling",
-                )
-                Spacer(modifier = modifier.width(4.dp))
+                RippleLoadingAnimation()
                 StateText(
                     text = "정산 중",
                     color = PinkDarkest,
