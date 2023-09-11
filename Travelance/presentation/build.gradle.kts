@@ -21,7 +21,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -64,41 +64,40 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    //coil
+    // coil
     implementation("io.coil-kt:coil:2.2.2")
     implementation("io.coil-kt:coil-compose:2.2.2")
 
-    //navigation
+    // navigation
     var nav_version = "2.5.3"
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
-    //constraintLayout
+    // constraintLayout
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
-    //viewmodel
+    // viewmodel
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
 
-    //livedata
+    // livedata
     implementation("androidx.compose.runtime:runtime-livedata:1.5.0")
 
-    //Hilt
+    // Hilt
     var dagger_version = "2.45"
     var hilt_version = "1.0.0"
     implementation("com.google.dagger:hilt-android:$dagger_version")
     kapt("com.google.dagger:hilt-android-compiler:$dagger_version")
     implementation("androidx.hilt:hilt-navigation-compose:$hilt_version")
 
-    //retrofit & okhttp
+    // retrofit & okhttp
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
-    
+
     // Pager
     implementation("com.google.accompanist:accompanist-pager:0.20.1")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.20.1")
-    
 
-    //calendar
+    // calendar
     implementation("com.kizitonwose.calendar:compose:2.4.0-beta01")
 }
