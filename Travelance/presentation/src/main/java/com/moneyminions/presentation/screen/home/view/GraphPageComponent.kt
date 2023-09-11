@@ -38,9 +38,14 @@ import com.moneyminions.presentation.theme.PinkLightest
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun GraphPage(pagerState: PagerState) {
+fun GraphPage(
+    pagerState: PagerState,
+    cardHeight: Dp
+) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(cardHeight),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(CardLightGray),
     ) {
@@ -49,6 +54,7 @@ fun GraphPage(pagerState: PagerState) {
         ) {
             Row(
                 modifier = Modifier
+                    .weight(1.5f)
                     .padding(16.dp)
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -58,30 +64,36 @@ fun GraphPage(pagerState: PagerState) {
                 Text(text = "300,000원", style = pretendardBold16)
             }
 
-            DoughnutChart()
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.SpaceAround,
+            Card(
+                modifier = Modifier.weight(8f),
+                colors = CardDefaults.cardColors(CardLightGray),
             ) {
-                MoneyAmountComponent(title = "사용 금액", money = "180,000원")
-                MoneyAmountComponent(title = "남은 금액", money = "120,000원")
+                DoughnutChart()
+    
+                Spacer(modifier = Modifier.height(16.dp))
+    
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                ) {
+                    MoneyAmountComponent(title = "사용 금액", money = "180,000원")
+                    MoneyAmountComponent(title = "남은 금액", money = "120,000원")
+                }
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            DotsIndicator(
-                totalDots = 3,
-                selectedIndex = pagerState.currentPage,
-                selectedColor = PinkDarkest,
-                unSelectedColor = PinkLightest,
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
+    
+            Box(
+                modifier = Modifier.weight(1f),
+                contentAlignment = Alignment.Center
+            ) {
+                DotsIndicator(
+                    totalDots = 3,
+                    selectedIndex = pagerState.currentPage,
+                    selectedColor = PinkDarkest,
+                    unSelectedColor = PinkLightest,
+                )
+            }
         }
     }
 }

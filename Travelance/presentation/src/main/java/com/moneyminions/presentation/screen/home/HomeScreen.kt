@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,15 +34,7 @@ import com.moneyminions.presentation.screen.home.view.UseMoneyPage
 fun HomeScreen(
     navController: NavHostController,
 ) {
-    val scrollableState = rememberScrollState()
-
-    Surface(
-        modifier = Modifier
-            .padding(16.dp, 16.dp, 16.dp, 0.dp)
-            .verticalScroll(scrollableState),
-    ) {
-        Home()
-    }
+    Home()
 }
 
 @Preview(showBackground = true)
@@ -57,9 +48,16 @@ fun HomePreview() {
 fun Home() {
     // Pager State
     val pagerState = rememberPagerState()
-
+    val scrollableState = rememberScrollState()
+    
+    // Main Card Height
+    val cardHeight = 440.dp
+    
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(scrollableState)
+            .padding(horizontal = 16.dp),
     ) {
         TopComponent()
 
@@ -72,9 +70,9 @@ fun Home() {
             state = pagerState,
         ) { page ->
             when (page) {
-                0 -> GraphPage(pagerState)
-                1 -> UseMoneyPage(pagerState, title = "전체 내역") // todo 1, 2 페이지 변경 필요
-                2 -> UseMoneyPage(pagerState, title = "나의 전체 내역")
+                0 -> GraphPage(pagerState, cardHeight)
+                1 -> UseMoneyPage(pagerState, cardHeight, title = "전체 내역") // todo 1, 2 페이지 변경 필요
+                2 -> UseMoneyPage(pagerState, cardHeight,  title = "나의 전체 내역")
             }
         }
 
