@@ -32,10 +32,9 @@ fun MinionProfile() {
         modifier = Modifier
             .size(48.dp)
             .clip(CircleShape)
-            .background(PinkDarkest)// 둥굴게,
+            .background(PinkDarkest), // 둥굴게
     )
 }
-
 
 @Preview(showBackground = true)
 @Composable
