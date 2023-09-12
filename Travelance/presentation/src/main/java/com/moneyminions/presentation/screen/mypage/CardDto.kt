@@ -5,5 +5,6 @@ data class CardDto(
     val number: String,
     val idx: Int,
     val company: String,
-    val logo: String
+    val logo: String,
+    var isSelected: Boolean? = false
 )

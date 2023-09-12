@@ -34,7 +34,7 @@ import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.common.AccountRowItem
-import com.moneyminions.presentation.screen.mypage.view.CardItem
+import com.moneyminions.presentation.common.CardRowItem
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.GraphGray
 import com.moneyminions.presentation.theme.PinkDarkest
@@ -151,7 +151,15 @@ fun EditUserScreen(
             )
             LazyColumn{
                 items(cardList){
-                    CardItem(name = it.name, number = it.number, idx = it.idx)
+                    CardRowItem(
+                        name = it.name,
+                        number = it.number,
+                        idx = it.idx,
+                        type = "delete",
+                        onDeleted = {
+                            //삭제 로직
+                        }
+                    )
                 }
             }
             Spacer(modifier = Modifier.size(16.dp))

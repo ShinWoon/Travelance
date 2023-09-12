@@ -18,57 +18,62 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.moneyminions.presentation.common.AccountRowItem
+import com.moneyminions.presentation.common.CardRowItem
 import com.moneyminions.presentation.common.MinionPrimaryButton
 import com.moneyminions.presentation.common.TopBar
-import com.moneyminions.presentation.navigation.Screen
-import com.moneyminions.presentation.screen.mypage.AccountDto
+import com.moneyminions.presentation.screen.mypage.CardDto
 import com.moneyminions.presentation.screen.mypage.accountList
 
-private const val TAG = "AccountListScreen D210"
+private const val TAG = "CardListScreen D210"
 @Composable
-fun AccountListScreen(
+fun CardListScreen(
     navController: NavHostController
 ){
-    val accountList = listOf(
-        AccountDto(
-            logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
-            name = "신한",
-            number = "997838829102"
+    val cardList = listOf(
+        CardDto(
+            name = "카드 별칭",
+            number = "123456789012",
+            idx = 0,
+            company = "카드사명",
+            logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png"
         ),
-        AccountDto(
-            logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
-            name = "신한",
-            number = "997838829102"
+        CardDto(
+            name = "카드 별칭",
+            number = "123456789012",
+            idx = 1,
+            company = "카드사명",
+            logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png"
         ),
-        AccountDto(
-            logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
-            name = "신한",
-            number = "997838829102"
+        CardDto(
+            name = "카드 별칭",
+            number = "123456789012",
+            idx = 2,
+            company = "카드사명",
+            logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png"
         )
     )
-
-
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         TopBar(
             navController = navController,
-            title = "계좌 목록"
+            title = "카드 목록"
         )
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             LazyColumn{
-                items(accountList){
+                items(cardList){
                     var isSelectedState by remember { mutableStateOf(it.isSelected) }
                     Log.d(TAG, "AccountListScreen: $isSelectedState")
-                    AccountRowItem(
-                        logo = it.logo,
+                    CardRowItem(
                         name = it.name,
                         number = it.number,
+                        idx = it.idx,
                         type = "select",
                         isSelected = isSelectedState,
                         onSelected = {
@@ -85,14 +90,15 @@ fun AccountListScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                navController.navigate(Screen.CardList.route)
+
             }
         }
     }
+
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = 0xFFFFFF)
 @Composable
-fun AccountListScreenPreview(){
-
+fun CardListScreenPreview(){
+    CardListScreen(navController = rememberNavController())
 }

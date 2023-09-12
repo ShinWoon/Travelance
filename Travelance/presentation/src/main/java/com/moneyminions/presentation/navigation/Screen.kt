@@ -37,4 +37,8 @@ sealed class Screen(val name: String, val route: String) {
         name = "AccountList",
         route = "account_list_screen"
     )
+    object CardList: Screen(
+        name = "CardList",
+        route = "card_list_screen"
+    )
 }

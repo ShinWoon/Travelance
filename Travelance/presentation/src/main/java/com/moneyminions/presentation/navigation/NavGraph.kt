@@ -10,6 +10,7 @@ import com.moneyminions.presentation.screen.example.ExampleScreen
 import com.moneyminions.presentation.screen.home.HomeScreen
 import com.moneyminions.presentation.screen.login.AccountAuthenticationScreen
 import com.moneyminions.presentation.screen.login.AccountListScreen
+import com.moneyminions.presentation.screen.login.CardListScreen
 import com.moneyminions.presentation.screen.mypage.EditUserScreen
 import com.moneyminions.presentation.screen.mypage.MyPageScreeen
 import com.moneyminions.presentation.screen.mypage.SettingScreen
@@ -70,6 +71,11 @@ fun NavGraph(
             route = Screen.AccountList.route
         ){
             AccountListScreen(navController = navController)
+        }
+        composable(
+            route = Screen.CardList.route
+        ){
+            CardListScreen(navController = navController)
         }
     }
 } // End of setUpNavGraph
