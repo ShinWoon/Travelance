@@ -40,7 +40,7 @@ import androidx.navigation.compose.rememberNavController
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.common.TopBar
-import com.moneyminions.presentation.screen.mypage.view.AccountItem
+import com.moneyminions.presentation.screen.mypage.view.AccountRowItem
 import com.moneyminions.presentation.screen.mypage.view.CardItem
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.GraphGray
@@ -129,7 +129,7 @@ fun EditUserScreen(
             )
             LazyColumn{
                 items(accountList){
-                    AccountItem(logo = it.logo, name = it.name, number = it.number)
+                    AccountRowItem(logo = it.logo, name = it.name, number = it.number)
                 }
             }
             Spacer(modifier = Modifier.size(16.dp))

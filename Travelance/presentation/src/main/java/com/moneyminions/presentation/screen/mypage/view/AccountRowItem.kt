@@ -22,7 +22,7 @@ import com.moneyminions.presentation.theme.GraphGray
 import com.moneyminions.presentation.theme.PinkDarkest
 
 @Composable
-fun AccountItem(
+fun AccountRowItem(
     logo: String,
     name: String,
     number: String,
@@ -97,8 +97,8 @@ fun AccountItem(
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
 @Composable
-fun AccountItemPreview(){
-    AccountItem(
+fun AccountRowItemPreview(){
+    AccountRowItem(
         logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
         name = "신한",
         number = "997838829102"

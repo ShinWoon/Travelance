@@ -38,6 +38,7 @@ fun SettingScreen(
         }
         SettingItem(icon = painterResource(id = R.drawable.ic_setting), text = "로그아웃") {
             //로그 아웃 로직
+            navController.navigate(Screen.AccountAuthentication.route)
         }
         SettingItem(icon = painterResource(id = R.drawable.ic_setting), text = "회원탈퇴") {
             //회원 가입 로직
