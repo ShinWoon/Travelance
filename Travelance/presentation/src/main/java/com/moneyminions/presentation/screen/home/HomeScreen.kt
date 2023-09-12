@@ -18,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -34,18 +33,12 @@ import com.moneyminions.presentation.screen.home.view.UseMoneyPage
 fun HomeScreen(
     navController: NavHostController,
 ) {
-    Home()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun HomePreview() {
-    Home()
+    Home(navController)
 }
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun Home() {
+fun Home(navController: NavHostController) {
     // Pager State
     val pagerState = rememberPagerState()
     val scrollableState = rememberScrollState()
@@ -93,7 +86,7 @@ fun Home() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        BottomCardContainer()
+        BottomCardContainer(navController)
     }
 }
 
