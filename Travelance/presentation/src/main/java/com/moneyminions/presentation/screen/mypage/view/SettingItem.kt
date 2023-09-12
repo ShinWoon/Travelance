@@ -80,6 +80,9 @@ fun SettingItem(
                 contentDescription = null,
                 modifier = Modifier.size(30.dp)
                     .layoutId("moveIcon")
+                    .clickable {
+                        onClick()
+                    }
             )
 
         }

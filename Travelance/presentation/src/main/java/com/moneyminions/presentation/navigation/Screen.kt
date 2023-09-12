@@ -25,4 +25,8 @@ sealed class Screen(val name: String, val route: String) {
         name = "Setting",
         route = "setting_screen"
     )
+    object EditUser: Screen(
+        name = "EditUser",
+        route = "edit_user_screen"
+    )
 }
