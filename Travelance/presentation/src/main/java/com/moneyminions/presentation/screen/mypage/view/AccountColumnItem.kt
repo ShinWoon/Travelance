@@ -17,9 +17,7 @@ import coil.compose.AsyncImage
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.DarkGray
-import com.moneyminions.presentation.theme.GraphGray
 import com.moneyminions.presentation.theme.PinkDarkest
-import com.moneyminions.presentation.theme.White
 
 @Composable
 fun AccountColumnItem(

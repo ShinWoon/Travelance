@@ -33,4 +33,8 @@ sealed class Screen(val name: String, val route: String) {
         name = "AccountAuthentication",
         route = "account_authenthication_screen"
     )
+    object AccountList: Screen(
+        name = "AccountList",
+        route = "account_list_screen"
+    )
 }

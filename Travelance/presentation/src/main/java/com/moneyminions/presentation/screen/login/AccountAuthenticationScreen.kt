@@ -14,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -27,6 +26,7 @@ import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.common.MinionPrimaryButton
 import com.moneyminions.presentation.common.TextFieldWithTitle
 import com.moneyminions.presentation.common.TopBar
+import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.mypage.AccountDto
 import com.moneyminions.presentation.screen.mypage.view.AccountColumnItem
 
@@ -119,14 +119,9 @@ fun AccountAuthenticationScreen(
                         AccountColumnItem(
                             logo = it.logo,
                             compoany = it.name,
-                            isSelected = selectedAccountIndex == accountList.indexOf(
-                                it
-                            )
+                            isSelected = selectedAccountIndex == accountList.indexOf(it)
                         ) {
-                            if (selectedAccountIndex == accountList.indexOf(
-                                    it
-                                )
-                            ) {
+                            if (selectedAccountIndex == accountList.indexOf(it)) {
                                 accountList.forEach {
                                     it.isSelected = false
                                 }
@@ -160,7 +155,7 @@ fun AccountAuthenticationScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-
+                navController.navigate(Screen.AccountList.route)
             }
         }
     }
