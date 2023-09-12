@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.moneyminions.presentation.screen.example.ExampleScreen
 import com.moneyminions.presentation.screen.home.HomeScreen
+import com.moneyminions.presentation.screen.mypage.EditUserScreen
 import com.moneyminions.presentation.screen.mypage.MyPageScreeen
 import com.moneyminions.presentation.screen.mypage.SettingScreen
 import com.moneyminions.presentation.screen.travellist.CreateTravelScreen
@@ -52,6 +53,11 @@ fun NavGraph(
             route = Screen.Setting.route
         ){
             SettingScreen(navController = navController)
+        }
+        composable(
+            route = Screen.EditUser.route
+        ){
+            EditUserScreen(navController = navController)
         }
     }
 } // End of setUpNavGraph
