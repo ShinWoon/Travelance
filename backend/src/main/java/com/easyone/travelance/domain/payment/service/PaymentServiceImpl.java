@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class PaymentServiceImpl implements PaymentService{
 
-    @KafkaListener(topics = "topic name")
-    public void receivePaymentAlert(PaymentAlertRequestDto paymentAlertRequestDto){
-
-    }
+//    @KafkaListener(topics = "topic name")
+//    public void receivePaymentAlert(PaymentAlertRequestDto paymentAlertRequestDto){
+//
+//    }
 }
