@@ -9,6 +9,10 @@ import androidx.navigation.compose.composable
 import com.moneyminions.presentation.screen.announcement.AnnouncementScreen
 import com.moneyminions.presentation.screen.example.ExampleScreen
 import com.moneyminions.presentation.screen.home.HomeScreen
+import com.moneyminions.presentation.screen.login.AccountAuthenticationScreen
+import com.moneyminions.presentation.screen.login.AccountListScreen
+import com.moneyminions.presentation.screen.login.CardListScreen
+import com.moneyminions.presentation.screen.mypage.EditUserScreen
 import com.moneyminions.presentation.screen.mypage.MyPageScreeen
 import com.moneyminions.presentation.screen.mypage.SettingScreen
 import com.moneyminions.presentation.screen.travellist.CreateTravelScreen
@@ -58,6 +62,26 @@ fun NavGraph(
             route = Screen.Announcement.route
         ){
             AnnouncementScreen(navController = navController)
+        }
+        composable(
+            route = Screen.EditUser.route
+        ){
+            EditUserScreen(navController = navController)
+        }
+        composable(
+            route = Screen.AccountAuthentication.route
+        ){
+            AccountAuthenticationScreen(navController = navController)
+        }
+        composable(
+            route = Screen.AccountList.route
+        ){
+            AccountListScreen(navController = navController)
+        }
+        composable(
+            route = Screen.CardList.route
+        ){
+            CardListScreen(navController = navController)
         }
     }
 } // End of setUpNavGraph

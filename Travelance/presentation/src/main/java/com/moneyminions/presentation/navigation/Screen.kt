@@ -29,4 +29,20 @@ sealed class Screen(val name: String, val route: String) {
         name = "Announcement",
         route = "Announcement_screen"
     )
+    object EditUser: Screen(
+        name = "EditUser",
+        route = "edit_user_screen"
+    )
+    object AccountAuthentication: Screen(
+        name = "AccountAuthentication",
+        route = "account_authenthication_screen"
+    )
+    object AccountList: Screen(
+        name = "AccountList",
+        route = "account_list_screen"
+    )
+    object CardList: Screen(
+        name = "CardList",
+        route = "card_list_screen"
+    )
 }
