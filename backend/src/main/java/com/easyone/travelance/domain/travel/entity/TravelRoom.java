@@ -1,14 +1,19 @@
 package com.easyone.travelance.domain.travel.entity;
 
-import com.easyone.travelance.domain.travel.enumclass.roomType;
+import com.easyone.travelance.domain.member.entity.Member;
+import com.easyone.travelance.domain.travel.enumclass.RoomType;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
+@NoArgsConstructor
 @Table(name="TravelRoom")
 public class TravelRoom {
     @Id
@@ -22,21 +27,31 @@ public class TravelRoom {
     private LocalDateTime endDate;
 
     @Enumerated(EnumType.STRING)
-    private roomType isDone;
+    private RoomType isDone=RoomType.BEFORE;
 
     private int budget;
 
+    @ManyToOne
+    @JoinColumn(name="my_id")
+    private Member member; //방 맴버들
 
-//    @ManyToOne
-//    @JoinColumn(name="my_id")
-//    private Member member; //방 맴버들
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "consumption", cascade = CascadeType.ALL)
+    private List<Consumption> consumptions = new ArrayList<>();
 
-
-
+    public RoomType getIsDone() {
+        return isDone;
+    }
 
     @Builder
-    public TravelRoom() {
-
+    public TravelRoom(String travelName, int roomNumber, String location, LocalDateTime startDate, LocalDateTime endDate, RoomType isDone, int budget, Member member) {
+        this.travelName= travelName;
+        this.roomNumber= roomNumber;
+        this.budget= budget;
+        this.member=member;
+        this.endDate=endDate;
+        this.startDate= startDate;
+        this.location=location;
+        this.isDone=isDone;
     }
 
 }

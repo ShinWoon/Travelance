@@ -1,7 +1,11 @@
 package com.easyone.travelance.domain.travel.entity;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
+@Entity
+@Getter
 public class Map {
 
     @Id
