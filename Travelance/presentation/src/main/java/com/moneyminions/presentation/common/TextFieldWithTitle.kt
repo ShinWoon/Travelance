@@ -1,19 +1,14 @@
 package com.moneyminions.presentation.common
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,13 +21,8 @@ import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.ConstraintSet
-import androidx.navigation.compose.rememberNavController
-import com.moneyminions.presentation.theme.DarkGray
 import com.moneyminions.presentation.theme.GraphGray
 import com.moneyminions.presentation.theme.PinkLight
-import okhttp3.internal.wait
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,7 +33,7 @@ fun TextFieldWithTitle(
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType? = KeyboardType.Text
 ){
-
+    
     val outlinedTextFieldColors = TextFieldDefaults.outlinedTextFieldColors(
         focusedBorderColor = PinkLight, // 포커스가 있을 때 테두리 색상
         unfocusedBorderColor = GraphGray, // 포커스가 없을 때 테두리 색상
@@ -51,7 +41,7 @@ fun TextFieldWithTitle(
         placeholderColor = GraphGray // 힌트 색상
     )
     var isHintVisible by remember { mutableStateOf(value.isEmpty()) }
-
+    
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -61,7 +51,7 @@ fun TextFieldWithTitle(
             modifier = Modifier.layoutId("textTitle")
         )
         Spacer(
-            modifier = Modifier.size(16.dp)
+            modifier = Modifier.size(8.dp)
         )
         OutlinedTextField(
             value = value,
