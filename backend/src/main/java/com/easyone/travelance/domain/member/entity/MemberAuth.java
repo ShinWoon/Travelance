@@ -20,6 +20,8 @@ public class MemberAuth {
 
     private String refreshToken;
 
+    private String fcmToken;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
