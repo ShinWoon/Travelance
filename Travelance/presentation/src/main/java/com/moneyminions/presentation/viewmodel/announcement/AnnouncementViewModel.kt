@@ -20,4 +20,10 @@ class AnnouncementViewModel @Inject constructor(
     fun setContent(content: String) {
         _content.value = content
     }
+    
+    private val _link = mutableStateOf("")
+    val link: State<String> = _link
+    fun setLink(link: String) {
+        this._link.value = link
+    }
 }
