@@ -18,9 +18,12 @@ public class MemberAuth {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String refreshToken;
 
     private String fcmToken;
+
+    private String privateId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
