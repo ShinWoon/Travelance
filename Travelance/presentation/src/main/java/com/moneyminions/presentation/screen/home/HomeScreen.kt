@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -34,33 +35,32 @@ import com.moneyminions.presentation.screen.home.view.UseMoneyPage
 fun HomeScreen(
     navController: NavHostController,
 ) {
-    Home()
+    Home(navController)
 }
 
 @Preview(showBackground = true)
 @Composable
 fun HomePreview() {
-    Home()
+    Home(rememberNavController())
 }
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun Home() {
+fun Home(navController: NavHostController) {
     // Pager State
     val pagerState = rememberPagerState()
     val scrollableState = rememberScrollState()
-    
+
     // Main Card Height
     val cardHeight = 440.dp
-    
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(scrollableState)
             .padding(16.dp, 16.dp, 16.dp, 0.dp),
     ) {
-        
-        TopComponent()
+        TopComponent(navController)
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -73,7 +73,7 @@ fun Home() {
             when (page) {
                 0 -> GraphPage(pagerState, cardHeight)
                 1 -> UseMoneyPage(pagerState, cardHeight, title = "전체 내역") // todo 1, 2 페이지 변경 필요
-                2 -> UseMoneyPage(pagerState, cardHeight,  title = "나의 전체 내역")
+                2 -> UseMoneyPage(pagerState, cardHeight, title = "나의 전체 내역")
             }
         }
 

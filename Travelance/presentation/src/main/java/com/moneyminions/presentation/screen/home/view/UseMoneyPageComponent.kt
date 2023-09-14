@@ -96,7 +96,7 @@ fun UseMoneyItem() {
         Row (
             modifier = Modifier.weight(2f)
         ){
-            MinionProfile()
+            MinionProfile(48.dp)
     
             Spacer(modifier = Modifier.width(8.dp))
     

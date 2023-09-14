@@ -178,7 +178,7 @@ fun SettlementStateView(done: String, modifier: Modifier) {
             }
 
             "doing" -> {
-                RippleLoadingAnimation()
+                RippleLoadingAnimation(modifier = modifier)
                 StateText(
                     text = "정산 중",
                     color = PinkDarkest,
@@ -197,7 +197,6 @@ fun SettlementStateView(done: String, modifier: Modifier) {
                     color = GreenMiddle,
                 )
             }
-
             else -> {}
         }
     }
