@@ -1,5 +1,6 @@
 package com.easyone.travelance.domain.member.entity;
 
+import com.easyone.travelance.domain.card.entity.Card;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String email;
 
     private String nickname;
@@ -37,5 +39,10 @@ public class Member {
     @OneToMany(mappedBy = "member")
     @Builder.Default
     private List<Profile> profileList = new ArrayList<>();
+
+    // 카드와 1 대 다 관계
+    @OneToMany(mappedBy = "member")
+    @Builder.Default
+    private List<Card> cardList = new ArrayList<>();
 
 }
