@@ -8,6 +8,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.moneyminions.presentation.screen.announcement.AnnouncementScreen
 import com.moneyminions.presentation.screen.example.ExampleScreen
+import com.moneyminions.presentation.screen.game.BottleGameScreen
+import com.moneyminions.presentation.screen.game.CardGameScreen
+import com.moneyminions.presentation.screen.game.GameListScreen
+import com.moneyminions.presentation.screen.game.TeamBuildingGameScreen
+import com.moneyminions.presentation.screen.game.WordGameScreen
 import com.moneyminions.presentation.screen.home.HomeScreen
 import com.moneyminions.presentation.screen.login.AccountAuthenticationScreen
 import com.moneyminions.presentation.screen.login.AccountListScreen
@@ -17,6 +22,7 @@ import com.moneyminions.presentation.screen.mypage.MyPageScreeen
 import com.moneyminions.presentation.screen.mypage.SettingScreen
 import com.moneyminions.presentation.screen.travellist.CreateTravelScreen
 import com.moneyminions.presentation.screen.travellist.TravelListScreen
+import com.moneyminions.presentation.screen.travelmap.travelMapScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -82,6 +88,36 @@ fun NavGraph(
             route = Screen.CardList.route
         ){
             CardListScreen(navController = navController)
+        }
+        composable(
+            route = Screen.TravelMap.route
+        ){
+            travelMapScreen(navController = navController)
+        }
+        composable(
+            route = Screen.GameList.route
+        ){
+            GameListScreen(navController = navController)
+        }
+        composable(
+            route = Screen.CardGame.route
+        ){
+            CardGameScreen(navController = navController)
+        }
+        composable(
+            route = Screen.BottleGame.route
+        ){
+            BottleGameScreen(navController = navController)
+        }
+        composable(
+            route = Screen.TeamBuildingGame.route
+        ){
+            TeamBuildingGameScreen(navController = navController)
+        }
+        composable(
+            route = Screen.WordGame.route
+        ){
+            WordGameScreen(navController = navController)
         }
     }
 } // End of setUpNavGraph
