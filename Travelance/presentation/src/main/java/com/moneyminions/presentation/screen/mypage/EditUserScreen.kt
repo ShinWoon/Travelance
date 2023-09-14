@@ -60,21 +60,21 @@ val accountList = listOf(
 )
 val cardList = listOf(
     CardDto(
-        name = "카드 별칭",
+        name = "카드 별칭 1",
         number = "123456789012",
         idx = 0,
         company = "카드사명",
         logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png"
     ),
     CardDto(
-        name = "카드 별칭",
+        name = "카드 별칭 2",
         number = "123456789012",
         idx = 1,
         company = "카드사명",
         logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png"
     ),
     CardDto(
-        name = "카드 별칭",
+        name = "카드 별칭 3",
         number = "123456789012",
         idx = 2,
         company = "카드사명",
