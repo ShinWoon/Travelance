@@ -62,7 +62,7 @@ fun MinionButtonSet(
             shape = RoundedCornerShape(8.dp),
             elevation = ButtonDefaults.buttonElevation(4.dp),
         ) {
-//            Text(text = contentLeft, style = littleTitleTextStyle)
+            Text(text = contentLeft, style = CustomTextStyle.pretendardSemiBold16)
         }
 
         Spacer(modifier = Modifier.width(16.dp))
@@ -74,10 +74,9 @@ fun MinionButtonSet(
                 containerColor = Gray,
                 contentColor = White,
             ),
-            shape = RoundedCornerShape(8.dp),
-            elevation = ButtonDefaults.buttonElevation(4.dp),
+            shape = RoundedCornerShape(8.dp)
         ) {
-//            Text(text = contentRight, style = littleTitleTextStyle)
+            Text(text = contentRight, style = CustomTextStyle.pretendardSemiBold16)
         }
     }
 }
