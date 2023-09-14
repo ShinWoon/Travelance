@@ -1,6 +1,5 @@
 package com.moneyminions.presentation.screen.home.view
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -86,7 +85,7 @@ fun BottomCardContainer(
                 context = "우리의 여행 발자취를 확인해 봐요.",
                 icon = painterResource(id = R.drawable.ic_map_point),
                 action = {
-                    Log.d(TAG, "BottomCardContainer: clicked")
+                    navController.navigate(Screen.TravelMap.route)
                 }
             )
             Spacer(modifier = Modifier.width(8.dp))
@@ -97,7 +96,7 @@ fun BottomCardContainer(
                 context = "친구들과 함께 게임을 즐겨봐요.",
                 icon = painterResource(id = R.drawable.ic_game),
                 action = {
-                    Log.d(TAG, "BottomCardContainer: clicked")
+                    navController.navigate(Screen.GameList.route)
                 }
             )
         }
