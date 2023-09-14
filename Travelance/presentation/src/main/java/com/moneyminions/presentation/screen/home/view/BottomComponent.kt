@@ -17,21 +17,34 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold14
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardLight10
+import com.moneyminions.presentation.navigation.Screen
+import com.moneyminions.presentation.screen.handwriting.HandWritingDialog
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.CardLightGray
 
 private const val TAG = "BottomComponent"
 @Composable
-fun BottomCardContainer() {
+fun BottomCardContainer(
+    navController: NavHostController
+) {
+    
+    // 수기 입력 State
+    var openHandWritingDialog by remember { mutableStateOf(false) }
+    
     Column(
         modifier = Modifier.fillMaxWidth(),
     ) {
@@ -39,24 +52,25 @@ fun BottomCardContainer() {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            // 수기 입력
             BottomItem(
                 modifier = Modifier.weight(1f),
                 title = "수기 입력",
-                context = "여행 준비 내역과 현금 지물 내역을 입력해 봐요",
+                context = "여행 준비 내역과 현금 지물 내역을 입력해 봐요.",
                 icon = painterResource(id = R.drawable.ic_money),
                 action = {
-                    Log.d(TAG, "BottomCardContainer: clicked")
-                    
+                    openHandWritingDialog = true
                 }
             )
             Spacer(modifier = Modifier.width(8.dp))
+            // 필독
             BottomItem(
                 modifier = Modifier.weight(1f),
                 title = "필독",
-                context = "친구들에게 알리고 싶은 내용을 입력하고 확인해 봐요",
+                context = "친구들에게 알리고 싶은 내용을 입력하고 확인해 봐요.",
                 icon = painterResource(id = R.drawable.ic_speaker),
                 action = {
-                    Log.d(TAG, "BottomCardContainer: clicked")
+                    navController.navigate(Screen.Announcement.route)
                 }
             )
         }
@@ -65,6 +79,7 @@ fun BottomCardContainer() {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            // 발자취 (지도)
             BottomItem(
                 modifier = Modifier.weight(1f),
                 title = "발자취",
@@ -75,6 +90,7 @@ fun BottomCardContainer() {
                 }
             )
             Spacer(modifier = Modifier.width(8.dp))
+            // 게임
             BottomItem(
                 modifier = Modifier.weight(1f),
                 title = "게임",
@@ -84,6 +100,11 @@ fun BottomCardContainer() {
                     Log.d(TAG, "BottomCardContainer: clicked")
                 }
             )
+        }
+    
+        // 수기 입력
+        if(openHandWritingDialog) {
+            HandWritingDialog(onDismiss = {openHandWritingDialog = false})
         }
     }
 }
@@ -98,10 +119,10 @@ fun BottomItem(
 ) {
     Box(
         modifier = modifier
-            .height(110.dp)
+            .height(120.dp)
             .clip(RoundedCornerShape(16.dp))
             .background(CardLightGray)
-            .padding(8.dp)
+            .padding(12.dp)
             .clickable(
                 onClick = action
             ),
@@ -116,7 +137,7 @@ fun BottomItem(
                     text = title,
                     style = pretendardBold14,
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(6.dp))
                 Text(
                     text = context,
                     style = pretendardLight10,

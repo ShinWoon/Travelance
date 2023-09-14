@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold12
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold20
 import com.moneyminions.presentation.theme.Gray
 import com.moneyminions.presentation.theme.PinkDarkest
@@ -53,30 +54,29 @@ fun MinionButtonSet(
         modifier = modifier,
     ) {
         Button(
-            modifier = modifier.weight(1f),
+            modifier = Modifier.weight(1f),
             onClick = { onClickLeft() },
             colors = ButtonDefaults.buttonColors(
                 containerColor = PinkDarkest,
                 contentColor = White,
             ),
             shape = RoundedCornerShape(8.dp),
-            elevation = ButtonDefaults.buttonElevation(4.dp),
         ) {
-            Text(text = contentLeft, style = CustomTextStyle.pretendardSemiBold16)
+            Text(text = contentLeft, style = pretendardBold12)
         }
 
         Spacer(modifier = Modifier.width(16.dp))
 
         Button(
-            modifier = modifier.weight(1f),
+            modifier = Modifier.weight(1f),
             onClick = { onClickRight() },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Gray,
                 contentColor = White,
             ),
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(8.dp),
         ) {
-            Text(text = contentRight, style = CustomTextStyle.pretendardSemiBold16)
+            Text(text = contentRight, style = pretendardBold12)
         }
     }
 }

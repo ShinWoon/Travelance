@@ -27,6 +27,7 @@ import com.moneyminions.presentation.screen.home.DotsIndicator
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.theme.PinkLightest
+import com.moneyminions.presentation.utils.MoneyUtils.makeCommaWon
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -34,6 +35,7 @@ fun UseMoneyPage(
     pagerState: PagerState,
     cardHeight: Dp,
     title: String,
+    money: Int,
 ) {
     Card(
         modifier = Modifier
@@ -64,7 +66,7 @@ fun UseMoneyPage(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 items(20) {
-                    UseMoneyItem()
+                    UseMoneyItem(money)
                 }
             }
             
@@ -85,7 +87,9 @@ fun UseMoneyPage(
 }
 
 @Composable
-fun UseMoneyItem() {
+fun UseMoneyItem(
+    money: Int
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -122,7 +126,7 @@ fun UseMoneyItem() {
             contentAlignment = Alignment.CenterStart,
         ) {
             Text(
-                text = "\u20A9 24,000" ,
+                text = makeCommaWon(money) ,
                 style = CustomTextStyle.pretendardBold16,
             )
         }
