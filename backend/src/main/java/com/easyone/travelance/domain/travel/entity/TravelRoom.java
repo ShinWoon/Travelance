@@ -1,13 +1,16 @@
 package com.easyone.travelance.domain.travel.entity;
 
+import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.travel.enumclass.roomType;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @Entity
 @Table(name="TravelRoom")
 public class TravelRoom {
@@ -27,12 +30,9 @@ public class TravelRoom {
     private int budget;
 
 
-//    @ManyToOne
-//    @JoinColumn(name="my_id")
-//    private Member member; //방 맴버들
-
-
-
+    @ManyToOne
+    @JoinColumn(name="my_id")
+    private Member member; //방 맴버들
 
     @Builder
     public TravelRoom() {
