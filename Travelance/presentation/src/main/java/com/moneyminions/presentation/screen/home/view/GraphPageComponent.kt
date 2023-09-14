@@ -81,18 +81,6 @@ fun GraphPage(
                 colors = CardDefaults.cardColors(CardLightGray),
             ) {
                 DonutGraph()
-
-//                Spacer(modifier = Modifier.height(16.dp))
-//
-//                Row(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .padding(horizontal = 16.dp),
-//                    horizontalArrangement = Arrangement.SpaceAround,
-//                ) {
-//                    MoneyAmountComponent(title = "사용 금액", money = "180,000원")
-//                    MoneyAmountComponent(title = "남은 금액", money = "120,000원")
-//                }
             }
             
             Row(
