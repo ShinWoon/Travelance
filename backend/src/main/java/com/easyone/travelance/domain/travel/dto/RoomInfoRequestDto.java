@@ -28,13 +28,12 @@ public class RoomInfoRequestDto {
         this.budget = budget;
     }
 
-    public TravelRoom toEntity(RoomType isDone, Member member) {
+    public TravelRoom toEntity(RoomType isDone) {
         return TravelRoom.builder()
                 .budget(budget)
                 .location(location)
                 .endDate(endDate)
                 .isDone(isDone)
-                .member(member)
                 .startDate(startDate)
                 .endDate(endDate)
                 .travelName(travelName)

@@ -1,6 +1,8 @@
 package com.easyone.travelance.domain.travel.controller;
 
 
+import com.easyone.travelance.domain.member.entity.Member;
+import com.easyone.travelance.domain.member.respository.MemberRepository;
 import com.easyone.travelance.domain.travel.dto.RoomAllResponseDto;
 import com.easyone.travelance.domain.travel.dto.RoomStaticResponseDto;
 import com.easyone.travelance.domain.travel.dto.RoomInfoRequestDto;
@@ -19,13 +21,19 @@ import java.util.List;
 public class TravelController {
 
     private final TravelService travelService;
+    private final MemberRepository memberRepository;
 
     // 방 만들기
     @Operation(summary = "여행방 만들기", description = "요청 시, 채팅방을 만듭니다. " +
             "travelName: 여행이름, location: 여행장소, startDate:여행시작일, endDate: 여행종료일, budget: 예산")
     @PostMapping(value = "")
     public ResponseEntity<?> makeroom(@RequestBody RoomInfoRequestDto roomInfoRequestDto) {
-        travelService.save(roomInfoRequestDto);
+        /** 추후변경 */
+        Long memberid =1L;
+        Member member = memberRepository.findById(memberid)
+                .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 없습니다. id =" + memberid));
+
+        travelService.save(roomInfoRequestDto, member);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -41,7 +49,12 @@ public class TravelController {
             "travelName: 여행이름, location: 여행장소, startDate:여행시작일, endDate: 여행종료일, budget: 예산")
     @GetMapping(value = "")
     public ResponseEntity<List<RoomAllResponseDto>> findAllDesc() {
-        List<RoomAllResponseDto> responseDtos = travelService.findAllDesc();
+        /** 추후변경 */
+        Long memberid =1L;
+        Member member = memberRepository.findById(memberid)
+                .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 없습니다. id =" + memberid));
+
+        List<RoomAllResponseDto> responseDtos = travelService.findAllDesc(member);
         return new ResponseEntity<>(responseDtos, HttpStatus.OK);
     }
 
@@ -50,7 +63,12 @@ public class TravelController {
     @Operation(summary = "특정 여행방 조회하기", description = "요청 시, 채팅방을 조회합니다. ")
     @GetMapping(value = "/{roomId}")
     public ResponseEntity<RoomStaticResponseDto> findById(@PathVariable Long roomId) {
-        RoomStaticResponseDto responseDto=  travelService.findById(roomId);
+        /** 추후변경 */
+        Long memberid =1L;
+        Member member = memberRepository.findById(memberid)
+                .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 없습니다. id =" + memberid));
+
+        RoomStaticResponseDto responseDto=  travelService.findById(roomId, member);
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
 
@@ -58,7 +76,12 @@ public class TravelController {
     @Operation(summary = "여행방 수정", description = "요청 시, 채팅방 정보를 수정할 수 있습니다. ")
     @PatchMapping(value = "/{roomId}")
     public ResponseEntity<Void> updateRoom(@PathVariable Long roomId, @RequestBody RoomInfoRequestDto roomInfoRequestDto) {
-        travelService.updateRoom(roomInfoRequestDto, roomId);
+        /** 추후변경 */
+        Long memberid =1L;
+        Member member = memberRepository.findById(memberid)
+                .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 없습니다. id =" + memberid));
+
+        travelService.updateRoom(roomInfoRequestDto, roomId, member);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -66,11 +89,20 @@ public class TravelController {
     @Operation(summary = "여행방 삭제", description = "요청 시, 채팅방 정보를 삭제할 수 있습니다. ")
     @DeleteMapping(value = "/{roomId}")
     public ResponseEntity<Void> deleteRoom(@PathVariable Long roomId) {
-        travelService.delete(roomId);
+        /** 추후변경 */
+        Long memberid =1L;
+        Member member = memberRepository.findById(memberid)
+                .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 없습니다. id =" + memberid));
+
+        travelService.delete(roomId, member);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    //여행 공지사항 등록
 
+
+
+    //여행 맵 표시
 
 
 

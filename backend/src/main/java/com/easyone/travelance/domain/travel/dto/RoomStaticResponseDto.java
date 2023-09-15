@@ -23,7 +23,7 @@ public class RoomStaticResponseDto {
 
 
     @Builder
-    public RoomStaticResponseDto(TravelRoom travelRoom, Member member, Long percent, Long UseTotal, Long rest, List<PaymentResponseDto> everyuse,  List<PaymentResponseDto> myuse) {
+    public RoomStaticResponseDto(TravelRoom travelRoom, Long percent, Long UseTotal, Long rest, List<PaymentResponseDto> everyuse,  List<PaymentResponseDto> myuse) {
         this.travelName = travelRoom.getTravelName();
         this.roomId = travelRoom.getId();
         this.budget = travelRoom.getBudget(); //예산
@@ -32,7 +32,6 @@ public class RoomStaticResponseDto {
         this.rest= rest;
         this.everyuse=everyuse;
         this.myuse=myuse;
-        this.memberId=member.getId(); //내 정보
     }
 
 }

@@ -33,9 +33,8 @@ public class TravelRoom {
 
     private Long budget;
 
-    @ManyToOne
-    @JoinColumn(name="my_id")
-    private Member member; //방 맴버들
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL,  orphanRemoval = true)
+    private List<TravelRoomMember> travelRoomMembers = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "consumption", cascade = CascadeType.ALL)
     private List<Payment> payments = new ArrayList<>();
@@ -45,17 +44,17 @@ public class TravelRoom {
     }
 
     @Builder
-    public TravelRoom(String travelName, Long id, String location, LocalDateTime startDate, LocalDateTime endDate, RoomType isDone, Long budget, Member member) {
+    public TravelRoom(String travelName, Long id, String location, LocalDateTime startDate, LocalDateTime endDate, RoomType isDone, Long budget) {
         this.travelName= travelName;
         this.id= id;
         this.budget= budget;
-        this.member=member;
         this.endDate=endDate;
         this.startDate= startDate;
         this.location=location;
         this.isDone=isDone;
     }
 
+    //여행방 수정
     public void update(RoomInfoRequestDto roomInfoRequestDto) {
         this.travelName= roomInfoRequestDto.getTravelName();
         this.location=roomInfoRequestDto.getLocation();
