@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+<<<<<<< HEAD
+      <module fileurl="file://$PROJECT_DIR$/.idea/S09P22D210.iml" filepath="$PROJECT_DIR$/.idea/S09P22D210.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/travelance.main.iml" filepath="$PROJECT_DIR$/.idea/modules/travelance.main.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/특화프로젝트.iml" filepath="$PROJECT_DIR$/.idea/특화프로젝트.iml" />
+>>>>>>> feature/B_Payment_HJ
+    </modules>
+  </component>
+</project>
