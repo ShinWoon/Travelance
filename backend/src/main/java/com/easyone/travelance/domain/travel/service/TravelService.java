@@ -40,7 +40,7 @@ public class TravelService {
     public List<RoomAllResponseDto> findAllDesc() {
         return travelRoomRepository.findAllOrderByIdDesc().stream()
                 .map(entity -> {
-                  Long totalPrice = travelPaymentService.TotalPriceTravelId(entity.getRoomNumber());
+                  Long totalPrice = travelPaymentService.TotalPriceTravelId(entity.getId());
                   return new RoomAllResponseDto(entity, totalPrice);
                 })
                 .collect(Collectors.toList());

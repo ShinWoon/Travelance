@@ -23,7 +23,7 @@ public class RoomAllResponseDto {
 
 
     public RoomAllResponseDto(TravelRoom entity, Long totalprice) {
-        this.roomId=entity.getRoomNumber();
+        this.roomId=entity.getId();
         this.travelName=entity.getTravelName();
         this.budget=entity.getBudget();
         this.endDate=entity.getEndDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));

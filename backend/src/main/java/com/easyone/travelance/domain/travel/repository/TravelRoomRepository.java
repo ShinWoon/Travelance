@@ -12,4 +12,7 @@ import java.util.List;
 public interface TravelRoomRepository extends JpaRepository<TravelRoom, Long> {
 
     List<TravelRoom> findAllOrderByIdDesc();
+
+
+
 }

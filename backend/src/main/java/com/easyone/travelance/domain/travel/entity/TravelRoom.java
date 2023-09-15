@@ -20,7 +20,7 @@ public class TravelRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="room_id")
-    private Long roomNumber;
+    private Long id;
 
     private String travelName;
     private String location;
@@ -44,9 +44,9 @@ public class TravelRoom {
     }
 
     @Builder
-    public TravelRoom(String travelName, Long roomNumber, String location, LocalDateTime startDate, LocalDateTime endDate, RoomType isDone, Long budget, Member member) {
+    public TravelRoom(String travelName, Long id, String location, LocalDateTime startDate, LocalDateTime endDate, RoomType isDone, Long budget, Member member) {
         this.travelName= travelName;
-        this.roomNumber= roomNumber;
+        this.id= id;
         this.budget= budget;
         this.member=member;
         this.endDate=endDate;
