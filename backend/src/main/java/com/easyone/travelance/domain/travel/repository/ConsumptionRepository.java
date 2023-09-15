@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ConsumptionRepository extends JpaRepository<Consumption, Integer> {
-    List<Consumption> findByRoomId(int roomId);
+public interface ConsumptionRepository extends JpaRepository<Consumption, Long> {
+    List<Consumption> findByRoomId(Long roomId);
 
 }

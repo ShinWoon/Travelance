@@ -41,14 +41,14 @@ public class TravelService {
     public List<RoomAllResponseDto> findAllDesc() {
         return travelRoomRepository.findAllOrderByIdDesc().stream()
                 .map(entity -> {
-                  int totalPrice = travelConsumptionService.TotalPriceTravelId(entity.getRoomNumber());
+                  Long totalPrice = travelConsumptionService.TotalPriceTravelId(entity.getRoomNumber());
                   return new RoomAllResponseDto(entity, totalPrice)
                 })
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public RoomStaticResponseDto findById(int roomId) {
+    public RoomStaticResponseDto findById(Long roomId) {
         //추후 변경
         Long memberid =1L;
         Member member = memberRepository.findById(memberid)
@@ -57,10 +57,10 @@ public class TravelService {
         TravelRoom travelRoom = travelRoomRepository.findById(roomId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
 
-        int budget = travelRoom.getBudget();
-        int UseTotal = travelConsumptionService.TotalPriceTravelId(roomId);
+        Long budget = travelRoom.getBudget();
+        Long UseTotal = travelConsumptionService.TotalPriceTravelId(roomId);
 
-        int budgetPer = UseTotal / budget;
+        Long budgetPer = UseTotal / budget;
 
 
 

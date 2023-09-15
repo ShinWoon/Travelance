@@ -19,7 +19,7 @@ public class TravelConsumptionService {
     private final ConsumptionRepository consumptionRepository;
 
     @Transactional(readOnly = true)
-    public List<ConsumptionResponseDto> findByTravelId(Member member, int roomId) {
+    public List<ConsumptionResponseDto> findByTravelId(Member member, Long roomId) {
         return consumptionRepository.findByRoomId(roomId).stream()
                 .map(consumption -> new ConsumptionResponseDto(consumption, member))
                 .collect(Collectors.toList());
@@ -27,10 +27,10 @@ public class TravelConsumptionService {
     }
 
     @Transactional(readOnly = true)
-    public int TotalPriceTravelId(int roomId) {
+    public Long TotalPriceTravelId(Long roomId) {
         List<Consumption> consumptions = consumptionRepository.findByRoomId(roomId);
-        int totalprice = consumptions.stream()
-                .mapToInt(Consumption::getPrice)
+        Long totalprice = consumptions.stream()
+                .mapToLong(Consumption::getPrice)
                 .sum();
         return totalprice;
     }

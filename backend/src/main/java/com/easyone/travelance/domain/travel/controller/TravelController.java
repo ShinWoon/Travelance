@@ -43,7 +43,7 @@ public class TravelController {
     //여행 방 조회
     @GetMapping(value = "/{roomId}")
     @Operation(summary = "특정 여행방 조회하기", description = "요청 시, 채팅방을 조회합니다. ")
-    public ResponseEntity<RoomStaticResponseDto> findById(@PathVariable int roomId) {
+    public ResponseEntity<RoomStaticResponseDto> findById(@PathVariable Long roomId) {
         RoomStaticResponseDto responseDto=  travelService.findById(roomId);
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }

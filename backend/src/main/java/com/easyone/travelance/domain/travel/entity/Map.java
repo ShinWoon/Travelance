@@ -10,12 +10,12 @@ public class Map {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     //가맹점 주소
     private String address;
 
     @ManyToOne
     @JoinColumn(name = "room_id")
-    private int roomId;
+    private Long roomId;
 }

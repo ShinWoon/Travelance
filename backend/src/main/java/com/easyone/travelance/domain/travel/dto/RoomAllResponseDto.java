@@ -11,19 +11,19 @@ import java.time.format.DateTimeFormatter;
 @Getter
 @NoArgsConstructor
 public class RoomAllResponseDto {
-    private int roomId;
+    private Long roomId;
     private String travelName;
     private String location;
     private String startDate;
     private String endDate;
 
     private RoomType isDone;
-    private int budget;
+    private Long budget;
     //현재 사용한 금액(총액)
-    private int use;
+    private Long use;
 
 
-    public RoomAllResponseDto(TravelRoom entity, int totalprice) {
+    public RoomAllResponseDto(TravelRoom entity, Long totalprice) {
         this.roomId=entity.getRoomNumber();
         this.travelName=entity.getTravelName();
         this.budget=entity.getBudget();

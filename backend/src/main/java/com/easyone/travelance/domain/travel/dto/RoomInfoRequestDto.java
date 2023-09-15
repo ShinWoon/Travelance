@@ -17,10 +17,10 @@ public class RoomInfoRequestDto {
     private String location;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private int budget;
+    private Long budget;
 
     @Builder
-    public RoomInfoRequestDto(String travelName, String location, LocalDateTime startDate, LocalDateTime endDate, int budget) {
+    public RoomInfoRequestDto(String travelName, String location, LocalDateTime startDate, LocalDateTime endDate, Long budget) {
         this.travelName = travelName;
         this.location= location;
         this.startDate=startDate;

@@ -16,7 +16,7 @@ public class Consumption {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int consumptionId;
+    private Long consumptionId;
 
     @ManyToOne
     @JoinColumn(name="member_id")
@@ -28,7 +28,7 @@ public class Consumption {
 
     private LocalDateTime tranDate;
 
-    private int price;
+    private Long price;
 
     private String content;
 
@@ -36,7 +36,7 @@ public class Consumption {
     private String address;
 
     @Builder
-    public Consumption(LocalDateTime transDate, int price, String content, String category, String address) {
+    public Consumption(LocalDateTime transDate, Long price, String content, String category, String address) {
         this.tranDate = transDate;
         this.price=price;
         this.content=content;

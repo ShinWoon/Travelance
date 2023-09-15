@@ -13,15 +13,15 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class RoomStaticResponseDto {
-    private int roomId;
+    private Long roomId;
     private Long memberId;
     private String travelName;
-    private int budget;
-    private int percent;
+    private Long budget;
+    private Long percent;
 
 
     @Builder
-    public RoomStaticResponseDto(TravelRoom travelRoom, Member member, int percent) {
+    public RoomStaticResponseDto(TravelRoom travelRoom, Member member, Long percent) {
         this.travelName = travelRoom.getTravelName();
         this.roomId = travelRoom.getRoomNumber();
         this.budget = travelRoom.getBudget(); //예산

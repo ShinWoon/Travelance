@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TravelRoomRepository extends JpaRepository<TravelRoom, Integer> {
+public interface TravelRoomRepository extends JpaRepository<TravelRoom, Long> {
 
     List<TravelRoom> findAllOrderByIdDesc();
 }

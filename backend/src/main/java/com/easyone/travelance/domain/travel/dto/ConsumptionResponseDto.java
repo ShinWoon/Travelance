@@ -10,8 +10,8 @@ import org.apache.kafka.common.protocol.types.Field;
 @Getter
 @NoArgsConstructor
 public class ConsumptionResponseDto {
-    private int consumptionId;
-    private int price;
+    private Long consumptionId;
+    private Long price;
     private String content;
     private String category;
     private String address;

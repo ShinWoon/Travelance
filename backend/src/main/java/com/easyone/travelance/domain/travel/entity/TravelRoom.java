@@ -19,7 +19,7 @@ public class TravelRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="room_id")
-    private int roomNumber;
+    private Long roomNumber;
 
     private String travelName;
     private String location;
@@ -29,7 +29,7 @@ public class TravelRoom {
     @Enumerated(EnumType.STRING)
     private RoomType isDone=RoomType.BEFORE;
 
-    private int budget;
+    private Long budget;
 
     @ManyToOne
     @JoinColumn(name="my_id")
@@ -43,7 +43,7 @@ public class TravelRoom {
     }
 
     @Builder
-    public TravelRoom(String travelName, int roomNumber, String location, LocalDateTime startDate, LocalDateTime endDate, RoomType isDone, int budget, Member member) {
+    public TravelRoom(String travelName, Long roomNumber, String location, LocalDateTime startDate, LocalDateTime endDate, RoomType isDone, Long budget, Member member) {
         this.travelName= travelName;
         this.roomNumber= roomNumber;
         this.budget= budget;
