@@ -2,6 +2,7 @@ package com.easyone.travelance.domain.travel.controller;
 
 
 import com.easyone.travelance.domain.travel.dto.RoomAllResponseDto;
+import com.easyone.travelance.domain.travel.dto.RoomStaticResponseDto;
 import com.easyone.travelance.domain.travel.dto.RoomInfoRequestDto;
 import com.easyone.travelance.domain.travel.service.TravelService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,14 +41,22 @@ public class TravelController {
     }
 
     //여행 방 조회
-    // 여행 방 수정
-    @PutMapping(value = "/{roomId}")
-    @Operation(summary = "여행방 만들기", description = "요청 시, 채팅방을 만듭니다. " +
-            "travelName: 여행이름, location: 여행장소, startDate:여행시작일, endDate: 여행종료일, budget: 예산")
-    public ResponseEntity<?> reroom(@RequestBody RoomInfoRequestDto roomInfoRequestDto) {
-        travelService.save(roomInfoRequestDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @GetMapping(value = "/{roomId}")
+    @Operation(summary = "특정 여행방 조회하기", description = "요청 시, 채팅방을 조회합니다. ")
+    public ResponseEntity<RoomStaticResponseDto> findById(@PathVariable int roomId) {
+        RoomStaticResponseDto responseDto=  travelService.findById(roomId);
+        return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
+
+
+    // 여행 방 수정
+//    @PutMapping(value = "/{roomId}")
+//    @Operation(summary = "여행방 만들기", description = "요청 시, 채팅방을 만듭니다. " +
+//            "travelName: 여행이름, location: 여행장소, startDate:여행시작일, endDate: 여행종료일, budget: 예산")
+//    public ResponseEntity<?> reroom(@RequestBody RoomInfoRequestDto roomInfoRequestDto) {
+//        travelService.save(roomInfoRequestDto);
+//        return new ResponseEntity<>(HttpStatus.CREATED);
+//    }
 
     // 여행 방 삭제
 

@@ -22,9 +22,9 @@ public class Consumption {
     @JoinColumn(name="member_id")
     private MemberAuth member; // 소비한 주체
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
-    private int travelId;
+    private TravelRoom travelRoom;
 
     private LocalDateTime tranDate;
 

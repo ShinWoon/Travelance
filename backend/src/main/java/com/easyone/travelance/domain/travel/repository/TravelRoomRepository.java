@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface TravelRoomRepository extends JpaRepository<TravelRoom, Integer> {
 
-    List<RoomAllResponseDto> findAllOrderByIdDesc();
+    List<TravelRoom> findAllOrderByIdDesc();
 }
