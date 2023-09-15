@@ -1,6 +1,10 @@
 package com.easyone.travelance.domain.member.entity;
 
+<<<<<<< HEAD
 import com.easyone.travelance.domain.card.entity.Card;
+=======
+import com.easyone.travelance.domain.travel.entity.TravelRoom;
+>>>>>>> feature/B_Payment_HJ
 import lombok.*;
 
 import javax.persistence.*;
@@ -44,5 +48,9 @@ public class Member {
     @OneToMany(mappedBy = "member")
     @Builder.Default
     private List<Card> cardList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    @Builder.Default
+    private List<TravelRoom> travelRoomList = new ArrayList<>();
 
 }
