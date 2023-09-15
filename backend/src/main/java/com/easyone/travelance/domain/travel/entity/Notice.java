@@ -10,7 +10,7 @@ public class Notice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long roomNumber;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "room_id")

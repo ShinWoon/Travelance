@@ -17,5 +17,5 @@ public class Map {
 
     @ManyToOne
     @JoinColumn(name = "room_id")
-    private Long roomId;
+    private TravelRoom roomId;
 }

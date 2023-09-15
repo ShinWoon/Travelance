@@ -1,6 +1,5 @@
 package com.easyone.travelance.domain.travel.dto;
 
-import com.easyone.travelance.domain.travel.entity.Consumption;
 import com.easyone.travelance.domain.travel.entity.TravelRoom;
 import com.easyone.travelance.domain.travel.enumclass.RoomType;
 import lombok.Getter;

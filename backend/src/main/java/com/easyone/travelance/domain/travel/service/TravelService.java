@@ -2,11 +2,10 @@ package com.easyone.travelance.domain.travel.service;
 
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.respository.MemberRepository;
-import com.easyone.travelance.domain.travel.dto.ConsumptionResponseDto;
+import com.easyone.travelance.domain.travel.dto.PaymentResponseDto;
 import com.easyone.travelance.domain.travel.dto.RoomAllResponseDto;
 import com.easyone.travelance.domain.travel.dto.RoomStaticResponseDto;
 import com.easyone.travelance.domain.travel.dto.RoomInfoRequestDto;
-import com.easyone.travelance.domain.travel.entity.Consumption;
 import com.easyone.travelance.domain.travel.entity.TravelRoom;
 import com.easyone.travelance.domain.travel.enumclass.RoomType;
 import com.easyone.travelance.domain.travel.repository.TravelRoomRepository;
@@ -22,7 +21,7 @@ import java.util.stream.Collectors;
 public class TravelService {
     private final TravelRoomRepository travelRoomRepository;
     private final MemberRepository memberRepository;
-    private final TravelConsumptionService travelConsumptionService;
+    private final TravelPaymentService travelPaymentService;
 
     //방만들기
     @Transactional
@@ -41,8 +40,8 @@ public class TravelService {
     public List<RoomAllResponseDto> findAllDesc() {
         return travelRoomRepository.findAllOrderByIdDesc().stream()
                 .map(entity -> {
-                  Long totalPrice = travelConsumptionService.TotalPriceTravelId(entity.getRoomNumber());
-                  return new RoomAllResponseDto(entity, totalPrice)
+                  Long totalPrice = travelPaymentService.TotalPriceTravelId(entity.getRoomNumber());
+                  return new RoomAllResponseDto(entity, totalPrice);
                 })
                 .collect(Collectors.toList());
     }
@@ -58,14 +57,21 @@ public class TravelService {
                 .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
 
         Long budget = travelRoom.getBudget();
-        Long UseTotal = travelConsumptionService.TotalPriceTravelId(roomId);
+        Long UseTotal = travelPaymentService.TotalPriceTravelId(roomId);
 
         Long budgetPer = UseTotal / budget;
+        Long rest = budget-UseTotal;
+
+        //전체 소비내역
+        List<PaymentResponseDto> everyUse = travelPaymentService.findByTravelId(member, roomId);
+
+        //내 소비내역
 
 
-
-        return new RoomStaticResponseDto(travelRoom, member, budgetPer);
+        return new RoomStaticResponseDto(travelRoom, member, budgetPer, UseTotal, rest);
     }
+
+
 
     //    @Transactional
     //    public ArticleDetailResponseDto findById(ArticleType type, Long memberId, Long articleId){

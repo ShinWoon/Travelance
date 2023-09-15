@@ -2,14 +2,13 @@ package com.easyone.travelance.domain.travel.dto;
 
 
 import com.easyone.travelance.domain.member.entity.Member;
-import com.easyone.travelance.domain.travel.entity.Consumption;
+import com.easyone.travelance.domain.payment.entity.Payment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.kafka.common.protocol.types.Field;
 
 @Getter
 @NoArgsConstructor
-public class ConsumptionResponseDto {
+public class PaymentResponseDto {
     private Long consumptionId;
     private Long price;
     private String content;
@@ -18,12 +17,12 @@ public class ConsumptionResponseDto {
     private Long memeberId;
     private String nickname;
 
-    public ConsumptionResponseDto(Consumption consumption, Member member) {
-        this.consumptionId = consumption.getConsumptionId();
-        this.price = consumption.getPrice();
-        this.address=consumption.getAddress();
-        this.category = consumption.getCategory();
-        this.content= consumption.getContent();
+    public PaymentResponseDto(Payment payment, Member member) {
+        this.consumptionId = payment.getId();
+        this.price = payment.getPaymentAmount();
+        this.address=payment.getStoreAddress();
+        this.category = payment.getStoreSector();
+        this.content= payment.getPaymentContent();
         this.memeberId = member.getId();
         this.nickname = member.getNickname();
     }

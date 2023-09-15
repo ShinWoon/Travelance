@@ -1,6 +1,7 @@
 package com.easyone.travelance.domain.travel.entity;
 
 import com.easyone.travelance.domain.member.entity.Member;
+import com.easyone.travelance.domain.payment.entity.Payment;
 import com.easyone.travelance.domain.travel.enumclass.RoomType;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,7 +37,7 @@ public class TravelRoom {
     private Member member; //방 맴버들
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "consumption", cascade = CascadeType.ALL)
-    private List<Consumption> consumptions = new ArrayList<>();
+    private List<Payment> payments = new ArrayList<>();
 
     public RoomType getIsDone() {
         return isDone;
