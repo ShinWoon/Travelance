@@ -27,7 +27,8 @@ public class TravelPaymentService {
 
     @Transactional(readOnly = true)
     public List<PaymentResponseDto> findByTravelIdAndMemberId(Member member, Long roomId) {
-        return paymentRepository.findByRoomId(roomId).stream()
+        Long memberId = member.getId();
+        return paymentRepository.findByRoomIdAndMemberId(roomId, memberId).stream()
                 .map(payment -> new PaymentResponseDto(payment, member))
                 .collect(Collectors.toList());
     }

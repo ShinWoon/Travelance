@@ -2,6 +2,7 @@ package com.easyone.travelance.domain.travel.entity;
 
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.payment.entity.Payment;
+import com.easyone.travelance.domain.travel.dto.RoomInfoRequestDto;
 import com.easyone.travelance.domain.travel.enumclass.RoomType;
 import lombok.Builder;
 import lombok.Getter;
@@ -55,4 +56,11 @@ public class TravelRoom {
         this.isDone=isDone;
     }
 
+    public void update(RoomInfoRequestDto roomInfoRequestDto) {
+        this.travelName= roomInfoRequestDto.getTravelName();
+        this.location=roomInfoRequestDto.getLocation();
+        this.startDate=roomInfoRequestDto.getStartDate();
+        this.endDate=roomInfoRequestDto.getEndDate();
+        this.budget= roomInfoRequestDto.getBudget();
+    }
 }

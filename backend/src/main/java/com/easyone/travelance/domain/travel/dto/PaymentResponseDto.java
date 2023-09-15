@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class PaymentResponseDto {
-    private Long consumptionId;
+    private Long paymentId;
     private Long price;
     private String content;
     private String category;
@@ -18,7 +18,7 @@ public class PaymentResponseDto {
     private String nickname;
 
     public PaymentResponseDto(Payment payment, Member member) {
-        this.consumptionId = payment.getId();
+        this.paymentId = payment.getId();
         this.price = payment.getPaymentAmount();
         this.address=payment.getStoreAddress();
         this.category = payment.getStoreSector();

@@ -26,7 +26,7 @@ public class TravelService {
     //방만들기
     @Transactional
     public void save(RoomInfoRequestDto roomInfoRequestDto) {
-        //추후 변경
+        /** 추후변경 */
         Long memberid =1L;
         Member member = memberRepository.findById(memberid)
                 .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 없습니다. id =" + memberid));
@@ -48,7 +48,7 @@ public class TravelService {
 
     @Transactional(readOnly = true)
     public RoomStaticResponseDto findById(Long roomId) {
-        //추후 변경
+        /** 추후변경 */
         Long memberid =1L;
         Member member = memberRepository.findById(memberid)
                 .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 없습니다. id =" + memberid));
@@ -59,30 +59,56 @@ public class TravelService {
         Long budget = travelRoom.getBudget();
         Long UseTotal = travelPaymentService.TotalPriceTravelId(roomId);
 
+        //예산 대비 사용 비율
         Long budgetPer = UseTotal / budget;
+        // 남는 금액
         Long rest = budget-UseTotal;
 
         //전체 소비내역
         List<PaymentResponseDto> everyUse = travelPaymentService.findByTravelId(member, roomId);
 
         //내 소비내역
+        List<PaymentResponseDto> myUse = travelPaymentService.findByTravelIdAndMemberId(member, roomId);
 
-
-        return new RoomStaticResponseDto(travelRoom, member, budgetPer, UseTotal, rest);
+        return new RoomStaticResponseDto(travelRoom, member, budgetPer, UseTotal, rest, everyUse, myUse);
     }
 
+    @Transactional
+    public void updateRoom(RoomInfoRequestDto roomInfoRequestDto, Long roomId) {
+        /** 추후변경 */
+        Long memberid =1L;
+        Member member = memberRepository.findById(memberid)
+                .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 없습니다. id =" + memberid));
 
+        TravelRoom travelRoom = travelRoomRepository.findById(roomId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
 
-    //    @Transactional
-    //    public ArticleDetailResponseDto findById(ArticleType type, Long memberId, Long articleId){
-    //        Member member = memberRepository.findById(memberId)
-    //                .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 없습니다. id =" + memberId));
-    //
-    //        Article article = articleRepository.findByIdAndType(articleId, type)
-    //                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id =" + articleId));
-    //        articleRepository.updateView(articleId);
-    //        List<ArticleCommentResponseDto> comments = articleCommentService.findByArticleId(member, articleId);
-    //        return new ArticleDetailResponseDto(article, member, comments);
-    //    }
+        /** 추후변경  참여자인 사람은 모두 수정할 수 있도록*/
+        if(member.equals(travelRoom.getMember())) {
+            travelRoom.update(roomInfoRequestDto);
+        }
+        else {
+//            throw new UserNotAuthorizedException("해당 멤버는 게시글 작성자가 아닙니다.");
+        }
 
+    }
+
+    @Transactional
+    public void delete(Long roomId) {
+        /** 추후변경 */
+        Long memberid =1L;
+        Member member = memberRepository.findById(memberid)
+                .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 없습니다. id =" + memberid));
+
+        TravelRoom travelRoom = travelRoomRepository.findById(roomId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
+
+        /** 추후변경  참여자인 사람은 모두 수정할 수 있도록*/
+        if(member.equals(travelRoom.getMember())) {
+            travelRoomRepository.delete(travelRoom);
+        }
+        else {
+//            throw new UserNotAuthorizedException("해당 멤버는 게시글 작성자가 아닙니다.");
+        }
+    }
 }
