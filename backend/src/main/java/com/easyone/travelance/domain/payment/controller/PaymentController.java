@@ -21,7 +21,8 @@ public class PaymentController {
     @PostMapping("/cash")
     @Operation(summary = "현금 사용내역 등록")
     public ResponseEntity<String> registerCash(RegisterCashRequestDto registerCashRequestDto){
-        return null;
+        String response = paymentService.registerCash(registerCashRequestDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/complete")

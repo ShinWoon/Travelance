@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Table(name = "")
+@Table(name = "payment")
 @Data
 @Entity
 @Builder
