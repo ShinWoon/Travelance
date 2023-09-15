@@ -2,6 +2,7 @@ package com.easyone.travelance.domain.payment.service;
 
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.respository.MemberRepository;
+import com.easyone.travelance.domain.payment.dto.CompleteCalculationRequestDto;
 import com.easyone.travelance.domain.payment.dto.RegisterCashRequestDto;
 import com.easyone.travelance.domain.payment.entity.Payment;
 import com.easyone.travelance.domain.payment.repository.PaymentRepository;
@@ -52,6 +53,11 @@ public class PaymentServiceImpl implements PaymentService{
         paymentRepository.save(payment);
 
         return "현금 결제내역 저장 성공";
+    }
+
+    @Override
+    public String completeCalculation(CompleteCalculationRequestDto completeCalculationRequestDto) {
+        return null;
     }
 
 
