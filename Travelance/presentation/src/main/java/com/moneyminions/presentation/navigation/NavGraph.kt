@@ -29,40 +29,40 @@ import com.moneyminions.presentation.screen.travelmap.travelMapScreen
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    startDestination: String
+    startDestination: String,
 ) {
     NavHost(
         navController = navController,
         startDestination = startDestination,
     ) {
         composable(
-            route = Screen.Example.route
-        ){
+            route = Screen.Example.route,
+        ) {
             ExampleScreen(navController = navController)
         }
         composable(
-            route = Screen.Home.route
-        ){
+            route = Screen.Home.route,
+        ) {
             HomeScreen(navController = navController)
         }
         composable(
-            route = Screen.TravelList.route
-        ){
+            route = Screen.TravelList.route,
+        ) {
             TravelListScreen(navController = navController)
         }
         composable(
-            route = Screen.CreateTravel.route
-        ){
+            route = Screen.CreateTravel.route,
+        ) {
             CreateTravelScreen(navController = navController)
         }
         composable(
-            route = Screen.MyPage.route
-        ){
+            route = Screen.MyPage.route,
+        ) {
             MyPageScreeen(navController = navController)
         }
         composable(
-            route = Screen.Setting.route
-        ){
+            route = Screen.Setting.route,
+        ) {
             SettingScreen(navController = navController)
         }
         composable(

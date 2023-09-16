@@ -16,14 +16,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold20
+import com.moneyminions.presentation.navigation.Screen
+import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.CardLightGray
 
 @Composable
-fun TopComponent() {
+fun TopComponent(navController: NavController) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                navController.navigate(Screen.TravelDetail.route)
+            },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(CardLightGray),
     ) {
@@ -38,16 +45,11 @@ fun TopComponent() {
                 text = "여행 이름",
                 style = pretendardBold20,
             )
-            
-            IconButton(
+            Icon(
                 modifier = Modifier.size(24.dp),
-                onClick = { }, // 상세 정보 페이지로 이동
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_right_arrow),
-                    contentDescription = "move detail",
-                )
-            }
+                painter = painterResource(id = R.drawable.ic_right_arrow),
+                contentDescription = "move detail",
+            )
         }
     }
 }

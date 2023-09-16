@@ -45,7 +45,7 @@ fun FriendComponent() {
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             items(10) {
-                MinionProfile()
+                MinionProfile(48.dp)
             }
         }
     }

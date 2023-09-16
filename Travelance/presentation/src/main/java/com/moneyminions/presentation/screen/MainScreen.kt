@@ -1,9 +1,7 @@
 package com.moneyminions.presentation.screen
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -51,8 +49,8 @@ fun MainScreen(
     }
 }
 
-fun isBottomNavItem(route: String): Boolean{
-    return when(route){
+fun isBottomNavItem(route: String): Boolean {
+    return when (route) {
         BottomNavItem.Home.route, BottomNavItem.TravelList.route, BottomNavItem.MyPage.route -> true
         else -> false
     }
@@ -64,7 +62,7 @@ fun MainBottomNavigationBar(navController: NavHostController) {
     val bottomNavItems = listOf(
         BottomNavItem.TravelList,
         BottomNavItem.Home,
-        BottomNavItem.MyPage
+        BottomNavItem.MyPage,
     )
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.primary,

@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -42,18 +43,17 @@ fun Home(navController: NavHostController) {
     // Pager State
     val pagerState = rememberPagerState()
     val scrollableState = rememberScrollState()
-    
+
     // Main Card Height
     val cardHeight = 440.dp
-    
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(scrollableState)
             .padding(16.dp, 16.dp, 16.dp, 16.dp),
     ) {
-        
-        TopComponent()
+        TopComponent(navController)
 
         Spacer(modifier = Modifier.height(8.dp))
 

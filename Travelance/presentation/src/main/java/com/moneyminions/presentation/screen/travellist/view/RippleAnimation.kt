@@ -25,6 +25,7 @@ import kotlinx.coroutines.delay
 fun RippleLoadingAnimation(
     circleColor: Color = PinkDarkest,
     animationDelay: Int = 1500,
+    modifier: Modifier,
 ) {
 // 3 circles
     val circles = listOf(
@@ -57,7 +58,7 @@ fun RippleLoadingAnimation(
 
 // outer circle
     Box(
-        modifier = Modifier
+        modifier = modifier
             .size(24.dp)
             .background(color = Color.Transparent),
         contentAlignment = Alignment.Center,
@@ -65,7 +66,7 @@ fun RippleLoadingAnimation(
         // animating circles
         circles.forEachIndexed { index, animatable ->
             Box(
-                modifier = Modifier
+                modifier = modifier
                     .scale(scale = animatable.value)
                     .size(size = 16.dp)
                     .clip(shape = CircleShape)
