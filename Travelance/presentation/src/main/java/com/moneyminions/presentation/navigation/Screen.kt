@@ -69,4 +69,8 @@ sealed class Screen(val name: String, val route: String) {
         name = "WordGame",
         route = "word_game_screen"
     )
+    object Login: Screen(
+        name = "Login",
+        route = "login_screen"
+    )
 }

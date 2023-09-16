@@ -25,7 +25,8 @@ import com.moneyminions.presentation.navigation.BottomNavItem
 import com.moneyminions.presentation.navigation.NavGraph
 import com.moneyminions.presentation.navigation.Screen
 
-var startDestination: String = Screen.Home.route //나중에 viewModel로 빼야함
+//var startDestination: String = Screen.Home.route //나중에 viewModel로 빼야함
+var startDestination: String = Screen.Login.route //나중에 viewModel로 빼야함
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
