@@ -25,8 +25,52 @@ sealed class Screen(val name: String, val route: String) {
         name = "Setting",
         route = "setting_screen"
     )
-    object TravelDetail: Screen(
-        name = "TravelDetail",
-        route = "travel_detail_screen"
+    object Announcement: Screen(
+        name = "Announcement",
+        route = "Announcement_screen"
+    )
+    object EditUser: Screen(
+        name = "EditUser",
+        route = "edit_user_screen"
+    )
+    object AccountAuthentication: Screen(
+        name = "AccountAuthentication",
+        route = "account_authenthication_screen"
+    )
+    object AccountList: Screen(
+        name = "AccountList",
+        route = "account_list_screen"
+    )
+    object CardList: Screen(
+        name = "CardList",
+        route = "card_list_screen"
+    )
+    object TravelMap: Screen(
+        name = "TravelMap",
+        route = "travel_map_screen"
+    )
+    object GameList: Screen(
+        name = "GameList",
+        route = "game_List_screen"
+    )
+    object CardGame: Screen(
+        name = "CardGame",
+        route = "card_game_screen"
+    )
+    object BottleGame: Screen(
+        name = "BottleGame",
+        route = "bottle_game_screen"
+    )
+    object TeamBuildingGame: Screen(
+        name = "TeamBuildingGame",
+        route = "team_building_game_screen"
+    )
+    object WordGame: Screen(
+        name = "WordGame",
+        route = "word_game_screen"
+    )
+    object Login: Screen(
+        name = "Login",
+        route = "login_screen"
     )
 }

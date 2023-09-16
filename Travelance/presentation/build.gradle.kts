@@ -107,4 +107,8 @@ dependencies {
     // https://mvnrepository.com/artifact/androidx.viewpager2/viewpager2
     implementation("androidx.viewpager2:viewpager2:1.0.0")
 
+
+    //kakao
+    implementation("com.kakao.sdk:v2-all:2.14.0")
+
 }

@@ -18,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -38,12 +37,6 @@ fun HomeScreen(
     Home(navController)
 }
 
-@Preview(showBackground = true)
-@Composable
-fun HomePreview() {
-    Home(rememberNavController())
-}
-
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun Home(navController: NavHostController) {
@@ -58,7 +51,7 @@ fun Home(navController: NavHostController) {
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(scrollableState)
-            .padding(16.dp, 16.dp, 16.dp, 0.dp),
+            .padding(16.dp, 16.dp, 16.dp, 16.dp),
     ) {
         TopComponent(navController)
 
@@ -72,8 +65,18 @@ fun Home(navController: NavHostController) {
         ) { page ->
             when (page) {
                 0 -> GraphPage(pagerState, cardHeight)
-                1 -> UseMoneyPage(pagerState, cardHeight, title = "전체 내역") // todo 1, 2 페이지 변경 필요
-                2 -> UseMoneyPage(pagerState, cardHeight, title = "나의 전체 내역")
+                1 -> UseMoneyPage(
+                    pagerState,
+                    cardHeight,
+                    title = "전체 내역",
+                    money = 24000
+                )
+                2 -> UseMoneyPage(
+                    pagerState,
+                    cardHeight,
+                    title = "나의 전체 내역",
+                    money = 24000
+                )
             }
         }
 
@@ -83,7 +86,7 @@ fun Home(navController: NavHostController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        BottomCardContainer()
+        BottomCardContainer(navController)
     }
 }
 

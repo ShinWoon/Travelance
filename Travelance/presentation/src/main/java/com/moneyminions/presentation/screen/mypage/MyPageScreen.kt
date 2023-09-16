@@ -1,10 +1,9 @@
 package com.moneyminions.presentation.screen.mypage
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.gestures.animateScrollBy
-import androidx.compose.foundation.gestures.detectVerticalDragGestures
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,62 +18,50 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.toSize
+import androidx.compose.ui.unit.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import androidx.viewpager2.widget.ViewPager2
-import coil.compose.rememberAsyncImagePainter
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CardFrame
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.travellist.util.clickable
-import com.moneyminions.presentation.theme.PinkDarkest
-import com.moneyminions.presentation.theme.PinkLightest
+import com.moneyminions.presentation.theme.Gray
 import com.moneyminions.presentation.viewmodel.mypage.MyPageViewModel
-import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
+private const val TAG = "MyPageScreen D210"
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MyPageScreeen(
     navController: NavHostController,
     myPageViewModel: MyPageViewModel = hiltViewModel()
 ){
-//    val pagerState = rememberPagerState(pageCount = {
-//        myPageViewModel.cardList.size
-//    })
-
-    var scrollState by remember { mutableStateOf(0f) }
-    var selectedItem by remember { mutableStateOf(0) }
+    val pagerState = rememberPagerState(pageCount = {
+        myPageViewModel.cardList.size
+    })
+    var selectedIdx by remember { mutableStateOf(0) }
 
     Column(
         modifier = Modifier
@@ -95,7 +82,8 @@ fun MyPageScreeen(
             Image(
                 painter = painterResource(id = R.drawable.ic_setting),
                 contentDescription = "setting",
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier
+                    .size(30.dp)
                     .clickable {
                         navController.navigate(Screen.Setting.route)
                     }
@@ -107,38 +95,32 @@ fun MyPageScreeen(
             style = CustomTextStyle.pretendardSemiBold12
         )
         Spacer(modifier = Modifier.size(16.dp))
-        LazyRow(
-            modifier = Modifier.height(200.dp)
-        ){
-            items(myPageViewModel.cardList){
+        HorizontalPager(
+            state = pagerState,
+            pageSize = PageSize.Fixed(
+                LocalConfiguration.current.screenWidthDp.dp * 0.7f //총 화면의 70프로를 고정
+            ),
+            pageSpacing = 16.dp,
+            contentPadding = PaddingValues(horizontal = 44.dp) //가운데 정렬
+        ) { idx ->
+            val card = myPageViewModel.cardList[idx]
+            Card(
+
+            ) {
+                // Card content
                 CardFrame(
-                    name = it.name,
-                    number = it.number,
-                    idx = it.idx,
-                    company = it.company,
-                    logo = it.logo
+                    name = card.name,
+                    number = card.number,
+                    idx = card.idx,
+                    company = card.company,
+                    logo = card.logo
                 )
-                Spacer(modifier = Modifier.size(16.dp))
             }
         }
-//        HorizontalPager(
-//            state = pagerState,
-//            pageSpacing = 16.dp,
-//            beyondBoundsPageCount = 2,
-//            modifier = Modifier.fillMaxSize()
-//        ) { idx ->
-//            val card = myPageViewModel.cardList[idx]
-//            Box(modifier = Modifier.fillMaxSize()) {
-//                // Contains Image and Text composables
-//                CardFrame(
-//                    name = card.name,
-//                    number = card.number,
-//                    idx = card.idx,
-//                    company = card.company,
-//                    logo = card.logo
-//                )
-//            }
-//        }
+        LaunchedEffect(pagerState.currentPage) {
+            selectedIdx = pagerState.currentPage
+        }
+
     }
 }
 

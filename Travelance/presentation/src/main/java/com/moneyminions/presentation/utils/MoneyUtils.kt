@@ -10,6 +10,6 @@ object MoneyUtils {
 
     fun makeCommaWon(num: Int): String {
         var comma = DecimalFormat("#,###")
-        return "\\u20A9${comma.format(num)}"
+        return "\u20A9${comma.format(num)}"
     }
 }
