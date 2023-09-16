@@ -22,22 +22,32 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.theme.KakaoLabelColor
 import com.moneyminions.presentation.theme.KakaoYellow
 import com.moneyminions.presentation.theme.White
+import com.moneyminions.presentation.viewmodel.login.LoginViewModel
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier) {
+fun LoginScreen(
+    navController: NavHostController,
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier
+) {
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
     Scaffold(
         modifier = modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -61,9 +71,10 @@ fun LoginScreen(modifier: Modifier = Modifier) {
                     colors = ButtonDefaults.buttonColors(KakaoYellow),
                     shape = RoundedCornerShape(6.dp),
                     onClick = {
-                        coroutineScope.launch {
-                            snackbarHostState.showSnackbar("로그인 되었습니다.")
-                        }
+                        loginViewModel.singInKakao(context)
+//                        coroutineScope.launch {
+//                            snackbarHostState.showSnackbar("로그인 되었습니다.")
+//                        }
                     },
                 ) {
                     Box(
