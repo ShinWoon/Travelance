@@ -1,4 +1,4 @@
-package com.moneyminions.presentation.screen.home.view
+package com.moneyminions.presentation.screen.detail.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold14
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold18
-import com.moneyminions.presentation.common.CustomTextStyle.pretendardRegular10
+import com.moneyminions.presentation.common.CustomTextStyle.pretendardSemiBold12
 import com.moneyminions.presentation.theme.DarkGray
 import com.moneyminions.presentation.theme.DarkerGray
 import com.moneyminions.presentation.utils.MoneyUtils.makeComma
@@ -30,6 +30,7 @@ fun DetailTopInfoView(
     startDate: String,
     endDate: String,
     budget: Int,
+    type : String,
     modifier: Modifier,
 ) {
     Column(
@@ -38,13 +39,15 @@ fun DetailTopInfoView(
             .wrapContentHeight()
             .padding(16.dp, 28.dp, 16.dp, 16.dp),
     ) {
-        Text(
-            "수정",
-            color = DarkGray,
-            style = pretendardRegular10,
-            modifier = modifier.fillMaxWidth(),
-            textAlign = TextAlign.End,
-        )
+        if(type == "detail") {
+            Text(
+                "수정",
+                color = DarkGray,
+                style = pretendardSemiBold12,
+                modifier = modifier.fillMaxWidth(),
+                textAlign = TextAlign.End,
+            )
+        }
         Row(
             modifier = modifier
                 .fillMaxWidth()
@@ -108,6 +111,7 @@ fun DetailPreview() {
         startDate = "2023/09/05",
         endDate = "2023/09/07",
         budget = 30000,
+        type = "detail",
         modifier = Modifier,
     )
 }
