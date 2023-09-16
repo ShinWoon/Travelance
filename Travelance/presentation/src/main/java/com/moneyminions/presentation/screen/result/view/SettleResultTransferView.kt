@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Divider
+import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -39,10 +40,9 @@ fun SettleResultTransferView(modifier: Modifier, result: String) {
         }
         Spacer(modifier = modifier.height(4.dp))
         Divider(
-            color = DividerGray,
-            modifier = modifier
-                .fillMaxWidth()
-                .height(1.dp),
+            modifier = modifier,
+            thickness = DividerDefaults.Thickness,
+            color = DividerDefaults.color
         )
     }
 }

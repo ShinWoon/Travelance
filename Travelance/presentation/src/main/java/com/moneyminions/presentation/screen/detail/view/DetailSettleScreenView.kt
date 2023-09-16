@@ -2,6 +2,7 @@ package com.moneyminions.presentation.screen.detail.view
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -21,7 +22,7 @@ fun DetailSettleScreenView(modifier: Modifier) {
         Spacer(modifier = modifier.height(16.dp))
         MinionPrimaryButton(
             content = "정산요청",
-            modifier = modifier,
+            modifier = modifier.fillMaxWidth(),
         ) {
             // todo: 정산 요청 버튼
         }

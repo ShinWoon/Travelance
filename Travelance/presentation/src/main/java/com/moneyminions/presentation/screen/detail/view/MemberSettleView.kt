@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Divider
+import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardSemiBold12
 import com.moneyminions.presentation.common.MinionProfile
-import com.moneyminions.presentation.theme.DividerGray
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.theme.TextGray
 import com.moneyminions.presentation.utils.MoneyUtils
@@ -41,10 +41,9 @@ fun MemberSettleView(modifier: Modifier) {
         }
         Spacer(modifier = modifier.height(8.dp))
         Divider(
-            color = DividerGray,
-            modifier = modifier
-                .fillMaxWidth()
-                .height(1.dp),
+            modifier = modifier,
+            thickness = DividerDefaults.Thickness,
+            color = DividerDefaults.color
         )
     }
 }
