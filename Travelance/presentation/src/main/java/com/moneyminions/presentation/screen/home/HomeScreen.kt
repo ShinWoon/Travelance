@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -29,6 +30,7 @@ import com.moneyminions.presentation.screen.home.view.FriendComponent
 import com.moneyminions.presentation.screen.home.view.GraphPage
 import com.moneyminions.presentation.screen.home.view.TopComponent
 import com.moneyminions.presentation.screen.home.view.UseMoneyPage
+import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 
 @Composable
 fun HomeScreen(
@@ -39,7 +41,10 @@ fun HomeScreen(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun Home(navController: NavHostController) {
+fun Home(
+    navController: NavHostController,
+    homeViewModel: HomeViewModel = hiltViewModel(),
+) {
     // Pager State
     val pagerState = rememberPagerState()
     val scrollableState = rememberScrollState()
@@ -53,10 +58,10 @@ fun Home(navController: NavHostController) {
             .verticalScroll(scrollableState)
             .padding(16.dp, 16.dp, 16.dp, 16.dp),
     ) {
-        TopComponent(navController)
-
+        TopComponent(homeViewModel)
+        
         Spacer(modifier = Modifier.height(8.dp))
-
+        
         // Pager
         HorizontalPager(
             modifier = Modifier.fillMaxWidth(),
@@ -79,13 +84,11 @@ fun Home(navController: NavHostController) {
                 )
             }
         }
-
+        
         Spacer(modifier = Modifier.height(16.dp))
-
         FriendComponent()
-
+        
         Spacer(modifier = Modifier.height(16.dp))
-
         BottomCardContainer(navController)
     }
 }
@@ -102,8 +105,8 @@ fun DotsIndicator(
         modifier = Modifier
             .wrapContentWidth()
             .wrapContentHeight(),
-
-    ) {
+        
+        ) {
         items(totalDots) { index ->
             if (index == selectedIndex) {
                 Box(
@@ -120,7 +123,7 @@ fun DotsIndicator(
                         .background(unSelectedColor),
                 )
             }
-
+            
             if (index != totalDots - 1) {
                 Spacer(modifier = Modifier.padding(horizontal = 2.dp))
             }
