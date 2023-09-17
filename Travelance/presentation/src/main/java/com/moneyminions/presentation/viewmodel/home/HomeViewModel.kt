@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import javax.inject.Inject
 
+private const val TAG = "HomeViewModel"
 class HomeViewModel @Inject constructor(
 
 ): ViewModel(){
@@ -13,4 +14,6 @@ class HomeViewModel @Inject constructor(
     fun setTravelStart(check: Boolean) {
         _isTravelStart.value = check
     }
+
+
 }
