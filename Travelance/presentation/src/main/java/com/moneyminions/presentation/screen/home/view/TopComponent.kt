@@ -23,8 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold20
+import com.moneyminions.presentation.navigation.Screen
+import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.viewmodel.home.HomeViewModel
@@ -76,16 +79,11 @@ fun TopLeftItem(
                 text = "여행 이름",
                 style = pretendardBold20,
             )
-            
-            IconButton(
+            Icon(
                 modifier = Modifier.size(24.dp),
-                onClick = { }, // 상세 정보 페이지로 이동
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_right_arrow),
-                    contentDescription = "move detail",
-                )
-            }
+                painter = painterResource(id = R.drawable.ic_right_arrow),
+                contentDescription = "move detail",
+            )
         }
     }
 }

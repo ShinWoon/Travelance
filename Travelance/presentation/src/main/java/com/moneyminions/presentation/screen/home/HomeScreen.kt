@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -47,10 +48,10 @@ fun Home(
     // Pager State
     val pagerState = rememberPagerState()
     val scrollableState = rememberScrollState()
-    
+
     // Main Card Height
     val cardHeight = 440.dp
-    
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
