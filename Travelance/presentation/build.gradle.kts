@@ -111,4 +111,7 @@ dependencies {
     //kakao
     implementation("com.kakao.sdk:v2-all:2.14.0")
 
+    //lottie
+    implementation("com.airbnb.android:lottie-compose:6.1.0")
+
 }
