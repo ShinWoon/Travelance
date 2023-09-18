@@ -28,16 +28,13 @@ public class TravelService {
 
     //방만들기
     @Transactional
-    public void save(RoomInfoRequestDto roomInfoRequestDto) {
+    public void save(RoomInfoRequestDto roomInfoRequestDto, Member member) {
         //방 만든 직전에는 사전정산 상태
-
         RoomType roomType = RoomType.BEFORE;
+        TravelRoom travelRoom = roomInfoRequestDto.toEntity(roomType);
+        TravelRoom savedTravelRoom = travelRoomRepository.save(travelRoom);
 
-
-        TravelRoom travelRoom =roomInfoRequestDto.toEntity(roomType);
         travelRoomRepository.save(roomInfoRequestDto.toEntity(roomType));
-        log.info(travelRoom.getTravelName());
-        log.info(roomInfoRequestDto.getTravelName());
     }
 
     @Transactional(readOnly = true)
@@ -59,6 +56,9 @@ public class TravelService {
         Long budget = travelRoom.getBudget();
         Long UseTotal = travelPaymentService.TotalPriceTravelId(roomId);
 
+        if(budget==0) {
+            throw new IllegalArgumentException("예산이 0입니다. 예산을 설정해주세요.");
+        }
         //예산 대비 사용 비율
         Long budgetPer = UseTotal / budget;
         // 남는 금액
@@ -78,8 +78,6 @@ public class TravelService {
 
         TravelRoom travelRoom = travelRoomRepository.findById(roomId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
-
-
 
         /** 추후변경  참여자인 사람은 모두 수정할 수 있도록*/
         if(travelRoomMemberRepository.existsByMember(member)) {

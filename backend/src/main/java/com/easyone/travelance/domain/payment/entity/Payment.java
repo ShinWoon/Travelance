@@ -27,7 +27,7 @@ public class Payment {
     private Member member; // 소비한 주체
 
     @ManyToOne
-    @JoinColumn(name = "room_id")
+    @JoinColumn(name = "travel_room_id")
     private TravelRoom travelRoom;
 
     private LocalDateTime paymentAt;

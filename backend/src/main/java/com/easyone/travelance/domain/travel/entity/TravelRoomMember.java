@@ -21,7 +21,7 @@ public class TravelRoomMember {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="room_id", nullable = false)
+    @JoinColumn(name="travel_room_id", nullable = false)
     private TravelRoom travelRoom;
 
     @Builder

@@ -16,6 +16,6 @@ public class Map {
     private String address;
 
     @ManyToOne
-    @JoinColumn(name = "room_id")
+    @JoinColumn(name = "travel_room_id")
     private TravelRoom travelRoom;
 }

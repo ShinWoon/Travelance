@@ -8,9 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public interface TravelRoomRepository extends JpaRepository<TravelRoom, Long> {
 
+public interface TravelRoomRepository extends JpaRepository<TravelRoom, Long> {
 
 
 }

@@ -13,7 +13,7 @@ public class Notice {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "room_id")
+    @JoinColumn(name = "travel_room_id")
     private TravelRoom travelRoom;
 
     private String title;

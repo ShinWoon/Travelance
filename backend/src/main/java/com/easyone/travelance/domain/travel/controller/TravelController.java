@@ -1,9 +1,7 @@
 package com.easyone.travelance.domain.travel.controller;
 
 
-import com.easyone.travelance.domain.member.dto.ProfileImageRequestDto;
 import com.easyone.travelance.domain.member.entity.Member;
-import com.easyone.travelance.domain.member.respository.MemberRepository;
 import com.easyone.travelance.domain.member.service.MemberService;
 import com.easyone.travelance.domain.travel.dto.*;
 import com.easyone.travelance.domain.travel.service.TravelService;
@@ -17,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -32,8 +31,9 @@ public class TravelController {
     @Operation(summary = "여행방 만들기", description = "요청 시, 채팅방을 만듭니다. " +
             "travelName: 여행이름, location: 여행장소, startDate:여행시작일, endDate: 여행종료일, budget: 예산")
     @PostMapping(value = "")
-    public ResponseEntity<?> MakeRoom(@RequestBody RoomInfoRequestDto roomInfoRequestDto) {
-        travelService.save(roomInfoRequestDto);
+    public ResponseEntity<?> MakeRoom(@MemberInfo MemberInfoDto memberInfo, @RequestBody RoomInfoRequestDto roomInfoRequestDto) {
+        Member member = memberService.findMemberByEmail(memberInfo.getEmail());
+        travelService.save(roomInfoRequestDto, member);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -49,21 +49,25 @@ public class TravelController {
 
 
     // 친구 초대 : 모바일에서 방과 유저정보를 주면, 방에 유저를 저장하고, 그 방에 있는 유저리스트를 전달
-    @Operation(summary = "여행방 친구들 초대하기", description = "요청 시, 채팅방에 친구들을 초대하고, 채팅방의 유저리스트를 전달합니다. ")
-    @PostMapping(value = "/{roomId}/addUser")
-    public ResponseEntity<List<RoomUserResponseDto>> AddUser(@MemberInfo MemberInfoDto memberInfo, @PathVariable Long roomId) {
-        Member member = memberService.findMemberByEmail(memberInfo.getEmail());
-
-        List<RoomUserResponseDto> roomUserResponseDto=travelService.adduser(roomId, member);
-        return new ResponseEntity<>(roomUserResponseDto, HttpStatus.OK);
-    }
+//    @Operation(summary = "여행방 친구들 초대하기", description = "요청 시, 채팅방에 친구들을 초대하고, 채팅방의 유저리스트를 전달합니다.")
+//    @PostMapping(value = "/{roomId}/addUser")
+//    public ResponseEntity<List<RoomUserResponseDto>> AddUser(@RequestBody List<RoomUserResponseDto> roomUserResponseDtoList, @PathVariable Long roomId) {
+//        List<Member> memberList=new ArrayList<>();
+//        for (RoomUserResponseDto roomuser : roomUserResponseDtoList) {
+//            Member member = memberService.findMemberByEmail(roomuser.getEmail());
+//            memberList.add(member);
+//        }
+//
+//        List<RoomUserResponseDto> roomUserResponseDto=travelService.adduser(roomId, memberList);
+//        return new ResponseEntity<>(roomUserResponseDto, HttpStatus.OK);
+//    }
 
 
     //여행방 전체 리스트
     @Operation(summary = "여행 전체 리스트 조회", description = "요청 시, 채팅방 전체리스트를 조회합니다. " +
             "travelName: 여행이름, location: 여행장소, startDate:여행시작일, endDate: 여행종료일, budget: 예산")
     @GetMapping(value = "")
-    public ResponseEntity<List<RoomAllResponseDto>> findAllDesc(@MemberInfo MemberInfoDto memberInfo) {
+    public ResponseEntity<List<RoomAllResponseDto>> findAllDesc() {
         List<RoomAllResponseDto> responseDtos = travelService.findAllDesc();
         return new ResponseEntity<>(responseDtos, HttpStatus.OK);
     }

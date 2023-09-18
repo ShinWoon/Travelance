@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor
-@Table(name="room")
+@Table(name="TravelRoom")
 public class TravelRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
