@@ -125,5 +125,10 @@ fun NavGraph(
         ){
             LoginScreen(navController = navController)
         }
+        composable(
+            route = Screen.SubHome.route
+        ){
+            HomeScreen(navController = navController)
+        }
     }
 } // End of setUpNavGraph

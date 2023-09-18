@@ -73,4 +73,8 @@ sealed class Screen(val name: String, val route: String) {
         name = "Login",
         route = "login_screen"
     )
+    object SubHome: Screen(
+        name = "SubHome",
+        route = "sub_home_screen"
+    )
 }
