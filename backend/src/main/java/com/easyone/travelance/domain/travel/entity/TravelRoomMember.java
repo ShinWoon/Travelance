@@ -3,12 +3,13 @@ package com.easyone.travelance.domain.travel.entity;
 import com.easyone.travelance.domain.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-
+@NoArgsConstructor
 public class TravelRoomMember {
 
     @Id
@@ -23,5 +24,10 @@ public class TravelRoomMember {
     @JoinColumn(name="room_id", nullable = false)
     private TravelRoom travelRoom;
 
+    @Builder
+    public TravelRoomMember(Member member, TravelRoom travelRoom) {
+        this.member=member;
+        this.travelRoom=travelRoom;
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.easyone.travelance.domain.member.entity;
 
+import com.easyone.travelance.domain.travel.entity.TravelRoom;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,4 +23,15 @@ public class Profile {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
     private Member member;
+
+    @OneToOne
+    @JoinColumn(name="travel_room_id")
+    private TravelRoom travelRoom;
+
+    @Builder
+    public Profile(Member member, TravelRoom travelRoom, String profileUrl) {
+        this.member=member;
+        this.travelRoom=travelRoom;
+        this.profileUrl=profileUrl;
+    }
 }

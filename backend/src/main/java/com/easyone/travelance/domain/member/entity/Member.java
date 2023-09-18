@@ -2,6 +2,7 @@ package com.easyone.travelance.domain.member.entity;
 
 import com.easyone.travelance.domain.card.entity.Card;
 import com.easyone.travelance.domain.travel.entity.TravelRoom;
+import com.easyone.travelance.domain.travel.entity.TravelRoomMember;
 import lombok.*;
 
 import javax.persistence.*;
@@ -46,8 +47,7 @@ public class Member {
     @Builder.Default
     private List<Card> cardList = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "room_id")
-    private TravelRoom travelRoom;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TravelRoomMember> travelRoomMember;
 
 }

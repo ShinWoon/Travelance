@@ -20,7 +20,7 @@ public class TravelPaymentService {
 
     @Transactional(readOnly = true)
     public List<PaymentResponseDto> findByTravelId(Member member, Long roomId) {
-        return paymentRepository.findByRoomId(roomId).stream()
+        return paymentRepository.findByTravelRoomId(roomId).stream()
                 .map(payment -> new PaymentResponseDto(payment, member))
                 .collect(Collectors.toList());
     }
@@ -28,14 +28,14 @@ public class TravelPaymentService {
     @Transactional(readOnly = true)
     public List<PaymentResponseDto> findByTravelIdAndMemberId(Member member, Long roomId) {
         Long memberId = member.getId();
-        return paymentRepository.findByRoomIdAndMemberId(roomId, memberId).stream()
+        return paymentRepository.findByTravelRoomIdAndMemberId(roomId, memberId).stream()
                 .map(payment -> new PaymentResponseDto(payment, member))
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public Long TotalPriceTravelId(Long roomId) {
-        List<Payment> payments = paymentRepository.findByRoomId(roomId);
+        List<Payment> payments = paymentRepository.findByTravelRoomId(roomId);
         Long totalprice = payments.stream()
                 .mapToLong(Payment::getPaymentAmount)
                 .sum();

@@ -1,11 +1,11 @@
 package com.easyone.travelance.domain.travel.service;
 
 import com.easyone.travelance.domain.member.entity.Member;
-import com.easyone.travelance.domain.travel.dto.PaymentResponseDto;
-import com.easyone.travelance.domain.travel.dto.RoomAllResponseDto;
-import com.easyone.travelance.domain.travel.dto.RoomStaticResponseDto;
-import com.easyone.travelance.domain.travel.dto.RoomInfoRequestDto;
+import com.easyone.travelance.domain.member.entity.Profile;
+import com.easyone.travelance.domain.member.respository.ProfileRepository;
+import com.easyone.travelance.domain.travel.dto.*;
 import com.easyone.travelance.domain.travel.entity.TravelRoom;
+import com.easyone.travelance.domain.travel.entity.TravelRoomMember;
 import com.easyone.travelance.domain.travel.enumclass.RoomType;
 import com.easyone.travelance.domain.travel.repository.TravelRoomMemberRepository;
 import com.easyone.travelance.domain.travel.repository.TravelRoomRepository;
@@ -22,6 +22,7 @@ public class TravelService {
     private final TravelRoomRepository travelRoomRepository;
     private final TravelRoomMemberRepository travelRoomMemberRepository;
     private final TravelPaymentService travelPaymentService;
+    private final ProfileRepository profileRepository;
 
     //방만들기
     @Transactional
@@ -33,7 +34,7 @@ public class TravelService {
 
     @Transactional(readOnly = true)
     public List<RoomAllResponseDto> findAllDesc(Member member) {
-        return travelRoomRepository.findAllOrderByIdDesc().stream()
+        return travelRoomRepository.findAll().stream()
                 .map(entity -> {
                   Long totalPrice = travelPaymentService.TotalPriceTravelId(entity.getId());
                   return new RoomAllResponseDto(entity, totalPrice);
@@ -76,9 +77,9 @@ public class TravelService {
         if(travelRoomMemberRepository.existsByMember(member)) {
             travelRoom.update(roomInfoRequestDto);
         }
-        else {
-//            throw new UserNotAuthorizedException("해당 멤버는 게시글 작성자가 아닙니다.");
-        }
+//        else {
+////            throw new UserNotAuthorizedException("해당 멤버는 게시글 작성자가 아닙니다.");
+//        }
 
     }
 
@@ -92,8 +93,45 @@ public class TravelService {
         if(travelRoomMemberRepository.existsByMember(member)) {
             travelRoomRepository.delete(travelRoom);
         }
-        else {
-//            throw new UserNotAuthorizedException("해당 멤버는 게시글 작성자가 아닙니다.");
+//        else {
+////            throw new UserNotAuthorizedException("해당 멤버는 게시글 작성자가 아닙니다.");
+//        }
+    }
+
+    public  List<RoomUserResponseDto> adduser(Long roomId, Member member) {
+        //유저를 travelroommember에 추가하고, 리스트를 반한한다.
+
+        TravelRoom travelRoom = travelRoomRepository.findById(roomId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
+
+        TravelRoomMember travelRoomMember = TravelRoomMember.builder()
+                        .travelRoom(travelRoom)
+                        .member(member)
+                        .build();
+        travelRoomMemberRepository.save(travelRoomMember);
+        Profile profile = Profile.builder()
+                            .member(member)
+                            .travelRoom(travelRoom).build();
+
+        return travelRoomMemberRepository.findAll().stream()
+                .map(entity -> {
+                    return new RoomUserResponseDto(member, profile);})
+                .collect(Collectors.toList());
+
+    }
+
+    public void setProfile(Long roomId, Member member, String profileUrl) {
+        TravelRoom travelRoom = travelRoomRepository.findById(roomId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
+
+        if(profileUrl!=null) {
+            //프로필 사진을 저장한다
+            Profile profile = Profile.builder()
+                            .travelRoom(travelRoom)
+                            .profileUrl(profileUrl)
+                            .member(member).build();
+
+            profileRepository.save(profile);
         }
     }
 }
