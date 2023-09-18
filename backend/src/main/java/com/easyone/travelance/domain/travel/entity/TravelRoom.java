@@ -36,7 +36,7 @@ public class TravelRoom {
     @JoinColumn(name="my_id")
     private Member member; //방 맴버들
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "consumption", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "travelRoom", cascade = CascadeType.ALL)
     private List<Payment> payments = new ArrayList<>();
 
     public RoomType getIsDone() {

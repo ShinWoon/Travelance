@@ -35,6 +35,12 @@ public class PaymentController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PostMapping("/transfer")
+    @Operation(summary = "계좌이체")
+    public ResponseEntity<String> trasferAccount(){
+        return null;
+    }
+
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(EntityNotFoundException e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

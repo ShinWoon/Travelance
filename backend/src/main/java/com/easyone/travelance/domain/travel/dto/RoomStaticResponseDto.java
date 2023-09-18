@@ -21,7 +21,7 @@ public class RoomStaticResponseDto {
     @Builder
     public RoomStaticResponseDto(TravelRoom travelRoom, Member member, Long percent, Long UseTotal, Long rest) {
         this.travelName = travelRoom.getTravelName();
-        this.roomId = travelRoom.getRoomNumber();
+        this.roomId = travelRoom.getId();
         this.budget = travelRoom.getBudget(); //예산
         this.percent = percent;
         this.UseTotal = UseTotal;
