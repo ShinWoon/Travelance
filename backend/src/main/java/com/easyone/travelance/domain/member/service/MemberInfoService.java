@@ -3,13 +3,11 @@ package com.easyone.travelance.domain.member.service;
 
 import com.easyone.travelance.domain.member.constant.Role;
 import com.easyone.travelance.domain.member.dto.MemberDto;
+import com.easyone.travelance.domain.member.dto.NicknameDto;
 import com.easyone.travelance.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,5 +26,13 @@ public class MemberInfoService {
                 .email(member.getEmail())
                 .role(member.getRole())
                 .build();
+    }
+
+    // 닉네임 업데이트
+    @Transactional
+    public NicknameDto updateNickname(Member member, String nickname){
+        member.editNickname(nickname);
+
+        return NicknameDto.of(member);
     }
 }

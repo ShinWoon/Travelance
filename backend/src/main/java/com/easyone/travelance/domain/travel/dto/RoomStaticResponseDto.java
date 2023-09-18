@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 public class RoomStaticResponseDto {
     private Long roomId;
-    private Long memberId;
     private String travelName;
     private Long budget;
     private Long percent; // 예산 대비 사용량 %

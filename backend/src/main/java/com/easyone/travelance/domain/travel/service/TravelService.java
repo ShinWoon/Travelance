@@ -10,6 +10,7 @@ import com.easyone.travelance.domain.travel.enumclass.RoomType;
 import com.easyone.travelance.domain.travel.repository.TravelRoomMemberRepository;
 import com.easyone.travelance.domain.travel.repository.TravelRoomRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class TravelService {
     private final TravelRoomRepository travelRoomRepository;
     private final TravelRoomMemberRepository travelRoomMemberRepository;
@@ -26,14 +28,20 @@ public class TravelService {
 
     //방만들기
     @Transactional
-    public void save(RoomInfoRequestDto roomInfoRequestDto, Member member) {
+    public void save(RoomInfoRequestDto roomInfoRequestDto) {
         //방 만든 직전에는 사전정산 상태
+
         RoomType roomType = RoomType.BEFORE;
-        TravelRoom room = travelRoomRepository.save(roomInfoRequestDto.toEntity(roomType));
+
+
+        TravelRoom travelRoom =roomInfoRequestDto.toEntity(roomType);
+        travelRoomRepository.save(roomInfoRequestDto.toEntity(roomType));
+        log.info(travelRoom.getTravelName());
+        log.info(roomInfoRequestDto.getTravelName());
     }
 
     @Transactional(readOnly = true)
-    public List<RoomAllResponseDto> findAllDesc(Member member) {
+    public List<RoomAllResponseDto> findAllDesc() {
         return travelRoomRepository.findAll().stream()
                 .map(entity -> {
                   Long totalPrice = travelPaymentService.TotalPriceTravelId(entity.getId());
