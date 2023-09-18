@@ -4,7 +4,7 @@ package com.easyone.travelance.api.login.service;
 import com.easyone.travelance.api.login.dto.OauthLoginDto;
 import com.easyone.travelance.domain.member.constant.SocialType;
 import com.easyone.travelance.domain.member.entity.Member;
-import com.easyone.travelance.domain.member.entity.MemberAuth;
+//import com.easyone.travelance.domain.member.entity.MemberAuth;
 import com.easyone.travelance.domain.member.service.MemberService;
 import com.easyone.travelance.extertnal.model.OauthAttributes;
 import com.easyone.travelance.extertnal.service.SocialLoginApiService;
@@ -51,8 +51,7 @@ public class OauthLoginService {
 
         // 토큰 생성
         jwtDto = tokenManager.createJwtDto(oauthMember.getEmail(), oauthMember.getRole());
-        MemberAuth existingMemberAuth = oauthMember.getMemberAuth();
-        existingMemberAuth.updateRefreshToken(jwtDto);
+        oauthMember.updateRefreshToken(jwtDto);
 
         return OauthLoginDto.Response.of(jwtDto, oauthMember.getRole());
     }

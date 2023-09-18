@@ -14,6 +14,13 @@ public class MemberDto {
     private String email;
     private String nickname;
 
+    @Builder
+    public MemberDto(String email, String nickname) {
+        this.email = email;
+        this.nickname = nickname;
+
+    }
+
 
     @Getter
     @Schema(description = "예시 DTO")

@@ -2,7 +2,6 @@ package com.easyone.travelance.api.logout.service;
 
 
 import com.easyone.travelance.domain.member.entity.Member;
-import com.easyone.travelance.domain.member.entity.MemberAuth;
 import com.easyone.travelance.domain.member.service.MemberService;
 import com.easyone.travelance.global.error.ErrorCode;
 import com.easyone.travelance.global.error.exception.AuthenticationException;
@@ -38,8 +37,8 @@ public class LogoutService {
         // 3. refresh token 만료 처리
         String email = (String) tokenClaims.get("email");
         Member member = memberService.findMemberByEmail(email);
-        MemberAuth exstingMember = member.getMemberAuth();
-        exstingMember.expireRefreshToken(LocalDateTime.now());
+        member.expireRefreshToken(LocalDateTime.now());
+
 
     }
 }

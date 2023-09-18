@@ -2,8 +2,8 @@ package com.easyone.travelance.domain.member.service;
 
 
 import com.easyone.travelance.domain.member.entity.Member;
-import com.easyone.travelance.domain.member.entity.MemberAuth;
-import com.easyone.travelance.domain.member.respository.MemberAuthRepository;
+//import com.easyone.travelance.domain.member.entity.MemberAuth;
+//import com.easyone.travelance.domain.member.respository.MemberAuthRepository;
 import com.easyone.travelance.domain.member.respository.MemberRepository;
 import com.easyone.travelance.global.error.ErrorCode;
 import com.easyone.travelance.global.error.exception.AuthenticationException;
@@ -23,7 +23,7 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final MemberAuthRepository memberAuthRepository;
+//    private final MemberAuthRepository memberAuthRepository;
 
     public Member registerMember(Member member) {
         validateDuplicateMember(member);
@@ -59,15 +59,13 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public Member findMemberByRefreshToken(String refreshToken) {
-        MemberAuth memberAuth = memberAuthRepository.findByRefreshToken(refreshToken)
+        Member member = memberRepository.findByRefreshToken(refreshToken)
                 .orElseThrow(() -> new AuthenticationException(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
-
-        LocalDateTime tokenExpirationTime = memberAuth.getTokenExpirationTime();
+        LocalDateTime tokenExpirationTime = member.getTokenExpirationTime();
         if(tokenExpirationTime.isBefore(LocalDateTime.now())) {
             throw new AuthenticationException(ErrorCode.REFRESH_TOKEN_EXPIRED);
         }
-
-        return memberAuth.getMember();
+        return member;
     }
 
     public Member findMemberByEmail(String email) {

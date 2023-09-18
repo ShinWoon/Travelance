@@ -19,7 +19,7 @@ public class MemberInfoService {
     
     // 추가정보 업데이트
     @Transactional
-    public MemberDto.Response updateAdditionalInfo(MemberDto.UpdateRequest request, String email) {
+    public MemberDto.Response updateAdditionalInfo(String email) {
         Member member = memberService.findMemberByEmail(email);
 
         member.updateRole(Role.MEMBER);
