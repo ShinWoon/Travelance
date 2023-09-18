@@ -212,4 +212,10 @@ object CustomTextStyle {
         fontSize = 20.sp,
         letterSpacing = 1.sp,
     )
+
+    val pretendardExtraBold64 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_extra_bold)),
+        fontSize = 64.sp,
+        letterSpacing = 2.sp,
+    )
 }
