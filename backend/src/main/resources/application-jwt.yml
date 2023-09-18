@@ -1,5 +1,5 @@
 jwt:
-  secretKey: "m3YsUperS3cr3tK3y!#"
+  secretKey: ENC(5gkoNklMBSd4eAujzr+i+haIuwMU/kZ7)
 
   access:
     expiration: 1800000 # 30? (1000L(ms -> s) * 60L(s -> m) * 30L
