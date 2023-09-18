@@ -86,5 +86,8 @@ public class Member {
         this.role = role;
     }
 
+    public void editNickname(String nickname){
+        this.nickname = nickname;
+    }
 
 }
