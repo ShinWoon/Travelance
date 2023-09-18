@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -86,7 +85,7 @@ fun Home(
         }
         
         Spacer(modifier = Modifier.height(16.dp))
-        FriendComponent()
+        FriendComponent(homeViewModel)
         
         Spacer(modifier = Modifier.height(16.dp))
         BottomCardContainer(navController)

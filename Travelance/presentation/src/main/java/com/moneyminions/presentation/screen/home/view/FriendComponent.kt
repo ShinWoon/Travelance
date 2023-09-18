@@ -11,12 +11,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.common.MinionProfile
+import com.moneyminions.presentation.screen.travellist.util.clickable
+import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 
+
+private const val TAG = "FriendComponent"
 @Composable
-fun FriendComponent() {
+fun FriendComponent(homeViewModel: HomeViewModel) {
+    var context = LocalContext.current
+    
     Column(
         modifier = Modifier.fillMaxWidth(),
     ) {
@@ -26,15 +33,21 @@ fun FriendComponent() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Text(text = "친구들", style = CustomTextStyle.pretendardBold16)
-            Text(text = "친구 추가", style = CustomTextStyle.pretendardLight12)
+            Text(
+                text = "친구들",
+                style = CustomTextStyle.pretendardBold16
+            )
+
+            Text(
+                text = "친구 추가",
+                style = CustomTextStyle.pretendardLight12,
+                modifier = Modifier.clickable {
+                    homeViewModel.sendKakaoLink(context)
+                }
+            )
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-
-        /**
-         * todo 사용자 정보로 처리해야함
-         */
 
         /**
          * todo 사용자 정보로 처리해야함
@@ -50,3 +63,5 @@ fun FriendComponent() {
         }
     }
 }
+
+
