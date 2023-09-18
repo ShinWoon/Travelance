@@ -21,7 +21,10 @@ class LoginViewModel @Inject constructor(
     val kakaoCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         when{
             error != null -> Log.e(TAG, "kakao login error 2 $error")
-            token != null -> Log.d(TAG, "kakao login success $token")
+            token != null -> {
+                Log.d(TAG, "kakao login success $token")
+                //여기서 이 TOKEN을 가지고 ACCESS, REFRESH TOKEN 얻는 API 호출해야 함.
+            }
         }
     }
 
