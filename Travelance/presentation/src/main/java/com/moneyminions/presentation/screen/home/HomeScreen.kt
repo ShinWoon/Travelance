@@ -57,10 +57,13 @@ fun Home(
             .verticalScroll(scrollableState)
             .padding(16.dp, 16.dp, 16.dp, 16.dp),
     ) {
-        TopComponent(homeViewModel)
-        
+        TopComponent(
+            homeViewModel = homeViewModel,
+            navController = navController,
+        )
+
         Spacer(modifier = Modifier.height(8.dp))
-        
+
         // Pager
         HorizontalPager(
             modifier = Modifier.fillMaxWidth(),
@@ -73,17 +76,18 @@ fun Home(
                     pagerState,
                     cardHeight,
                     title = "전체 내역",
-                    money = 24000
+                    money = 24000,
                 )
+
                 2 -> UseMoneyPage(
                     pagerState,
                     cardHeight,
                     title = "나의 전체 내역",
-                    money = 24000
+                    money = 24000,
                 )
             }
         }
-        
+
         Spacer(modifier = Modifier.height(16.dp))
         FriendComponent(homeViewModel)
         
@@ -104,8 +108,8 @@ fun DotsIndicator(
         modifier = Modifier
             .wrapContentWidth()
             .wrapContentHeight(),
-        
-        ) {
+
+    ) {
         items(totalDots) { index ->
             if (index == selectedIndex) {
                 Box(
@@ -122,7 +126,7 @@ fun DotsIndicator(
                         .background(unSelectedColor),
                 )
             }
-            
+
             if (index != totalDots - 1) {
                 Spacer(modifier = Modifier.padding(horizontal = 2.dp))
             }

@@ -30,7 +30,8 @@ import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 
 @Composable
 fun TopComponent(
-    homeViewModel: HomeViewModel
+    homeViewModel: HomeViewModel,
+    navController: NavController,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth().height(60.dp),
@@ -38,29 +39,33 @@ fun TopComponent(
         TopLeftItem(
             modifier = Modifier
                 .weight(4f)
-                .fillMaxHeight()
+                .fillMaxHeight(),
+            navController = navController,
         )
         Spacer(modifier = Modifier.width(4.dp))
-        
-        if(!homeViewModel.isTravelStart.value) {
+
+        if (!homeViewModel.isTravelStart.value) {
             TopRightItem(
                 modifier = Modifier
                     .weight(3f)
                     .fillMaxHeight(),
-                homeViewModel
+                homeViewModel,
             )
         }
-        
     }
 }
-
 
 @Composable
 fun TopLeftItem(
     modifier: Modifier = Modifier,
+    navController: NavController,
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable(
+            onClick = {
+                navController.navigate(Screen.TravelDetail.route)
+            },
+        ),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(CardLightGray),
     ) {
@@ -87,7 +92,7 @@ fun TopLeftItem(
 @Composable
 fun TopRightItem(
     modifier: Modifier = Modifier,
-    homeViewModel: HomeViewModel
+    homeViewModel: HomeViewModel,
 ) {
     Button(
         modifier = modifier,
@@ -102,7 +107,7 @@ fun TopRightItem(
     ) {
         Text(
             text = "여행 시작",
-            style = pretendardBold20
+            style = pretendardBold20,
         )
     }
 }
