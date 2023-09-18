@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -58,10 +57,13 @@ fun Home(
             .verticalScroll(scrollableState)
             .padding(16.dp, 16.dp, 16.dp, 16.dp),
     ) {
-        TopComponent(homeViewModel)
-        
+        TopComponent(
+            homeViewModel = homeViewModel,
+            navController = navController,
+        )
+
         Spacer(modifier = Modifier.height(8.dp))
-        
+
         // Pager
         HorizontalPager(
             modifier = Modifier.fillMaxWidth(),
@@ -74,19 +76,20 @@ fun Home(
                     pagerState,
                     cardHeight,
                     title = "전체 내역",
-                    money = 24000
+                    money = 24000,
                 )
+
                 2 -> UseMoneyPage(
                     pagerState,
                     cardHeight,
                     title = "나의 전체 내역",
-                    money = 24000
+                    money = 24000,
                 )
             }
         }
-        
+
         Spacer(modifier = Modifier.height(16.dp))
-        FriendComponent()
+        FriendComponent(homeViewModel)
         
         Spacer(modifier = Modifier.height(16.dp))
         BottomCardContainer(navController)
@@ -105,8 +108,8 @@ fun DotsIndicator(
         modifier = Modifier
             .wrapContentWidth()
             .wrapContentHeight(),
-        
-        ) {
+
+    ) {
         items(totalDots) { index ->
             if (index == selectedIndex) {
                 Box(
@@ -123,7 +126,7 @@ fun DotsIndicator(
                         .background(unSelectedColor),
                 )
             }
-            
+
             if (index != totalDots - 1) {
                 Spacer(modifier = Modifier.padding(horizontal = 2.dp))
             }
