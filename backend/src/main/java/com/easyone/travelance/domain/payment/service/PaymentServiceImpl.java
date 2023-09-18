@@ -4,14 +4,20 @@ import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.respository.MemberRepository;
 import com.easyone.travelance.domain.payment.dto.CompleteCalculationRequestDto;
 import com.easyone.travelance.domain.payment.dto.RegisterCashRequestDto;
+import com.easyone.travelance.domain.payment.dto.TransferAccountRequestDto;
+import com.easyone.travelance.domain.payment.dto.TransferRequestToBankDto;
 import com.easyone.travelance.domain.payment.entity.Payment;
 import com.easyone.travelance.domain.payment.repository.PaymentRepository;
 import com.easyone.travelance.domain.travel.entity.TravelRoom;
 import com.easyone.travelance.domain.travel.repository.TravelRoomRepository;
 import com.easyone.travelance.global.FCM.FirebaseCloudMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.BodyInserter;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
@@ -29,6 +35,8 @@ public class PaymentServiceImpl implements PaymentService{
     private PaymentRepository paymentRepository;
     @Autowired
     private FirebaseCloudMessageService firebaseCloudMessageService;
+    @Autowired
+    private WebClient webClient;
 
 //    @KafkaListener(topics = "topic name")
 //    public void receivePaymentAlert(PaymentAlertRequestDto paymentAlertRequestDto){
@@ -58,4 +66,26 @@ public class PaymentServiceImpl implements PaymentService{
         return null;
     }
 
+//    @Override
+//    public String transferAccount(TransferAccountRequestDto transferAccountRequestDto) {
+//        Optional<TravelRoom> existTravelRoom = travelRoomRepository.findById(transferAccountRequestDto.getRoomNumber());
+//        if (existTravelRoom.isEmpty()){
+//            throw new EntityNotFoundException("여행방이 존재하지 않습니다.");
+//        }
+//        String depositNumber =
+//
+//        TransferRequestToBankDto transferRequestToBankDto = new TransferRequestToBankDto();
+//        transferRequestToBankDto.setDepositNumber();
+//        transferRequestToBankDto.setWithdrawalNumber();
+//
+//
+//        ResponseEntity<String> result = webClient.post()
+//                .uri("/transfer")
+//                .header("ssafy_d210_bankserver")
+//                .body(BodyInserter.fromValue(transferRequestToBankDto))
+//                .retrieve()
+//                .toEntity(String.class)
+//                .block();
+//        return result.getBody();
+//    }
 }

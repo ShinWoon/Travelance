@@ -11,6 +11,4 @@ import java.util.List;
 @Repository
 public interface TravelRoomRepository extends JpaRepository<TravelRoom, Long> {
 
-
-
 }

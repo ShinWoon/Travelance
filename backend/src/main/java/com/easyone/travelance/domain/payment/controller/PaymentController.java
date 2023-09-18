@@ -2,6 +2,7 @@ package com.easyone.travelance.domain.payment.controller;
 
 import com.easyone.travelance.domain.payment.dto.CompleteCalculationRequestDto;
 import com.easyone.travelance.domain.payment.dto.RegisterCashRequestDto;
+import com.easyone.travelance.domain.payment.dto.TransferAccountRequestDto;
 import com.easyone.travelance.domain.payment.service.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -35,11 +36,12 @@ public class PaymentController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/transfer")
-    @Operation(summary = "계좌이체")
-    public ResponseEntity<String> trasferAccount(){
-        return null;
-    }
+//    @PostMapping("/transfer")
+//    @Operation(summary = "계좌이체")
+//    public ResponseEntity<String> transferAccount(TransferAccountRequestDto transferAccountRequestDto){
+//        String response = paymentService.transferAccount(transferAccountRequestDto);
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(EntityNotFoundException e){

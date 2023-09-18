@@ -13,6 +13,8 @@ public class CompleteCalculationRequestDto {
     private Long memberId;
     private List<PaymentWith> paymentWithList;
 
+    @Data
+    @NoArgsConstructor
     public static class PaymentWith{
         private LocalDateTime paymentAt;
         private Long paymentAmount;
