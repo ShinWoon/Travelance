@@ -1,6 +1,7 @@
 package com.easyone.travelance.domain.member.entity;
 
 import com.easyone.travelance.domain.card.entity.Card;
+import com.easyone.travelance.domain.member.constant.Role;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,6 +26,10 @@ public class Member {
 
     private String nickname;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
     // 멤버 인가와 1 대 1 관계
     @OneToOne
     @JoinColumn(name="member_auth_id")
@@ -44,5 +49,16 @@ public class Member {
     @OneToMany(mappedBy = "member")
     @Builder.Default
     private List<Card> cardList = new ArrayList<>();
+
+    @Builder
+    public Member(String email,String nickname,Role role){
+        this.email = email;
+        this.nickname = nickname;
+        this.role = role;
+    }
+
+    public void updateRole(Role role){
+        this.role = role;
+    }
 
 }
