@@ -24,6 +24,7 @@ import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.common.MinionPrimaryButton
 import com.moneyminions.presentation.common.TextFieldWithTitle
 import com.moneyminions.presentation.common.TopBar
+import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.travellist.view.Calendar
 import com.moneyminions.presentation.viewmodel.travellist.CreateTravelViewModel
 
@@ -123,7 +124,10 @@ fun CreateTravelScreen(
                 content = "생성",
                 modifier = Modifier.fillMaxWidth()
             ){
-                //생성 이벤트
+                // homeScreen으로 이동 (방 생성 stack pop)
+                navController.navigate(Screen.SubHome.route) {
+                    popUpTo(Screen.TravelList.route)
+                }
             }
         }
 

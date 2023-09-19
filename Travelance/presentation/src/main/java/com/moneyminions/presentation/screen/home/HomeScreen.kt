@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -28,6 +29,7 @@ import com.moneyminions.presentation.screen.home.view.BottomCardContainer
 import com.moneyminions.presentation.screen.home.view.FriendComponent
 import com.moneyminions.presentation.screen.home.view.GraphPage
 import com.moneyminions.presentation.screen.home.view.TopComponent
+import com.moneyminions.presentation.screen.home.view.TravelReadyComponent
 import com.moneyminions.presentation.screen.home.view.UseMoneyPage
 import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 
@@ -63,29 +65,14 @@ fun Home(
         )
 
         Spacer(modifier = Modifier.height(8.dp))
-
-        // Pager
-        HorizontalPager(
-            modifier = Modifier.fillMaxWidth(),
-            count = 3,
-            state = pagerState,
-        ) { page ->
-            when (page) {
-                0 -> GraphPage(pagerState, cardHeight)
-                1 -> UseMoneyPage(
-                    pagerState,
-                    cardHeight,
-                    title = "전체 내역",
-                    money = 24000,
-                )
-
-                2 -> UseMoneyPage(
-                    pagerState,
-                    cardHeight,
-                    title = "나의 전체 내역",
-                    money = 24000,
-                )
-            }
+        
+        if(homeViewModel.isTravelStart.value) { // 여행 시작
+            TravelStartPager(cardHeight)
+        } else { // 사전 정산 중
+            TravelReadyPager(
+                homeViewModel,
+                cardHeight
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -93,6 +80,99 @@ fun Home(
         
         Spacer(modifier = Modifier.height(16.dp))
         BottomCardContainer(navController)
+    }
+}
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun TravelReadyPager(
+    homeViewModel: HomeViewModel,
+    cardHeight: Dp
+) {
+    val pagerState = rememberPagerState()
+    
+    HorizontalPager(
+        modifier = Modifier.fillMaxWidth(),
+        count = 4,
+        state = pagerState,
+    ) { page ->
+        when (page) {
+            0 -> {
+                TravelReadyComponent(
+                    homeViewModel = homeViewModel,
+                    pagerState = pagerState,
+                    cardHeight = cardHeight,
+                    totalDot = 4
+                )
+            }
+            1 -> {
+                GraphPage(
+                    pagerState = pagerState,
+                    cardHeight = cardHeight,
+                    totalDot = 4
+                )
+            }
+            2 -> {
+                UseMoneyPage(
+                    pagerState = pagerState,
+                    cardHeight = cardHeight,
+                    title = "전체 내역",
+                    money = 24000,
+                    totalDot = 4
+                )
+            }
+            3 -> {
+                UseMoneyPage(
+                    pagerState = pagerState,
+                    cardHeight = cardHeight,
+                    title = "나의 전체 내역",
+                    money = 24000,
+                    totalDot = 4
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun TravelStartPager(
+    cardHeight: Dp
+) {
+    val pagerState = rememberPagerState()
+    
+    HorizontalPager(
+        modifier = Modifier.fillMaxWidth(),
+        count = 3,
+        state = pagerState,
+    ) { page ->
+        when (page) {
+            0 -> {
+                GraphPage(
+                    pagerState = pagerState,
+                    cardHeight = cardHeight,
+                    totalDot = 3
+                )
+            }
+            1 -> {
+                UseMoneyPage(
+                    pagerState = pagerState,
+                    cardHeight = cardHeight,
+                    title = "전체 내역",
+                    money = 24000,
+                    totalDot = 3
+                )
+            }
+            2 -> {
+                UseMoneyPage(
+                    pagerState = pagerState,
+                    cardHeight = cardHeight,
+                    title = "나의 전체 내역",
+                    money = 24000,
+                    totalDot = 3
+                )
+            }
+        }
     }
 }
 

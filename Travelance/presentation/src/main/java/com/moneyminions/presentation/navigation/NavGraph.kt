@@ -147,6 +147,11 @@ fun NavGraph(
             LoginScreen(navController = navController)
         }
         composable(
+            route = Screen.SubHome.route
+        ){
+            HomeScreen(navController = navController)
+        }
+        composable(
             route = Screen.TravelDetail.route,
         ) {
             DetailScreen(navController = navController)
