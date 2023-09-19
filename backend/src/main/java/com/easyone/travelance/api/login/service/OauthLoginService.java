@@ -56,6 +56,7 @@ public class OauthLoginService {
         return OauthLoginDto.Response.of(jwtDto, oauthMember.getRole());
     }
 
+
     private boolean shouldUpdateFirebaseToken(Member member, String firebaseToken) {
         // 항상 업데이트하도록 true를 반환합니다.
         return true;
