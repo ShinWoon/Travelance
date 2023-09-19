@@ -28,6 +28,7 @@ import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 @Composable
 fun TopComponent(
     homeViewModel: HomeViewModel,
+    navController: NavController
 ) {
     Row(
         modifier = Modifier
@@ -37,7 +38,8 @@ fun TopComponent(
         TopLeftItem(
             homeViewModel,
             modifier = Modifier
-                .fillMaxHeight()
+                .fillMaxHeight(),
+            navController
         )
     }
 }
@@ -45,7 +47,8 @@ fun TopComponent(
 @Composable
 fun TopLeftItem(
     homeViewModel: HomeViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController
 ) {
     Card(
         modifier = modifier.clickable(

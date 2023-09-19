@@ -42,7 +42,6 @@ class HomeViewModel @Inject constructor(
      *  카카오 링크 초대
      */
     fun sendKakaoLink(context: Context) { // todo 유저 객체 & 여행방 정보 받아서 전송해야함
-    
         /**
          * 템플릿 생성
          */
