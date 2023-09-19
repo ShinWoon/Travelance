@@ -1,6 +1,7 @@
 package com.easyone.travelance.domain.account.service;
 
 import com.easyone.travelance.domain.account.dto.AllAccountRequestDto;
+import com.easyone.travelance.domain.account.dto.OneRequestDto;
 import com.easyone.travelance.domain.account.dto.SelectedAccountRequestDto;
 import com.easyone.travelance.domain.account.entity.Account;
 import com.easyone.travelance.domain.account.respository.AccountRepository;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
@@ -38,6 +40,18 @@ public class AccountService {
 
     @Autowired
     private MainAccountRepository mainAccountRepository;
+
+    public Mono<Object> oneTransferMoney(String name, String bankName, String account){
+        return webClientBuilder.baseUrl("http://localhost:8081")
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .defaultHeader(authTokenHeaderName, authToken)
+                .build()
+                .post()
+                .uri("/bank/account/1request")
+                .bodyValue(new OneRequestDto(name, bankName, account)) // 요청 바디에 데이터를 설정합니다.
+                .retrieve()
+                .bodyToMono(Object.class); // 응답을 Mono<OneResponseDto> 형태로 받습니다.
+    }
 
     public Flux<Object> allAccount(String privateId) {
         return webClientBuilder.baseUrl("http://localhost:8081") // API 엔드포인트를 설정합니다.

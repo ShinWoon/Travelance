@@ -1,5 +1,6 @@
 package com.easyone.travelance.domain.account.controller;
 
+import com.easyone.travelance.domain.account.dto.OneRequestDto;
 import com.easyone.travelance.domain.account.dto.SelectedAccountRequestDto;
 import com.easyone.travelance.domain.account.service.AccountService;
 import com.easyone.travelance.domain.member.entity.MainAccount;
@@ -27,7 +28,21 @@ public class AccountController {
     private final MemberService memberService;
     private final AccountService accountService;
 
-    @Operation(summary = "전체계좌 조회", description = "나의 모든 계좌를 조회하는 메서드 입니다")
+    @Operation(summary = "1원이체 요청", description = "요청 시 사용자의 계좌로 1원 및 랜덤으로 생성된 6자리 숫자를 보냅니다." +
+            "name : 사용자이름, bankname: 은행명, account : 계좌번호")
+    @PostMapping(value = "/1request")
+    public Mono<ResponseEntity<Object>> oneTransferMoney(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody OneRequestDto oneRequestDto){
+        String name = oneRequestDto.getName();
+        String bankName = oneRequestDto.getBankName();
+        String account = oneRequestDto.getAccount();
+
+        return accountService.oneTransferMoney(name, bankName, account)
+                .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND)); // 만약 데이터가 없을 경우의 처리
+    }
+
+
+        @Operation(summary = "전체계좌 조회", description = "나의 모든 계좌를 조회하는 메서드 입니다")
     @PostMapping("/allaccount")
     public Mono<ResponseEntity<List<Object>>> allAccount(@MemberInfo MemberInfoDto memberInfoDto) {
         Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
