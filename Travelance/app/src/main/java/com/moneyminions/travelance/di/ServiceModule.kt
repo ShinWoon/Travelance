@@ -2,6 +2,9 @@ package com.moneyminions.travelance.di
 
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
+import com.moneyminions.data.datasource.local.PreferenceDataSource
+import com.moneyminions.data.interceptor.RequestInterceptor
+import com.moneyminions.data.interceptor.ResponseInterceptor
 import com.moneyminions.data.service.example.ExampleService
 import dagger.Module
 import dagger.Provides
@@ -26,10 +29,12 @@ object ServiceModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
+    fun provideOkHttpClient(preferenceDataSource: PreferenceDataSource): OkHttpClient = OkHttpClient.Builder()
         .readTimeout(5000, TimeUnit.MILLISECONDS)
         .connectTimeout(5000, TimeUnit.MILLISECONDS)
         .addInterceptor(HttpLoggingInterceptor())
+        .addInterceptor(ResponseInterceptor(preferenceDataSource))
+        .addInterceptor(RequestInterceptor(preferenceDataSource))
 //            .addNetworkInterceptor(XAccessTokenInterceptor()) // JWT 자동 헤더 전송
 //            .addInterceptor(AddCookiesInterceptor())  //쿠키 전송
 //            .addInterceptor(ReceivedCookiesInterceptor()) //쿠키 추출
@@ -41,6 +46,7 @@ object ServiceModule {
     @Singleton
     @Provides
     fun provideRetrofit(
+        preferenceDataSource: PreferenceDataSource,
         @Named("BASE_URL") baseUrl: String
     ): Retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
@@ -51,7 +57,7 @@ object ServiceModule {
                     .create()
             )
         )
-        .client(provideOkHttpClient())
+        .client(provideOkHttpClient(preferenceDataSource))
         .build()
 
     @Singleton
