@@ -111,9 +111,6 @@ dependencies {
     // kakao
     implementation("com.kakao.sdk:v2-all:2.14.0")
 
-    //lottie
-    implementation("com.airbnb.android:lottie-compose:6.1.0")
-
     // 네이버 지도 SDK
     implementation("com.naver.maps:map-sdk:3.17.0")
     implementation("io.github.fornewid:naver-map-compose:1.3.3")
@@ -121,5 +118,6 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.0.1")
     // Permission
     implementation("com.google.accompanist:accompanist-permissions:0.28.0")
-
+    // Lottie
+    implementation("com.airbnb.android:lottie-compose:6.1.0")
 }
