@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.compose.foundation.ScrollState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -23,6 +24,13 @@ private const val TAG = "HomeViewModel"
 class HomeViewModel @Inject constructor(
 
 ): ViewModel(){
+    // Home scroll state
+    private val _isScrollState = mutableStateOf(ScrollState(0))
+    val isScrollState: State<ScrollState> = _isScrollState
+    fun setScrollState(scrollState: ScrollState) {
+        _isScrollState.value = scrollState
+    }
+    
     // 유저가 프로필 정보를 등록했는지 유무 체크
     private val _isUserInfo = mutableStateOf(false)
     val isUserInfo: State<Boolean> = _isUserInfo

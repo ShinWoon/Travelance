@@ -158,7 +158,7 @@ fun DonutGraph() {
             val startAngle = 270f
             
             // 그라데이션
-            val brush = Brush.verticalGradient(listOf(PinkLightest, PinkDarkest))
+            val brush = Brush.verticalGradient(listOf(PinkDarkest, PinkLightest, PinkDarkest))
             
             // 내부 원
             drawCircle(

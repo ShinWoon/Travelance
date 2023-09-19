@@ -44,11 +44,14 @@ fun Home(
     navController: NavHostController,
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
-    val scrollableState = rememberScrollState()
-
+    var scrollableState = rememberScrollState()
+    
+//    homeViewModel.setScrollState(scrollableState)
+//    scrollableState = homeViewModel.isScrollState.value
+    
     // Main Card Height
     val cardHeight = 440.dp
-
+    
     Column(
         modifier = Modifier
             .fillMaxWidth()
