@@ -10,47 +10,18 @@ import com.moneyminions.domain.usecase.login.SignInKakaoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import com.kakao.sdk.user.UserApiClient
+import com.moneyminions.presentation.utils.KakaoLogin
 import javax.security.auth.callback.Callback
 
 private const val TAG = "LoginViewModel D210"
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val signInKakaoUseCase: SignInKakaoUseCase
+    private val signInKakaoUseCase: SignInKakaoUseCase,
+    private val kakaoLogin: KakaoLogin
 ): ViewModel() {
 
-    val kakaoCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-        when{
-            error != null -> Log.e(TAG, "kakao login error 2 $error")
-            token != null -> {
-                Log.d(TAG, "kakao login success $token")
-                //여기서 이 TOKEN을 가지고 ACCESS, REFRESH TOKEN 얻는 API 호출해야 함.
-            }
-        }
-    }
-
     fun singInKakao(context: Context) {
-        if(UserApiClient.instance.isKakaoTalkLoginAvailable(context)){
-            //카카오톡 설치 시
-            UserApiClient.instance.loginWithKakaoTalk(context){ token, error ->
-                if(error != null){
-                    Log.e(TAG, "kakao login error 1")
-                }
-                if(error is ClientError && error.reason == ClientErrorCause.Cancelled){
-                    return@loginWithKakaoTalk
-                }
-                UserApiClient.instance.loginWithKakaoAccount(
-                    context = context,
-                    callback = kakaoCallback
-                )
-            }
-        }else{
-            //미설치 시
-            UserApiClient.instance.loginWithKakaoAccount(
-                context = context,
-                callback = kakaoCallback
-            )
-        }
+        kakaoLogin.singInKakao(context)
     }
-
 
 }
