@@ -30,6 +30,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
@@ -39,6 +41,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold16
+import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold20
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardLight12
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardSemiBold16
 import com.moneyminions.presentation.screen.home.DotsIndicator
@@ -112,6 +115,9 @@ fun GraphPage(
 
 @Composable
 fun DonutGraph() {
+    
+    val brush = Brush.horizontalGradient(listOf(Color.Red, Color.Blue))
+    
     var animationProgress by remember { mutableStateOf(0f) }
     
     // 애니메이션을 정의합니다.
@@ -127,7 +133,7 @@ fun DonutGraph() {
     LaunchedEffect(key1 = true) {
         while (true) {
             animationProgress += 1f
-            if (animationProgress > 70f) { // xx%까지만 그린 후 애니메이션 중지
+            if (animationProgress >= 70f) { // xx%까지만 그린 후 애니메이션 중지
                 break
             }
             delay(30)
@@ -140,8 +146,9 @@ fun DonutGraph() {
             .height(graphSize.times(1.5f)),
         contentAlignment = Alignment.Center
     ) {
+        Text(text = " ${animationProgress}%", style = pretendardBold20)
         Canvas(
-            modifier = Modifier.size(graphSize)
+            modifier = Modifier.size(graphSize),
         ) {
             val donutRadius = 209f
             val strokeWidth = 80f
@@ -149,6 +156,9 @@ fun DonutGraph() {
             
             val sweepAngle = 360 * animationProgress / 100
             val startAngle = 270f
+            
+            // 그라데이션
+            val brush = Brush.verticalGradient(listOf(PinkDarkest, PinkLightest, PinkDarkest))
             
             // 내부 원
             drawCircle(
@@ -160,14 +170,15 @@ fun DonutGraph() {
             
             // 원형 그래프
             drawArc(
-                color = PinkDarkest,
+//                color = PinkDarkest,
+                brush = brush,
                 startAngle = startAngle,
                 sweepAngle = sweepAngle,
                 useCenter = false,
                 style = Stroke(
                     strokeWidth,
                     cap = StrokeCap.Round
-                )
+                ),
             )
         }
     }
