@@ -12,6 +12,10 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,6 +38,9 @@ fun TravelReadyComponent(
     cardHeight: Dp,
     totalDot: Int,
 ) {
+    // 여행시작 다이얼로그 State
+    var openTravelStartDialog by remember { mutableStateOf(false) }
+    
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -50,13 +57,17 @@ fun TravelReadyComponent(
                     .fillMaxWidth()
                     .weight(9f)
             ) {
-            
+                /**
+                 * 애니메이션 들어갈 곳
+                 */
             }
             
             StartButtonComponent(
                 Modifier,
-                homeViewModel,
-            )
+                homeViewModel
+            ){
+                openTravelStartDialog = true
+            }
             
             Box(
                 modifier = Modifier.weight(1f),
@@ -70,6 +81,14 @@ fun TravelReadyComponent(
                 )
             }
         }
+        
+        // 여행시작 확인 다이얼로그
+        if(openTravelStartDialog) {
+            TravelStartDialog(
+                homeViewModel = homeViewModel,
+                onDismiss = {openTravelStartDialog = false}
+            )
+        }
     }
 }
 
@@ -78,6 +97,7 @@ fun TravelReadyComponent(
 fun StartButtonComponent(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel,
+    action:() -> Unit
 ) {
     Box(modifier = modifier.padding(horizontal = 8.dp)) {
         Button(
@@ -87,9 +107,7 @@ fun StartButtonComponent(
                 containerColor = PinkDarkest,
                 contentColor = Color.White,
             ),
-            onClick = {
-                homeViewModel.setTravelStart(true)
-            },
+            onClick = action
         ) {
             Text(
                 text = "여행 시작",
