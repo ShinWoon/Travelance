@@ -43,16 +43,16 @@ fun HandWritingDialog(
                     text = "현금 결제 내역 입력",
                     style = pretendardBold20
                 )
-                
+            
                 Spacer(modifier = Modifier.height(4.dp))
-                
+            
                 Image(
                     painter = painterResource(id = R.drawable.ic_coins),
                     contentDescription = "main icon"
                 )
-                
+            
                 Spacer(modifier = Modifier.height(4.dp))
-                
+            
                 TextFieldWithTitle(
                     title = "사용내역",
                     hint = "사용 내역을 입력해 주세요.",
@@ -62,9 +62,9 @@ fun HandWritingDialog(
                     },
                     keyboardType = KeyboardType.Text
                 )
-                
+            
                 Spacer(modifier = Modifier.height(16.dp))
-                
+            
                 TextFieldWithTitle(
                     title = "금액",
                     hint = "금액을 입력해주세요.",
@@ -74,9 +74,9 @@ fun HandWritingDialog(
                     },
                     keyboardType = KeyboardType.Number
                 )
-    
+            
                 Spacer(modifier = Modifier.height(16.dp))
-                
+            
                 MinionButtonSet(
                     modifier = Modifier.fillMaxWidth(),
                     contentLeft = "입력",
@@ -90,8 +90,7 @@ fun HandWritingDialog(
                     onClickRight = onDismiss
                 )
             }
-            
+        
         }
     }
-    
 }

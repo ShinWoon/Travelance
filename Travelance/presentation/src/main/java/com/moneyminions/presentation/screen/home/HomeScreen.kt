@@ -39,15 +39,11 @@ fun HomeScreen(
 ) {
     Home(navController)
 }
-
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun Home(
     navController: NavHostController,
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
-    // Pager State
-    val pagerState = rememberPagerState()
     val scrollableState = rememberScrollState()
 
     // Main Card Height
