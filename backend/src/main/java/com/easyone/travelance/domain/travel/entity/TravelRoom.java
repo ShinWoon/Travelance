@@ -61,4 +61,8 @@ public class TravelRoom {
         this.endDate=roomInfoRequestDto.getEndDate();
         this.budget= roomInfoRequestDto.getBudget();
     }
+
+    public void setRoomType(RoomType roomType){
+        this.isDone = roomType;
+    }
 }

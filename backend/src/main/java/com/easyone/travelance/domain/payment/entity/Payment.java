@@ -30,11 +30,11 @@ public class Payment {
     @JoinColumn(name = "room_id")
     private TravelRoom travelRoom;
 
-    private LocalDateTime paymentAt;
+    private String paymentAt;
     private Long paymentAmount;
     private String paymentContent;
     private String storeAddress;
     private String storeSector;
-
+    private boolean isWithPaid;
 
 }

@@ -19,6 +19,7 @@ public class WebClientConfig {
     public WebClient webClient(){
         return WebClient.builder()
                 .baseUrl("http://localhost:8080/bank")      // 추후 url 변경
+                .defaultHeader("Authorization", "ssafy_d210_bankserver")
                 .build();
     }
 }
