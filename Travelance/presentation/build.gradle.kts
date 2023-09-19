@@ -118,4 +118,6 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.0.1")
     // Permission
     implementation("com.google.accompanist:accompanist-permissions:0.28.0")
+    // Lottie
+    implementation("com.airbnb.android:lottie-compose:6.1.0")
 }
