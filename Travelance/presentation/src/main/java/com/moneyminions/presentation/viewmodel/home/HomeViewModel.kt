@@ -23,6 +23,14 @@ private const val TAG = "HomeViewModel"
 class HomeViewModel @Inject constructor(
 
 ): ViewModel(){
+    // 유저가 프로필 정보를 등록했는지 유무 체크
+    private val _isUserInfo = mutableStateOf(false)
+    val isUserInfo: State<Boolean> = _isUserInfo
+    fun setUserInfo(check: Boolean) {
+        _isUserInfo.value = check
+    }
+    
+    // 여행 시작 유무 판단
     private val _isTravelStart = mutableStateOf(false)
     val isTravelStart: State<Boolean> = _isTravelStart
     fun setTravelStart(check: Boolean) {
