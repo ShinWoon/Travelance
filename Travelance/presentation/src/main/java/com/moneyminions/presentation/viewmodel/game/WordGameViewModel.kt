@@ -35,4 +35,10 @@ class WordGameViewModel @Inject constructor(
     fun setIsShowWord(value: Boolean){
         _isShowWord.value = value
     }
+
+    private val _isStart = mutableStateOf(false)
+    val isStart: State<Boolean> = _isStart
+    fun setIsStart(value: Boolean){
+        _isStart.value = value
+    }
 }
