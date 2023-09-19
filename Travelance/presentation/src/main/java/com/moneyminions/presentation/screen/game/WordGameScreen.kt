@@ -18,7 +18,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,7 +31,16 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.airbnb.lottie.Lottie
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieClipSpec
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
+import com.moneyminions.presentation.common.LottieLoader
 import com.moneyminions.presentation.common.MinionPrimaryButton
 import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.theme.PinkDarkest
@@ -91,7 +104,22 @@ fun WordGameScreen(
                         }
                     }
                 }else{
-//                    Box(modifier = Modifier.size(128.dp).background(PinkDarkest))
+                    if(wordGameViewModel.isStart.value) {
+//                        LottieLoader(
+//                            lottieFile = R.raw.lottie_count,
+//                            iteration = 3000,
+//                            modifier = Modifier.size(128.dp)
+//                        )
+                        LottieLoader(
+                            modifier = Modifier.size(128.dp),
+                            res = R.raw.lottie_count,
+                            isLoop = false
+                        ){
+                            wordGameViewModel.setIsShowWord(true)
+                        }
+                    }else{
+                        Box(modifier = Modifier.size(128.dp))
+                    }
                 }
                 Spacer(modifier = Modifier.size(16.dp))
                 MinionPrimaryButton(
@@ -99,10 +127,11 @@ fun WordGameScreen(
                     modifier = Modifier
                 ) {
                     wordGameViewModel.setIsShowWord(false)
-                    scope.launch {
-                        delay(3000) // 3초 지연
-                        wordGameViewModel.setIsShowWord(true)
-                    }
+                    wordGameViewModel.setIsStart(true)
+//                    scope.launch {
+//                        delay(3000) // 3초 지연
+//                        wordGameViewModel.setIsShowWord(true)
+//                    }
                     wordGameViewModel.setFirstConsonant()
                     wordGameViewModel.setSecondConsonant()
                 }
@@ -111,6 +140,8 @@ fun WordGameScreen(
         }
     }
 }
+
+
 
 @Composable
 fun getButtonContent(
