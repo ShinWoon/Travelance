@@ -29,4 +29,10 @@ class WordGameViewModel @Inject constructor(
         val randomConsonant = consonantList[randomIndex]
         _secondConsonant.value = randomConsonant
     }
+
+    private val _isShowWord = mutableStateOf(false)
+    val isShowWord: State<Boolean> = _isShowWord
+    fun setIsShowWord(value: Boolean){
+        _isShowWord.value = value
+    }
 }
