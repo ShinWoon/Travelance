@@ -6,6 +6,12 @@ import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class ApplicationClass: Application() {
+
+    companion object{
+        const val X_ACCESS_TOKEN = "access_token"
+        const val X_REFRESH_TOKEN = "refresh_token"
+    }
+
     override fun onCreate() {
         super.onCreate()
 
