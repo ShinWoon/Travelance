@@ -1,80 +1,85 @@
 package com.moneyminions.presentation.navigation
 
 sealed class Screen(val name: String, val route: String) {
-    object Example: Screen(
+    object Example : Screen(
         name = "Example",
-        route = "example_screen"
+        route = "example_screen",
     )
-    object Home: Screen(
+    object Home : Screen(
         name = "Home",
-        route = "home_screen"
+        route = "home_screen",
     )
-    object TravelList: Screen(
+    object TravelList : Screen(
         name = "TravelList",
-        route = "travel_list_screen"
+        route = "travel_list_screen",
     )
-    object CreateTravel: Screen(
+    object CreateTravel : Screen(
         name = "CreateTravel",
-        route = "create_travel_screen"
+        route = "create_travel_screen",
     )
-    object MyPage: Screen(
+    object MyPage : Screen(
         name = "MyPage",
-        route = "my_page_screen"
+        route = "my_page_screen",
     )
-    object Setting: Screen(
+    object Setting : Screen(
         name = "Setting",
-        route = "setting_screen"
+        route = "setting_screen",
     )
-    object Announcement: Screen(
+    object Announcement : Screen(
         name = "Announcement",
-        route = "Announcement_screen"
+        route = "Announcement_screen",
     )
-    object EditUser: Screen(
+    object EditUser : Screen(
         name = "EditUser",
-        route = "edit_user_screen"
+        route = "edit_user_screen",
     )
-    object AccountAuthentication: Screen(
+    object AccountAuthentication : Screen(
         name = "AccountAuthentication",
-        route = "account_authenthication_screen"
+        route = "account_authenthication_screen",
     )
-    object AccountList: Screen(
+    object AccountList : Screen(
         name = "AccountList",
-        route = "account_list_screen"
+        route = "account_list_screen",
     )
-    object CardList: Screen(
+    object CardList : Screen(
         name = "CardList",
-        route = "card_list_screen"
+        route = "card_list_screen",
     )
-    object TravelMap: Screen(
+    object TravelMap : Screen(
         name = "TravelMap",
-        route = "travel_map_screen"
+        route = "travel_map_screen",
     )
-    object GameList: Screen(
+    object GameList : Screen(
         name = "GameList",
-        route = "game_List_screen"
+        route = "game_List_screen",
     )
-    object CardGame: Screen(
+    object CardGame : Screen(
         name = "CardGame",
-        route = "card_game_screen"
+        route = "card_game_screen",
     )
-    object BottleGame: Screen(
+    object BottleGame : Screen(
         name = "BottleGame",
-        route = "bottle_game_screen"
+        route = "bottle_game_screen",
     )
-    object TeamBuildingGame: Screen(
+    object TeamBuildingGame : Screen(
         name = "TeamBuildingGame",
-        route = "team_building_game_screen"
+        route = "team_building_game_screen",
     )
-    object WordGame: Screen(
+    object WordGame : Screen(
         name = "WordGame",
-        route = "word_game_screen"
+        route = "word_game_screen",
     )
-    object Login: Screen(
+    object Login : Screen(
         name = "Login",
-        route = "login_screen"
+        route = "login_screen",
     )
     object SubHome: Screen(
         name = "SubHome",
         route = "sub_home_screen"
     )
+    object TravelDetail : Screen(
+        name = "TravelDetail",
+        route = "travel_detail",
+    )
 }
+

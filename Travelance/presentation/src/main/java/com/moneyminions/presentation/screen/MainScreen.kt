@@ -41,11 +41,15 @@ fun MainScreen(
             }
         },
     ) {
-        Surface(
-            modifier = Modifier.padding(it),
-        ) {
-            NavGraph(navController = navController, startDestination = startDestination)
-        }
+//        Surface(
+//            modifier = Modifier.padding(it),
+//        ) {
+//            NavGraph(navController = navController, startDestination = startDestination)
+//        }
+        NavGraph(
+            innerPaddings = it,
+            navController = navController,
+            startDestination = startDestination)
     }
 }
 

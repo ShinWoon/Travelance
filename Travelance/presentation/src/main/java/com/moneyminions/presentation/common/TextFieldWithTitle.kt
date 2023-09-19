@@ -38,7 +38,6 @@ fun TextFieldWithTitle(
         focusedBorderColor = PinkLight, // 포커스가 있을 때 테두리 색상
         unfocusedBorderColor = GraphGray, // 포커스가 없을 때 테두리 색상
         cursorColor = Color.Black, // 커서 색상
-        placeholderColor = GraphGray // 힌트 색상
     )
     var isHintVisible by remember { mutableStateOf(value.isEmpty()) }
     

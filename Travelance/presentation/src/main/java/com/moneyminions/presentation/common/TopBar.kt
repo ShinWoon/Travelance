@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Divider
+import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,30 +17,29 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.moneyminions.presentation.theme.LightGray
 
 @Composable
 fun TopBar(
     navController: NavHostController,
-    title: String
-){
-    val constraintSet = ConstraintSet{
+    title: String,
+) {
+    val constraintSet = ConstraintSet {
         val titleText = createRefFor("titleText")
         val backButton = createRefFor("backButton")
         val divider = createRefFor("divider")
 
-        constrain(titleText){
+        constrain(titleText) {
             top.linkTo(parent.top, margin = 16.dp)
             start.linkTo(parent.start)
             end.linkTo(parent.end)
             bottom.linkTo(parent.bottom, margin = 16.dp)
         }
-        constrain(backButton){
+        constrain(backButton) {
             top.linkTo(parent.top)
             start.linkTo(parent.start, margin = 16.dp)
             bottom.linkTo(parent.bottom)
         }
-        constrain(divider){
+        constrain(divider) {
             start.linkTo(parent.start)
             end.linkTo(parent.end)
             bottom.linkTo(parent.bottom)
@@ -48,34 +48,34 @@ fun TopBar(
 
     ConstraintLayout(
         constraintSet,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Icon(
             imageVector = Icons.Rounded.ArrowBack,
             contentDescription = "backButton",
             modifier = Modifier.layoutId("backButton")
-                .clickable{
+                .clickable {
                     navController.popBackStack()
-                }
+                },
         )
         Text(
             text = title,
             style = CustomTextStyle.pretendardBold20,
-            modifier = Modifier.layoutId("titleText")
+            modifier = Modifier.layoutId("titleText"),
         )
         Divider(
-            color = LightGray,
-            thickness = 2.dp,
-            modifier = Modifier.layoutId("divider")
+            color = DividerDefaults.color,
+            thickness = DividerDefaults.Thickness,
+            modifier = Modifier.layoutId("divider"),
         )
     }
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
 @Composable
-fun TopBarPreview(){
+fun TopBarPreview() {
     TopBar(
         navController = rememberNavController(),
-        title = "title"
+        title = "title",
     )
 }

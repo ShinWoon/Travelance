@@ -2,11 +2,21 @@ package com.moneyminions.presentation.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
 import com.moneyminions.presentation.screen.announcement.AnnouncementScreen
+import com.moneyminions.presentation.screen.detail.DetailScreen
 import com.moneyminions.presentation.screen.example.ExampleScreen
 import com.moneyminions.presentation.screen.game.BottleGameScreen
 import com.moneyminions.presentation.screen.game.CardGameScreen
@@ -25,15 +35,26 @@ import com.moneyminions.presentation.screen.travellist.CreateTravelScreen
 import com.moneyminions.presentation.screen.travellist.TravelListScreen
 import com.moneyminions.presentation.screen.travelmap.travelMapScreen
 
+@OptIn(ExperimentalAnimationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavGraph(
+    innerPaddings: PaddingValues,
     navController: NavHostController,
     startDestination: String,
 ) {
-    NavHost(
+    AnimatedNavHost(
+        modifier = Modifier.padding(innerPaddings),
         navController = navController,
         startDestination = startDestination,
+        enterTransition = { fadeIn(tween(500)) },
+        exitTransition = { fadeOut(tween(500)) },
+        popEnterTransition = { fadeIn(tween(500)) },
+        popExitTransition = { fadeOut(tween(500)) },
+//        enterTransition = { EnterTransition.None },
+//        exitTransition = { ExitTransition.None },
+//        popEnterTransition = { EnterTransition.None },
+//        popExitTransition = { ExitTransition.None },
     ) {
         composable(
             route = Screen.Example.route,
@@ -66,69 +87,74 @@ fun NavGraph(
             SettingScreen(navController = navController)
         }
         composable(
-            route = Screen.Announcement.route
-        ){
+            route = Screen.Announcement.route,
+        ) {
             AnnouncementScreen(navController = navController)
         }
         composable(
-            route = Screen.EditUser.route
-        ){
+            route = Screen.EditUser.route,
+        ) {
             EditUserScreen(navController = navController)
         }
         composable(
-            route = Screen.AccountAuthentication.route
-        ){
+            route = Screen.AccountAuthentication.route,
+        ) {
             AccountAuthenticationScreen(navController = navController)
         }
         composable(
-            route = Screen.AccountList.route
-        ){
+            route = Screen.AccountList.route,
+        ) {
             AccountListScreen(navController = navController)
         }
         composable(
-            route = Screen.CardList.route
-        ){
+            route = Screen.CardList.route,
+        ) {
             CardListScreen(navController = navController)
         }
         composable(
-            route = Screen.TravelMap.route
-        ){
+            route = Screen.TravelMap.route,
+        ) {
             travelMapScreen(navController = navController)
         }
         composable(
-            route = Screen.GameList.route
-        ){
+            route = Screen.GameList.route,
+        ) {
             GameListScreen(navController = navController)
         }
         composable(
-            route = Screen.CardGame.route
-        ){
+            route = Screen.CardGame.route,
+        ) {
             CardGameScreen(navController = navController)
         }
         composable(
-            route = Screen.BottleGame.route
-        ){
+            route = Screen.BottleGame.route,
+        ) {
             BottleGameScreen(navController = navController)
         }
         composable(
-            route = Screen.TeamBuildingGame.route
-        ){
+            route = Screen.TeamBuildingGame.route,
+        ) {
             TeamBuildingGameScreen(navController = navController)
         }
         composable(
-            route = Screen.WordGame.route
-        ){
+            route = Screen.WordGame.route,
+        ) {
             WordGameScreen(navController = navController)
         }
         composable(
-            route = Screen.Login.route
-        ){
+            route = Screen.Login.route,
+        ) {
             LoginScreen(navController = navController)
         }
         composable(
             route = Screen.SubHome.route
         ){
             HomeScreen(navController = navController)
+        }
+        composable(
+            route = Screen.TravelDetail.route,
+        ) {
+            DetailScreen(navController = navController)
         }
     }
 } // End of setUpNavGraph

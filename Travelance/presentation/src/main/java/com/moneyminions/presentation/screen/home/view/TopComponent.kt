@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.screen.home.view
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -17,8 +18,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold20
+import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 
@@ -39,14 +42,17 @@ fun TopComponent(
     }
 }
 
-
 @Composable
 fun TopLeftItem(
     homeViewModel: HomeViewModel,
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable(
+            onClick = {
+                navController.navigate(Screen.TravelDetail.route)
+            },
+        ),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(CardLightGray),
     ) {

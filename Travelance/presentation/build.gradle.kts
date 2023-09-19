@@ -71,6 +71,7 @@ dependencies {
     // navigation
     var nav_version = "2.5.3"
     implementation("androidx.navigation:navigation-compose:$nav_version")
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.31.1-alpha")
 
     // constraintLayout
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
@@ -107,8 +108,18 @@ dependencies {
     // https://mvnrepository.com/artifact/androidx.viewpager2/viewpager2
     implementation("androidx.viewpager2:viewpager2:1.0.0")
 
-
-    //kakao
+    // kakao
     implementation("com.kakao.sdk:v2-all:2.14.0")
+
+    //lottie
+    implementation("com.airbnb.android:lottie-compose:6.1.0")
+
+    // 네이버 지도 SDK
+    implementation("com.naver.maps:map-sdk:3.17.0")
+    implementation("io.github.fornewid:naver-map-compose:1.3.3")
+    // GPS
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    // Permission
+    implementation("com.google.accompanist:accompanist-permissions:0.28.0")
 
 }

@@ -59,8 +59,11 @@ fun Home(
             .verticalScroll(scrollableState)
             .padding(16.dp, 16.dp, 16.dp, 16.dp),
     ) {
-        TopComponent(homeViewModel)
-        
+        TopComponent(
+            homeViewModel = homeViewModel,
+            navController = navController,
+        )
+
         Spacer(modifier = Modifier.height(8.dp))
         
         if(homeViewModel.isTravelStart.value) { // 여행 시작
@@ -71,7 +74,7 @@ fun Home(
                 cardHeight
             )
         }
-        
+
         Spacer(modifier = Modifier.height(16.dp))
         FriendComponent(homeViewModel)
         
@@ -185,8 +188,8 @@ fun DotsIndicator(
         modifier = Modifier
             .wrapContentWidth()
             .wrapContentHeight(),
-        
-        ) {
+
+    ) {
         items(totalDots) { index ->
             if (index == selectedIndex) {
                 Box(
@@ -203,7 +206,7 @@ fun DotsIndicator(
                         .background(unSelectedColor),
                 )
             }
-            
+
             if (index != totalDots - 1) {
                 Spacer(modifier = Modifier.padding(horizontal = 2.dp))
             }
