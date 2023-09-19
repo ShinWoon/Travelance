@@ -1,6 +1,6 @@
 package com.easyone.travelance.domain.account.controller;
 
-import com.easyone.travelance.domain.account.dto.SelectedRequestDto;
+import com.easyone.travelance.domain.account.dto.SelectedAccountRequestDto;
 import com.easyone.travelance.domain.account.service.AccountService;
 import com.easyone.travelance.domain.member.entity.MainAccount;
 import com.easyone.travelance.domain.member.entity.Member;
@@ -38,16 +38,16 @@ public class AccountController {
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND)); // 만약 데이터가 없을 경우의 처리
     }
 
-    @Operation(summary = "계좌 목록 DB 저장", description = " 내가 선택한 계좌를 DB에 저장하는 메서드 입니다\n\n" + "{\n\n" +
-            "    {\n" + "      \"account\": \"7753621811018015\",\n" + "      \"bankName\": \"SC제일은행\",\n" + "      \"accountUrl\": \"img/bank/001_SC제일은행\"\n" + "    },    \n" + "    {\n" + "      \"account\": \"7753621811018015\",\n" + "      \"bankName\": \"SC제일은행\",\n" + "      \"accountUrl\": \"img/bank/001_SC제일은행\"\n" + "    },    \n\n"+ "}\n\n" + "이런 형식으로 넣으시면 됩니다.")
+    @Operation(summary = "계좌 목록 DB 저장", description = " 내가 선택한 계좌를 DB에 저장하는 메서드 입니다\n\n" + "[\n\n" +
+            "    {\n" + "      \"account\": \"7753621811018015\",\n" + "      \"bankName\": \"SC제일은행\",\n" + "      \"accountUrl\": \"img/bank/001_SC제일은행\"\n" + "    },    \n" + "    {\n" + "      \"account\": \"7753621811018015\",\n" + "      \"bankName\": \"SC제일은행\",\n" + "      \"accountUrl\": \"img/bank/001_SC제일은행\"\n" + "    },    \n\n"+ "]\n\n" + "이런 형식으로 넣으시면 됩니다.")
     @PostMapping("/selectedaccount")
-    public ResponseEntity<String> SaveAccount(@RequestBody List<SelectedRequestDto> selectedRequestDtoList, @MemberInfo MemberInfoDto memberInfoDto) {
+    public ResponseEntity<String> SaveAccount(@RequestBody List<SelectedAccountRequestDto> selectedAccountRequestDtoList, @MemberInfo MemberInfoDto memberInfoDto) {
         Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
         MainAccount mainAccount = member.getMainAccount();
         log.warn("mainAccount : " + mainAccount);
-        log.warn("Received JSON data: " + selectedRequestDtoList);
-        for (SelectedRequestDto selectedRequestDto : selectedRequestDtoList) {
-            accountService.SaveAccount(mainAccount, selectedRequestDto);
+        log.warn("Received JSON data: " + selectedAccountRequestDtoList);
+        for (SelectedAccountRequestDto selectedAccountRequestDto : selectedAccountRequestDtoList) {
+            accountService.SaveAccount(mainAccount, selectedAccountRequestDto);
         }
 
         return ResponseEntity.ok("success");

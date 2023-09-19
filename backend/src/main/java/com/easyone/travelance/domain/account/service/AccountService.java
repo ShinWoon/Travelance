@@ -1,11 +1,10 @@
 package com.easyone.travelance.domain.account.service;
 
 import com.easyone.travelance.domain.account.dto.AllAccountRequestDto;
-import com.easyone.travelance.domain.account.dto.SelectedRequestDto;
+import com.easyone.travelance.domain.account.dto.SelectedAccountRequestDto;
 import com.easyone.travelance.domain.account.entity.Account;
 import com.easyone.travelance.domain.account.respository.AccountRepository;
 import com.easyone.travelance.domain.member.entity.MainAccount;
-import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.respository.MainAccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -51,19 +52,26 @@ public class AccountService {
     }
 
 
-    public void SaveAccount(MainAccount mainAccount, SelectedRequestDto selectedRequestDto) {
-        Account account = Account.builder()
-                .account(selectedRequestDto.getAccount())
-                .accountName(selectedRequestDto.getBankName())  // 수정된 부분
-                .accountUrl(selectedRequestDto.getAccountUrl())  // 수정된 부분
-                .mainAccount(mainAccount)
-                .build();
+    public void SaveAccount(MainAccount mainAccount, SelectedAccountRequestDto selectedAccountRequestDto) {
+        String accountNumber = selectedAccountRequestDto.getAccount();
 
-        accountRepository.save(account);
-        log.error("mainAccount : " + mainAccount);
+        Optional<Account> existingAccount = accountRepository.findByAccount(accountNumber);
 
-        mainAccount.getAccountList().add(account);
-        mainAccountRepository.save(mainAccount);
+        if (existingAccount.isEmpty()){
+            Account account = Account.builder()
+                    .account(selectedAccountRequestDto.getAccount())
+                    .accountName(selectedAccountRequestDto.getBankName())  // 수정된 부분
+                    .accountUrl(selectedAccountRequestDto.getAccountUrl())  // 수정된 부분
+                    .mainAccount(mainAccount)
+                    .build();
+
+            accountRepository.save(account);
+            log.error("mainAccount : " + mainAccount);
+
+            mainAccount.getAccountList().add(account);
+            mainAccountRepository.save(mainAccount);
+        }
+
     }
 }
 
