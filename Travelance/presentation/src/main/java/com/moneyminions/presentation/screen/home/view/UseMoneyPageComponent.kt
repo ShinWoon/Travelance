@@ -36,6 +36,7 @@ fun UseMoneyPage(
     cardHeight: Dp,
     title: String,
     money: Int,
+    totalDot: Int
 ) {
     Card(
         modifier = Modifier
@@ -76,7 +77,7 @@ fun UseMoneyPage(
                 contentAlignment = Alignment.Center
             ) {
                 DotsIndicator(
-                    totalDots = 3,
+                    totalDots = totalDot,
                     selectedIndex = pagerState.currentPage,
                     selectedColor = PinkDarkest,
                     unSelectedColor = PinkLightest,

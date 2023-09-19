@@ -53,6 +53,7 @@ import kotlinx.coroutines.delay
 fun GraphPage(
     pagerState: PagerState,
     cardHeight: Dp,
+    totalDot: Int
 ) {
     Card(
         modifier = Modifier
@@ -99,7 +100,7 @@ fun GraphPage(
                 contentAlignment = Alignment.Center
             ) {
                 DotsIndicator(
-                    totalDots = 3,
+                    totalDots = totalDot,
                     selectedIndex = pagerState.currentPage,
                     selectedColor = PinkDarkest,
                     unSelectedColor = PinkLightest,
