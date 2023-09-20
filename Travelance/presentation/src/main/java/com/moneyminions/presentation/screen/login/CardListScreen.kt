@@ -24,37 +24,37 @@ import com.moneyminions.presentation.common.CardRowItem
 import com.moneyminions.presentation.common.MinionPrimaryButton
 import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.screen.mypage.CardDto
-import com.moneyminions.presentation.screen.mypage.accountList
+import com.moneyminions.presentation.screen.mypage.view.accountList
+
+val cardList = listOf(
+    CardDto(
+        name = "카드 별칭",
+        number = "123456789012",
+        idx = 0,
+        company = "카드사명",
+        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png"
+    ),
+    CardDto(
+        name = "카드 별칭",
+        number = "123456789012",
+        idx = 1,
+        company = "카드사명",
+        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png"
+    ),
+    CardDto(
+        name = "카드 별칭",
+        number = "123456789012",
+        idx = 2,
+        company = "카드사명",
+        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png"
+    )
+)
 
 private const val TAG = "CardListScreen D210"
 @Composable
 fun CardListScreen(
     navController: NavHostController
 ){
-    val cardList = listOf(
-        CardDto(
-            name = "카드 별칭",
-            number = "123456789012",
-            idx = 0,
-            company = "카드사명",
-            logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png"
-        ),
-        CardDto(
-            name = "카드 별칭",
-            number = "123456789012",
-            idx = 1,
-            company = "카드사명",
-            logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png"
-        ),
-        CardDto(
-            name = "카드 별칭",
-            number = "123456789012",
-            idx = 2,
-            company = "카드사명",
-            logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png"
-        )
-    )
-
     Column(
         modifier = Modifier.fillMaxSize()
     ) {

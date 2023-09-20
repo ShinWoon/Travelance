@@ -1,0 +1,71 @@
+package com.moneyminions.presentation.screen.mypage.view
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.moneyminions.presentation.common.AccountRowItem
+import com.moneyminions.presentation.common.CustomTextStyle
+import com.moneyminions.presentation.screen.mypage.AccountDto
+import com.moneyminions.presentation.theme.GraphGray
+
+val accountList = listOf(
+    AccountDto(
+        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
+        name = "신한",
+        number = "997838829102"
+    ),
+    AccountDto(
+        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
+        name = "신한",
+        number = "997838829102"
+    ),
+    AccountDto(
+        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
+        name = "신한",
+        number = "997838829102"
+    )
+)
+
+@Composable
+fun AccountListComponent(
+
+){
+    Text(
+        text = "계좌 목록",
+        style = CustomTextStyle.pretendardBold16
+    )
+    Spacer(modifier = Modifier.size(8.dp))
+    Divider(modifier = Modifier
+        .fillMaxWidth()
+        .height(1.dp)
+        .background(GraphGray)
+        .padding(horizontal = 16.dp)
+    )
+    LazyColumn{
+        items(accountList){
+            AccountRowItem(
+                logo = it.logo,
+                name = it.name,
+                number = it.number,
+                type = "delete",
+                onDeleted = {
+                    // 삭제 로직
+                }
+            )
+        }
+    }
+    Spacer(modifier = Modifier.size(16.dp))
+    PlusButtonWithText(text = "계좌 추가하기") {
+        //계좌 추가하기 화면으로 이동
+    }
+}

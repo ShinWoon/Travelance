@@ -26,6 +26,7 @@ import com.moneyminions.presentation.common.TextFieldWithTitle
 import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.travellist.view.Calendar
+import com.moneyminions.presentation.screen.travellist.view.DateTextComponent
 import com.moneyminions.presentation.viewmodel.travellist.CreateTravelViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -87,36 +88,17 @@ fun CreateTravelScreen(
             Spacer(
                 modifier = Modifier.size(8.dp)
             )
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Text(
-                    text = "시작 날짜 : ",
-                    style = CustomTextStyle.pretendardSemiBold16
-                )
-                Spacer(
-                    modifier = Modifier.size(4.dp)
-                )
-                Text(
-                    text = createTravelViewModel.startDate.value,
-                    style = CustomTextStyle.pretendardSemiBold16
-                )
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Text(
-                    text = "종료 날짜 : ",
-                    style = CustomTextStyle.pretendardSemiBold16
-                )
-                Spacer(
-                    modifier = Modifier.size(4.dp)
-                )
-                Text(
-                    text = createTravelViewModel.endDate.value,
-                    style = CustomTextStyle.pretendardSemiBold16
-                )
-            }
+            DateTextComponent(
+                text = "시작 날짜 : ",
+                value = createTravelViewModel.startDate.value
+            )
+            Spacer(
+                modifier = Modifier.size(8.dp)
+            )
+            DateTextComponent(
+                text = "종료 날짜 : ",
+                value = createTravelViewModel.endDate.value
+            )
             Spacer(
                 modifier = Modifier.size(8.dp)
             )

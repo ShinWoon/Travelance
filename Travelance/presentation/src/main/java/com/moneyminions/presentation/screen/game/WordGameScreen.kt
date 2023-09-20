@@ -43,6 +43,7 @@ import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.common.LottieLoader
 import com.moneyminions.presentation.common.MinionPrimaryButton
 import com.moneyminions.presentation.common.TopBar
+import com.moneyminions.presentation.screen.game.view.WordComponent
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.theme.PinkLight
 import com.moneyminions.presentation.theme.PinkLightest
@@ -75,41 +76,9 @@ fun WordGameScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 if(wordGameViewModel.isShowWord.value){
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(128.dp) // 원하는 크기 설정
-                                .background(PinkLightest, shape = RoundedCornerShape(16.dp))
-                        ){
-                            Text(
-                                text = wordGameViewModel.firstConsonant.value,
-                                style = CustomTextStyle.pretendardExtraBold64,
-                                modifier = Modifier.align(Alignment.Center)
-                            )
-                        }
-                        Spacer(modifier = Modifier.size(16.dp))
-                        Box(
-                            modifier = Modifier
-                                .size(128.dp) // 원하는 크기 설정
-                                .background(PinkLightest, shape = RoundedCornerShape(16.dp))
-                        ){
-                            Text(
-                                text = wordGameViewModel.secondConsonant.value,
-                                style = CustomTextStyle.pretendardExtraBold64,
-                                modifier = Modifier.align(Alignment.Center)
-                            )
-                        }
-                    }
+                    WordComponent()
                 }else{
                     if(wordGameViewModel.isStart.value) {
-//                        LottieLoader(
-//                            lottieFile = R.raw.lottie_count,
-//                            iteration = 3000,
-//                            modifier = Modifier.size(128.dp)
-//                        )
                         LottieLoader(
                             modifier = Modifier.size(128.dp),
                             res = R.raw.lottie_count,

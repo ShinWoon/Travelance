@@ -1,7 +1,14 @@
 package com.moneyminions.presentation.common
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Divider
@@ -9,66 +16,66 @@ import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.moneyminions.presentation.R
+import com.moneyminions.presentation.screen.travellist.util.clickable
 
 @Composable
 fun TopBar(
     navController: NavHostController,
     title: String,
+    res: Int? = null
 ) {
-    val constraintSet = ConstraintSet {
-        val titleText = createRefFor("titleText")
-        val backButton = createRefFor("backButton")
-        val divider = createRefFor("divider")
-
-        constrain(titleText) {
-            top.linkTo(parent.top, margin = 16.dp)
-            start.linkTo(parent.start)
-            end.linkTo(parent.end)
-            bottom.linkTo(parent.bottom, margin = 16.dp)
-        }
-        constrain(backButton) {
-            top.linkTo(parent.top)
-            start.linkTo(parent.start, margin = 16.dp)
-            bottom.linkTo(parent.bottom)
-        }
-        constrain(divider) {
-            start.linkTo(parent.start)
-            end.linkTo(parent.end)
-            bottom.linkTo(parent.bottom)
-        }
-    }
-
-    ConstraintLayout(
-        constraintSet,
+    Column(
         modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center
     ) {
-        Icon(
-            imageVector = Icons.Rounded.ArrowBack,
-            contentDescription = "backButton",
-            modifier = Modifier.layoutId("backButton")
-                .clickable {
+        Spacer(modifier = Modifier.size(16.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Spacer(modifier = Modifier.size(16.dp))
+            Icon(
+                imageVector = Icons.Rounded.ArrowBack,
+                contentDescription = "backButton",
+                modifier = Modifier.clickable {
                     navController.popBackStack()
                 },
-        )
-        Text(
-            text = title,
-            style = CustomTextStyle.pretendardBold20,
-            modifier = Modifier.layoutId("titleText"),
-        )
+            )
+            Spacer(modifier = Modifier.size(8.dp))
+            Text(
+                text = title,
+                style = CustomTextStyle.pretendardBold20,
+            )
+            Spacer(modifier = Modifier.size(4.dp))
+            if(res!=null) {
+                Image(
+                    painter = painterResource(id = res),
+                    contentDescription = "add button",
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+        Spacer(modifier = Modifier.size(16.dp))
         Divider(
             color = DividerDefaults.color,
-            thickness = DividerDefaults.Thickness,
-            modifier = Modifier.layoutId("divider"),
+            thickness = DividerDefaults.Thickness
         )
     }
+
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
