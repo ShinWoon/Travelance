@@ -43,8 +43,7 @@ fun TopBar(
         Spacer(modifier = Modifier.size(16.dp))
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ){
             Spacer(modifier = Modifier.size(16.dp))
