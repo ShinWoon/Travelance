@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface TravelRoomRepository extends JpaRepository<TravelRoom, Long> {
 
-    Optional<TravelRoom> findByIdAndMemberId(Long roomNumber, Long memberId);
+//    Optional<TravelRoom> findByIdAndMemberId(Long roomNumber, Long memberId);
 }
