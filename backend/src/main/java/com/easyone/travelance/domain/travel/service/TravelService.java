@@ -128,6 +128,7 @@ public class TravelService {
 
     }
 
+    //..?
     public void setProfile(Long roomId, Member member, String profileUrl) {
         TravelRoom travelRoom = travelRoomRepository.findById(roomId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
