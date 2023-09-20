@@ -1,4 +1,4 @@
-package com.moneyminions.paybank
+package com.moneyminions.paybank.service
 
 import android.Manifest
 import android.app.PendingIntent
@@ -11,6 +11,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.moneyminions.paybank.MainActivity
+import com.moneyminions.paybank.R
 import com.moneyminions.paybank.util.Constants
 
 private const val TAG = "FCMService D210"
@@ -56,7 +58,12 @@ class FCMService: FirebaseMessagingService() {
         }
 
         val mainPendingIntent: PendingIntent =
-            PendingIntent.getActivity(this, 101, mainIntent,PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+            PendingIntent.getActivity(
+                this,
+                101,
+                mainIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
 
 
         // 알림에 대한 UI 정보, 작업
@@ -87,5 +94,3 @@ class FCMService: FirebaseMessagingService() {
         }
     }
 }
-
-/** 알림 생성 메서드 */
