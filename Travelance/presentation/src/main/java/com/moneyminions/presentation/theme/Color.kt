@@ -37,3 +37,5 @@ val KakaoLabelColor = Color(0xFF191919)
 
 val White = Color(0xFFFFFFFF)
 val Black = Color(0xFF000000)
+
+val Coke = Color(0xDFD00000)
