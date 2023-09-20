@@ -37,4 +37,8 @@ public class Payment {
     private String storeSector;
     private boolean isWithPaid;
 
+    public void setIsWithPaid(boolean isWithPaid){
+        this.isWithPaid = isWithPaid;
+    }
+
 }

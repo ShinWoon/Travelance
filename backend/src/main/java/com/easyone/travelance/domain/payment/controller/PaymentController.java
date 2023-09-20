@@ -31,7 +31,7 @@ public class PaymentController {
     }
 
     @PostMapping("/push/alert")
-    @Operation(summary = "푸시알림 공금 유무 선택 후 데이터 서버로 전송")
+    @Operation(summary = "푸시알림 공금 유무 선택 후 데이터 서버로 전송", description = "공금일 때에만 boolean값을 true로 변경 후 API 요청")
     public ResponseEntity<String> pushAlertData(PushAlertRequestDto pushAlertRequestDto){
         String response = paymentService.pushAlertData(pushAlertRequestDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -45,7 +45,7 @@ public class PaymentController {
     }
 
     @PostMapping("/transfer")
-    @Operation(summary = "계좌이체")
+    @Operation(summary = "계좌이체요청")
     public ResponseEntity<String> transferAccount(TransferAccountRequestDto transferAccountRequestDto){
         String response = paymentService.transferAccount(transferAccountRequestDto);
         return new ResponseEntity<>(response, HttpStatus.OK);

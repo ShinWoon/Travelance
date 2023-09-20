@@ -12,4 +12,6 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
     List<Payment> findByTravelRoomId(Long roomId);
 
     List<Payment> findByTravelRoomIdAndMemberId(Long roomId, Long memberId);
+
+    List<Payment> findByIsWithPaidAndTravelRoomId(boolean isPaidWith, Long roomId);
 }
