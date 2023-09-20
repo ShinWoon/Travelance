@@ -18,38 +18,36 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.moneyminions.presentation.common.AccountRowItem
 import com.moneyminions.presentation.common.MinionPrimaryButton
 import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.mypage.AccountDto
-import com.moneyminions.presentation.screen.mypage.accountList
+
+val accountList = listOf(
+    AccountDto(
+        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
+        name = "신한",
+        number = "997838829102"
+    ),
+    AccountDto(
+        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
+        name = "신한",
+        number = "997838829102"
+    ),
+    AccountDto(
+        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
+        name = "신한",
+        number = "997838829102"
+    )
+)
 
 private const val TAG = "AccountListScreen D210"
 @Composable
 fun AccountListScreen(
     navController: NavHostController
 ){
-    val accountList = listOf(
-        AccountDto(
-            logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
-            name = "신한",
-            number = "997838829102"
-        ),
-        AccountDto(
-            logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
-            name = "신한",
-            number = "997838829102"
-        ),
-        AccountDto(
-            logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
-            name = "신한",
-            number = "997838829102"
-        )
-    )
-
-
-
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -91,8 +89,8 @@ fun AccountListScreen(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = 0xFFFFFF)
 @Composable
 fun AccountListScreenPreview(){
-
+    AccountListScreen(navController = rememberNavController())
 }

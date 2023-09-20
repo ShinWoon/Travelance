@@ -30,6 +30,7 @@ import com.moneyminions.presentation.common.MinionPrimaryButton
 import com.moneyminions.presentation.common.TextFieldWithTitle
 import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.navigation.Screen
+import com.moneyminions.presentation.screen.login.view.AuthenticAccountListComponent
 import com.moneyminions.presentation.screen.mypage.AccountDto
 import com.moneyminions.presentation.screen.mypage.view.AccountColumnItem
 import com.moneyminions.presentation.viewmodel.login.AccountAuthenticationViewModel
@@ -40,51 +41,7 @@ fun AccountAuthenticationScreen(
     navController: NavHostController,
     accountAuthenticationViewModel: AccountAuthenticationViewModel = hiltViewModel()
 ) {
-    // 선택된 계좌의 인덱스를 저장하는 상태
-    var selectedAccountIndex by remember {
-        mutableIntStateOf(-1) // 초기에는 선택된 항목이 없으므로 -1로 초기화
-    }
-
-    val accountList = listOf(
-        AccountDto(
-            logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
-            name = "신한",
-            number = "997838829102"
-        ),
-        AccountDto(
-            logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
-            name = "신한",
-            number = "997838829102"
-        ),
-        AccountDto(
-            logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
-            name = "신한",
-            number = "997838829102"
-        ),
-        AccountDto(
-            logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
-            name = "신한",
-            number = "997838829102"
-        ),
-        AccountDto(
-            logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
-            name = "신한",
-            number = "997838829102"
-        ),
-        AccountDto(
-            logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
-            name = "신한",
-            number = "997838829102"
-        ),
-        AccountDto(
-            logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
-            name = "신한",
-            number = "997838829102"
-        )
-    )
-
     var showDialog by remember { mutableStateOf(false) }
-
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -112,38 +69,7 @@ fun AccountAuthenticationScreen(
                     }
                 )
                 Spacer(modifier = Modifier.size(16.dp))
-                Text(
-                    text = "계좌 목록",
-                    style = CustomTextStyle.pretendardBold16
-                )
-                Spacer(modifier = Modifier.size(16.dp))
-                LazyVerticalGrid(
-                    modifier = Modifier.fillMaxWidth(),
-                    columns = GridCells.Fixed(3),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    items(accountList) { it ->
-                        AccountColumnItem(
-                            logo = it.logo,
-                            compoany = it.name,
-                            isSelected = selectedAccountIndex == accountList.indexOf(it)
-                        ) {
-                            if (selectedAccountIndex == accountList.indexOf(it)) {
-                                accountList.forEach {
-                                    it.isSelected = false
-                                }
-                                selectedAccountIndex = -1
-                            } else {
-                                accountList.forEach {
-                                    it.isSelected = false
-                                }
-                                it.isSelected = true
-                                selectedAccountIndex =
-                                    accountList.indexOf(it)
-                            }
-                        }
-                    }
-                }
+                AuthenticAccountListComponent()
                 Spacer(modifier = Modifier.size(16.dp))
                 TextFieldWithTitle(
                     title = "게좌번호",
