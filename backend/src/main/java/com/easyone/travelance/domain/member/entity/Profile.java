@@ -18,6 +18,7 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = true)
     private String profileUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)

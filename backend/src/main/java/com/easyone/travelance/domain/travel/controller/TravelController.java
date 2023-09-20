@@ -40,27 +40,27 @@ public class TravelController {
     // 프로필 설정
     @Operation(summary = "여행방에서 내 프로필사진 설정", description = "요청 시, 채팅방에 유저의 프로필 사진을 설정할 수 있습니다.")
     @PostMapping(value = "/{roomId}/setProfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> setProfile(@MemberInfo MemberInfoDto memberInfo, @RequestBody String profileUrl, @PathVariable Long roomId) {
+    public ResponseEntity<?> setProfile(@MemberInfo MemberInfoDto memberInfo, @RequestBody RoomUserRequestDto roomUserRequestDto, @PathVariable Long roomId) {
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
 
-        travelService.setProfile(roomId, member, profileUrl);
+        travelService.setProfile(roomId, member, roomUserRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 
     // 친구 초대 : 모바일에서 방과 유저정보를 주면, 방에 유저를 저장하고, 그 방에 있는 유저리스트를 전달
-//    @Operation(summary = "여행방 친구들 초대하기", description = "요청 시, 채팅방에 친구들을 초대하고, 채팅방의 유저리스트를 전달합니다.")
-//    @PostMapping(value = "/{roomId}/addUser")
-//    public ResponseEntity<List<RoomUserResponseDto>> AddUser(@RequestBody List<RoomUserResponseDto> roomUserResponseDtoList, @PathVariable Long roomId) {
-//        List<Member> memberList=new ArrayList<>();
-//        for (RoomUserResponseDto roomuser : roomUserResponseDtoList) {
-//            Member member = memberService.findMemberByEmail(roomuser.getEmail());
-//            memberList.add(member);
-//        }
-//
-//        List<RoomUserResponseDto> roomUserResponseDto=travelService.adduser(roomId, memberList);
-//        return new ResponseEntity<>(roomUserResponseDto, HttpStatus.OK);
-//    }
+    @Operation(summary = "여행방 친구들 초대하기", description = "요청 시, 채팅방에 친구들을 초대하고, 채팅방의 유저리스트를 전달합니다.")
+    @PostMapping(value = "/{roomId}/addUser")
+    public ResponseEntity<List<RoomUserResponseDto>> AddUser(@RequestBody List<RoomUserResponseDto> roomUserResponseDtoList, @PathVariable Long roomId) {
+        List<Member> memberList=new ArrayList<>();
+        for (RoomUserResponseDto roomuser : roomUserResponseDtoList) {
+            Member member = memberService.findMemberByEmail(roomuser.getEmail());
+            memberList.add(member);
+        }
+
+        List<RoomUserResponseDto> roomUserResponseDto=travelService.adduser(roomId, memberList);
+        return new ResponseEntity<>(roomUserResponseDto, HttpStatus.OK);
+    }
 
 
     //여행방 전체 리스트

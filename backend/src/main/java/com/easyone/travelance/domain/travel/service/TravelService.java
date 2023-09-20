@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -104,33 +105,41 @@ public class TravelService {
 //        }
     }
 
-    public  List<RoomUserResponseDto> adduser(Long roomId, Member member) {
+    public  List<RoomUserResponseDto> adduser(Long roomId, List<Member> members) {
         //유저를 travelroommember에 추가하고, 리스트를 반한한다.
 
         TravelRoom travelRoom = travelRoomRepository.findById(roomId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
 
-        TravelRoomMember travelRoomMember = TravelRoomMember.builder()
-                        .travelRoom(travelRoom)
-                        .member(member)
-                        .build();
-        travelRoomMemberRepository.save(travelRoomMember);
-        Profile profile = Profile.builder()
-                            .member(member)
-                            .travelRoom(travelRoom).build();
+        List<TravelRoomMember> travelRoomMembers = new ArrayList<>();
 
-        return travelRoomMemberRepository.findAll().stream()
-                .map(entity -> {
-                    return new RoomUserResponseDto(member, profile);})
+        for (Member member: members) {
+            TravelRoomMember travelRoomMember = TravelRoomMember.builder()
+                    .travelRoom(travelRoom)
+                    .member(member)
+                    .build();
+            travelRoomMembers.add(travelRoomMember);
+
+            travelRoom.getTravelRoomMembers().add(travelRoomMember);
+            member.getTravelRoomMember().add(travelRoomMember);
+        }
+
+        travelRoomRepository.save(travelRoom);
+//        Profile profile = Profile.builder()
+//                            .member(member)
+//                            .travelRoom(travelRoom).build();
+
+        return travelRoomMembers.stream()
+                .map(entity -> new RoomUserResponseDto(entity.getMember(),))
                 .collect(Collectors.toList());
 
     }
 
-    public void setProfile(Long roomId, Member member, String profileUrl) {
+    public void setProfile(Long roomId, Member member, RoomUserRequestDto roomUserRequestDto) {
         TravelRoom travelRoom = travelRoomRepository.findById(roomId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
 
-        if(profileUrl!=null) {
+        if(roomUserRequestDto.getProfileUrl()!=null) {
             //프로필 사진을 저장한다
             Profile profile = Profile.builder()
                             .travelRoom(travelRoom)
