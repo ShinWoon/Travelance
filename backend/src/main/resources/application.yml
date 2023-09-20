@@ -3,9 +3,9 @@ spring:
     active: jwt,oauth
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/travel
+    url: jdbc:mysql://j9d210.p.ssafy.io:3306/travel
     username: root
-    password: qwe123
+    password: 1234
 
   jpa:
     hibernate:
@@ -47,3 +47,9 @@ feign:
         # 타임아웃 제한 시간
         connectTimeout: 5000
         readTimeout: 5000
+
+http:
+  auth-token-header:
+    name: Authorization
+
+  auth-token: ssafy_d210_bankserver

@@ -90,4 +90,19 @@ public class Member {
         this.nickname = nickname;
     }
 
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", role=" + role +
+                ", refreshToken='" + refreshToken + '\'' +
+                ", fcmToken='" + fcmToken + '\'' +
+                ", privateId='" + privateId + '\'' +
+                ", tokenExpirationTime=" + tokenExpirationTime +
+                '}';
+    }
+
 }
