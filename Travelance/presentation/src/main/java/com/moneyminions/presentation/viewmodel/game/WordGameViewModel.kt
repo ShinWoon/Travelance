@@ -41,4 +41,10 @@ class WordGameViewModel @Inject constructor(
     fun setIsStart(value: Boolean){
         _isStart.value = value
     }
+
+    private val _isLottieFinished = mutableStateOf(false)
+    val isLottieFinished: State<Boolean> = _isLottieFinished
+    fun setIsLottieFinished(value: Boolean){
+        _isLottieFinished.value = value
+    }
 }
