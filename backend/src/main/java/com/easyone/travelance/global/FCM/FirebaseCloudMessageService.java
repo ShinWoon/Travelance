@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
+import io.swagger.v3.core.util.Json;
 import lombok.RequiredArgsConstructor;
 import okhttp3.*;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +20,7 @@ public class FirebaseCloudMessageService {
     private final String API_URL = "dfdf";
     private final ObjectMapper objectMapper;
 
-    public void sendMessageTo(String targetToken, String title, String body, String targetData) throws IOException {
+    public void sendMessageTo(String targetToken, String title, String body,String targetData) throws IOException {
         String message = makeMessage(targetToken, title, body, targetData);
         System.out.println("FCM sendMessageTo");
 

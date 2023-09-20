@@ -1,5 +1,6 @@
 package com.easyone.travelance.domain.payment.entity;
 
+import com.easyone.travelance.domain.travel.entity.TravelRoom;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,4 +27,7 @@ public class Calculation {
     private boolean isTransfer;
     private LocalDateTime transferedAt;
 
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private TravelRoom travelRoom;
 }

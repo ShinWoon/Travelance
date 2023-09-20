@@ -2,7 +2,6 @@ package com.easyone.travelance.domain.payment.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.threeten.bp.LocalDateTime;
 
 import java.util.List;
 
@@ -13,12 +12,15 @@ public class CompleteCalculationRequestDto {
     private Long memberId;
     private List<PaymentWith> paymentWithList;
 
+    @Data
+    @NoArgsConstructor
     public static class PaymentWith{
-        private LocalDateTime paymentAt;
+        private Long paymentId;
+        private String paymentAt;
         private Long paymentAmount;
         private String paymentContent;
-        private Long approvalNumber;
         private String storeAddress;
         private String storeSector;
+        private Boolean isWithPaid;
     }
 }
