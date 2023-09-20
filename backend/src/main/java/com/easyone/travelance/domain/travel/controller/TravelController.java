@@ -38,7 +38,7 @@ public class TravelController {
     }
 
     // 프로필 설정
-    //test용 빋르
+    //test용 빋르 제발...
     @Operation(summary = "여행방에서 내 프로필사진 설정", description = "요청 시, 채팅방에 유저의 프로필 사진을 설정할 수 있습니다.")
     @PostMapping(value = "/{roomId}/setProfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> setProfile(@MemberInfo MemberInfoDto memberInfo, @RequestBody String profileUrl, @PathVariable Long roomId) {
