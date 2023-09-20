@@ -31,10 +31,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.moneyminions.presentation.R
-import com.moneyminions.presentation.common.CustomTextStyle
-import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.common.AccountRowItem
 import com.moneyminions.presentation.common.CardRowItem
+import com.moneyminions.presentation.common.CustomTextStyle
+import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.GraphGray
 import com.moneyminions.presentation.theme.PinkDarkest
@@ -45,18 +45,18 @@ val accountList = listOf(
     AccountDto(
         logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
         name = "신한",
-        number = "997838829102"
+        number = "997838829102",
     ),
     AccountDto(
         logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
         name = "신한",
-        number = "997838829102"
+        number = "997838829102",
     ),
     AccountDto(
         logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
         name = "신한",
-        number = "997838829102"
-    )
+        number = "997838829102",
+    ),
 )
 val cardList = listOf(
     CardDto(
@@ -64,64 +64,63 @@ val cardList = listOf(
         number = "123456789012",
         idx = 0,
         company = "카드사명",
-        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png"
+        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
     ),
     CardDto(
         name = "카드 별칭 2",
         number = "123456789012",
         idx = 1,
         company = "카드사명",
-        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png"
+        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
     ),
     CardDto(
         name = "카드 별칭 3",
         number = "123456789012",
         idx = 2,
         company = "카드사명",
-        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png"
-    )
+        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
+    ),
 )
 
 @Composable
 fun EditUserScreen(
-    navController: NavHostController
-){
+    navController: NavHostController,
+) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         TopBar(
             navController = navController,
-            title = "회원 정보 수정"
+            title = "회원 정보 수정",
         )
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp)
-        ){
+                .padding(horizontal = 16.dp),
+        ) {
             Spacer(modifier = Modifier.size(16.dp))
             EditName(
                 value = "",
                 onValueChange = {
-
                 },
-                onClick = { //완료 버튼 눌렀을 때
-
-                }
+                onClick = { // 완료 버튼 눌렀을 때
+                },
             )
             Spacer(modifier = Modifier.size(16.dp))
             Text(
                 text = "계좌 목록",
-                style = CustomTextStyle.pretendardBold16
+                style = CustomTextStyle.pretendardBold16,
             )
             Spacer(modifier = Modifier.size(8.dp))
-            Divider(modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(GraphGray)
-                .padding(horizontal = 16.dp)
+            Divider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(GraphGray)
+                    .padding(horizontal = 16.dp),
             )
-            LazyColumn{
-                items(accountList){
+            LazyColumn {
+                items(accountList) {
                     AccountRowItem(
                         logo = it.logo,
                         name = it.name,
@@ -129,42 +128,43 @@ fun EditUserScreen(
                         type = "delete",
                         onDeleted = {
                             // 삭제 로직
-                        }
+                        },
                     )
                 }
             }
             Spacer(modifier = Modifier.size(16.dp))
             PlusButtonWithText(text = "계좌 추가하기") {
-                //계좌 추가하기 화면으로 이동
+                // 계좌 추가하기 화면으로 이동
             }
             Spacer(modifier = Modifier.size(16.dp))
             Text(
                 text = "카드 목록",
-                style = CustomTextStyle.pretendardBold16
+                style = CustomTextStyle.pretendardBold16,
             )
             Spacer(modifier = Modifier.size(8.dp))
-            Divider(modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(GraphGray)
-                .padding(horizontal = 16.dp)
+            Divider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(GraphGray)
+                    .padding(horizontal = 16.dp),
             )
-            LazyColumn{
-                items(cardList){
+            LazyColumn {
+                items(cardList) {
                     CardRowItem(
                         name = it.name,
                         number = it.number,
                         idx = it.idx,
                         type = "delete",
                         onDeleted = {
-                            //삭제 로직
-                        }
+                            // 삭제 로직
+                        },
                     )
                 }
             }
             Spacer(modifier = Modifier.size(16.dp))
             PlusButtonWithText(text = "카드 추가하기") {
-                //카드 추가하기 화면으로 이동
+                // 카드 추가하기 화면으로 이동
             }
         }
     }
@@ -173,13 +173,13 @@ fun EditUserScreen(
 @Composable
 fun PlusButtonWithText(
     text: String,
-    onClick: () -> Unit
-){
+    onClick: () -> Unit,
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxWidth()
-    ){
+        modifier = Modifier.fillMaxWidth(),
+    ) {
         Image(
             painter = painterResource(id = R.drawable.ic_rounded_plus),
             contentDescription = "add button",
@@ -187,12 +187,12 @@ fun PlusButtonWithText(
                 .size(20.dp)
                 .clickable {
                     onClick()
-                }
+                },
         )
         Spacer(modifier = Modifier.size(8.dp))
         Text(
             text = text,
-            style = CustomTextStyle.pretendardMedium12
+            style = CustomTextStyle.pretendardMedium12,
         )
     }
 }
@@ -202,8 +202,8 @@ fun PlusButtonWithText(
 fun EditName(
     value: String,
     onValueChange: (String) -> Unit,
-    onClick: () -> Unit
-){
+    onClick: () -> Unit,
+) {
     val outlinedTextFieldColors = TextFieldDefaults.outlinedTextFieldColors(
         focusedBorderColor = PinkLight, // 포커스가 있을 때 테두리 색상
         unfocusedBorderColor = GraphGray, // 포커스가 없을 때 테두리 색상
@@ -212,14 +212,14 @@ fun EditName(
 
     Text(
         text = "닉네임",
-        style = CustomTextStyle.pretendardBold16
+        style = CustomTextStyle.pretendardBold16,
     )
     Spacer(
-        modifier = Modifier.size(16.dp)
+        modifier = Modifier.size(16.dp),
     )
     Row(
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         OutlinedTextField(
             value = value,
@@ -228,14 +228,14 @@ fun EditName(
                 Text(
                     text = "닉네임을 입력해주세요",
                     style = CustomTextStyle.pretendardRegular12,
-                    color = GraphGray
+                    color = GraphGray,
                 )
             },
             singleLine = true,
             colors = outlinedTextFieldColors,
             shape = RoundedCornerShape(12.dp),
             modifier = Modifier
-                .weight(0.7f) // 80%의 가중치
+                .weight(0.7f), // 80%의 가중치
         )
         Spacer(modifier = Modifier.weight(0.1f))
         Button(
@@ -246,12 +246,12 @@ fun EditName(
             ),
             shape = RoundedCornerShape(8.dp),
             elevation = ButtonDefaults.buttonElevation(4.dp),
-            onClick = onClick
+            onClick = onClick,
         ) {
             Text(
                 text = "완료",
                 style = CustomTextStyle.pretendardBold12,
-                color = White
+                color = White,
             )
         }
     }
@@ -259,6 +259,6 @@ fun EditName(
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
 @Composable
-fun EditUserScreenPreview(){
+fun EditUserScreenPreview() {
     EditUserScreen(navController = rememberNavController())
 }
