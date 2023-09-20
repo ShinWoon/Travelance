@@ -184,56 +184,6 @@ fun DonutGraph() {
     }
 }
 
-// 도넛 차트
-//@Composable
-//fun DoughnutChart(
-//    values: List<Float> = listOf(65f, 40f),
-//    colors: List<Color> = listOf(
-//        PinkDarkest,
-//        GraphGray,
-//    ),
-//    size: Dp = 180.dp,
-//    thickness: Dp = 54.dp,
-//) {
-//    // Sum of all the values
-//    val sumOfValues = values.sum()
-//
-//    // Calculate each proportion
-//    val proportions = values.map {
-//        it * 100 / sumOfValues
-//    }
-//
-//    // Convert each proportion to angle
-//    val sweepAngles = proportions.map {
-//        360 * it / 100
-//    }
-//
-//    Box(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .height(size.times(1.5f)),
-//        contentAlignment = Alignment.Center,
-//    ) {
-//        Canvas(
-//            modifier = Modifier
-//                .size(size = size),
-//        ) {
-//            var startAngle = -90f
-//
-//            for (i in values.indices) {
-//                drawArc(
-//                    color = colors[i],
-//                    startAngle = startAngle,
-//                    sweepAngle = sweepAngles[i],
-//                    useCenter = false,
-//                    style = Stroke(width = thickness.toPx(), cap = StrokeCap.Butt),
-//                )
-//                startAngle += sweepAngles[i]
-//            }
-//        }
-//    }
-//}
-
 @Composable
 fun MoneyAmountComponent(
     title: String,
