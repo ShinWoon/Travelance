@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder
 import com.moneyminions.data.datasource.local.PreferenceDataSource
 import com.moneyminions.data.interceptor.RequestInterceptor
 import com.moneyminions.data.interceptor.ResponseInterceptor
+import com.moneyminions.data.service.BusinessService
 import com.moneyminions.data.service.example.ExampleService
 import dagger.Module
 import dagger.Provides
@@ -22,10 +23,14 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object ServiceModule {
 
+//    @Singleton
+//    @Provides
+//    @Named("BASE_URL")
+//    fun BaseUrl() : String = "https://api.github.com"
     @Singleton
     @Provides
     @Named("BASE_URL")
-    fun BaseUrl() : String = "https://api.github.com"
+    fun BaseUrl() : String = "http://j9d210.p.ssafy.io:8080/"
 
     @Singleton
     @Provides
@@ -65,5 +70,11 @@ object ServiceModule {
     fun provideExampleService(
         retrofit: Retrofit
     ): ExampleService = retrofit.create(ExampleService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideBusinessService(
+        retrofit: Retrofit
+    ): BusinessService = retrofit.create(BusinessService::class.java)
 
 }
