@@ -1,4 +1,4 @@
-package com.moneyminions.data.model.login.response.example
+package com.moneyminions.data.model.example
 
 data class ExampleResponse(
     val id: Long,

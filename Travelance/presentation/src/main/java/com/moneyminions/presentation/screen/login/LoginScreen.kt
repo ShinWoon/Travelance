@@ -40,7 +40,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.moneyminions.domain.model.login.JwtTokenDto
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.navigation.Screen
@@ -85,7 +84,7 @@ fun LoginScreen(
                 }
                 Log.d(TAG, "갱신 전 token : ${loginViewModel.getJwtToken()}")
                 Log.d(TAG, "갱신 전 role : ${loginViewModel.getRole()}")
-                loginViewModel.updateJwtToken(JwtTokenDto(it.accessToken,it.refreshToken))
+                loginViewModel.updateJwtToken(it.accessToken,it.refreshToken)
                 loginViewModel.updateRole(it.role)
                 Log.d(TAG, "갱신된 token : ${loginViewModel.getJwtToken()}")
                 Log.d(TAG, "갱신된 role : ${loginViewModel.getRole()}")

@@ -39,8 +39,8 @@ class PreferenceDataSource @Inject constructor(
 
 
     fun putJwtToken(jwtTokenDto: JwtTokenDto){
-        putString(X_ACCESS_TOKEN, jwtTokenDto.accessToken)
-        putString(X_REFRESH_TOKEN, jwtTokenDto.refreshToken)
+        if(jwtTokenDto.accessToken != null) putString(X_ACCESS_TOKEN, jwtTokenDto.accessToken)
+        if(jwtTokenDto.refreshToken != null) putString(X_REFRESH_TOKEN, jwtTokenDto.refreshToken)
     }
 
     fun getJwtToken(): JwtTokenDto{

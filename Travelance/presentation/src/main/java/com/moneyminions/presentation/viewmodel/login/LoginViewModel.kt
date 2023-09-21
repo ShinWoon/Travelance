@@ -43,7 +43,7 @@ class LoginViewModel @Inject constructor(
                 token != null -> {
                     Log.d(TAG, "kakao login success -> access Token : ${token.accessToken}")
                     Log.d(TAG, "kakao login success -> refresh Token : ${token.refreshToken}")
-                    updateJwtToken(JwtTokenDto(token.accessToken, token.refreshToken))
+                    updateJwtToken(token.accessToken, token.refreshToken)
                     //로그인 api 호출
                     viewModelScope.launch {
                         _loginResult.emit(loginUseCase.invoke("KAKAO"))
@@ -76,8 +76,8 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun updateJwtToken(jwtTokenDto: JwtTokenDto){
-        putJwtTokenUseCase.invoke(jwtTokenDto)
+    fun updateJwtToken(accessToken: String?, refreshToken: String?){
+        putJwtTokenUseCase.invoke(JwtTokenDto(accessToken, refreshToken))
     }
 
     fun updateRole(role: String?){

@@ -9,7 +9,7 @@ import javax.inject.Inject
 class PutJwtTokenUseCase @Inject constructor(
     private val preferenceRepository: PreferenceRepository
 ) {
-    operator fun invoke(jwtToken: JwtTokenDto){
-        return preferenceRepository.putJwtToken(jwtToken)
+    operator fun invoke(jwtTokenDto: JwtTokenDto){
+        return preferenceRepository.putJwtToken(jwtTokenDto)
     }
 }

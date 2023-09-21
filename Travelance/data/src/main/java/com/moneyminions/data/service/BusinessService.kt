@@ -1,10 +1,8 @@
 package com.moneyminions.data.service
 
 import com.moneyminions.data.model.login.request.LoginRequest
-import com.moneyminions.data.model.login.response.login.LoginResponse
-import retrofit2.Response
+import com.moneyminions.data.model.login.response.LoginResponse
 import retrofit2.http.Body
-import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface BusinessService {
