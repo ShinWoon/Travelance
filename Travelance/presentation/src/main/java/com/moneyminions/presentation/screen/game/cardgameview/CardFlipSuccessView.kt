@@ -11,11 +11,11 @@ import com.moneyminions.presentation.common.LottieLoader
 fun CardFlipSuccessView(
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier = modifier.fillMaxSize()) {
-        LottieLoader(
-            lottieFile = R.raw.cardgame_confetti,
-            iteration = 3000,
-            modifier = modifier.fillMaxSize(),
-        )
-    }
+//    Box(modifier = modifier.fillMaxSize()) {
+//        LottieLoader(
+//            lottieFile = R.raw.cardgame_confetti,
+//            iteration = 3000,
+//            modifier = modifier.fillMaxSize(),
+//        )
+//    }
 }
