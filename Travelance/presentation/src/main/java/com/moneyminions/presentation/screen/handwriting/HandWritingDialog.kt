@@ -24,6 +24,8 @@ import com.moneyminions.presentation.common.MinionButtonSet
 import com.moneyminions.presentation.common.TextFieldWithTitle
 import com.moneyminions.presentation.viewmodel.handwriting.HandWritingViewModel
 
+
+private const val TAG = "HandWritingDialog"
 @Composable
 fun HandWritingDialog(
     handWritingViewModel: HandWritingViewModel = hiltViewModel(),
@@ -36,7 +38,9 @@ fun HandWritingDialog(
             shape = RoundedCornerShape(16.dp)
         ) {
             Column(
-                modifier = Modifier.wrapContentSize().padding(16.dp),
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
@@ -76,7 +80,7 @@ fun HandWritingDialog(
                 )
             
                 Spacer(modifier = Modifier.height(16.dp))
-            
+                
                 MinionButtonSet(
                     modifier = Modifier.fillMaxWidth(),
                     contentLeft = "입력",
@@ -94,3 +98,7 @@ fun HandWritingDialog(
         }
     }
 }
+
+
+
+
