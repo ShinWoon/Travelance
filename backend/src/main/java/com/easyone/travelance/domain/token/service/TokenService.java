@@ -33,6 +33,7 @@ public class TokenService {
                 .grantType(GrantType.BEARER.getType())
                 .accessToken(accessToken)
                 .accessTokenExpirePeriod(accessTokenExpirePeriod)
+                .role(member.getRole())
                 .build();
     }
 }
