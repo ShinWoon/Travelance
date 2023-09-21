@@ -76,5 +76,8 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    suspend fun refreshNetworkState(){
+        _loginResult.emit(NetworkResult.Idle)
+    }
 
 }

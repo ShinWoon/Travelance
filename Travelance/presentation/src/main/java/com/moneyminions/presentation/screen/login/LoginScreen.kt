@@ -42,6 +42,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
+import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.login.view.KakaoLoginButtonComponent
 import com.moneyminions.presentation.theme.KakaoLabelColor
 import com.moneyminions.presentation.theme.KakaoYellow
@@ -68,11 +69,22 @@ fun LoginScreen(
         state = loginState,
         errorAction = {
             coroutineScope.launch {
-                snackbarHostState.showSnackbar("dd")
+                snackbarHostState.showSnackbar("로그인 실패")
             }
         },
         successAction = {
             Log.d(TAG, "loginResult : $it ")
+            if(it.role == "MEMBER"){
+                //TODO homeScreen으로 이동
+            }
+            if(it.role=="GUEST"){
+                coroutineScope.launch {
+                    loginViewModel.refreshNetworkState()
+                }
+                navController.navigate(Screen.AccountAuthentication.route){
+                    //TODO Back stack 관리 어떻게 할 지 정해라
+                }
+            }
         }
     )
     Scaffold(
