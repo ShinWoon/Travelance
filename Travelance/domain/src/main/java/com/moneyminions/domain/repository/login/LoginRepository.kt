@@ -5,5 +5,5 @@ import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.login.LoginResultDto
 
 interface LoginRepository {
-    suspend fun login(): NetworkResult<LoginResultDto>
+    suspend fun login(socialType: String): NetworkResult<LoginResultDto>
 }

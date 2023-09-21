@@ -1,4 +1,4 @@
-package com.moneyminions.data.model.response.login
+package com.moneyminions.data.model.login.response.login
 
 
 import com.google.gson.annotations.SerializedName

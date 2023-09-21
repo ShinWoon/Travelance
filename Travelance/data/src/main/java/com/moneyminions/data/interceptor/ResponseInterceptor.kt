@@ -3,7 +3,7 @@ package com.moneyminions.data.interceptor
 import android.util.Log
 import com.google.gson.Gson
 import com.moneyminions.data.datasource.local.PreferenceDataSource
-import com.moneyminions.data.model.response.error.ErrorResponse
+import com.moneyminions.data.model.login.response.error.ErrorResponse
 import okhttp3.Interceptor
 import okhttp3.Response
 import okhttp3.ResponseBody

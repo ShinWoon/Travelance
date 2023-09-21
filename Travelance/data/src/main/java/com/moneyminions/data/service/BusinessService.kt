@@ -1,7 +1,7 @@
 package com.moneyminions.data.service
 
-import com.moneyminions.data.model.request.LoginRequest
-import com.moneyminions.data.model.response.login.LoginResponse
+import com.moneyminions.data.model.login.request.LoginRequest
+import com.moneyminions.data.model.login.response.login.LoginResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header
@@ -13,6 +13,6 @@ interface BusinessService {
      * 로그인 api
      */
     @POST("api/oauth/login")
-    suspend fun login(@Body loginRequest: LoginRequest = LoginRequest("KAKAO")): LoginResponse
+    suspend fun login(@Body loginRequest: LoginRequest): LoginResponse
 
 }

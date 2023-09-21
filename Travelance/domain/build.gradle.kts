@@ -50,4 +50,6 @@ dependencies {
     implementation("com.google.dagger:hilt-android:$dagger_version")
     kapt("com.google.dagger:hilt-android-compiler:$dagger_version")
     implementation("androidx.hilt:hilt-navigation-compose:$hilt_version")
+
+
 }

@@ -46,7 +46,7 @@ class LoginViewModel @Inject constructor(
                     updateJwtToken(JwtTokenDto(token.accessToken, token.refreshToken))
                     //로그인 api 호출
                     viewModelScope.launch {
-                        _loginResult.emit(loginUseCase.invoke())
+                        _loginResult.emit(loginUseCase.invoke("KAKAO"))
                     }
                 }
             }
