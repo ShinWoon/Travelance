@@ -3,7 +3,8 @@ spring:
     active: jwt,oauth
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/travel
+    url: jdbc:mysql://j9d210.p.ssafy.io:3307/travel
+#    url: jdbc:mysql://localhost:3306/travel
     username: root
     password: qwe123
 
