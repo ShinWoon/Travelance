@@ -1,9 +1,13 @@
 package com.moneyminions.presentation.viewmodel.game
 
 import android.util.Log
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.moneyminions.domain.model.friend.FriendDto
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 private const val TAG = "ChooseTeamGameViewModel"
@@ -13,7 +17,7 @@ class ChooseTeamGameViewModel @Inject constructor() : ViewModel() {
     data class FriendDto(val email: String, val nickName: String, val profileUrl: String)
 
     val teammate = mutableListOf(
-        FriendDto("scoups@example.com", "에스쿱스", "image_url_1"),
+        FriendDto("scoups@example.com", "에스쿱스", "https://i.namu.wiki/i/-qrEP8xH9rwiWXnV5aTPgpuFORmvdzm-g-sK3v_Rg456mVv7gDnCOW8xpNxQ2GTl2SHlde8xmVmijBFZRMEeNlAMe0qyKvRH15reR-7D1aTMi5Cl88qOSXKBwHAQKBDpZ3hltnmjXnOhMDDUKR-5yw.webp"),
         FriendDto("jeonghan@example.com", "정한", "image_url_2"),
         FriendDto("joshua@example.com", "조슈아", "image_url_3"),
         FriendDto("jun@example.com", "준", "image_url_4"),
@@ -28,10 +32,14 @@ class ChooseTeamGameViewModel @Inject constructor() : ViewModel() {
         FriendDto("dino@example.com", "디노", "image_url_13"),
     )
 
-//    val teamCnt = mutableStateOf(0)
-    val teamCnt = 3
-    private val teams = Array(teamCnt) { mutableListOf<Int>() }
+    private var _teamCnt = MutableStateFlow(0)
+    var teamCnt = _teamCnt.asStateFlow()
+//    val teamCnt = 3
+    private val teams = Array(teamCnt.value) { mutableListOf<Int>() }
     // api로 해당 방의 친구 목록 불러 오기
+
+    private var _participantsList = MutableStateFlow(listOf<FriendDto>())
+    var participantsList = _participantsList.asStateFlow()
 
     fun chooseTeam() {
 //        val teammateList = Array(teammate.size) { it }
@@ -39,7 +47,7 @@ class ChooseTeamGameViewModel @Inject constructor() : ViewModel() {
         val shuffledList = teammateList.shuffled()
 
         for ((index, teammate) in shuffledList.withIndex()) {
-            val teamIndex = index % teamCnt
+            val teamIndex = index % teamCnt.value
             teams[teamIndex].add(teammate)
         }
 
@@ -50,8 +58,9 @@ class ChooseTeamGameViewModel @Inject constructor() : ViewModel() {
 
     // email, nickname, profileUrl
     fun getTeammateInfo(): Array<MutableList<FriendDto>> {
+        Log.d(TAG, "getTeammateInfo: ${teamCnt.value}")
         chooseTeam()
-        val teammateRandomList = Array(teamCnt) { mutableListOf<FriendDto>() }
+        val teammateRandomList = Array(teamCnt.value) { mutableListOf<FriendDto>() }
         for ((index, team) in teams.withIndex()) {
             for (teammateInfo in team) {
                 teammateRandomList[index].add(teammate[teammateInfo])
