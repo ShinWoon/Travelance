@@ -4,6 +4,8 @@ import com.moneyminions.data.datasource.remote.example.ExampleDataSource
 import com.moneyminions.data.datasource.remote.example.ExampleDataSourceImpl
 import com.moneyminions.data.datasource.remote.login.LoginDataSource
 import com.moneyminions.data.datasource.remote.login.LoginDataSourceImpl
+import com.moneyminions.data.datasource.remote.travellist.TravelListDataSource
+import com.moneyminions.data.datasource.remote.travellist.TravelListDataSourceImpl
 import com.moneyminions.data.service.BusinessService
 import com.moneyminions.data.service.example.ExampleService
 import dagger.Module
@@ -25,5 +27,11 @@ object DataSourceModule {
     @Provides
     fun provideLoginDataSource(businessService: BusinessService): LoginDataSource {
         return LoginDataSourceImpl(businessService)
+    }
+    
+    @Singleton
+    @Provides
+    fun provideTravelListDataSource(businessService: BusinessService): TravelListDataSource {
+        return TravelListDataSourceImpl(businessService)
     }
 }
