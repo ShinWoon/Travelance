@@ -2,10 +2,10 @@ package com.moneyminions.presentation.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -46,13 +46,13 @@ fun NavGraph(
         navController = navController,
         startDestination = startDestination,
         enterTransition = { fadeIn(tween(500)) },
-        exitTransition = { fadeOut(tween(500)) },
+//        exitTransition = { fadeOut(tween(300)) },
         popEnterTransition = { fadeIn(tween(500)) },
-        popExitTransition = { fadeOut(tween(500)) },
+//        popExitTransition = { fadeOut(tween(500)) },
 //        enterTransition = { EnterTransition.None },
-//        exitTransition = { ExitTransition.None },
+        exitTransition = { ExitTransition.None },
 //        popEnterTransition = { EnterTransition.None },
-//        popExitTransition = { ExitTransition.None },
+        popExitTransition = { ExitTransition.None },
     ) {
         composable(
             route = Screen.Example.route,
@@ -145,8 +145,8 @@ fun NavGraph(
             LoginScreen(navController = navController)
         }
         composable(
-            route = Screen.SubHome.route
-        ){
+            route = Screen.SubHome.route,
+        ) {
             HomeScreen(navController = navController)
         }
         composable(

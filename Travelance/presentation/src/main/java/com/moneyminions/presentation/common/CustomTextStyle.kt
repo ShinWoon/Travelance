@@ -8,6 +8,12 @@ import com.moneyminions.presentation.R
 
 object CustomTextStyle {
 
+    val pretendardBold32 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_bold)),
+        fontSize = 32.sp,
+        letterSpacing = 4.sp,
+    )
+
     val pretendardBold20 = TextStyle(
         fontFamily = FontFamily(Font(R.font.pretendard_bold)),
         fontSize = 20.sp,
@@ -203,9 +209,8 @@ object CustomTextStyle {
     val pretendardBold24 = TextStyle(
         fontFamily = FontFamily(Font(R.font.pretendard_bold)),
         fontSize = 24.sp,
-        letterSpacing = 2.sp
+        letterSpacing = 2.sp,
     )
-
 
     val pretendardBoldMoney20 = TextStyle(
         fontFamily = FontFamily(Font(R.font.pretendard_bold)),

@@ -123,4 +123,6 @@ dependencies {
     
     implementation("androidx.compose.foundation:foundation:1.1.0")
     implementation("androidx.compose.animation:animation:1.1.0")
+
+    implementation("com.wajahatkarim:flippable:1.0.6")
 }
