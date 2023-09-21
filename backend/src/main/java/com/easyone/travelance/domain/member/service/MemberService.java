@@ -1,6 +1,8 @@
 package com.easyone.travelance.domain.member.service;
 
 
+import com.easyone.travelance.domain.account.entity.Account;
+import com.easyone.travelance.domain.member.dto.MyAccountDto;
 import com.easyone.travelance.domain.member.entity.MainAccount;
 import com.easyone.travelance.domain.member.entity.Member;
 //import com.easyone.travelance.domain.member.entity.MemberAuth;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,6 +89,21 @@ public class MemberService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_EXISTS));
     }
 
+    public List<MyAccountDto> findAllAccountsForMember(Member member) {
+        MainAccount mainAccount = member.getMainAccount();
+        List<Account> accounts = mainAccount.getAccountList();
 
+        List<MyAccountDto> accountDtos = new ArrayList<>();
+        for (Account account : accounts) {
+            MyAccountDto accountDto = new MyAccountDto();
+            accountDto.setId(account.getId());
+            accountDto.setAccount(account.getAccount());
+            accountDto.setAccountName(account.getAccountName());
+            accountDto.setAccountUrl(account.getAccountUrl());
+            accountDtos.add(accountDto);
+        }
+
+        return accountDtos;
+    }
 
 }

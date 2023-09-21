@@ -2,10 +2,12 @@ package com.easyone.travelance.domain.member.controller;
 
 
 import com.easyone.travelance.domain.account.dto.SelectedAccountRequestDto;
+import com.easyone.travelance.domain.account.entity.Account;
 import com.easyone.travelance.domain.account.service.AccountService;
 import com.easyone.travelance.domain.card.dto.SelectedCardRequestDto;
 import com.easyone.travelance.domain.card.service.CardService;
 import com.easyone.travelance.domain.member.dto.AdditionalRequest;
+import com.easyone.travelance.domain.member.dto.MyAccountDto;
 import com.easyone.travelance.domain.member.dto.NicknameDto;
 import com.easyone.travelance.domain.member.entity.MainAccount;
 import com.easyone.travelance.domain.member.entity.Member;
@@ -104,6 +106,9 @@ public class MemberController {
         
         // 계좌 등록 로직
         List<SelectedAccountRequestDto> selectedAccountRequestDtoList = additionalRequest.getAccountList();
+        
+        // 주 계좌 등록
+        member.getMainAccount().setOneAccount(selectedAccountRequestDtoList.get(0).getAccount());
 
         MainAccount mainAccount = member.getMainAccount();
 //        log.warn("mainAccount : " + mainAccount);
@@ -125,4 +130,14 @@ public class MemberController {
                 .header("newToken", newToken.getAccessToken())
                 .body(newToken);
     }
+
+
+    @Operation(summary = "내가 등록한 계좌 조회", description = "내가 등록한 계좌를 조회하는 메서드입니다.")
+    @GetMapping("/search/myaccount")
+    public ResponseEntity<List<MyAccountDto>> myAccount(@MemberInfo MemberInfoDto memberInfoDto){
+        Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
+        List<MyAccountDto> accounts = memberService.findAllAccountsForMember(member);
+        return ResponseEntity.ok(accounts);
+    }
+
 }
