@@ -50,19 +50,22 @@ fun WordGameScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if(wordGameViewModel.isShowWord.value){
+                if (wordGameViewModel.isShowWord.value) {
                     WordComponent()
-                }else{
-                    if(wordGameViewModel.isStart.value) {
+                } else {
+                    if (wordGameViewModel.isStart.value) {
                         LottieLoader(
                             modifier = Modifier.size(128.dp),
                             res = R.raw.lottie_count,
                             isLoop = false
-                        ){
+                        ) {
                             wordGameViewModel.setIsShowWord(true)
                         }
-                    }else{
-                        Box(modifier = Modifier.size(128.dp))
+                    } else {
+                        LottieLoader(
+                            modifier = Modifier.size(256.dp),
+                            res = R.raw.lottie_start_wordgame
+                        ){}
                     }
                 }
                 Spacer(modifier = Modifier.size(16.dp))
@@ -80,7 +83,6 @@ fun WordGameScreen(
                     wordGameViewModel.setSecondConsonant()
                 }
             }
-
         }
     }
 }

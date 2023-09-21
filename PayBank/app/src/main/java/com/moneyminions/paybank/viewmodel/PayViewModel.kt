@@ -1,4 +1,4 @@
-package com.moneyminions.paybank
+package com.moneyminions.paybank.viewmodel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf

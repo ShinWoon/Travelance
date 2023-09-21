@@ -31,26 +31,25 @@ fun TextFieldWithTitle(
     hint: String?,
     value: String,
     onValueChange: (String) -> Unit,
-    keyboardType: KeyboardType? = KeyboardType.Text
-){
-    
+    keyboardType: KeyboardType? = KeyboardType.Text,
+) {
     val outlinedTextFieldColors = TextFieldDefaults.outlinedTextFieldColors(
         focusedBorderColor = PinkLight, // 포커스가 있을 때 테두리 색상
         unfocusedBorderColor = GraphGray, // 포커스가 없을 때 테두리 색상
         cursorColor = Color.Black, // 커서 색상
     )
     var isHintVisible by remember { mutableStateOf(value.isEmpty()) }
-    
+
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Text(
             text = title,
             style = CustomTextStyle.pretendardBold16,
-            modifier = Modifier.layoutId("textTitle")
+            modifier = Modifier.layoutId("textTitle"),
         )
         Spacer(
-            modifier = Modifier.size(8.dp)
+            modifier = Modifier.size(8.dp),
         )
         OutlinedTextField(
             value = value,
@@ -60,27 +59,26 @@ fun TextFieldWithTitle(
             },
             placeholder = {
                 Text(
-                    text = hint?:"",
+                    text = hint ?: "",
                     style = CustomTextStyle.pretendardRegular12,
-                    color = GraphGray
+                    color = GraphGray,
                 )
             },
             singleLine = true,
             colors = outlinedTextFieldColors,
             shape = RoundedCornerShape(12.dp),
             keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = keyboardType!!
+                keyboardType = keyboardType!!,
             ),
             modifier = Modifier
                 .layoutId("textField")
-                .fillMaxWidth()
+                .fillMaxWidth(),
         )
     }
 }
 
-
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
 @Composable
-fun TextFieldWithTitlePreview(){
+fun TextFieldWithTitlePreview() {
     TextFieldWithTitle(title = "title", hint = "hint", value = "", onValueChange = {})
 }

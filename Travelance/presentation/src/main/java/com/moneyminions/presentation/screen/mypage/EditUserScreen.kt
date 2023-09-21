@@ -31,10 +31,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.moneyminions.presentation.R
-import com.moneyminions.presentation.common.CustomTextStyle
-import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.common.AccountRowItem
 import com.moneyminions.presentation.common.CardRowItem
+import com.moneyminions.presentation.common.CustomTextStyle
+import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.screen.mypage.view.AccountListComponent
 import com.moneyminions.presentation.screen.mypage.view.CardListComponent
 import com.moneyminions.presentation.screen.mypage.view.EditName
@@ -48,29 +48,27 @@ import com.moneyminions.presentation.theme.White
 
 @Composable
 fun EditUserScreen(
-    navController: NavHostController
-){
+    navController: NavHostController,
+) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         TopBar(
             navController = navController,
-            title = "회원 정보 수정"
+            title = "회원 정보 수정",
         )
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp)
-        ){
+                .padding(horizontal = 16.dp),
+        ) {
             Spacer(modifier = Modifier.size(16.dp))
             EditName(
                 value = "",
                 onValueChange = {
-
                 },
-                onClick = { //완료 버튼 눌렀을 때
-
-                }
+                onClick = { // 완료 버튼 눌렀을 때
+                },
             )
             Spacer(modifier = Modifier.size(16.dp))
             AccountListComponent()
@@ -84,6 +82,6 @@ fun EditUserScreen(
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
 @Composable
-fun EditUserScreenPreview(){
+fun EditUserScreenPreview() {
     EditUserScreen(navController = rememberNavController())
 }
