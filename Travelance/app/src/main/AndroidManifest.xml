@@ -34,7 +34,7 @@
 
                 <!-- "kakao${YOUR_NATIVE_APP_KEY}://kakaolink" 형식의 앱 실행 스킴을 설정하는데 사용 -->
                 <data android:host="kakaolink"
-                    android:scheme="kakao2c884c14ef5da98d71afb9875e8313f6" />
+                    android:scheme="kakaodb2ceb8eb8e28b57ce891b7f53534870" />
                 <!--나중에 KEY 값 빼줘야 함 native_key-->
             </intent-filter>
         </activity>
@@ -48,7 +48,7 @@
 
                 <!-- Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" -->
                 <data android:host="oauth"
-                    android:scheme="kakao2c884c14ef5da98d71afb9875e8313f6" />
+                    android:scheme="kakaodb2ceb8eb8e28b57ce891b7f53534870" />
                 <!--나중에 KEY 값 빼줘야 함 native_key-->
             </intent-filter>
         </activity>

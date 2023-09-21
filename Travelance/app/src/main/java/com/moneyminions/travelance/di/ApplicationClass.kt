@@ -8,13 +8,11 @@ import dagger.hilt.android.HiltAndroidApp
 class ApplicationClass: Application() {
 
     companion object{
-        const val X_ACCESS_TOKEN = "access_token"
-        const val X_REFRESH_TOKEN = "refresh_token"
     }
 
     override fun onCreate() {
         super.onCreate()
 
-        KakaoSdk.init(this, "2c884c14ef5da98d71afb9875e8313f6")
+        KakaoSdk.init(this, "db2ceb8eb8e28b57ce891b7f53534870")
     }
 }

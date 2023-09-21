@@ -1,7 +1,7 @@
 package com.moneyminions.data.service
 
 import android.util.Log
-import com.moneyminions.data.model.NetworkResult
+import com.moneyminions.domain.model.NetworkResult
 
 internal inline fun <T> handleApi(transform: () -> T): NetworkResult<T> = try {
     NetworkResult.Success(transform.invoke())
