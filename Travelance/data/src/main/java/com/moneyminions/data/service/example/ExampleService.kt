@@ -1,6 +1,6 @@
 package com.moneyminions.data.service.example
 
-import com.moneyminions.data.model.response.example.ExampleResponse
+import com.moneyminions.data.model.example.ExampleResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 

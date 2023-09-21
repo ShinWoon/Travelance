@@ -1,6 +1,7 @@
 package com.moneyminions.presentation.screen.travellist
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -11,6 +12,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,8 +29,11 @@ import com.moneyminions.presentation.screen.travellist.view.TravelCardView
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.DarkGray
 import com.moneyminions.presentation.theme.PinkDarkest
+import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.travellist.TravelListViewModel
+import kotlinx.coroutines.launch
 
+private const val TAG = "TravelListScreen_D210"
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,6 +42,17 @@ fun TravelListScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
+    val coroutineScope = rememberCoroutineScope()
+    val travelListState by travelListViewModel.travelList.collectAsState()
+    NetworkResultHandler(
+        state = travelListState,
+        errorAction = {
+        },
+        successAction = {
+            Log.d(TAG, "travelListResult : $it ")
+        }
+    )
+
     Scaffold(
         floatingActionButton = {
             ExtendedFloatingActionButton(

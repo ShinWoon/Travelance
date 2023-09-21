@@ -1,4 +1,4 @@
-package com.moneyminions.domain.model.travellist.request
+package com.moneyminions.data.model.travellist.request
 
 data class CreateTravelRoomRequest(
     var budget: Int,

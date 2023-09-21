@@ -1,7 +1,6 @@
 package com.moneyminions.data.datasource.remote.login
 
-import android.content.Context
-import com.moneyminions.data.model.response.login.LoginResponse
+import com.moneyminions.data.model.login.response.LoginResponse
 
 interface LoginDataSource {
     suspend fun login(): LoginResponse

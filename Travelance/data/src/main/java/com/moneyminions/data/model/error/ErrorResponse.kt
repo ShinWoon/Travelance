@@ -1,4 +1,4 @@
-package com.moneyminions.data.model.response.error
+package com.moneyminions.data.model.error
 
 import com.google.gson.annotations.SerializedName
 

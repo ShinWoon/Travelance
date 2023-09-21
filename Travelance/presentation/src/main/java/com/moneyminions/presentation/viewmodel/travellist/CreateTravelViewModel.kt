@@ -3,12 +3,16 @@ package com.moneyminions.presentation.viewmodel.travellist
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.moneyminions.domain.model.travellist.TravelRoomDto
+import com.moneyminions.domain.usecase.travellist.CreateTravelRoomUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CreateTravelViewModel @Inject constructor(
-
+    private val createTravelRoomUseCase: CreateTravelRoomUseCase
 ): ViewModel() {
 
     private val _travelName = mutableStateOf("")
@@ -35,4 +39,9 @@ class CreateTravelViewModel @Inject constructor(
         _endDate.value = date
     }
 
+    fun createTravelRoom(travelRoomDto: TravelRoomDto) {
+        viewModelScope.launch {
+            createTravelRoomUseCase.invoke(travelRoomDto)
+        }
+    }
 }
