@@ -1,5 +1,6 @@
 package com.easyone.travelance.domain.account.controller;
 
+import com.easyone.travelance.domain.account.dto.BalanceRequestDto;
 import com.easyone.travelance.domain.account.dto.OneCheckRequestDto;
 import com.easyone.travelance.domain.account.dto.OneRequestDto;
 import com.easyone.travelance.domain.account.dto.SelectedAccountRequestDto;
@@ -56,8 +57,19 @@ public class AccountController {
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND)); // 만약 데이터가 없을 경우의 처리
     }
 
+    @Operation(summary = "주 계좌 잔액 조회", description = "주 계좌의 잔액을 조회합니다.")
+    @PostMapping(value = "search/balance")
+    public Mono<ResponseEntity<Object>> searchBalance(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody BalanceRequestDto balanceRequestDto){
+        // 로그인한 사람
+        Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
 
-        @Operation(summary = "전체계좌 조회", description = "나의 모든 계좌를 조회하는 메서드 입니다")
+        return accountService.searchBalance(member, balanceRequestDto)
+                .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND)); // 만약 데이터가 없을 경우의 처리
+    }
+
+
+    @Operation(summary = "전체계좌 조회", description = "나의 모든 계좌를 조회하는 메서드 입니다")
     @PostMapping("/allaccount")
     public Mono<ResponseEntity<List<Object>>> allAccount(@MemberInfo MemberInfoDto memberInfoDto) {
         Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());

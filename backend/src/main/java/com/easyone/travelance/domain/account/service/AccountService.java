@@ -1,12 +1,10 @@
 package com.easyone.travelance.domain.account.service;
 
-import com.easyone.travelance.domain.account.dto.AllAccountRequestDto;
-import com.easyone.travelance.domain.account.dto.OneCheckRequestDto;
-import com.easyone.travelance.domain.account.dto.OneRequestDto;
-import com.easyone.travelance.domain.account.dto.SelectedAccountRequestDto;
+import com.easyone.travelance.domain.account.dto.*;
 import com.easyone.travelance.domain.account.entity.Account;
 import com.easyone.travelance.domain.account.respository.AccountRepository;
 import com.easyone.travelance.domain.member.entity.MainAccount;
+import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.respository.MainAccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,10 +40,13 @@ public class AccountService {
     @Autowired
     private MainAccountRepository mainAccountRepository;
 
+    @Value("http://localhost:8081")
+    private String Url;
+
 
     // 1원 이체 요청
     public Mono<Object> oneTransferMoney(String name, String bankName, String account){
-        return webClientBuilder.baseUrl("http://localhost:8081")
+        return webClientBuilder.baseUrl(Url)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .defaultHeader(authTokenHeaderName, authToken)
                 .build()
@@ -58,7 +59,7 @@ public class AccountService {
 
     // 1원 이체 확인
     public Mono<Object> oneCheckMoney(String name, String bankName, String account, String verifyCode){
-        return webClientBuilder.baseUrl("http://localhost:8081")
+        return webClientBuilder.baseUrl(Url)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .defaultHeader(authTokenHeaderName, authToken)
                 .build()
@@ -67,6 +68,31 @@ public class AccountService {
                 .bodyValue(new OneCheckRequestDto(name, bankName, account,verifyCode)) // 요청 바디에 데이터를 설정합니다.
                 .retrieve()
                 .bodyToMono(Object.class); // 응답을 Mono<OneResponseDto> 형태로 받습니다.
+    }
+
+    // 주 계좌 잔액 조회
+    public Mono<Object> searchBalance(Member member, BalanceRequestDto balanceRequestDto){
+        // 받은 데이터
+        String requestPrivateId = balanceRequestDto.getPrivateId();
+        String requestAccount = balanceRequestDto.getAccount();
+
+        String memberPrivateId = member.getPrivateId();
+        String memberAccount = member.getMainAccount().getOneAccount();
+
+        if (requestPrivateId.equals(memberPrivateId) && requestAccount.equals(memberAccount)){
+            return webClientBuilder.baseUrl(Url)
+                    .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .defaultHeader(authTokenHeaderName, authToken)
+                    .build()
+                    .post()
+                    .uri("/bank/account/search/balance")
+                    .bodyValue(new BalanceRequestDto(requestPrivateId,requestAccount))
+                    .retrieve()
+                    .bodyToMono(Object.class); // 응답을 Mono<OneResponseDto> 형태로 받습니다.
+        }
+        else{
+            throw new RuntimeException("사용자 정보와 일치하지 않습니다");
+        }
     }
 
 
