@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 spring:
   profiles:
@@ -36,13 +36,13 @@ logging:
   level:
     org.hibernate.SQL: debug
 
-#  kafka:
-#    consumer:
-#      bootstrap-servers: localhost:9090
-#      group-id: my_group
-#      auto-offset-reset: earliest
-#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-#      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9090
+      group-id: my_group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
 feign:
   client:

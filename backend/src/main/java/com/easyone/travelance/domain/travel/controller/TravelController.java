@@ -27,7 +27,7 @@ public class TravelController {
     private final MemberService memberService;
 
     // 방 만들기
-    @Operation(summary = "여행방 만들기", description = "요청 시, 채팅방을 만듭니다. " +
+    @Operation(summary = "여행방 생성", description = "요청 시, 채팅방을 만듭니다. " +
             "travelName: 여행이름, location: 여행장소, startDate:여행시작일, endDate: 여행종료일, budget: 예산")
     @PostMapping(value = "")
     public ResponseEntity<?> MakeRoom(@RequestBody RoomInfoRequestDto roomInfoRequestDto) {
