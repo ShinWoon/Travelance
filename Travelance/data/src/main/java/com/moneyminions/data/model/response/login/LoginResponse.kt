@@ -1,7 +1,19 @@
 package com.moneyminions.data.model.response.login
 
+
+import com.google.gson.annotations.SerializedName
+
 data class LoginResponse(
-    val tokenId: String,
-    val name: String,
+    @SerializedName("accessToken")
+    val accessToken: String,
+    @SerializedName("accessTokenExpirationPeriod")
+    val accessTokenExpirationPeriod: String,
+    @SerializedName("grantType")
+    val grantType: String,
+    @SerializedName("refreshToken")
+    val refreshToken: String,
+    @SerializedName("refreshTokenExpirationPeriod")
+    val refreshTokenExpirationPeriod: String,
+    @SerializedName("role")
     val role: String
 )
