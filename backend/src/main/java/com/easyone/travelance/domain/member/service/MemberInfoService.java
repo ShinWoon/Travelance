@@ -17,13 +17,15 @@ public class MemberInfoService {
     
     // 추가정보 업데이트
     @Transactional
-    public MemberDto.Response updateAdditionalInfo(String email) {
+    public MemberDto.Response updateAdditionalInfo(String password, String nickname, String email) {
         Member member = memberService.findMemberByEmail(email);
 
-        member.updateRole(Role.MEMBER);
+        member.updateAdditionalInfo(nickname,password, Role.MEMBER);
 
         return MemberDto.Response.builder()
                 .email(member.getEmail())
+                .nickname(member.getNickname())
+                .password(member.getPassword())
                 .role(member.getRole())
                 .build();
     }
