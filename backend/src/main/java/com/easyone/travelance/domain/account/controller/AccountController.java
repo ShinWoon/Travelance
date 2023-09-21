@@ -1,9 +1,6 @@
 package com.easyone.travelance.domain.account.controller;
 
-import com.easyone.travelance.domain.account.dto.BalanceRequestDto;
-import com.easyone.travelance.domain.account.dto.OneCheckRequestDto;
-import com.easyone.travelance.domain.account.dto.OneRequestDto;
-import com.easyone.travelance.domain.account.dto.SelectedAccountRequestDto;
+import com.easyone.travelance.domain.account.dto.*;
 import com.easyone.travelance.domain.account.service.AccountService;
 import com.easyone.travelance.domain.member.entity.MainAccount;
 import com.easyone.travelance.domain.member.entity.Member;
@@ -58,7 +55,7 @@ public class AccountController {
     }
 
     @Operation(summary = "주 계좌 잔액 조회", description = "주 계좌의 잔액을 조회합니다.")
-    @PostMapping(value = "search/balance")
+    @PostMapping(value = "/search/balance")
     public Mono<ResponseEntity<Object>> searchBalance(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody BalanceRequestDto balanceRequestDto){
         // 로그인한 사람
         Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
@@ -66,6 +63,38 @@ public class AccountController {
         return accountService.searchBalance(member, balanceRequestDto)
                 .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND)); // 만약 데이터가 없을 경우의 처리
+    }
+
+    @Operation(summary = "계좌 이체", description = "요청시 계좌이체가 실행됩니다."+"\n\n### [DTO] \n\n" + "```\n\n {\n" +
+            "    \"password\"(사용자 비밀번호): \"1234\",\n" +
+            "    \"depositNumber\"(내 계좌): \"기입 금지(로그인한 사용자의 주 계좌 들고옴)\",\n" +
+            "    \"amount\"(보낼 금액): 2000,\n" +
+            "    \"memo\": \"테스트\",\n" +
+            "    \"transferAt\": \"2023-09-21T07:45:07.519Z\",\n" +
+            "    \"withdrawalNumber\"(받는 사람): \"6307027645158882\"\n" +
+            "}\n\n```\n\n")
+    @PostMapping(value = "/transfer")
+    public Mono<ResponseEntity<String>> transferAccount(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody TransferRequestDto transferRequestDto){
+        // 로그인한 사람
+        Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
+        // 주거래계좌
+        String account = member.getMainAccount().getOneAccount();
+
+        // 내 비밀번호
+        String myPassword = member.getPassword();
+        // 요청받은 비밀번호
+        String requestPassword = transferRequestDto.getPassword();
+
+        if (myPassword.equals(requestPassword)){
+            return accountService.transferAccount(account,transferRequestDto)
+                    .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
+                    .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND)); // 만약 데이터가 없을 경우의 처리
+        }
+        else{
+            throw new RuntimeException("비밀번호가 일치하지 않습니다");
+        }
+
+
     }
 
 

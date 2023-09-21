@@ -70,6 +70,20 @@ public class AccountService {
                 .bodyToMono(Object.class); // 응답을 Mono<OneResponseDto> 형태로 받습니다.
     }
 
+    // 계좌이체
+    public Mono<String> transferAccount(String account, TransferRequestDto transferRequestDto){
+
+        return webClientBuilder.baseUrl(Url)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .defaultHeader(authTokenHeaderName, authToken)
+                .build()
+                .post()
+                .uri("/bank/account/transfer")
+                .bodyValue(new TransferRequestDto(account, transferRequestDto.getAmount(), transferRequestDto.getMemo(),transferRequestDto.getTransferAt(),transferRequestDto.getWithdrawalNumber())) // 요청 바디에 데이터를 설정합니다.
+                .retrieve()
+                .bodyToMono(String.class); // 응답을 Mono<OneResponseDto> 형태로 받습니다.
+    }
+
     // 주 계좌 잔액 조회
     public Mono<Object> searchBalance(Member member, BalanceRequestDto balanceRequestDto){
         // 받은 데이터
@@ -97,7 +111,7 @@ public class AccountService {
 
 
     public Flux<Object> allAccount(String privateId) {
-        return webClientBuilder.baseUrl("http://localhost:8081") // API 엔드포인트를 설정합니다.
+        return webClientBuilder.baseUrl(Url) // API 엔드포인트를 설정합니다.
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .defaultHeader(authTokenHeaderName, authToken)
                 .build()
