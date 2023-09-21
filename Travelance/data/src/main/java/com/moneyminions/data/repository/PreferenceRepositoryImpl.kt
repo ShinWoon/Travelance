@@ -15,9 +15,16 @@ class PreferenceRepositoryImpl @Inject constructor(
         preferenceDataSource.putJwtToken(jwtTokenDto)
     }
 
-    override fun putRole(role: String) {
+    override fun getJwtToken(): JwtTokenDto {
+        return preferenceDataSource.getJwtToken()
+    }
+
+    override fun putRole(role: String?) {
         preferenceDataSource.putRole(role)
     }
 
+    override fun getRole(): String {
+        return preferenceDataSource.getRole()
+    }
 
 }

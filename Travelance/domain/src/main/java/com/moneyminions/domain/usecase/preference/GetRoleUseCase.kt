@@ -4,10 +4,10 @@ import com.moneyminions.domain.model.login.JwtTokenDto
 import com.moneyminions.domain.repository.PreferenceRepository
 import javax.inject.Inject
 
-class PutRoleUseCase @Inject constructor(
+class GetRoleUseCase@Inject constructor(
     private val preferenceRepository: PreferenceRepository
 ) {
-    operator fun invoke(role: String?){
-        return preferenceRepository.putRole(role)
+    operator fun invoke(): String{
+        return preferenceRepository.getRole()
     }
 }

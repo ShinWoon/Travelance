@@ -45,13 +45,17 @@ class PreferenceDataSource @Inject constructor(
 
     fun getJwtToken(): JwtTokenDto{
         return JwtTokenDto(
-            getString(X_ACCESS_TOKEN,null)!!,
-            getString(X_REFRESH_TOKEN,null)!!
+            getString(X_ACCESS_TOKEN),
+            getString(X_REFRESH_TOKEN)
         )
     }
 
-    fun putRole(role: String){
-        editor.putString(X_ROLE, role)
+    fun putRole(role: String?){
+        putString(X_ROLE, role)
+    }
+
+    fun getRole(): String{
+        return getString(X_ROLE) ?: "NONE"
     }
 
 }

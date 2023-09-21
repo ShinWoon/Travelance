@@ -40,6 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.moneyminions.domain.model.login.JwtTokenDto
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.navigation.Screen
@@ -54,6 +55,7 @@ import com.moneyminions.presentation.viewmodel.login.LoginViewModel
 import kotlinx.coroutines.launch
 
 private const val TAG = "LoginScreen D210"
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LoginScreen(
@@ -81,6 +83,12 @@ fun LoginScreen(
                 coroutineScope.launch {
                     loginViewModel.refreshNetworkState()
                 }
+                Log.d(TAG, "갱신 전 token : ${loginViewModel.getJwtToken()}")
+                Log.d(TAG, "갱신 전 role : ${loginViewModel.getRole()}")
+                loginViewModel.updateJwtToken(JwtTokenDto(it.accessToken,it.refreshToken))
+                loginViewModel.updateRole(it.role)
+                Log.d(TAG, "갱신된 token : ${loginViewModel.getJwtToken()}")
+                Log.d(TAG, "갱신된 role : ${loginViewModel.getRole()}")
                 navController.navigate(Screen.AccountAuthentication.route){
                     //TODO Back stack 관리 어떻게 할 지 정해라
                 }
