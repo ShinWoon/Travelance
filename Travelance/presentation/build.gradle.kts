@@ -125,6 +125,11 @@ dependencies {
     implementation("androidx.compose.foundation:foundation:1.1.0")
     implementation("androidx.compose.animation:animation:1.1.0")
     
-    // 생체인증
+//    // 생체인증
+//    implementation("androidx.biometric:biometric:1.1.0")
+    // Java language implementation
     implementation("androidx.biometric:biometric:1.1.0")
+    
+    // Kotlin
+    implementation("androidx.biometric:biometric:1.2.0-alpha05")
 }

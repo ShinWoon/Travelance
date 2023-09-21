@@ -1,5 +1,8 @@
 package com.moneyminions.presentation.screen.home.view
 
+import android.util.Log
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +29,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavHostController
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold14
@@ -158,3 +163,53 @@ fun BottomItem(
         }
     }
 }
+
+
+private fun checkAvailableAuth(fragmentActivity: FragmentActivity) {
+    val biometricManager = BiometricManager.from(fragmentActivity)
+    when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)) {
+        BiometricManager.BIOMETRIC_SUCCESS -> {
+            //  생체 인증 가능
+            createBiometricPrompt(fragmentActivity)
+        }
+        BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
+            //  기기에서 생체 인증을 지원하지 않는 경우
+        }
+        BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
+            Log.d("MainActivity", "Biometric facility is currently not available")
+        }
+        BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+            //  생체 인식 정보가 등록되지 않은 경우
+        }
+        else -> {
+            //   기타 실패
+        }
+    }
+}
+
+private fun createBiometricPrompt(fragmentActivity: FragmentActivity): BiometricPrompt? {
+    val executor = ContextCompat.getMainExecutor(fragmentActivity)
+    
+    val callback = object : BiometricPrompt.AuthenticationCallback() {
+        override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+            super.onAuthenticationError(errorCode, errString)
+            Log.d(TAG, "$errorCode :: $errString")
+            if (errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
+                //TODO - 생체 인식이 안될 경우 비밀번호 입력할 수 있도록 기능 추가
+            }
+        }
+        
+        override fun onAuthenticationFailed() {
+            super.onAuthenticationFailed()
+            Log.d(TAG, "Authentication failed for an unknown reason")
+        }
+        
+        override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+            super.onAuthenticationSucceeded(result)
+            Log.d(TAG, "Authentication was successful")
+            // Proceed with viewing the private encrypted message.
+        }
+    }
+    return BiometricPrompt(fragmentActivity, executor, callback)
+}
+
