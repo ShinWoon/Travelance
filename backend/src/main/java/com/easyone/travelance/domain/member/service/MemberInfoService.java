@@ -4,6 +4,8 @@ package com.easyone.travelance.domain.member.service;
 import com.easyone.travelance.domain.member.constant.Role;
 import com.easyone.travelance.domain.member.dto.MemberDto;
 import com.easyone.travelance.domain.member.dto.NicknameDto;
+import com.easyone.travelance.domain.member.dto.OneAccountDto;
+import com.easyone.travelance.domain.member.entity.MainAccount;
 import com.easyone.travelance.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,5 +38,12 @@ public class MemberInfoService {
         member.editNickname(nickname);
 
         return NicknameDto.of(member);
+    }
+
+    // 주 계좌 업데이트
+    @Transactional
+    public OneAccountDto updateOneAccount(MainAccount mainAccount, String account){
+        mainAccount.setOneAccount(account);
+        return OneAccountDto.of(mainAccount);
     }
 }

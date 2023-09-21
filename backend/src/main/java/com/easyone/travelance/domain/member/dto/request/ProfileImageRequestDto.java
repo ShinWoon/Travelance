@@ -1,4 +1,4 @@
-package com.easyone.travelance.domain.member.dto;
+package com.easyone.travelance.domain.member.dto.request;
 
 
 import lombok.Builder;

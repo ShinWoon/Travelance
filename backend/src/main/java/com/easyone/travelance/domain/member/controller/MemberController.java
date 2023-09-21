@@ -6,9 +6,10 @@ import com.easyone.travelance.domain.account.entity.Account;
 import com.easyone.travelance.domain.account.service.AccountService;
 import com.easyone.travelance.domain.card.dto.SelectedCardRequestDto;
 import com.easyone.travelance.domain.card.service.CardService;
-import com.easyone.travelance.domain.member.dto.AdditionalRequest;
+import com.easyone.travelance.domain.member.dto.request.AdditionalRequestDto;
 import com.easyone.travelance.domain.member.dto.MyAccountDto;
 import com.easyone.travelance.domain.member.dto.NicknameDto;
+import com.easyone.travelance.domain.member.dto.OneAccountDto;
 import com.easyone.travelance.domain.member.entity.MainAccount;
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.service.MemberInfoService;
@@ -26,7 +27,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,7 +47,7 @@ public class MemberController {
     // 닉네임 수정
     @Operation(summary = "닉네임 수정", description = "닉네임 수정 관련 메서드입니다.")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "#### 성공"), @ApiResponse(responseCode = "에러", description = "#### 에러 이유를 확인 하십시오", content =@Content(schema = @Schema(implementation = ErrorResponse.class), examples = { @ExampleObject(name="400_User-003", value ="이미 등록된 닉네임입니다. 다른 닉네임을 기입해 주세요"), @ExampleObject( name = "401_Auth-001", value = "토큰이 만료되었습니다. 토큰을 재발급 받아주세요"), @ExampleObject( name = "401_Auth-005", value = "해당 토큰은 유효한 토큰이 아닙니다. 토큰값이 추가정보 기입에서 받은 new token 값이 맞는지 확인해주세요"), @ExampleObject( name = "401_Auth-006", value = "Authorization Header가 없습니다. 자물쇠에 access token값을 넣어주세요."), @ExampleObject( name = "500", value = "서버에러")}))})
-    @PatchMapping("/updateckname")
+    @PatchMapping("/update/nickname")
     public ResponseEntity<NicknameDto> updateNickname(@MemberInfo MemberInfoDto memberInfoDto, @RequestParam String nickname){
 
         Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
@@ -92,9 +92,9 @@ public class MemberController {
             "    }\n\n```\n\n" + "이러한 형식입니다")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "#### 성공"), @ApiResponse(responseCode = "에러", description = "#### 에러 이유를 확인 하십시오", content =@Content(schema = @Schema(implementation = ErrorResponse.class), examples = { @ExampleObject(name="400_User-003", value ="이미 등록된 닉네임입니다. 다른 닉네임을 기입해 주세요"), @ExampleObject( name = "401_Auth-001", value = "토큰이 만료되었습니다. 토큰을 재발급 받아주세요"), @ExampleObject( name = "401_Auth-005", value = "해당 토큰은 유효한 토큰이 아닙니다. 토큰값이 추가정보 기입에서 받은 new token 값이 맞는지 확인해주세요"), @ExampleObject( name = "401_Auth-006", value = "Authorization Header가 없습니다. 자물쇠에 access token값을 넣어주세요."), @ExampleObject( name = "500", value = "서버에러")}))})
     @PatchMapping("/additional")
-    public ResponseEntity<AccessTokenResponseDto> updateAdditionalInfo(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody AdditionalRequest additionalRequest) {
+    public ResponseEntity<AccessTokenResponseDto> updateAdditionalInfo(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody AdditionalRequestDto additionalRequestDto) {
 
-        memberInfoService.updateAdditionalInfo(additionalRequest.getPassword(),additionalRequest.getNickname(),memberInfoDto.getEmail());
+        memberInfoService.updateAdditionalInfo(additionalRequestDto.getPassword(), additionalRequestDto.getNickname(),memberInfoDto.getEmail());
 
         // 이메일로 멤버 찾아서 refresh token 가져오기
         String refreshToken = memberService.findMemberByEmail(memberInfoDto.getEmail()).getRefreshToken();
@@ -105,7 +105,7 @@ public class MemberController {
         
         
         // 계좌 등록 로직
-        List<SelectedAccountRequestDto> selectedAccountRequestDtoList = additionalRequest.getAccountList();
+        List<SelectedAccountRequestDto> selectedAccountRequestDtoList = additionalRequestDto.getAccountList();
         
         // 주 계좌 등록
         member.getMainAccount().setOneAccount(selectedAccountRequestDtoList.get(0).getAccount());
@@ -118,7 +118,7 @@ public class MemberController {
         }
         
         // 카드 등록 로직
-        List<SelectedCardRequestDto> selectedCardRequestDtoList = additionalRequest.getCardList();
+        List<SelectedCardRequestDto> selectedCardRequestDtoList = additionalRequestDto.getCardList();
 
         for (SelectedCardRequestDto selectedCardRequestDto : selectedCardRequestDtoList) {
             cardService.SaveCard(member,selectedCardRequestDto);
@@ -138,6 +138,27 @@ public class MemberController {
         Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
         List<MyAccountDto> accounts = memberService.findAllAccountsForMember(member);
         return ResponseEntity.ok(accounts);
+    }
+
+    @Operation(summary = "내 주계좌 변경", description = "나의 주 계좌 번호를 변경하는 메서드입니다.")
+    @PatchMapping("/update/oneaccount")
+    public ResponseEntity<OneAccountDto> updateOneAccount(@MemberInfo MemberInfoDto memberInfoDto, @RequestParam String account){
+
+        Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
+
+        List<Account> accountList = member.getMainAccount().getAccountList();
+        log.warn("accountList : " + accountList);
+
+        boolean accountExists = accountList.stream()
+                .anyMatch(a -> a.getAccount().equals(account));
+
+        if (accountExists) {
+            OneAccountDto oneAccountDto = memberInfoService.updateOneAccount(member.getMainAccount(), account);
+            return ResponseEntity.ok(oneAccountDto);
+        } else {
+            throw new RuntimeException("본인 계좌 리스트에 존재하지 않는 계좌번호입니다.");
+        }
+
     }
 
 }

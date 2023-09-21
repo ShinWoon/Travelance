@@ -1,10 +1,9 @@
-package com.easyone.travelance.domain.member.dto;
+package com.easyone.travelance.domain.member.dto.response;
 
 
 import com.easyone.travelance.domain.member.constant.Role;
 import com.easyone.travelance.domain.member.constant.SocialType;
 import com.easyone.travelance.domain.member.entity.Member;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 

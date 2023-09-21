@@ -1,9 +1,7 @@
 package com.easyone.travelance.domain.travel.controller;
 
 
-import com.easyone.travelance.domain.member.dto.ProfileImageRequestDto;
 import com.easyone.travelance.domain.member.entity.Member;
-import com.easyone.travelance.domain.member.respository.MemberRepository;
 import com.easyone.travelance.domain.member.service.MemberService;
 import com.easyone.travelance.domain.travel.dto.*;
 import com.easyone.travelance.domain.travel.service.TravelService;
