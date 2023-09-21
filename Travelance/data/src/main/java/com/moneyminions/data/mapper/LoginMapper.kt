@@ -5,8 +5,8 @@ import com.moneyminions.domain.model.login.LoginResultDto
 
 fun LoginResponse.toDomain(): LoginResultDto {
     return LoginResultDto(
-        tokenId = tokenId,
-        name = name,
+        accessToken = accessToken,
+        refreshToken = refreshToken,
         role = role
     )
 }

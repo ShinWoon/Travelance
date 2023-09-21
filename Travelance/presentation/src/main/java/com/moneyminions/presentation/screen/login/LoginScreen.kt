@@ -1,6 +1,7 @@
 package com.moneyminions.presentation.screen.login
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +24,8 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -45,17 +48,33 @@ import com.moneyminions.presentation.theme.KakaoYellow
 import com.moneyminions.presentation.theme.PinkLight
 import com.moneyminions.presentation.theme.PinkMiddle
 import com.moneyminions.presentation.theme.White
+import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.login.LoginViewModel
 import kotlinx.coroutines.launch
 
+private const val TAG = "LoginScreen D210"
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    loginViewModel: LoginViewModel = hiltViewModel()
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+    val loginState by loginViewModel.loginResult.collectAsState()
+    NetworkResultHandler(
+        state = loginState,
+        errorAction = {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("dd")
+            }
+        },
+        successAction = {
+            Log.d(TAG, "loginResult : $it ")
+        }
+    )
     Scaffold(
         modifier = modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -83,7 +102,9 @@ fun LoginScreen(
                         contentDescription = "main_logo",
                         modifier = Modifier.fillMaxSize(0.4f)
                     )
-                    KakaoLoginButtonComponent()
+                    KakaoLoginButtonComponent(){
+                        loginViewModel.singInKakao(context)
+                    }
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.screen.login.view
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,9 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -23,25 +27,24 @@ import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.theme.KakaoLabelColor
 import com.moneyminions.presentation.theme.KakaoYellow
+import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.login.LoginViewModel
+import kotlinx.coroutines.launch
 
+private const val TAG = "KakaoLoginButtonCompone D210"
 @Composable
 fun KakaoLoginButtonComponent(
     modifier: Modifier = Modifier,
-    loginViewModel: LoginViewModel = hiltViewModel()
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    onClick: () -> Unit
 ){
-    val context = LocalContext.current
+
     Button(
         modifier = modifier
             .fillMaxWidth(0.7f),
         colors = ButtonDefaults.buttonColors(KakaoYellow),
         shape = RoundedCornerShape(6.dp),
-        onClick = {
-            loginViewModel.singInKakao(context)
-//                        coroutineScope.launch {
-//                            snackbarHostState.showSnackbar("로그인 되었습니다.")
-//                        }
-        },
+        onClick = { onClick()},
     ) {
         Row(
             modifier = modifier.fillMaxWidth(),
