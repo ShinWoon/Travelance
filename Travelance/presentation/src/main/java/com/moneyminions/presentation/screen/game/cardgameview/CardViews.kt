@@ -83,7 +83,6 @@ fun CardFourView(
 ) {
     val controller = remember(true) { FlippableController() }
     var isCardFlipSuccessVisible by remember { mutableStateOf(false) }
-    var touchEnable by remember { mutableStateOf(false) }
 
     if (shakeComplete.value) {
         controller.flipToBack()
@@ -133,7 +132,7 @@ fun CardFourView(
         },
         flipController = controller,
         flipEnabled = true,
-        flipOnTouch = touchEnable,
+        flipOnTouch = false,
         // If true, the Flippable will automatically flip back after
         // duration defined in autoFlipDurationMs. By default, this is false..
 //        autoFlip = true,
@@ -147,7 +146,6 @@ fun CardFourView(
         onFlippedListener = {
             Log.d(TAG, "CardFourView: 실행 완료")
             isCardFlipSuccessVisible = true
-            touchEnable = false
         },
     )
     if (isCardFlipSuccessVisible) {
@@ -156,7 +154,6 @@ fun CardFourView(
         LaunchedEffect(isCardFlipSuccessVisible) {
             delay(1200)
             isCardFlipSuccessVisible = false
-            touchEnable = true
         }
     }
 }
