@@ -43,6 +43,8 @@ public class Member {
 
     private String privateId;
 
+    private String password;
+
     private LocalDateTime tokenExpirationTime;
 
 
@@ -75,15 +77,18 @@ public class Member {
     }
 
     @Builder
-    public Member(String email,String nickname,String privateId,Role role){
+    public Member(String email,String nickname,String privateId,Role role, String password){
         this.email = email;
         this.nickname = nickname;
         this.role = role;
         this.privateId = privateId;
+        this.password = password;
     }
 
-    public void updateRole(Role role){
-        this.role = role;
+    public void updateAdditionalInfo(String nickname, String password, Role role){
+            this.nickname =nickname;
+            this.password = password;
+            this.role = role;
     }
 
     public void editNickname(String nickname){
