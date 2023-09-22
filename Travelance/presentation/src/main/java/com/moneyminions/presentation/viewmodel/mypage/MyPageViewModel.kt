@@ -1,7 +1,7 @@
 package com.moneyminions.presentation.viewmodel.mypage
 
 import androidx.lifecycle.ViewModel
-import com.moneyminions.presentation.screen.mypage.CardDto
+import com.moneyminions.domain.model.common.CardDto
 import javax.inject.Inject
 
 class MyPageViewModel @Inject constructor(

@@ -42,6 +42,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
+import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.login.view.KakaoLoginButtonComponent
 import com.moneyminions.presentation.theme.KakaoLabelColor
 import com.moneyminions.presentation.theme.KakaoYellow
@@ -53,6 +54,7 @@ import com.moneyminions.presentation.viewmodel.login.LoginViewModel
 import kotlinx.coroutines.launch
 
 private const val TAG = "LoginScreen D210"
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LoginScreen(
@@ -68,11 +70,28 @@ fun LoginScreen(
         state = loginState,
         errorAction = {
             coroutineScope.launch {
-                snackbarHostState.showSnackbar("dd")
+                snackbarHostState.showSnackbar("로그인 실패")
             }
         },
         successAction = {
             Log.d(TAG, "loginResult : $it ")
+            if(it.role == "MEMBER"){
+                //TODO homeScreen으로 이동
+            }
+            if(it.role=="GUEST"){
+                coroutineScope.launch {
+                    loginViewModel.refreshNetworkState()
+                }
+                Log.d(TAG, "갱신 전 token : ${loginViewModel.getJwtToken()}")
+                Log.d(TAG, "갱신 전 role : ${loginViewModel.getRole()}")
+                loginViewModel.updateJwtToken(it.accessToken,it.refreshToken)
+                loginViewModel.updateRole(it.role)
+                Log.d(TAG, "갱신된 token : ${loginViewModel.getJwtToken()}")
+                Log.d(TAG, "갱신된 role : ${loginViewModel.getRole()}")
+                navController.navigate(Screen.AccountAuthentication.route){
+                    //TODO Back stack 관리 어떻게 할 지 정해라
+                }
+            }
         }
     )
     Scaffold(

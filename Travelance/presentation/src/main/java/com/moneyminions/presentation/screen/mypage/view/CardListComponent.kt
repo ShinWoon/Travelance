@@ -13,9 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.moneyminions.domain.model.common.CardDto
 import com.moneyminions.presentation.common.CardRowItem
 import com.moneyminions.presentation.common.CustomTextStyle
-import com.moneyminions.presentation.screen.mypage.CardDto
 import com.moneyminions.presentation.theme.GraphGray
 
 val cardList = listOf(
