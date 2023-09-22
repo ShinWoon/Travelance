@@ -11,12 +11,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.app.FragmentActivity
+import androidx.compose.runtime.SideEffect
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.moneyminions.presentation.screen.MainScreen
 import com.moneyminions.presentation.theme.MyApplicationTheme
+import com.moneyminions.presentation.theme.White
 import dagger.hilt.android.AndroidEntryPoint
 
 private const val TAG = "MainActivity D210"
+
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
     @OptIn(ExperimentalAnimationApi::class)
@@ -27,13 +31,26 @@ class MainActivity : FragmentActivity() {
             var isAuthenticated = remember { mutableStateOf(false) }
             val context = LocalContext.current
             MyApplicationTheme {
+                val systemUiController = rememberSystemUiController()
+                SideEffect {
+                    systemUiController.setStatusBarColor(
+                        color = White,
+                        darkIcons = true,
+                    )
+                }
+                SideEffect {
+                    systemUiController.setNavigationBarColor(
+                        color = White,
+                        darkIcons = true,
+                    )
+                }
                 MainScreen(rememberAnimatedNavController())
 
                 // 카카오
 //                var keyHash = Utility.getKeyHash(this)
 //                Log.d(TAG, "Kakao HashKey : $keyHash")
-    
-    
+
+
                 /**
                  * 지문 인증 실행 부분에서 구현하면 됨 (mainActivity는 FragmentActivity()로 상속되게 함)
                  * 이때 mainActivity에 this@MainActivity로 불러오고
@@ -74,8 +91,9 @@ class MainActivity : FragmentActivity() {
 //                        },
 //                    )
 //                }
-                
-                
+
+
+
                 /**
                  * 카카오 공유 API 반환 값 수신
                  */
