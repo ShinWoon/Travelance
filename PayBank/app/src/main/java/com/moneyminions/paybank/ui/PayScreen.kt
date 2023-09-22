@@ -42,6 +42,15 @@ fun PayScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.size(16.dp))
+        Button(
+            onClick = {
+                //FCM 토큰 전송 API
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("FCM 토큰 전송")
+        }
+        Spacer(modifier = Modifier.size(16.dp))
         TextFieldWithTitle(
             title = "카드 번호",
             hint = "카드 번호를 입력하시오",
@@ -71,7 +80,7 @@ fun PayScreen(
                 payViewModel.setAmount(it)
             }
         )
-        Spacer(modifier = Modifier.size(48.dp))
+        Spacer(modifier = Modifier.size(16.dp))
         TextFieldWithTitle(
             title = "가맹점명",
             hint = "가맹점명을 입력하시오",

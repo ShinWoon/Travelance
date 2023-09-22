@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.screen.mypage.view
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -11,9 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.DarkGray
@@ -21,9 +24,9 @@ import com.moneyminions.presentation.theme.PinkDarkest
 
 @Composable
 fun AccountColumnItem(
-    logo: String,
+    logo: Int,
     compoany: String,
-    isSelected: Boolean,
+    isSelected: Boolean? = false,
     onClick: () -> Unit
 ){
     Column(
@@ -32,8 +35,8 @@ fun AccountColumnItem(
             onClick()
         }
     ) {
-        AsyncImage(
-            model = logo,
+        Image(
+            painter = painterResource(id = logo),
             contentDescription = null,
             modifier = Modifier.size(40.dp)
         )
@@ -41,7 +44,7 @@ fun AccountColumnItem(
             text = compoany,
             style = CustomTextStyle.pretendardMedium08
         )
-        if (isSelected) {
+        if (isSelected!!) {
             // 선택됐을 때 색 채운 원
             Box(
                 modifier = Modifier
@@ -65,7 +68,7 @@ fun AccountColumnItem(
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
 @Composable
 fun AccountColumnItemPreview(){
-    AccountColumnItem(logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
+    AccountColumnItem(logo = R.drawable.image_shinhan,
         compoany = "신한",
         isSelected = false,
         {})

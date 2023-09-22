@@ -1,4 +1,4 @@
-package com.moneyminions.presentation.screen.mypage
+package com.moneyminions.domain.model.common
 
 data class CardDto(
     val name: String,

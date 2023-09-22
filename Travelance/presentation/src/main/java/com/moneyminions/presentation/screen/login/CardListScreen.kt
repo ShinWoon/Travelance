@@ -19,11 +19,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.moneyminions.domain.model.common.CardDto
 import com.moneyminions.presentation.common.AccountRowItem
 import com.moneyminions.presentation.common.CardRowItem
 import com.moneyminions.presentation.common.MinionPrimaryButton
 import com.moneyminions.presentation.common.TopBar
-import com.moneyminions.presentation.screen.mypage.CardDto
 import com.moneyminions.presentation.screen.mypage.view.accountList
 
 val cardList = listOf(

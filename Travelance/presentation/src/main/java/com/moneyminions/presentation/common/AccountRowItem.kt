@@ -1,6 +1,7 @@
 package com.moneyminions.presentation.common
 
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -26,7 +28,7 @@ import com.moneyminions.presentation.theme.PinkDarkest
 private const val TAG = "AccountRowItem D210"
 @Composable
 fun AccountRowItem(
-    logo: String,
+    logo: Int,
     name: String,
     number: String,
     type: String,
@@ -70,8 +72,8 @@ fun AccountRowItem(
                     )
                 }
             }
-            AsyncImage(
-                model = logo,
+            Image(
+                painter = painterResource(id = logo),
                 contentDescription = null,
                 modifier = Modifier
                     .size(30.dp)
@@ -110,7 +112,7 @@ fun AccountRowItem(
 @Composable
 fun AccountRowItemPreview(){
     AccountRowItem(
-        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
+        logo = 0,
         name = "신한",
         number = "997838829102",
         type = "delete"
