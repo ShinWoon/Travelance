@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -28,14 +29,15 @@ import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold24
 import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.travellist.util.clickable
+import com.moneyminions.presentation.theme.CardLightGray
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameListScreen(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     val scrollableState = rememberScrollState()
-    
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -47,7 +49,7 @@ fun GameListScreen(
                 .padding(it)
                 .padding(16.dp)
                 .fillMaxSize()
-                .verticalScroll(scrollableState)
+                .verticalScroll(scrollableState),
         ) {
             Column {
                 GameCard(
@@ -55,7 +57,7 @@ fun GameListScreen(
                     gameImg = R.drawable.ic_card_game,
                     action = {
                         navController.navigate(Screen.CardGame.route)
-                    }
+                    },
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 GameCard(
@@ -63,15 +65,15 @@ fun GameListScreen(
                     gameImg = R.drawable.ic_bottle,
                     action = {
                         navController.navigate(Screen.BottleGame.route)
-                    }
+                    },
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 GameCard(
-                    title ="팀 정하기",
+                    title = "팀 정하기",
                     gameImg = R.drawable.ic_team_building,
                     action = {
                         navController.navigate(Screen.TeamBuildingGame.route)
-                    }
+                    },
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 GameCard(
@@ -79,48 +81,47 @@ fun GameListScreen(
                     gameImg = R.drawable.ic_word_game,
                     action = {
                         navController.navigate(Screen.WordGame.route)
-                    }
+                    },
                 )
             }
-            
         }
     }
 }
-
 
 @Composable
 fun GameCard(
     title: String,
     gameImg: Int,
-    action: () -> Unit
+    action: () -> Unit,
 ) {
-    Card (
+    Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(180.dp)
             .clickable(
-                onClick = action
+                onClick = action,
             ),
+        colors = CardDefaults.cardColors(CardLightGray),
     ) {
-        Row (
+        Row(
             modifier = Modifier
                 .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ){
-            Box (
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Box(
                 modifier = Modifier.weight(1f),
-                contentAlignment = Alignment.TopStart
-            ){
+                contentAlignment = Alignment.TopStart,
+            ) {
                 Text(text = title, style = pretendardBold24)
             }
-    
-            Box (
+
+            Box(
                 modifier = Modifier.weight(1f).padding(16.dp),
-                contentAlignment = Alignment.CenterEnd
-            ){
+                contentAlignment = Alignment.CenterEnd,
+            ) {
                 Image(
                     painter = painterResource(id = gameImg),
-                    contentDescription = "game image"
+                    contentDescription = "game image",
                 )
             }
         }

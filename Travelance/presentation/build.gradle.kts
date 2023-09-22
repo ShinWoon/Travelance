@@ -120,9 +120,13 @@ dependencies {
     implementation("com.google.accompanist:accompanist-permissions:0.28.0")
     // Lottie
     implementation("com.airbnb.android:lottie-compose:6.1.0")
-    
+
     implementation("androidx.compose.foundation:foundation:1.1.0")
     implementation("androidx.compose.animation:animation:1.1.0")
 
+    // 카드 flip
     implementation("com.wajahatkarim:flippable:1.0.6")
+
+    // system bars customization
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
 }

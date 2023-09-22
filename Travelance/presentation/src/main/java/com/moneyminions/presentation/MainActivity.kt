@@ -8,14 +8,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.navigation.compose.rememberNavController
+import androidx.compose.runtime.SideEffect
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.kakao.sdk.common.util.Utility
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.moneyminions.presentation.screen.MainScreen
 import com.moneyminions.presentation.theme.MyApplicationTheme
+import com.moneyminions.presentation.theme.White
 import dagger.hilt.android.AndroidEntryPoint
 
 private const val TAG = "MainActivity D210"
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalAnimationApi::class)
@@ -24,11 +26,23 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyApplicationTheme {
+                val systemUiController = rememberSystemUiController()
+                SideEffect {
+                    systemUiController.setStatusBarColor(
+                        color = White,
+                        darkIcons = true,
+                    )
+                }
+                SideEffect {
+                    systemUiController.setNavigationBarColor(
+                        color = White,
+                        darkIcons = true,
+                    )
+                }
                 MainScreen(rememberAnimatedNavController())
 
 //                var keyHash = Utility.getKeyHash(this)
 //                Log.d(TAG, "Kakao HashKey : $keyHash")
-
 
                 /**
                  * 카카오 공유 API 반환 값 수신
@@ -36,7 +50,12 @@ class MainActivity : ComponentActivity() {
                 if (Intent.ACTION_VIEW == intent.action) {
                     val uri = intent.data
                     if (uri != null) {
-                        Log.d(TAG, "onCreate: ${uri.getQueryParameter("number")} / ${uri.getQueryParameter("route")} /${uri.getQueryParameter("data")}")
+                        Log.d(
+                            TAG,
+                            "onCreate: ${uri.getQueryParameter("number")} / ${
+                                uri.getQueryParameter("route")
+                            } /${uri.getQueryParameter("data")}",
+                        )
                         uri.getQueryParameter("number")
                         uri.getQueryParameter("route")
                         uri.getQueryParameter("data")
@@ -46,4 +65,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-

@@ -2,18 +2,14 @@ package com.moneyminions.presentation.screen
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -22,9 +18,12 @@ import androidx.navigation.compose.rememberNavController
 import com.moneyminions.presentation.navigation.BottomNavItem
 import com.moneyminions.presentation.navigation.NavGraph
 import com.moneyminions.presentation.navigation.Screen
+import com.moneyminions.presentation.theme.LightGray
+import com.moneyminions.presentation.theme.White
 
-var startDestination: String = Screen.Home.route //나중에 viewModel로 빼야함
-//var startDestination: String = Screen.Login.route //나중에 viewModel로 빼야함
+var startDestination: String = Screen.Home.route // 나중에 viewModel로 빼야함
+
+// var startDestination: String = Screen.Login.route //나중에 viewModel로 빼야함
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,6 +39,7 @@ fun MainScreen(
                 MainBottomNavigationBar(navController = navController)
             }
         },
+        containerColor = White,
     ) {
 //        Surface(
 //            modifier = Modifier.padding(it),
@@ -49,7 +49,8 @@ fun MainScreen(
         NavGraph(
             innerPaddings = it,
             navController = navController,
-            startDestination = startDestination)
+            startDestination = startDestination,
+        )
     }
 }
 
@@ -69,7 +70,9 @@ fun MainBottomNavigationBar(navController: NavHostController) {
         BottomNavItem.MyPage,
     )
     NavigationBar(
-        containerColor = MaterialTheme.colorScheme.primary,
+        containerColor = White,
+        contentColor = LightGray,
+
     ) {
         bottomNavItems.forEach { item ->
             val selected = item.route == backStackEntry.value?.destination?.route
@@ -103,6 +106,7 @@ fun MainBottomNavigationBar(navController: NavHostController) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
