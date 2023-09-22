@@ -12,10 +12,8 @@ import java.time.format.DateTimeFormatter;
 public class RoomAllResponseDto {
     private Long roomId;
     private String travelName;
-    private String location;
     private String startDate;
     private String endDate;
-
     private RoomType isDone;
     private Long budget;
     //현재 사용한 금액(총액)

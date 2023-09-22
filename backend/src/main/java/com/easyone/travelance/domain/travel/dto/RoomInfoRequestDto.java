@@ -14,15 +14,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class RoomInfoRequestDto {
     private String travelName;
-    private String location;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private Long budget;
 
     @Builder
-    public RoomInfoRequestDto(String travelName, String location, LocalDateTime startDate, LocalDateTime endDate, Long budget) {
+    public RoomInfoRequestDto(String travelName, LocalDateTime startDate, LocalDateTime endDate, Long budget) {
         this.travelName = travelName;
-        this.location= location;
         this.startDate=startDate;
         this.endDate= endDate;
         this.budget = budget;
@@ -31,7 +29,6 @@ public class RoomInfoRequestDto {
     public TravelRoom toEntity(RoomType isDone) {
         return TravelRoom.builder()
                 .budget(budget)
-                .location(location)
                 .endDate(endDate)
                 .isDone(isDone)
                 .startDate(startDate)
