@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,38 +40,44 @@ public class TravelService {
     }
 
     //유저가 방에 추가되어 닉네임과 사진을 설정하고, 친구 목록을 반환
-//    @Transactional
-//    public List<RoomUserResponseDto> adduser(Long roomId, Member member, String profileUrl) {
-//
-//        TravelRoom travelRoom = travelRoomRepository.findById(roomId)
-//                .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
-//
-//        //프로필 사진이 있으면, 프로필 사진 저장
-//        if(profileUrl!=null) {
-//            Profile profile = Profile.builder()
-//                    .travelRoom(travelRoom)
-//                    .profileUrl(profileUrl)
-//                    .member(member)
-//                    .build();
-//
-//            profileRepository.save(profile);
-//        }
-//
-//        TravelRoomMember travelRoomMember = TravelRoomMember.builder()
-//                .travelRoom(travelRoom)
-//                .member(member)
-//                .build();
-//
-//        travelRoomMemberRepository.save(travelRoomMember);
-//
-//        return travelRoomMemberRepository.findAllByTravelRoom(travelRoom).stream()
-//                .map(trm -> RoomUserResponseDto.builder()
-//                        .email(trm.getMember().getEmail())
-//                        .nickName(trm.getMember().getNickname())
-//                        .profileUrl(trm.getMember())
-//                        .build())
-//                .collect(Collectors.toList());
-//    }
+    @Transactional
+    public List<RoomUserResponseDto> adduser(Long roomId, Member member, String profileUrl) {
+
+        TravelRoom travelRoom = travelRoomRepository.findById(roomId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
+
+        //프로필 사진이 있으면, 프로필 사진 저장
+        if(profileUrl!=null) {
+            Profile profile = Profile.builder()
+                    .travelRoom(travelRoom)
+                    .profileUrl(profileUrl)
+                    .member(member)
+                    .build();
+
+            profileRepository.save(profile);
+        }
+
+        TravelRoomMember travelRoomMember = TravelRoomMember.builder()
+                .travelRoom(travelRoom)
+                .member(member)
+                .build();
+
+        travelRoomMemberRepository.save(travelRoomMember);
+
+        List<TravelRoomMember> travelRoomMemberList = travelRoomMemberRepository.findAllByTravelRoom(travelRoom);
+
+        List<RoomUserResponseDto> list = travelRoomMemberList.stream()
+                .map(travelRoomMember1 -> {
+                    Profile profile = profileRepository.findByMember(travelRoomMember1.getMember());
+                    return RoomUserResponseDto.builder()
+                            .member(travelRoomMember1.getMember())
+                            .profile(profile)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        return list;
+    }
 
     @Transactional(readOnly = true)
     public List<RoomAllResponseDto> findAllDesc() {
