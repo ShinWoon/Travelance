@@ -2,7 +2,7 @@ package com.moneyminions.data.repository.example
 
 import com.moneyminions.data.datasource.remote.example.ExampleDataSource
 import com.moneyminions.data.mapper.example.toDomain
-import com.moneyminions.data.model.NetworkResult
+import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.example.ExampleDto
 import com.moneyminions.domain.repository.example.ExampleRepository
 import javax.inject.Inject

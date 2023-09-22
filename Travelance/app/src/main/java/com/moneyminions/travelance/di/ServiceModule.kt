@@ -30,7 +30,7 @@ object ServiceModule {
     @Singleton
     @Provides
     @Named("BASE_URL")
-    fun BaseUrl() : String = "http://j9d210.p.ssafy.io:8080/"
+    fun BaseUrl() : String = "http://j9d210.p.ssafy.io:8081/"
 
     @Singleton
     @Provides
