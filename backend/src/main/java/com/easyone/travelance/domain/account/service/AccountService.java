@@ -46,7 +46,7 @@ public class AccountService {
     @Autowired
     private MemberRepository memberRepository;
 //    @Value("http://localhost:8081")
-    @Value("http://3.39.110.134:3306")
+    @Value("http://3.39.110.134:8083")
     private String Url;
 
 
