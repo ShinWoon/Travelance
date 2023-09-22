@@ -32,22 +32,19 @@ public class CardService {
     private String authToken;
 
     @Autowired
-    private final WebClient.Builder webClientBuilder;
+    private WebClient webClient;
 
     @Autowired
     private final CardRepository cardRepository;
 
 //    @Value("http://localhost:8081")
-    @Value("http://3.39.110.134:8083")
-    private String Url;
+//    @Value("http://3.39.110.134:8083")
+//    private String Url;
 
     public Flux<Object> allCard(String privateId) {
-        return webClientBuilder.baseUrl(Url) // API 엔드포인트를 설정합니다.
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultHeader(authTokenHeaderName, authToken)
-                .build()
+        return webClient // API 엔드포인트를 설정합니다.
                 .post()
-                .uri("/bank/card/list")
+                .uri("/card/list")
                 .bodyValue(new AllAccountRequestDto(privateId)) // 요청 바디에 데이터를 설정합니다.
                 .retrieve()
                 .bodyToFlux(Object.class); // 응답을 Flux<Object> 형태로 받습니다.

@@ -34,8 +34,11 @@ public class AccountService {
     @Value("${http.auth-token}")
     private String authToken;
 
+    //    @Autowired
+    //    private final WebClient.Builder webClientBuilder;
+
     @Autowired
-    private final WebClient.Builder webClientBuilder;
+    private WebClient webClient;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -46,18 +49,15 @@ public class AccountService {
     @Autowired
     private MemberRepository memberRepository;
 //    @Value("http://localhost:8081")
-    @Value("http://3.39.110.134:8083")
-    private String Url;
+//    @Value("http://3.39.110.134:8083")
+//    private String Url;
 
 
     // 1원 이체 요청
     public Mono<Object> oneTransferMoney(String name, String bankName, String account){
-        return webClientBuilder.baseUrl(Url)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultHeader(authTokenHeaderName, authToken)
-                .build()
+        return webClient
                 .post()
-                .uri("/bank/account/1request")
+                .uri("/account/1request")
                 .bodyValue(new OneRequestDto(name, bankName, account)) // 요청 바디에 데이터를 설정합니다.
                 .retrieve()
                 .bodyToMono(Object.class); // 응답을 Mono<OneResponseDto> 형태로 받습니다.
@@ -66,12 +66,9 @@ public class AccountService {
     // 1원 이체 확인
     public Mono<Object> oneCheckMoney(String name, String bankName, String account, String verifyCode){
         log.info("verifyCode : " + verifyCode);
-        return webClientBuilder.baseUrl(Url)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultHeader(authTokenHeaderName, authToken)
-                .build()
+        return webClient
                 .post()
-                .uri("/bank/account/1response")
+                .uri("/account/1response")
                 .bodyValue(new OneCheckRequestDto(name, bankName, account, verifyCode))
                 .retrieve()
                 .bodyToMono(Map.class)  // JSON을 Map으로 파싱
@@ -81,12 +78,9 @@ public class AccountService {
     // 계좌이체
     public Mono<String> transferAccount(String account, TransferRequestDto transferRequestDto){
 
-        return webClientBuilder.baseUrl(Url)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultHeader(authTokenHeaderName, authToken)
-                .build()
+        return webClient
                 .post()
-                .uri("/bank/account/transfer")
+                .uri("/account/transfer")
                 .bodyValue(new TransferRequestDto(account, transferRequestDto.getAmount(), transferRequestDto.getMemo(),transferRequestDto.getTransferAt(),transferRequestDto.getWithdrawalNumber())) // 요청 바디에 데이터를 설정합니다.
                 .retrieve()
                 .bodyToMono(String.class); // 응답을 Mono<OneResponseDto> 형태로 받습니다.
@@ -102,12 +96,9 @@ public class AccountService {
         String memberAccount = member.getMainAccount().getOneAccount();
 
         if (requestPrivateId.equals(memberPrivateId) && requestAccount.equals(memberAccount)){
-            return webClientBuilder.baseUrl(Url)
-                    .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                    .defaultHeader(authTokenHeaderName, authToken)
-                    .build()
+            return webClient
                     .post()
-                    .uri("/bank/account/search/balance")
+                    .uri("/account/search/balance")
                     .bodyValue(new BalanceRequestDto(requestPrivateId,requestAccount))
                     .retrieve()
                     .bodyToMono(Object.class); // 응답을 Mono<OneResponseDto> 형태로 받습니다.
@@ -119,12 +110,9 @@ public class AccountService {
 
 
     public Flux<Object> allAccount(String privateId) {
-        return webClientBuilder.baseUrl(Url) // API 엔드포인트를 설정합니다.
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultHeader(authTokenHeaderName, authToken)
-                .build()
+        return webClient // API 엔드포인트를 설정합니다.
                 .post()
-                .uri("/bank/account/search/account")
+                .uri("/account/search/account")
                 .bodyValue(new AllAccountRequestDto(privateId)) // 요청 바디에 데이터를 설정합니다.
                 .retrieve()
                 .bodyToFlux(Object.class); // 응답을 Flux<Object> 형태로 받습니다.
