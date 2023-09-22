@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.screen.home
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +34,7 @@ import com.moneyminions.presentation.screen.home.view.TravelReadyComponent
 import com.moneyminions.presentation.screen.home.view.UseMoneyPage
 import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 
+private const val TAG = "HomeScreen_D210"
 @Composable
 fun HomeScreen(
     navController: NavHostController,
@@ -52,12 +54,14 @@ fun Home(
     // Main Card Height
     val cardHeight = 440.dp
     
+    
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(scrollableState)
             .padding(16.dp, 16.dp, 16.dp, 16.dp),
     ) {
+        Log.d(TAG, "Home: on")
         TopComponent(
             homeViewModel = homeViewModel,
             navController = navController,

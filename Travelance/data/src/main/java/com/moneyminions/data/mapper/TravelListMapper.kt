@@ -8,7 +8,6 @@ fun TravelRoomDto.toData(): CreateTravelRoomRequest{
     return CreateTravelRoomRequest(
         budget = budget,
         endDate = endDate,
-        location = location,
         startDate = startDate,
         travelName = travelName
     )
@@ -19,7 +18,6 @@ fun TravelRoomResponse.toDomain(): TravelRoomDto{
         budget = budget,
         endDate = endDate,
         isDone = isDone,
-        location = location,
         roomId = roomId,
         startDate = startDate,
         travelName = travelName,

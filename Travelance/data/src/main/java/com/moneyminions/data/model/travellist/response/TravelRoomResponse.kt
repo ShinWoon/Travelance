@@ -10,8 +10,6 @@ data class TravelRoomResponse(
     var endDate: String,
     @SerializedName("isDone")
     var isDone: String,
-    @SerializedName("location")
-    var location: String,
     @SerializedName("roomId")
     var roomId: Int,
     @SerializedName("startDate")
