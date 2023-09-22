@@ -2,6 +2,7 @@ package com.easyone.travelance.domain.account.controller;
 
 import com.easyone.travelance.domain.account.dto.*;
 import com.easyone.travelance.domain.account.service.AccountService;
+import com.easyone.travelance.domain.common.ResultDto;
 import com.easyone.travelance.domain.member.entity.MainAccount;
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.service.MemberService;
@@ -62,7 +63,7 @@ public class AccountController {
             "\n" +
             "}\n\n" + "```")
     @PostMapping(value = "/1response")
-    public Mono<ResponseEntity<Map<String, String>>> oneCheckMoney(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody OneCheckRequestDto oneCheckRequestDto) {
+    public Mono<ResponseEntity<ResultDto>> oneCheckMoney(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody OneCheckRequestDto oneCheckRequestDto) {
         String name = oneCheckRequestDto.getName();
         String bankName = oneCheckRequestDto.getBankName();
         String account = oneCheckRequestDto.getAccount();
@@ -75,12 +76,11 @@ public class AccountController {
                     // 여기서는 DB를 업데이트하는 메소드를 호출합니다.
                     return accountService.updatePrivateId(memberService.findMemberByEmail(memberInfoDto.getEmail()), externalPrivateId)
                             .map(updatedResult -> {
-                                Map<String, String> response = new HashMap<>();
-                                response.put("privateId", externalPrivateId);
+                                ResultDto response = new ResultDto("이체확인완료");
                                 return new ResponseEntity<>(response, HttpStatus.OK);
                             });
                 })
-                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND)); // 만약 데이터가 없을 경우의 처리
+                .defaultIfEmpty(new ResponseEntity<>(new ResultDto("데이터가 없음"), HttpStatus.OK)); // 만약 데이터가 없을 경우의 처리
     }
 
     @Operation(summary = "주 계좌 잔액 조회", description = "주 계좌의 잔액을 조회합니다.")
