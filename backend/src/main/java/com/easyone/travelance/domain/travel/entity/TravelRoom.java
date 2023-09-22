@@ -23,7 +23,6 @@ public class TravelRoom {
     private Long id;
 
     private String travelName;
-    private String location;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
@@ -43,20 +42,18 @@ public class TravelRoom {
     }
 
     @Builder
-    public TravelRoom(String travelName, Long id, String location, LocalDateTime startDate, LocalDateTime endDate, RoomType isDone, Long budget) {
+    public TravelRoom(String travelName, Long id, LocalDateTime startDate, LocalDateTime endDate, RoomType isDone, Long budget) {
         this.travelName= travelName;
         this.id= id;
         this.budget= budget;
         this.endDate=endDate;
         this.startDate= startDate;
-        this.location=location;
         this.isDone=isDone;
     }
 
     //여행방 수정
     public void update(RoomInfoRequestDto roomInfoRequestDto) {
         this.travelName= roomInfoRequestDto.getTravelName();
-        this.location=roomInfoRequestDto.getLocation();
         this.startDate=roomInfoRequestDto.getStartDate();
         this.endDate=roomInfoRequestDto.getEndDate();
         this.budget= roomInfoRequestDto.getBudget();
