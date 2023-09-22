@@ -48,7 +48,7 @@ class FCMService: FirebaseMessagingService() {
         val notification = remoteMessage.notification
         val data = remoteMessage.data
         messageTitle = data["title"].toString()
-        messageBody = data["body"].toString()
+        messageBody = data["message"].toString()
 //        type = data[Constants.TYPE] ?: TYPE_REPORT
 //        articleId = if (type == TYPE_REPORT) data[Constants.REPORT_ID].toString() else data[Constants.ARTICLE_ID].toString()
         val mainIntent = Intent(this, MainActivity::class.java).apply {

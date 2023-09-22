@@ -20,12 +20,17 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.moneyminions.paybank.MainActivity
+import com.moneyminions.paybank.model.FcmTokenRequest
+import com.moneyminions.paybank.util.Constants
 import com.moneyminions.paybank.viewmodel.PayViewModel
 
 @Composable
 fun PayScreen(
-    payViewModel: PayViewModel
+    payViewModel: PayViewModel = hiltViewModel()
 ){
 
     val scrollableState = rememberScrollState()
@@ -45,6 +50,7 @@ fun PayScreen(
         Button(
             onClick = {
                 //FCM 토큰 전송 API
+                payViewModel.postFcmToken(FcmTokenRequest(Constants.fcmToken))
             },
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -139,5 +145,5 @@ fun Modifier.addFocusCleaner(focusManager: FocusManager, doOnClear: () -> Unit =
 @Preview(showBackground = true)
 @Composable
 fun PayScreenPreview(){
-    PayScreen(PayViewModel())
+    PayScreen()
 }

@@ -21,7 +21,7 @@ object ServiceModule {
     @Singleton
     @Provides
     @Named("BASE_URL")
-    fun BaseUrl() : String = "http://j9d210.p.ssafy.io:8081/"
+    fun BaseUrl() : String = "http://3.39.110.134:8083/"
 
     @Singleton
     @Provides
@@ -30,7 +30,7 @@ object ServiceModule {
         .connectTimeout(5000, TimeUnit.MILLISECONDS)
         .addInterceptor(HttpLoggingInterceptor())
 //        .addInterceptor(ResponseInterceptor())
-//        .addInterceptor(RequestInterceptor())
+        .addInterceptor(RequestInterceptor())
 //            .addNetworkInterceptor(XAccessTokenInterceptor()) // JWT 자동 헤더 전송
 //            .addInterceptor(AddCookiesInterceptor())  //쿠키 전송
 //            .addInterceptor(ReceivedCookiesInterceptor()) //쿠키 추출

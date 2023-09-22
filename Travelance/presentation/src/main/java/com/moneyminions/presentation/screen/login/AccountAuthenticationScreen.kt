@@ -67,6 +67,23 @@ fun AccountAuthenticationScreen(
             showDialog = true
         }
     )
+    val confirmResultState by accountAuthenticationViewModel.confirmResult.collectAsState()
+    NetworkResultHandler(
+        state = confirmResultState,
+        errorAction = {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("인증 코드를 다시 확인해주세요")
+            }
+        },
+        successAction = {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("1원 인증 확인")
+                accountAuthenticationViewModel.refreshNetworkState()
+            }
+            accountAuthenticationViewModel.setVerifyCode("")
+            navController.navigate(Screen.AccountList.route)
+        }
+    )
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -113,14 +130,8 @@ fun AccountAuthenticationScreen(
                         .fillMaxWidth()
                         .padding(16.dp)
                 ) {
-                    val authenticationAccountInfo = AuthenticationAccountInfoDto(
-                        name = accountAuthenticationViewModel.name.value,
-                        bankName =  accountAuthenticationViewModel.bankName.value,
-                        accountNumber = accountAuthenticationViewModel.accountNumber.value
-                    )
-                    if(accountAuthenticationViewModel.vaildCheck(authenticationAccountInfo)){
-                        Log.d(TAG, "Account : $authenticationAccountInfo")
-                        accountAuthenticationViewModel.postAuthenticationAccount(authenticationAccountInfo)
+                    if(accountAuthenticationViewModel.validCheck()){
+                        accountAuthenticationViewModel.postAuthenticationAccount()
                     }else{
                         coroutineScope.launch {
                             snackbarHostState.showSnackbar("값을 제대로 입력하시오")
@@ -140,6 +151,9 @@ fun AccountAuthenticationScreen(
         value = accountAuthenticationViewModel.verifyCode.value,
         onValueChange = {
             accountAuthenticationViewModel.setVerifyCode(it)
+        },
+        onConfirm = {
+            accountAuthenticationViewModel.confirmAuthenticationAccount()
         }
     )
 }

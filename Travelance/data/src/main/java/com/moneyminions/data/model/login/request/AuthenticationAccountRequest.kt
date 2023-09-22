@@ -10,6 +10,6 @@ data class AuthenticationAccountRequest(
     val account: String,
     @SerializedName("bankName")
     val bankName: String,
-    @SerializedName("verifycode")
-    val verifycode: String
+    @SerializedName("verifyCode")
+    val verifyCode: String
 )

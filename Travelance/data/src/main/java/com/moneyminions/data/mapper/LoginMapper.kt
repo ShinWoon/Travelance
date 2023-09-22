@@ -20,7 +20,7 @@ fun AuthenticationAccountInfoDto.toData(): AuthenticationAccountRequest{
         name = name,
         bankName = bankName,
         account = accountNumber,
-        verifycode = ""
+        verifyCode = verifyCode?: ""
     )
 }
 fun AuthenticationAccountResponse.toDomain(): AuthenticationAccountResultDto{

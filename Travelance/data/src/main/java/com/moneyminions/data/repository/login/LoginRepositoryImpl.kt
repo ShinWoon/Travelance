@@ -9,6 +9,7 @@ import com.moneyminions.data.mapper.toDomain
 import com.moneyminions.data.model.login.request.LoginRequest
 import com.moneyminions.data.service.handleApi
 import com.moneyminions.domain.model.NetworkResult
+import com.moneyminions.domain.model.common.CommonResultDto
 import com.moneyminions.domain.model.login.AuthenticationAccountInfoDto
 import com.moneyminions.domain.model.login.AuthenticationAccountResultDto
 import com.moneyminions.domain.model.login.LoginResultDto
@@ -26,6 +27,14 @@ class LoginRepositoryImpl @Inject constructor(
 
     override suspend fun postAuthenticationAccount(accountInfoDto: AuthenticationAccountInfoDto): NetworkResult<AuthenticationAccountResultDto> {
         return handleApi { loginDataSource.postAuthenticationAccount(accountInfoDto.toData()).toDomain() }
+    }
+
+    override suspend fun confirmAuthenticationAccount(accountInfoDto: AuthenticationAccountInfoDto): NetworkResult<CommonResultDto> {
+        return handleApi { loginDataSource.confirmAuthenticationAccount(accountInfoDto.toData()).toDomain() }
+    }
+
+    override suspend fun getAccountList() {
+        loginDataSource.getAccountList()
     }
 
 }

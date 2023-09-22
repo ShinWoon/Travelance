@@ -16,14 +16,18 @@ fun createNotificationChannel(notificationManager: NotificationManager, id: Stri
     notificationManager.createNotificationChannel(channel)
 }
 
-fun initFirebase() {
+fun initFirebase(): String {
+    var token: String = ""
     FirebaseMessaging.getInstance().token.addOnCompleteListener {
         if (!it.isSuccessful) {
             // 토큰 요청 task가 실패 한 경우 처리
             return@addOnCompleteListener
         }
         // 토큰 요청 task가 성공한 경우 task의 result에 token 값이 내려온다.
-        val token = it.result
+        token = it.result
+        Constants.fcmToken = token
         Log.d(TAG, "initFirebase: $token")
+        Log.d(TAG, "Constants의 fcmToken: ${Constants.fcmToken}")
     }
+    return token
 }

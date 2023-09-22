@@ -1,13 +1,16 @@
 package com.moneyminions.presentation.viewmodel.login
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moneyminions.domain.model.NetworkResult
+import com.moneyminions.domain.model.common.CommonResultDto
 import com.moneyminions.domain.model.login.AuthenticationAccountInfoDto
 import com.moneyminions.domain.model.login.AuthenticationAccountResultDto
 import com.moneyminions.domain.model.login.LoginResultDto
+import com.moneyminions.domain.usecase.login.ConfirmAuthenticationAccountUseCase
 import com.moneyminions.domain.usecase.login.PostAuthenticationAccountUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,9 +18,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val TAG = "AccountAuthenticationVi D210"
 @HiltViewModel
 class AccountAuthenticationViewModel @Inject constructor(
-    private val postAuthenticationAccountUseCase: PostAuthenticationAccountUseCase
+    private val postAuthenticationAccountUseCase: PostAuthenticationAccountUseCase,
+    private val confirmAuthenticationAccountUseCase: ConfirmAuthenticationAccountUseCase
 ): ViewModel() {
 
     private val _name = mutableStateOf("")
@@ -48,15 +53,41 @@ class AccountAuthenticationViewModel @Inject constructor(
         }
     }
 
-    fun vaildCheck(accountInfoDto: AuthenticationAccountInfoDto): Boolean{
-        return !(accountInfoDto.name == "" || accountInfoDto.accountNumber == "" || accountInfoDto.bankName == "")
+    fun validCheck(): Boolean{
+        return !(name.value == "" || accountNumber.value == "" || bankName.value == "")
     }
 
     private val _authenticationResult = MutableStateFlow<NetworkResult<AuthenticationAccountResultDto>>(NetworkResult.Idle)
     val authenticationResult = _authenticationResult.asStateFlow()
-    fun postAuthenticationAccount(accountInfoDto: AuthenticationAccountInfoDto){
+    fun postAuthenticationAccount(){
+        val authenticationAccountInfo = AuthenticationAccountInfoDto(
+            name = name.value,
+            bankName =  bankName.value,
+            accountNumber = accountNumber.value
+        )
+        Log.d(TAG, "Account : $authenticationAccountInfo")
         viewModelScope.launch {
-            _authenticationResult.emit(postAuthenticationAccountUseCase.invoke(accountInfoDto))
+            _authenticationResult.emit(postAuthenticationAccountUseCase.invoke(authenticationAccountInfo))
         }
+    }
+
+    private val _confirmResult = MutableStateFlow<NetworkResult<CommonResultDto>>(NetworkResult.Idle)
+    val confirmResult = _confirmResult.asStateFlow()
+    fun confirmAuthenticationAccount(){
+        val authenticationAccountInfo = AuthenticationAccountInfoDto(
+            name = name.value,
+            bankName =  bankName.value,
+            accountNumber = accountNumber.value,
+            verifyCode = verifyCode.value
+        )
+        Log.d(TAG, "Account : $authenticationAccountInfo")
+        viewModelScope.launch {
+            _confirmResult.emit(confirmAuthenticationAccountUseCase.invoke(authenticationAccountInfo))
+        }
+    }
+
+    suspend  fun refreshNetworkState(){
+        _authenticationResult.emit(NetworkResult.Idle)
+        _confirmResult.emit(NetworkResult.Idle)
     }
 }
