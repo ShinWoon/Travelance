@@ -1,9 +1,13 @@
 package com.easyone.travelance.domain.member.service;
 
 
+import com.easyone.travelance.domain.account.entity.Account;
+import com.easyone.travelance.domain.member.dto.MyAccountDto;
+import com.easyone.travelance.domain.member.entity.MainAccount;
 import com.easyone.travelance.domain.member.entity.Member;
 //import com.easyone.travelance.domain.member.entity.MemberAuth;
 //import com.easyone.travelance.domain.member.respository.MemberAuthRepository;
+import com.easyone.travelance.domain.member.respository.MainAccountRepository;
 import com.easyone.travelance.domain.member.respository.MemberRepository;
 import com.easyone.travelance.global.error.ErrorCode;
 import com.easyone.travelance.global.error.exception.AuthenticationException;
@@ -14,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,10 +28,21 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-//    private final MemberAuthRepository memberAuthRepository;
+    private final MainAccountRepository mainAccountRepository;
 
     public Member registerMember(Member member) {
         validateDuplicateMember(member);
+
+        // MainAccount 생성
+        MainAccount mainAccount = MainAccount.builder()
+                .oneAccount("some_account_number") // 원하는 계좌번호를 설정하세요.
+                .member(member)
+                .build();
+        mainAccountRepository.save(mainAccount);
+
+        // Member에 MainAccount 연결
+        member.setMainAccount(mainAccount);
+
         return memberRepository.save(member);
     }
 
@@ -73,6 +89,21 @@ public class MemberService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_EXISTS));
     }
 
+    public List<MyAccountDto> findAllAccountsForMember(Member member) {
+        MainAccount mainAccount = member.getMainAccount();
+        List<Account> accounts = mainAccount.getAccountList();
 
+        List<MyAccountDto> accountDtos = new ArrayList<>();
+        for (Account account : accounts) {
+            MyAccountDto accountDto = new MyAccountDto();
+            accountDto.setId(account.getId());
+            accountDto.setAccount(account.getAccount());
+            accountDto.setAccountName(account.getAccountName());
+            accountDto.setIdx(account.getIdx());
+            accountDtos.add(accountDto);
+        }
+
+        return accountDtos;
+    }
 
 }

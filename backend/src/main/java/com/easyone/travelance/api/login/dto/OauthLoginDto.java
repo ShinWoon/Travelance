@@ -15,8 +15,6 @@ public class OauthLoginDto {
     @Setter
     @Schema(description = "예시 DTO")
     public static class Request {
-        @Schema(example = "testemail@test.com")
-        private String email;
 
         @Schema(example = "KAKAO")
         private String socialType;

@@ -30,11 +30,15 @@ public class Payment {
     @JoinColumn(name = "travel_room_id")
     private TravelRoom travelRoom;
 
-    private LocalDateTime paymentAt;
+    private String paymentAt;
     private Long paymentAmount;
     private String paymentContent;
     private String storeAddress;
     private String storeSector;
+    private boolean isWithPaid;
 
+    public void setIsWithPaid(boolean isWithPaid){
+        this.isWithPaid = isWithPaid;
+    }
 
 }

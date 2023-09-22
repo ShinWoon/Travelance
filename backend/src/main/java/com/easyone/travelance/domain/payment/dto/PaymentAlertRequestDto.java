@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 public class PaymentAlertRequestDto {
-    private LocalDateTime paymentAt;
+    private String memberPrivateId;
+    private String paymentAt;
     private Long paymentAmount;
     private String paymentContent;
-    private Long approvalNumber;
     private String storeAddress;
     private String storeSector;
 }

@@ -31,4 +31,16 @@ public class MainAccount {
     @Builder.Default
     private List<Account> accountList = new ArrayList<>();
 
+    public void setOneAccount(String oneAccount) {
+        this.oneAccount = oneAccount;
+    }
+
+    @Override
+    public String toString() {
+        return "MainAccount{" +
+                "id=" + id +
+                ", oneAccount='" + oneAccount + '\'' +
+                '}';
+    }
+
 }

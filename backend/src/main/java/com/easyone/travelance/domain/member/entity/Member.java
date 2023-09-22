@@ -1,7 +1,6 @@
 package com.easyone.travelance.domain.member.entity;
 
 import com.easyone.travelance.domain.card.entity.Card;
-import com.easyone.travelance.domain.travel.entity.TravelRoom;
 import com.easyone.travelance.domain.travel.entity.TravelRoomMember;
 import com.easyone.travelance.domain.member.constant.Role;
 import com.easyone.travelance.global.jwt.dto.JwtDto;
@@ -43,6 +42,8 @@ public class Member {
 
     private String privateId;
 
+    private String password;
+
     private LocalDateTime tokenExpirationTime;
 
 
@@ -75,19 +76,37 @@ public class Member {
     }
 
     @Builder
-    public Member(String email,String nickname,String privateId,Role role){
+    public Member(String email,String nickname,String privateId,Role role, String password){
         this.email = email;
         this.nickname = nickname;
         this.role = role;
         this.privateId = privateId;
+        this.password = password;
     }
 
-    public void updateRole(Role role){
-        this.role = role;
+    public void updateAdditionalInfo(String nickname, String password, Role role){
+            this.nickname =nickname;
+            this.password = password;
+            this.role = role;
     }
 
     public void editNickname(String nickname){
         this.nickname = nickname;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", role=" + role +
+                ", refreshToken='" + refreshToken + '\'' +
+                ", fcmToken='" + fcmToken + '\'' +
+                ", privateId='" + privateId + '\'' +
+                ", tokenExpirationTime=" + tokenExpirationTime +
+                '}';
     }
 
 }
