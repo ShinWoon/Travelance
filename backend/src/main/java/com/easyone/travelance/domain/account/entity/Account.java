@@ -23,7 +23,7 @@ public class Account {
 
     private String accountName;
 
-    private String accountUrl;
+    private Long idx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="main_account_id")

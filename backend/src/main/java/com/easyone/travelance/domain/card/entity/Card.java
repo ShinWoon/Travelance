@@ -29,7 +29,7 @@ public class Card {
 
     private String cardCoName;
 
-    private String cardLogo;
+    private Long idx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")

@@ -37,7 +37,8 @@ public class CardService {
     @Autowired
     private final CardRepository cardRepository;
 
-    @Value("http://localhost:8081")
+//    @Value("http://localhost:8081")
+    @Value("http://3.39.110.134:3306")
     private String Url;
 
     public Flux<Object> allCard(String privateId) {
@@ -64,7 +65,7 @@ public class CardService {
                     .cardCoName(selectedCardRequestDto.getCardCoName())
                     .cardNickname(selectedCardRequestDto.getCardCoName())
                     .cardNumber(selectedCardRequestDto.getCardNumber())
-                    .cardLogo(selectedCardRequestDto.getCardCoLogo())
+                    .idx(selectedCardRequestDto.getIdx())
                     .color(Long.valueOf(selectedCardRequestDto.getCardCoCode()))
                     .member(member)
                     .build();
