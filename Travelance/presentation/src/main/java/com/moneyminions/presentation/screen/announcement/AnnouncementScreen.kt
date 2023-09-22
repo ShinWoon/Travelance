@@ -126,7 +126,7 @@ fun AnnounceItem(
                 Image(
                     painter = painterResource(id = R.drawable.ic_link),
                     contentDescription = "link",
-                    modifier = Modifier.size(30.dp)
+                    modifier = Modifier.size(20.dp)
                         .clickable {
                             /**
                              * 작성한 URL로 이동 웹뷰 하던가 아님 브라우저에서 띄우던가..

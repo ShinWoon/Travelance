@@ -39,3 +39,8 @@ val White = Color(0xFFFFFFFF)
 val Black = Color(0xFF000000)
 
 val Coke = Color(0xDFD00000)
+
+val CardGreen = Color(0xFF00B347)
+val CardBlue = Color(0xFF00A3FF)
+val CardOrange = Color(0xFFFF681D)
+val CardPurple = Color(0xFF7F65C5)

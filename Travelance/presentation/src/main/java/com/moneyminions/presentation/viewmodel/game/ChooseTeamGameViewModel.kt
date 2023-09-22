@@ -1,13 +1,16 @@
 package com.moneyminions.presentation.viewmodel.game
 
 import android.util.Log
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.moneyminions.domain.model.friend.FriendDto
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val TAG = "ChooseTeamGameViewModel"
@@ -17,7 +20,11 @@ class ChooseTeamGameViewModel @Inject constructor() : ViewModel() {
     data class FriendDto(val email: String, val nickName: String, val profileUrl: String)
 
     val teammate = mutableListOf(
-        FriendDto("scoups@example.com", "에스쿱스", "https://i.namu.wiki/i/-qrEP8xH9rwiWXnV5aTPgpuFORmvdzm-g-sK3v_Rg456mVv7gDnCOW8xpNxQ2GTl2SHlde8xmVmijBFZRMEeNlAMe0qyKvRH15reR-7D1aTMi5Cl88qOSXKBwHAQKBDpZ3hltnmjXnOhMDDUKR-5yw.webp"),
+        FriendDto(
+            "scoups@example.com",
+            "에스쿱스",
+            "https://i.namu.wiki/i/-qrEP8xH9rwiWXnV5aTPgpuFORmvdzm-g-sK3v_Rg456mVv7gDnCOW8xpNxQ2GTl2SHlde8xmVmijBFZRMEeNlAMe0qyKvRH15reR-7D1aTMi5Cl88qOSXKBwHAQKBDpZ3hltnmjXnOhMDDUKR-5yw.webp",
+        ),
         FriendDto("jeonghan@example.com", "정한", "image_url_2"),
         FriendDto("joshua@example.com", "조슈아", "image_url_3"),
         FriendDto("jun@example.com", "준", "image_url_4"),
@@ -34,7 +41,7 @@ class ChooseTeamGameViewModel @Inject constructor() : ViewModel() {
 
     private var _teamCnt = MutableStateFlow(0)
     var teamCnt = _teamCnt.asStateFlow()
-//    val teamCnt = 3
+
     private val teams = Array(teamCnt.value) { mutableListOf<Int>() }
     // api로 해당 방의 친구 목록 불러 오기
 
@@ -69,5 +76,20 @@ class ChooseTeamGameViewModel @Inject constructor() : ViewModel() {
             Log.d(TAG, "getTeammateInfo: ${teammateRandomList[index]}")
         }
         return teammateRandomList
+    }
+
+    private val _visibleItems = mutableStateListOf<Boolean>()
+    val visibleItems = _visibleItems
+
+    fun setVisibility(cnt: Int) {
+        for (i in 0 until cnt) {
+            _visibleItems.add(false)
+        }
+        viewModelScope.launch {
+            for (i in _visibleItems.indices) {
+                delay(300) // 300 밀리초 딜레이 예제
+                _visibleItems[i] = true
+            }
+        }
     }
 }

@@ -133,7 +133,7 @@ fun AnnouncementWritingDialog(
                     },
                     leadingIcon = {
                         Icon(
-                            modifier = Modifier.size(16.dp).padding(0.dp),
+                            modifier = Modifier.size(20.dp).padding(0.dp),
                             painter = painterResource(id = R.drawable.ic_link),
                             contentDescription = "Localized description",
                         )

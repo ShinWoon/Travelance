@@ -2,6 +2,7 @@ package com.moneyminions.presentation.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -47,7 +48,8 @@ fun NavGraph(
         startDestination = startDestination,
         enterTransition = { fadeIn(tween(500)) },
 //        exitTransition = { fadeOut(tween(300)) },
-        popEnterTransition = { fadeIn(tween(500)) },
+//        popEnterTransition = { fadeIn(tween(500)) },
+        popEnterTransition = { EnterTransition.None },
 //        popExitTransition = { fadeOut(tween(500)) },
 //        enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },

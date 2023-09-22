@@ -1,6 +1,5 @@
 package com.moneyminions.presentation.screen.game.teamchooseview
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,10 +22,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -43,29 +40,27 @@ import com.moneyminions.presentation.common.MinionProfile
 import com.moneyminions.presentation.theme.DarkerGray
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.theme.White
-import com.moneyminions.presentation.theme.pretendard
 import com.moneyminions.presentation.viewmodel.game.ChooseTeamGameViewModel
 
 @Composable
 fun TeamChooseStartView(
     modifier: Modifier = Modifier,
-    teamChooseTeamGameViewModel: ChooseTeamGameViewModel
+    teamChooseTeamGameViewModel: ChooseTeamGameViewModel,
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         TeamCountView(teamChooseTeamGameViewModel = teamChooseTeamGameViewModel)
         Participants(teamChooseTeamGameViewModel = teamChooseTeamGameViewModel)
-        
     }
 }
 
 @Composable
 fun TeamCountView(
     modifier: Modifier = Modifier,
-    teamChooseTeamGameViewModel: ChooseTeamGameViewModel
+    teamChooseTeamGameViewModel: ChooseTeamGameViewModel,
 ) {
 //    val teammateInfoList =
 //        LaunchedEffect(true) {
@@ -76,26 +71,30 @@ fun TeamCountView(
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
     ) {
         Button(
             shape = CircleShape,
             colors = ButtonDefaults.buttonColors(PinkDarkest),
             onClick = {
-                if (teamCnt == 0) teamCnt = 0
-                else teamCnt -= 1
-            }) {
+                if (teamCnt == 0) {
+                    teamCnt = 0
+                } else {
+                    teamCnt -= 1
+                }
+            },
+        ) {
             Text(
                 text = "-",
                 color = White,
-                style = CustomTextStyle.pretendardBold16
+                style = CustomTextStyle.pretendardBold16,
             )
         }
         Spacer(modifier = modifier.width(16.dp))
         Text(
             text = teamCnt.toString(),
             color = DarkerGray,
-            style = CustomTextStyle.pretendardSemiBold16
+            style = CustomTextStyle.pretendardSemiBold16,
         )
         Spacer(modifier = modifier.width(16.dp))
         Button(
@@ -103,11 +102,12 @@ fun TeamCountView(
             colors = ButtonDefaults.buttonColors(PinkDarkest),
             onClick = {
                 teamCnt += 1
-            }) {
+            },
+        ) {
             Text(
                 text = "+",
                 color = White,
-                style = CustomTextStyle.pretendardBold16
+                style = CustomTextStyle.pretendardBold16,
             )
         }
     }
@@ -116,7 +116,7 @@ fun TeamCountView(
 @Composable
 fun Participants(
     modifier: Modifier = Modifier,
-    teamChooseTeamGameViewModel: ChooseTeamGameViewModel
+    teamChooseTeamGameViewModel: ChooseTeamGameViewModel,
 ) {
     var participantsList by remember { mutableIntStateOf(teamChooseTeamGameViewModel.teamCnt.value) }
     Column {
@@ -124,21 +124,21 @@ fun Participants(
             Text(
                 text = "참여자",
                 color = DarkerGray,
-                style = pretendardBold16
+                style = pretendardBold16,
             )
             IconButton(onClick = {
-
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_add),
                     tint = PinkDarkest,
-                    contentDescription = "add participants")
+                    contentDescription = "add participants",
+                )
                 Spacer(modifier = modifier.width(ButtonDefaults.IconSpacing))
                 Text(
                     text = "참여자 추가하기",
                     color = DarkerGray,
-                    style = pretendardBold14)
-                
+                    style = pretendardBold14,
+                )
             }
         }
         LazyRow(
@@ -146,7 +146,7 @@ fun Participants(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            items(participantsList) {index ->
+            items(participantsList) { index ->
                 MinionProfile(48.dp)
             }
         }
@@ -156,7 +156,7 @@ fun Participants(
 @Composable
 fun PickParticipants(
     modifier: Modifier = Modifier,
-    teamChooseTeamGameViewModel: ChooseTeamGameViewModel
+    teamChooseTeamGameViewModel: ChooseTeamGameViewModel,
 ) {
     Dialog(onDismissRequest = { /*TODO*/ }) {
         Card(
@@ -168,22 +168,21 @@ fun PickParticipants(
                     text = "친구들",
                     color = DarkerGray,
                     style = pretendardBold16,
-                    )
+                )
                 Spacer(modifier = modifier.height(8.dp))
                 LazyVerticalGrid(columns = GridCells.FixedSize(48.dp)) {
-                    items(teamChooseTeamGameViewModel.teammate) {index ->
+                    items(teamChooseTeamGameViewModel.teammate) { index ->
                         Column {
                             MinionProfile(size = 36.dp)
                             Text(
                                 text = index.nickName,
                                 color = DarkerGray,
                                 style = pretendardSemiBold12,
-                                )
+                            )
                         }
                     }
                 }
             }
         }
-
     }
 }
