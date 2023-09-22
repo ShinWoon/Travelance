@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,7 +30,6 @@ import com.moneyminions.presentation.theme.DarkerGray
 import com.wajahatkarim.flippable.FlipAnimationType
 import com.wajahatkarim.flippable.Flippable
 import com.wajahatkarim.flippable.FlippableController
-import kotlinx.coroutines.delay
 
 private const val TAG = "CardViews"
 
@@ -151,9 +149,9 @@ fun CardFourView(
     if (isCardFlipSuccessVisible) {
         CardFlipSuccessView(modifier = modifier)
 
-        LaunchedEffect(isCardFlipSuccessVisible) {
-            delay(1200)
-            isCardFlipSuccessVisible = false
-        }
+//        LaunchedEffect(isCardFlipSuccessVisible) {
+//            delay(1200)
+//            isCardFlipSuccessVisible = false
+//        }
     }
 }
