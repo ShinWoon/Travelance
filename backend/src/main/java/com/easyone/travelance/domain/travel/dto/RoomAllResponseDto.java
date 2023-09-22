@@ -28,7 +28,6 @@ public class RoomAllResponseDto {
         this.budget=entity.getBudget();
         this.endDate=entity.getEndDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
         this.startDate=entity.getStartDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
-        this.location=entity.getLocation();
         this.isDone=entity.getIsDone();
         this.use=totalprice;
     }
