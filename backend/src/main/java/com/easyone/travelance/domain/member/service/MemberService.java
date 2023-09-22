@@ -99,7 +99,7 @@ public class MemberService {
             accountDto.setId(account.getId());
             accountDto.setAccount(account.getAccount());
             accountDto.setAccountName(account.getAccountName());
-            accountDto.setAccountUrl(account.getAccountUrl());
+            accountDto.setIdx(account.getIdx());
             accountDtos.add(accountDto);
         }
 

@@ -37,8 +37,12 @@ public class CardService {
     @Autowired
     private final CardRepository cardRepository;
 
+//    @Value("http://localhost:8081")
+    @Value("http://3.39.110.134:3306")
+    private String Url;
+
     public Flux<Object> allCard(String privateId) {
-        return webClientBuilder.baseUrl("http://localhost:8081") // API 엔드포인트를 설정합니다.
+        return webClientBuilder.baseUrl(Url) // API 엔드포인트를 설정합니다.
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .defaultHeader(authTokenHeaderName, authToken)
                 .build()
@@ -61,7 +65,7 @@ public class CardService {
                     .cardCoName(selectedCardRequestDto.getCardCoName())
                     .cardNickname(selectedCardRequestDto.getCardCoName())
                     .cardNumber(selectedCardRequestDto.getCardNumber())
-                    .cardLogo(selectedCardRequestDto.getCardCoLogo())
+                    .idx(selectedCardRequestDto.getIdx())
                     .color(Long.valueOf(selectedCardRequestDto.getCardCoCode()))
                     .member(member)
                     .build();
