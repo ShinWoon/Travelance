@@ -10,7 +10,7 @@ public class OneRequestDto {
     private String name;
     private String bankName;
     private String account;
-    private String verifycode;
+    private String verifyCode;
 
     public OneRequestDto(String name, String bankName, String account){
         this.name = name;

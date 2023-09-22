@@ -65,25 +65,25 @@ public class MemberController {
             "        {\n\n" +
             "        \"account\": \"6666666666666666\",\n" +
             "        \"bankName\": \"대구은행\",\n" +
-            "        \"accountUrl\": \"img/bank/005_대구은행\"\n" +
+            "        \"idx\": 4\n" +
             "        },\n\n" +
             "        {\n\n" +
             "        \"account\": \"7753621811018015\",\n" +
             "        \"bankName\": \"SC제일은행\",\n" +
-            "        \"accountUrl\": \"img/bank/001_SC제일은행\"\n" +
+            "        \"idx\": 0\n" +
             "        }\n\n" +
             "    ],\n\n" +
             "    \"cardList\": [\n" +
             "        {\n\n" +
             "        \"cardNumber\": \"4215154824392854\",\n" +
             "        \"cardCoName\": \"국민카드\",\n" +
-            "        \"cardCoLogo\": \"img/card/002_국민카드\",\n" +
+            "        \"idx\": 1,\n" +
             "        \"cardCoCode\": \"002\"\n" +
             "        },\n\n" +
             "        {\n\n" +
             "        \"cardNumber\": \"3737467972008765\",\n" +
             "        \"cardCoName\": \"국민카드\",\n" +
-            "        \"cardCoLogo\": \"img/card/002_국민카드\",\n" +
+            "        \"idx\": 1,\n" +
             "        \"cardCoCode\": \"002\"\n" +
             "        }\n\n" +
             "    ],\n\n" +
@@ -158,6 +158,7 @@ public class MemberController {
         } else {
             throw new RuntimeException("본인 계좌 리스트에 존재하지 않는 계좌번호입니다.");
         }
+
 
     }
 
