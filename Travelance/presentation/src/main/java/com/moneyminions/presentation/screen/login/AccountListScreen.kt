@@ -19,28 +19,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.moneyminions.domain.model.common.AccountDto
 import com.moneyminions.presentation.common.AccountRowItem
 import com.moneyminions.presentation.common.MinionPrimaryButton
 import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.navigation.Screen
-import com.moneyminions.presentation.screen.mypage.AccountDto
+import com.moneyminions.presentation.screen.mypage.view.accountList
+import com.moneyminions.presentation.utils.Constants
 
-val accountList = listOf(
-    AccountDto(
-        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
-        name = "신한",
-        number = "997838829102"
-    ),
-    AccountDto(
-        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
-        name = "신한",
-        number = "997838829102"
-    ),
-    AccountDto(
-        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
-        name = "신한",
-        number = "997838829102"
-    )
+val accountList = listOf<AccountDto>(
 )
 
 private const val TAG = "AccountListScreen D210"
@@ -60,13 +47,13 @@ fun AccountListScreen(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             LazyColumn{
-                items(accountList){
+                items(Constants.AUTHENTICATION_ACCOUNT_LIST){
                     var isSelectedState by remember { mutableStateOf(it.isSelected) }
                     Log.d(TAG, "AccountListScreen: $isSelectedState")
                     AccountRowItem(
-                        logo = it.logo,
+                        logo = Constants.ACCOUNT_LOGO_LIST[it.idx],
                         name = it.name,
-                        number = it.number,
+                        number = it.accountNumber!!,
                         type = "select",
                         isSelected = isSelectedState,
                         onSelected = {

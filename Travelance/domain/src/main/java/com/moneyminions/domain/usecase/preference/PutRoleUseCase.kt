@@ -7,7 +7,7 @@ import javax.inject.Inject
 class PutRoleUseCase @Inject constructor(
     private val preferenceRepository: PreferenceRepository
 ) {
-    operator fun invoke(role: String){
+    operator fun invoke(role: String?){
         return preferenceRepository.putRole(role)
     }
 }

@@ -1,10 +1,7 @@
 package com.moneyminions.presentation.viewmodel.login
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakao.sdk.auth.model.OAuthToken
@@ -17,18 +14,21 @@ import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.login.JwtTokenDto
 import com.moneyminions.domain.model.login.LoginResultDto
 import com.moneyminions.domain.usecase.login.LoginUseCase
+import com.moneyminions.domain.usecase.preference.GetJwtTokenUseCase
+import com.moneyminions.domain.usecase.preference.GetRoleUseCase
 import com.moneyminions.domain.usecase.preference.PutJwtTokenUseCase
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
+import com.moneyminions.domain.usecase.preference.PutRoleUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.security.auth.callback.Callback
 
 private const val TAG = "LoginViewModel D210"
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val putJwtTokenUseCase: PutJwtTokenUseCase,
+    private val putRoleUseCase: PutRoleUseCase,
+    private val getJwtTokenUseCase: GetJwtTokenUseCase,
+    private val getRoleUseCase: GetRoleUseCase,
     private val loginUseCase: LoginUseCase
 ): ViewModel() {
 
@@ -43,10 +43,10 @@ class LoginViewModel @Inject constructor(
                 token != null -> {
                     Log.d(TAG, "kakao login success -> access Token : ${token.accessToken}")
                     Log.d(TAG, "kakao login success -> refresh Token : ${token.refreshToken}")
-                    putJwtTokenUseCase.invoke(JwtTokenDto(token.accessToken, token.refreshToken))
+                    updateJwtToken(token.accessToken, token.refreshToken)
                     //로그인 api 호출
                     viewModelScope.launch {
-                        _loginResult.emit(loginUseCase.invoke())
+                        _loginResult.emit(loginUseCase.invoke("KAKAO"))
                     }
                 }
             }
@@ -76,5 +76,24 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    fun updateJwtToken(accessToken: String?, refreshToken: String?){
+        putJwtTokenUseCase.invoke(JwtTokenDto(accessToken, refreshToken))
+    }
+
+    fun updateRole(role: String?){
+        putRoleUseCase.invoke(role)
+    }
+
+    fun getJwtToken(): JwtTokenDto{
+        return getJwtTokenUseCase.invoke()
+    }
+
+    fun getRole(): String{
+        return getRoleUseCase.invoke()
+    }
+
+    suspend fun refreshNetworkState(){
+        _loginResult.emit(NetworkResult.Idle)
+    }
 
 }

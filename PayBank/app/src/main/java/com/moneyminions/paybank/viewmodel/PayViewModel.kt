@@ -1,10 +1,29 @@
 package com.moneyminions.paybank.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.moneyminions.paybank.model.FcmTokenRequest
+import com.moneyminions.paybank.service.BankService
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PayViewModel: ViewModel() {
+private const val TAG = "PayViewModel D210"
+@HiltViewModel
+class PayViewModel @Inject constructor(
+    private val bankService: BankService
+): ViewModel() {
+
+    fun postFcmToken(fcmTokenRequest: FcmTokenRequest){
+        Log.d(TAG, "postFcmToken: ${fcmTokenRequest.fcmToken}")
+        viewModelScope.launch {
+            bankService.postFcmToken(fcmTokenRequest)
+        }
+    }
 
     private val _cardNumber = mutableStateOf("")
     val cardNumber: State<String> = _cardNumber

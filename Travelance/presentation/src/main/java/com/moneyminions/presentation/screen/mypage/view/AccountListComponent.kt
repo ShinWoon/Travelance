@@ -13,27 +13,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.moneyminions.domain.model.common.AccountDto
 import com.moneyminions.presentation.common.AccountRowItem
 import com.moneyminions.presentation.common.CustomTextStyle
-import com.moneyminions.presentation.screen.mypage.AccountDto
 import com.moneyminions.presentation.theme.GraphGray
+import com.moneyminions.presentation.utils.Constants
 
-val accountList = listOf(
-    AccountDto(
-        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
-        name = "신한",
-        number = "997838829102"
-    ),
-    AccountDto(
-        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
-        name = "신한",
-        number = "997838829102"
-    ),
-    AccountDto(
-        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png",
-        name = "신한",
-        number = "997838829102"
-    )
+val accountList = listOf<AccountDto>(
 )
 
 @Composable
@@ -52,11 +38,11 @@ fun AccountListComponent(
         .padding(horizontal = 16.dp)
     )
     LazyColumn{
-        items(accountList){
+        items(Constants.AUTHENTICATION_ACCOUNT_LIST){
             AccountRowItem(
-                logo = it.logo,
+                logo = Constants.ACCOUNT_LOGO_LIST[it.idx],
                 name = it.name,
-                number = it.number,
+                number = it.accountNumber!!,
                 type = "delete",
                 onDeleted = {
                     // 삭제 로직

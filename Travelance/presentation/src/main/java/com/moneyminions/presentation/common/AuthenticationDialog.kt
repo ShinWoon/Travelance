@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -24,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -42,7 +44,8 @@ fun AuthenticationDialog(
     onDismiss: () -> Unit,
     type: String,
     value: String,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
+    onConfirm: () -> Unit
 ){
     if(showDialog){
         Dialog(
@@ -93,6 +96,9 @@ fun AuthenticationDialog(
                     BasicTextField(
                         value = value,
                         onValueChange = onValueChange,
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            keyboardType = KeyboardType.Number
+                        ),
                         decorationBox = {
                             Row(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -119,6 +125,7 @@ fun AuthenticationDialog(
                         onClickLeft = {
                             //일치여부 확인 후 이동
                             Log.d(TAG, "result : $value")
+                            onConfirm()
                         },
                         contentRight = "취소",
                         onClickRight = {
@@ -169,6 +176,6 @@ fun AuthenticationDialogPreview(){
     AuthenticationDialog(
         navController = rememberNavController(),
         showDialog = true, onDismiss = { } , type = "account",
-        value = "", onValueChange = {}
+        value = "", onValueChange = {}, onConfirm = {}
     )
 }

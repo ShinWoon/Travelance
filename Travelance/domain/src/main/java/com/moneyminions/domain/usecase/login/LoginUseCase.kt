@@ -9,7 +9,7 @@ import javax.inject.Inject
 class LoginUseCase @Inject constructor(
     private val loginRepository: LoginRepository
 ){
-    suspend operator fun invoke(): NetworkResult<LoginResultDto>{
-        return loginRepository.login()
+    suspend operator fun invoke(socialType: String): NetworkResult<LoginResultDto>{
+        return loginRepository.login(socialType)
     }
 }
