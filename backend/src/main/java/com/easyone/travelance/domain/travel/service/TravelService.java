@@ -28,17 +28,49 @@ public class TravelService {
 
     //방만들기
     @Transactional
-    public void save(RoomInfoRequestDto roomInfoRequestDto) {
+    public String save(RoomInfoRequestDto roomInfoRequestDto) {
         //방 만든 직전에는 사전정산 상태
-
         RoomType roomType = RoomType.BEFORE;
-
 
         TravelRoom travelRoom =roomInfoRequestDto.toEntity(roomType);
         travelRoomRepository.save(roomInfoRequestDto.toEntity(roomType));
-        log.info(travelRoom.getTravelName());
-        log.info(roomInfoRequestDto.getTravelName());
+
+        return "여행방 생성 성공";
     }
+
+    //유저가 방에 추가되어 닉네임과 사진을 설정하고, 친구 목록을 반환
+//    @Transactional
+//    public List<RoomUserResponseDto> adduser(Long roomId, Member member, String profileUrl) {
+//
+//        TravelRoom travelRoom = travelRoomRepository.findById(roomId)
+//                .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
+//
+//        //프로필 사진이 있으면, 프로필 사진 저장
+//        if(profileUrl!=null) {
+//            Profile profile = Profile.builder()
+//                    .travelRoom(travelRoom)
+//                    .profileUrl(profileUrl)
+//                    .member(member)
+//                    .build();
+//
+//            profileRepository.save(profile);
+//        }
+//
+//        TravelRoomMember travelRoomMember = TravelRoomMember.builder()
+//                .travelRoom(travelRoom)
+//                .member(member)
+//                .build();
+//
+//        travelRoomMemberRepository.save(travelRoomMember);
+//
+//        return travelRoomMemberRepository.findAllByTravelRoom(travelRoom).stream()
+//                .map(trm -> RoomUserResponseDto.builder()
+//                        .email(trm.getMember().getEmail())
+//                        .nickName(trm.getMember().getNickname())
+//                        .profileUrl(trm.getMember().get)
+//                        .build())
+//                .collect(Collectors.toList());
+//    }
 
     @Transactional(readOnly = true)
     public List<RoomAllResponseDto> findAllDesc() {
@@ -106,41 +138,6 @@ public class TravelService {
 //        }
     }
 
-    public  List<RoomUserResponseDto> adduser(Long roomId, Member member) {
-        //유저를 travelroommember에 추가하고, 리스트를 반한한다.
 
-        TravelRoom travelRoom = travelRoomRepository.findById(roomId)
-                .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
 
-        TravelRoomMember travelRoomMember = TravelRoomMember.builder()
-                        .travelRoom(travelRoom)
-                        .member(member)
-                        .build();
-        travelRoomMemberRepository.save(travelRoomMember);
-        Profile profile = Profile.builder()
-                            .member(member)
-                            .travelRoom(travelRoom).build();
-
-        return travelRoomMemberRepository.findAll().stream()
-                .map(entity -> {
-                    return new RoomUserResponseDto(member, profile);})
-                .collect(Collectors.toList());
-
-    }
-
-    //..?
-    public void setProfile(Long roomId, Member member, String profileUrl) {
-        TravelRoom travelRoom = travelRoomRepository.findById(roomId)
-                .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
-
-        if(profileUrl!=null) {
-            //프로필 사진을 저장한다
-            Profile profile = Profile.builder()
-                            .travelRoom(travelRoom)
-                            .profileUrl(profileUrl)
-                            .member(member).build();
-
-            profileRepository.save(profile);
-        }
-    }
 }

@@ -1,7 +1,6 @@
 package com.easyone.travelance.domain.member.entity;
 
 import com.easyone.travelance.domain.card.entity.Card;
-import com.easyone.travelance.domain.travel.entity.TravelRoom;
 import com.easyone.travelance.domain.travel.entity.TravelRoomMember;
 import com.easyone.travelance.domain.member.constant.Role;
 import com.easyone.travelance.global.jwt.dto.JwtDto;

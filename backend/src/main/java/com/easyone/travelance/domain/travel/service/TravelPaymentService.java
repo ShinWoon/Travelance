@@ -36,6 +36,10 @@ public class TravelPaymentService {
     @Transactional(readOnly = true)
     public Long TotalPriceTravelId(Long roomId) {
         List<Payment> payments = paymentRepository.findByTravelRoomId(roomId);
+
+        if (payments.isEmpty()) {
+            return 0L;
+        }
         Long totalprice = payments.stream()
                 .mapToLong(Payment::getPaymentAmount)
                 .sum();
