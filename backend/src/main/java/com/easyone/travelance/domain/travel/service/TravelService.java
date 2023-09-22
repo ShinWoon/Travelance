@@ -67,7 +67,7 @@ public class TravelService {
 //                .map(trm -> RoomUserResponseDto.builder()
 //                        .email(trm.getMember().getEmail())
 //                        .nickName(trm.getMember().getNickname())
-//                        .profileUrl(trm.getMember().get)
+//                        .profileUrl(trm.getMember())
 //                        .build())
 //                .collect(Collectors.toList());
 //    }
