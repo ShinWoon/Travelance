@@ -10,6 +10,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 
+private const val TAG = "LottieLoader_D210"
 @Composable
 fun LottieLoader(
     modifier: Modifier = Modifier,
