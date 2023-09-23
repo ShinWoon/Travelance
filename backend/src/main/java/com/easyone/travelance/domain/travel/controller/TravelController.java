@@ -81,7 +81,7 @@ public class TravelController {
     @DeleteMapping(value = "/{roomId}")
     public ResponseEntity<ResultDto> deleteRoom(@PathVariable Long roomId) {
         ResultDto resultDto = travelService.delete(roomId);
-        return new ResponseEntity<>(resultDto,HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(resultDto,HttpStatus.OK);
     }
 
     //여행 공지사항 등록
