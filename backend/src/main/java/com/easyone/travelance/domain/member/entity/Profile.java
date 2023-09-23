@@ -18,8 +18,11 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String profileUrl;
+
+    @Column(nullable = false)
+    private String imageName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")

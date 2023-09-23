@@ -1,0 +1,20 @@
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIAUQJMJCBEXYS3EMKA
+      secretKey: 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
+    s3:
+      bucket: travelance
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://j9d210.p.ssafy.io:3307/travel
+    #    url: jdbc:mysql://localhost:3306/travel
+    username: root
+    password: qwe123
+  #    password: 1234

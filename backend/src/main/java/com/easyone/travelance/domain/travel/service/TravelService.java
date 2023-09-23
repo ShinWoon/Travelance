@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class TravelService {
 
     //유저가 방에 추가되어 닉네임과 사진을 설정하고, 친구 목록을 반환
     @Transactional
-    public List<RoomUserResponseDto> adduser(Long roomId, Member member, String profileUrl) {
+    public List<RoomUserResponseDto> adduser(Long roomId, Member member, MultipartFile profileUrl) {
 
         TravelRoom travelRoom = travelRoomRepository.findById(roomId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));

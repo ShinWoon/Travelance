@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -36,9 +37,9 @@ public class TravelController {
     }
 
     // 친구 초대 : 모바일에서 방과 유저정보를 주면, 방에 유저를 저장하고, 그 방에 있는 유저리스트를 전달
-    @Operation(summary = "여행방 친구들 초대하기", description = "프로필 사진, 닉네임 정보와 함께 요청하면, 여행참가자가 되며 유저리스트를 전달합니다. ")
+    @Operation(summary = "여행방 친구 초대하기", description = "방에 입장하고 싶은 맴버 정보와 프로필 사진, 닉네임 정보와 함께 요청하면, 여행참가자가 되며 유저리스트를 전달합니다. ")
     @PostMapping(value = "/{roomId}/addUser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<List<RoomUserResponseDto>> AddUser(@MemberInfo MemberInfoDto memberInfo, @RequestBody String profileUrl, @PathVariable Long roomId) {
+    public ResponseEntity<List<RoomUserResponseDto>> AddUser(@MemberInfo MemberInfoDto memberInfo, @RequestPart MultipartFile profileUrl, @PathVariable Long roomId) {
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
 
         List<RoomUserResponseDto> roomUserResponseDto=travelService.adduser(roomId, member, profileUrl);
