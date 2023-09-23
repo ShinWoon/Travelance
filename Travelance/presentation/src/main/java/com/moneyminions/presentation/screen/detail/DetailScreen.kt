@@ -2,10 +2,7 @@ package com.moneyminions.presentation.screen.detail
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -14,7 +11,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.moneyminions.presentation.screen.detail.view.DetailTabView
-import com.moneyminions.presentation.screen.detail.view.DetailTopInfoView
+import com.moneyminions.presentation.common.DetailTopInfoView
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -38,6 +35,7 @@ fun DetailScreen(
             budget = 30000,
             type = "detail",
             modifier = Modifier,
+            navController = navController,
         )
         DetailTabView(
             modifier = Modifier,

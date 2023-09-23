@@ -4,12 +4,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import com.moneyminions.presentation.common.MinionPrimaryButton
-import com.moneyminions.presentation.screen.detail.view.DetailTopInfoView
+import com.moneyminions.presentation.common.DetailTopInfoView
 import com.moneyminions.presentation.screen.result.view.SettleResultCardView
 
 @Composable
-fun SettleResultReceiveScreen() {
+fun SettleResultReceiveScreen(
+    navcontroller: NavController
+) {
     val result = "get"
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
@@ -21,6 +24,7 @@ fun SettleResultReceiveScreen() {
                 budget = 30000,
                 type = "result",
                 modifier = Modifier,
+                navController = navcontroller,
             )
             SettleResultCardView(result = result, modifier = Modifier)
         }
