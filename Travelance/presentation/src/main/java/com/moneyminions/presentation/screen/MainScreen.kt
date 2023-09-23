@@ -1,6 +1,7 @@
 package com.moneyminions.presentation.screen
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,7 +24,8 @@ import com.moneyminions.presentation.navigation.BottomNavItem
 import com.moneyminions.presentation.navigation.NavGraph
 import com.moneyminions.presentation.navigation.Screen
 
-var startDestination: String = Screen.Home.route //나중에 viewModel로 빼야함
+private const val TAG = "MainScreen_D210"
+//var startDestination: String = Screen.Home.route //나중에 viewModel로 빼야함
 //var startDestination: String = Screen.Login.route //나중에 viewModel로 빼야함
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,7 +51,7 @@ fun MainScreen(
         NavGraph(
             innerPaddings = it,
             navController = navController,
-            startDestination = startDestination)
+        )
     }
 }
 
@@ -75,6 +77,8 @@ fun MainBottomNavigationBar(navController: NavHostController) {
             val selected = item.route == backStackEntry.value?.destination?.route
             val current = backStackEntry.value?.destination?.route
 
+            Log.d(TAG, "MainBottomNavigationBar: $selected / $current")
+
             NavigationBarItem(
                 selected = selected,
                 // 해당 아이템의 route를 설정
@@ -84,7 +88,7 @@ fun MainBottomNavigationBar(navController: NavHostController) {
                             inclusive = true
                         }
                     }
-                    startDestination = item.route
+//                    startDestination = item.route
                 },
                 label = {
                     Text(
@@ -103,6 +107,7 @@ fun MainBottomNavigationBar(navController: NavHostController) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {

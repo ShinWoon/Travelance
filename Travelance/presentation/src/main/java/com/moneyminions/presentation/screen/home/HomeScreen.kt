@@ -46,41 +46,35 @@ fun Home(
     navController: NavHostController,
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
+    Log.d(TAG, "Home: on")
     var scrollableState = rememberScrollState()
-    
-//    homeViewModel.setScrollState(scrollableState)
-//    scrollableState = homeViewModel.isScrollState.value
     
     // Main Card Height
     val cardHeight = 440.dp
-    
-    
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(scrollableState)
             .padding(16.dp, 16.dp, 16.dp, 16.dp),
     ) {
-        Log.d(TAG, "Home: on")
         TopComponent(
-            homeViewModel = homeViewModel,
             navController = navController,
         )
 
         Spacer(modifier = Modifier.height(8.dp))
-        
+
         if(homeViewModel.isTravelStart.value) { // 여행 시작
             TravelStartPager(cardHeight)
         } else { // 사전 정산 중
             TravelReadyPager(
-                homeViewModel,
                 cardHeight
             )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-        FriendComponent(homeViewModel)
-        
+        FriendComponent()
+
         Spacer(modifier = Modifier.height(16.dp))
         BottomCardContainer(navController)
     }
@@ -89,8 +83,8 @@ fun Home(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun TravelReadyPager(
-    homeViewModel: HomeViewModel,
-    cardHeight: Dp
+    cardHeight: Dp,
+    homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
     val pagerState = rememberPagerState()
     
