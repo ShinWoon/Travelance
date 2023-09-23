@@ -1,6 +1,7 @@
 package com.moneyminions.presentation.navigation
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -33,18 +34,18 @@ import com.moneyminions.presentation.screen.travellist.CreateTravelScreen
 import com.moneyminions.presentation.screen.travellist.TravelListScreen
 import com.moneyminions.presentation.screen.travelmap.travelMapScreen
 
+private const val TAG = "NavGraph_D210"
 @OptIn(ExperimentalAnimationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavGraph(
     innerPaddings: PaddingValues,
     navController: NavHostController,
-    startDestination: String,
 ) {
     AnimatedNavHost(
         modifier = Modifier.padding(innerPaddings),
         navController = navController,
-        startDestination = startDestination,
+        startDestination = Screen.Home.route,
         enterTransition = { fadeIn(tween(500)) },
 //        exitTransition = { fadeOut(tween(300)) },
         popEnterTransition = { fadeIn(tween(500)) },
@@ -54,6 +55,7 @@ fun NavGraph(
 //        popEnterTransition = { EnterTransition.None },
         popExitTransition = { ExitTransition.None },
     ) {
+        Log.d(TAG, "NavGraph: call ${navController}")
         composable(
             route = Screen.Example.route,
         ) {

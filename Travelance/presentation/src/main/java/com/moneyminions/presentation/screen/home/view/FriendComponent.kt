@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.common.MinionProfile
 import com.moneyminions.presentation.screen.travellist.util.clickable
@@ -21,7 +22,9 @@ import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 
 private const val TAG = "FriendComponent"
 @Composable
-fun FriendComponent(homeViewModel: HomeViewModel) {
+fun FriendComponent(
+    homeViewModel: HomeViewModel = hiltViewModel()
+) {
     var context = LocalContext.current
     
     Column(

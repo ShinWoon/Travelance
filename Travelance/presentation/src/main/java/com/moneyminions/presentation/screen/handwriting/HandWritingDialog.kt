@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.screen.handwriting
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,12 +26,13 @@ import com.moneyminions.presentation.common.TextFieldWithTitle
 import com.moneyminions.presentation.viewmodel.handwriting.HandWritingViewModel
 
 
-private const val TAG = "HandWritingDialog"
+private const val TAG = "HandWritingDialog_D210"
 @Composable
 fun HandWritingDialog(
     handWritingViewModel: HandWritingViewModel = hiltViewModel(),
     onDismiss: () -> Unit,
 ) {
+    Log.d(TAG, "HandWritingDialog: on")
     Dialog(
         onDismissRequest = onDismiss
     ) {

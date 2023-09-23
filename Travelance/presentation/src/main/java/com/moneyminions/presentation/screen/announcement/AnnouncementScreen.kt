@@ -2,6 +2,7 @@
 
 package com.moneyminions.presentation.screen.announcement
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -42,10 +43,12 @@ import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.White
 
+private const val TAG = "AnnouncementScreen_D210"
 @Composable
 fun AnnouncementScreen(
     navController: NavHostController,
 ) {
+    Log.d(TAG, "AnnouncementScreen: on")
     var openAnnouncementWritingDialog by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -71,7 +74,9 @@ fun AnnouncementScreen(
 
     ) {
         Surface(
-            modifier = Modifier.padding(it).padding(16.dp),
+            modifier = Modifier
+                .padding(it)
+                .padding(16.dp),
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
@@ -126,7 +131,8 @@ fun AnnounceItem(
                 Image(
                     painter = painterResource(id = R.drawable.ic_link),
                     contentDescription = "link",
-                    modifier = Modifier.size(30.dp)
+                    modifier = Modifier
+                        .size(30.dp)
                         .clickable {
                             /**
                              * 작성한 URL로 이동 웹뷰 하던가 아님 브라우저에서 띄우던가..
