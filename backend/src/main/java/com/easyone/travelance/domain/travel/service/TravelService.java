@@ -1,5 +1,6 @@
 package com.easyone.travelance.domain.travel.service;
 
+import com.easyone.travelance.domain.common.ResultDto;
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.entity.Profile;
 import com.easyone.travelance.domain.member.respository.ProfileRepository;
@@ -29,14 +30,17 @@ public class TravelService {
 
     //방만들기
     @Transactional
-    public String save(RoomInfoRequestDto roomInfoRequestDto) {
+    public ResultDto save(RoomInfoRequestDto roomInfoRequestDto) {
         //방 만든 직전에는 사전정산 상태
         RoomType roomType = RoomType.BEFORE;
-
-        TravelRoom travelRoom =roomInfoRequestDto.toEntity(roomType);
-        travelRoomRepository.save(roomInfoRequestDto.toEntity(roomType));
-
-        return "여행방 생성 성공";
+        try {
+            TravelRoom travelRoom = roomInfoRequestDto.toEntity(roomType);
+            travelRoomRepository.save(roomInfoRequestDto.toEntity(roomType));
+            return new ResultDto("여행방 생성 성공");
+        }
+        catch (Exception e) {
+            return new ResultDto("여행방 생성 실패");
+        }
     }
 
     //유저가 방에 추가되어 닉네임과 사진을 설정하고, 친구 목록을 반환

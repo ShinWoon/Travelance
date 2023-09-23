@@ -1,6 +1,7 @@
 package com.easyone.travelance.domain.travel.controller;
 
 
+import com.easyone.travelance.domain.common.ResultDto;
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.service.MemberService;
 import com.easyone.travelance.domain.travel.dto.*;
@@ -29,8 +30,8 @@ public class TravelController {
     // 방 만들기
     @Operation(summary = "여행방 생성", description = "요청 시, 채팅방을 만듭니다. ")
     @PostMapping(value = "")
-    public ResponseEntity<String> MakeRoom(@RequestBody RoomInfoRequestDto roomInfoRequestDto) {
-        String responseDto= travelService.save(roomInfoRequestDto);
+    public ResponseEntity<ResultDto> MakeRoom(@RequestBody RoomInfoRequestDto roomInfoRequestDto) {
+        ResultDto responseDto= travelService.save(roomInfoRequestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
