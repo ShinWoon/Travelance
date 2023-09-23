@@ -28,6 +28,7 @@ public class TravelService {
     private final TravelRoomMemberRepository travelRoomMemberRepository;
     private final TravelPaymentService travelPaymentService;
     private final ProfileRepository profileRepository;
+    private final TravelProfileService travelProfileService;
 
     //방만들기
     @Transactional
@@ -46,20 +47,14 @@ public class TravelService {
 
     //유저가 방에 추가되어 닉네임과 사진을 설정하고, 친구 목록을 반환
     @Transactional
-    public List<RoomUserResponseDto> adduser(Long roomId, Member member, MultipartFile profileUrl) {
+    public List<RoomUserResponseDto> adduser(Long roomId, Member member, MultipartFile imageFile) {
 
         TravelRoom travelRoom = travelRoomRepository.findById(roomId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
 
         //프로필 사진이 있으면, 프로필 사진 저장
-        if(profileUrl!=null) {
-            Profile profile = Profile.builder()
-                    .travelRoom(travelRoom)
-                    .profileUrl(profileUrl)
-                    .member(member)
-                    .build();
-
-            profileRepository.save(profile);
+        if(imageFile!=null) {
+            travelProfileService.saveImage(travelRoom,imageFile);
         }
 
         TravelRoomMember travelRoomMember = TravelRoomMember.builder()
