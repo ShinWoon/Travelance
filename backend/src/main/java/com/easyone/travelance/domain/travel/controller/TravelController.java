@@ -79,11 +79,9 @@ public class TravelController {
     // 여행 방 삭제
     @Operation(summary = "여행방 삭제", description = "요청 시, 채팅방 정보를 삭제할 수 있습니다. ")
     @DeleteMapping(value = "/{roomId}")
-    public ResponseEntity<Void> deleteRoom(@MemberInfo MemberInfoDto memberInfo, @PathVariable Long roomId) {
-        Member member = memberService.findMemberByEmail(memberInfo.getEmail());
-
-        travelService.delete(roomId, member);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<ResultDto> deleteRoom(@PathVariable Long roomId) {
+        ResultDto resultDto = travelService.delete(roomId);
+        return new ResponseEntity<>(resultDto,HttpStatus.NO_CONTENT);
     }
 
     //여행 공지사항 등록
