@@ -1,5 +1,6 @@
 package com.easyone.travelance.domain.travel.service;
 
+import com.easyone.travelance.domain.common.ResultDto;
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.entity.Profile;
 import com.easyone.travelance.domain.member.respository.ProfileRepository;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,35 +28,33 @@ public class TravelService {
     private final TravelRoomMemberRepository travelRoomMemberRepository;
     private final TravelPaymentService travelPaymentService;
     private final ProfileRepository profileRepository;
+    private final TravelProfileService travelProfileService;
 
     //방만들기
     @Transactional
-    public String save(RoomInfoRequestDto roomInfoRequestDto) {
+    public ResultDto save(RoomInfoRequestDto roomInfoRequestDto) {
         //방 만든 직전에는 사전정산 상태
         RoomType roomType = RoomType.BEFORE;
-
-        TravelRoom travelRoom =roomInfoRequestDto.toEntity(roomType);
-        travelRoomRepository.save(roomInfoRequestDto.toEntity(roomType));
-
-        return "여행방 생성 성공";
+        try {
+            TravelRoom travelRoom = roomInfoRequestDto.toEntity(roomType);
+            travelRoomRepository.save(roomInfoRequestDto.toEntity(roomType));
+            return new ResultDto("여행방 생성 성공");
+        }
+        catch (Exception e) {
+            return new ResultDto("여행방 생성 실패");
+        }
     }
 
     //유저가 방에 추가되어 닉네임과 사진을 설정하고, 친구 목록을 반환
     @Transactional
-    public List<RoomUserResponseDto> adduser(Long roomId, Member member, String profileUrl) {
+    public List<RoomUserResponseDto> adduser(Long roomId, Member member, MultipartFile imageFile) {
 
         TravelRoom travelRoom = travelRoomRepository.findById(roomId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
 
         //프로필 사진이 있으면, 프로필 사진 저장
-        if(profileUrl!=null) {
-            Profile profile = Profile.builder()
-                    .travelRoom(travelRoom)
-                    .profileUrl(profileUrl)
-                    .member(member)
-                    .build();
-
-            profileRepository.save(profile);
+        if(imageFile!=null) {
+            travelProfileService.saveImage(travelRoom,imageFile);
         }
 
         TravelRoomMember travelRoomMember = TravelRoomMember.builder()

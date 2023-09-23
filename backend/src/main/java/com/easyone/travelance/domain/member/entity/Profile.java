@@ -18,8 +18,11 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String profileUrl;
+
+    @Column(nullable = false)
+    private String ProfileName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
@@ -30,9 +33,10 @@ public class Profile {
     private TravelRoom travelRoom;
 
     @Builder
-    public Profile(Member member, TravelRoom travelRoom, String profileUrl) {
+    public Profile(Member member, TravelRoom travelRoom, String profileUrl, String profileName) {
         this.member=member;
         this.travelRoom=travelRoom;
         this.profileUrl=profileUrl;
+        this.ProfileName=profileName;
     }
 }

@@ -66,6 +66,8 @@ dependencies {
 	implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.2.2'
 	//Webflux(API)
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	//S3
+	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.2'
 }
 
 tasks.named('test') {
