@@ -58,7 +58,8 @@ public class TravelController {
 
     //여행 방 조회
     // 예산 카테고리 분류 통계 추후 추가
-    @Operation(summary = "특정 여행방 조회하기", description = "요청 시, 채팅방을 조회합니다. ")
+    @Operation(summary = "특정 여행방 조회하기", description = "요청 시, 채팅방을 조회합니다. " +
+            "member정보를 받아서 여행방에서 내가 쓴 목록과 전체 목록을 구분합니다.")
     @GetMapping(value = "/{roomId}")
     public ResponseEntity<RoomStaticResponseDto> findById(@MemberInfo MemberInfoDto memberInfo, @PathVariable Long roomId) {
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
@@ -70,21 +71,17 @@ public class TravelController {
 //     여행 방 수정
     @Operation(summary = "여행방 수정", description = "요청 시, 채팅방 정보를 수정할 수 있습니다. ")
     @PatchMapping(value = "/{roomId}")
-    public ResponseEntity<Void> updateRoom(@MemberInfo MemberInfoDto memberInfo, @PathVariable Long roomId, @RequestBody RoomInfoRequestDto roomInfoRequestDto) {
-        Member member = memberService.findMemberByEmail(memberInfo.getEmail());
-
-        travelService.updateRoom(roomInfoRequestDto, roomId, member);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<ResultDto> updateRoom(@PathVariable Long roomId, @RequestBody RoomInfoRequestDto roomInfoRequestDto) {
+        ResultDto resultDto = travelService.updateRoom(roomInfoRequestDto, roomId);
+        return new ResponseEntity<>(resultDto, HttpStatus.OK);
     }
 
     // 여행 방 삭제
     @Operation(summary = "여행방 삭제", description = "요청 시, 채팅방 정보를 삭제할 수 있습니다. ")
     @DeleteMapping(value = "/{roomId}")
-    public ResponseEntity<Void> deleteRoom(@MemberInfo MemberInfoDto memberInfo, @PathVariable Long roomId) {
-        Member member = memberService.findMemberByEmail(memberInfo.getEmail());
-
-        travelService.delete(roomId, member);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<ResultDto> deleteRoom(@PathVariable Long roomId) {
+        ResultDto resultDto = travelService.delete(roomId);
+        return new ResponseEntity<>(resultDto,HttpStatus.NO_CONTENT);
     }
 
     //여행 공지사항 등록

@@ -15,14 +15,12 @@ import java.util.List;
 public class RoomUserResponseDto {
     private String email;
     private String nickName;
-    private String profileUrl;
 
 
     @Builder
-    public RoomUserResponseDto(Member member, Profile profile) {
+    public RoomUserResponseDto(Member member) {
         this.email=member.getEmail();
         this.nickName=member.getNickname();
-        this.profileUrl=profile.getProfileUrl();
 
     }
 
