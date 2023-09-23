@@ -123,15 +123,17 @@ public class TravelService {
     }
 
     @Transactional
-    public ResultDto delete(Long roomId) {
+    public ResultDto delete(Long roomId, Member member) {
 
         TravelRoom travelRoom = travelRoomRepository.findById(roomId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
-        try {
-            travelRoomRepository.delete(travelRoom);
+        TravelRoomMember travelRoomMember = travelRoomMemberRepository.findByTravelRoomAndMember(travelRoom, member);
+
+       if (travelRoomMember!=null) {
+           travelRoomMemberRepository.delete(travelRoomMember);
             return new ResultDto("여행방 삭제 성공");
         }
-        catch (Exception e) {
+        else {
             return new ResultDto("여행방 삭제 실패");
         }
 

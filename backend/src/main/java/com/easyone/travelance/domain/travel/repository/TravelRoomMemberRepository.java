@@ -9,7 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public interface TravelRoomMemberRepository extends JpaRepository<TravelRoomMember, Long> {
-        boolean existsByMember(Member member);
 
         List<TravelRoomMember> findAllByTravelRoom(TravelRoom travelRoom);
+
+    TravelRoomMember findByTravelRoomAndMember(TravelRoom travelRoom, Member member);
 }

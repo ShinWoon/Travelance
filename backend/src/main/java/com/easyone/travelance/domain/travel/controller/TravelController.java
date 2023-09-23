@@ -76,11 +76,12 @@ public class TravelController {
         return new ResponseEntity<>(resultDto, HttpStatus.OK);
     }
 
-    // 여행 방 삭제
-    @Operation(summary = "여행방 삭제", description = "요청 시, 채팅방 정보를 삭제할 수 있습니다. ")
+    // 여행 방 나가기
+    @Operation(summary = "여행방 나가기", description = "맴버정보와 room정보를 함께 요청 시, 사용자는 채팅방을 나갑니다. ")
     @DeleteMapping(value = "/{roomId}")
-    public ResponseEntity<ResultDto> deleteRoom(@PathVariable Long roomId) {
-        ResultDto resultDto = travelService.delete(roomId);
+    public ResponseEntity<ResultDto> deleteRoom(@PathVariable Long roomId, @MemberInfo MemberInfoDto memberInfo ) {
+        Member member = memberService.findMemberByEmail(memberInfo.getEmail());
+        ResultDto resultDto = travelService.delete(roomId, member);
         return new ResponseEntity<>(resultDto,HttpStatus.OK);
     }
 
