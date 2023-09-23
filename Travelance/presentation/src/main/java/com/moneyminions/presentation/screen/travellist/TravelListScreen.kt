@@ -26,6 +26,7 @@ import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.DarkGray
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.viewmodel.travellist.TravelListViewModel
+import java.lang.Exception
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,18 +62,11 @@ fun TravelListScreen(
                 .wrapContentHeight()
                 .padding(16.dp, 24.dp, 16.dp, 0.dp),
             content = {
-                item {
-                    TravelCardView(
-                        modifier = modifier,
-                        travelName = "룰루랄라",
-                        travelStart = "2023.07.23",
-                        travelEnd = "2023.07.30",
-                        done = "yet",
-                        moneyAmount = 5500000,
-                        iconId = R.drawable.ic_camera,
-                    )
-                }
-                item {
+                items(10) {index ->
+                    // card icon 값을 index 값에 따라 부여
+                    val drawableResName = "ic_travel_${(index%11)+1}"
+                    val resourceId = getResourceId(drawableResName, R.drawable::class.java)
+
                     TravelCardView(
                         modifier = modifier,
                         travelName = "룰루랄라",
@@ -80,24 +74,24 @@ fun TravelListScreen(
                         travelEnd = "2023.07.30",
                         done = "doing",
                         moneyAmount = 5500000,
-                        iconId = R.drawable.ic_camera,
-                    )
-                }
-                items(10) {
-                    TravelCardView(
-                        modifier = modifier,
-                        travelName = "룰루랄라",
-                        travelStart = "2023.07.23",
-                        travelEnd = "2023.07.30",
-                        done = "done",
-                        moneyAmount = 5500000,
-                        iconId = R.drawable.ic_camera,
+                        iconId = resourceId,
                     )
                 }
             },
         )
     }
+}
 
+@Composable
+fun getResourceId(resName: String, resType: Class<*>): Int {
+    val resId = try {
+        val idField = resType.getDeclaredField(resName)
+        idField.getInt(idField)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        -1
+    }
+    return resId
 }
 
 @Preview(showBackground = true)
