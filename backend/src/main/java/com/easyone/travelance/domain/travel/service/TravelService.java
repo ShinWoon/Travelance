@@ -64,19 +64,11 @@ public class TravelService {
 
         travelRoomMemberRepository.save(travelRoomMember);
 
-        List<TravelRoomMember> travelRoomMemberList = travelRoomMemberRepository.findAllByTravelRoom(travelRoom);
+        List<RoomUserResponseDto> travelRoomMemberList = travelRoomMemberRepository.findAllByTravelRoom(travelRoom)
+                                        .stream().map(user -> new RoomUserResponseDto().builder().member(user.getMember())
+                                        .build()).collect(Collectors.toList());
 
-        List<RoomUserResponseDto> list = travelRoomMemberList.stream()
-                .map(travelRoomMember1 -> {
-                    Profile profile = profileRepository.findByMember(travelRoomMember1.getMember());
-                    return RoomUserResponseDto.builder()
-                            .member(travelRoomMember1.getMember())
-                            .profile(profile)
-                            .build();
-                })
-                .collect(Collectors.toList());
-
-        return list;
+        return travelRoomMemberList;
     }
 
     @Transactional(readOnly = true)
