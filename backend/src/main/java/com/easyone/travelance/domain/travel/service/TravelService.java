@@ -131,10 +131,10 @@ public class TravelService {
 
        if (travelRoomMember!=null) {
            travelRoomMemberRepository.delete(travelRoomMember);
-            return new ResultDto("여행방 삭제 성공");
+            return new ResultDto("여행방 나가기 성공");
         }
         else {
-            return new ResultDto("여행방 삭제 실패");
+            return new ResultDto("여행방 나가기 실패");
         }
 
 
