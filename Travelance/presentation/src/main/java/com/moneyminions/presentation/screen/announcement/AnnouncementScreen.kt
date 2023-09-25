@@ -21,6 +21,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -41,6 +42,7 @@ import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.CardLightGray
+import com.moneyminions.presentation.theme.FloatingButtonColor
 import com.moneyminions.presentation.theme.White
 
 private const val TAG = "AnnouncementScreen_D210"
@@ -63,10 +65,11 @@ fun AnnouncementScreen(
                     openAnnouncementWritingDialog = true
                 },
                 Modifier.padding(4.dp),
-                containerColor = White,
+                containerColor = FloatingButtonColor,
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_document_add),
+                    modifier = Modifier.size(24.dp),
                     contentDescription = "add document",
                 )
             }

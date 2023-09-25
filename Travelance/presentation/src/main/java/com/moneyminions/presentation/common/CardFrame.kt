@@ -23,22 +23,15 @@ import androidx.constraintlayout.compose.ConstraintSet
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter.State.Empty.painter
 import com.moneyminions.presentation.R
-
-private val cardFrameList = listOf(
-    R.drawable.ic_credit_card_1,
-    R.drawable.ic_credit_card_2,
-    R.drawable.ic_credit_card_3
-)
+import com.moneyminions.presentation.utils.Constants
 
 @Composable
 fun CardFrame(
     name: String,
     number: String,
     idx: Int,
-    company: String,
-    logo: String
 ){
-    val imagePainter = painterResource(id = cardFrameList[idx])
+    val imagePainter = painterResource(id = Constants.CARD_FRAME_LIST[idx])
 
     val constraintSet = ConstraintSet{
         val name = createRefFor("name")
@@ -53,14 +46,6 @@ fun CardFrame(
         constrain(number){
             start.linkTo(parent.start, margin = 16.dp)
             bottom.linkTo(parent.bottom, margin = 24.dp)
-        }
-        constrain(company){
-            end.linkTo(parent.end, margin = 16.dp)
-            bottom.linkTo(parent.bottom, margin = 24.dp)
-        }
-        constrain(logo){
-            end.linkTo(company.start, margin = 16.dp)
-            bottom.linkTo(company.bottom)
         }
     }
 
@@ -101,18 +86,6 @@ fun CardFrame(
                 color = Color.White,
                 modifier = Modifier.layoutId("number")
             )
-            Text(
-                text = company,
-                style = CustomTextStyle.pretendardSemiBold08,
-                color = Color.White,
-                modifier = Modifier.layoutId("company")
-            )
-            AsyncImage(
-                model = logo,
-                contentDescription = null,
-                modifier = Modifier.layoutId("logo")
-                    .size(30.dp)
-            )
         }
     }
 }
@@ -131,6 +104,5 @@ fun formatNumberWithHyphens(number: String): String {
 @Preview(showBackground = true)
 @Composable
 fun CardFramePreview(){
-    CardFrame(name = "카드별칭", number = "1234567812345678", idx = 0, company = "카드사명",
-        logo = "https://www.shinhancard.com/pconts/company/images/contents/shc_symbol_ci.png")
+    CardFrame(name = "카드별칭", number = "1234567812345678", idx = 0)
 }

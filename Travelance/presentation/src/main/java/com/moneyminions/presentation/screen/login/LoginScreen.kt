@@ -77,8 +77,7 @@ fun LoginScreen(
             Log.d(TAG, "loginResult : $it ")
             if(it.role == "MEMBER"){
                 //TODO homeScreen으로 이동
-            }
-            if(it.role=="GUEST"){
+            }else{
                 coroutineScope.launch {
                     loginViewModel.refreshNetworkState()
                 }

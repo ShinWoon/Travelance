@@ -84,7 +84,7 @@ fun TravelCardView(
 
 @Composable
 fun TopTravelInfoView(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     travelName: String,
     done: String,
     iconId: Int,

@@ -71,7 +71,7 @@ fun TopBar(
         Spacer(modifier = Modifier.size(16.dp))
         Divider(
             color = DividerDefaults.color,
-            thickness = DividerDefaults.Thickness
+            thickness = (0.5).dp
         )
     }
 

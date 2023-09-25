@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
+import com.moneyminions.presentation.screen.MainScreen
 import com.moneyminions.presentation.screen.announcement.AnnouncementScreen
 import com.moneyminions.presentation.screen.detail.DetailScreen
 import com.moneyminions.presentation.screen.example.ExampleScreen
@@ -27,12 +29,14 @@ import com.moneyminions.presentation.screen.login.AccountAuthenticationScreen
 import com.moneyminions.presentation.screen.login.AccountListScreen
 import com.moneyminions.presentation.screen.login.CardListScreen
 import com.moneyminions.presentation.screen.login.LoginScreen
+import com.moneyminions.presentation.screen.login.NicknamePasswordScreen
 import com.moneyminions.presentation.screen.mypage.EditUserScreen
 import com.moneyminions.presentation.screen.mypage.MyPageScreeen
 import com.moneyminions.presentation.screen.mypage.SettingScreen
 import com.moneyminions.presentation.screen.travellist.CreateTravelScreen
 import com.moneyminions.presentation.screen.travellist.TravelListScreen
 import com.moneyminions.presentation.screen.travelmap.travelMapScreen
+import com.moneyminions.presentation.viewmodel.login.LoginViewModel
 
 private const val TAG = "NavGraph_D210"
 @OptIn(ExperimentalAnimationApi::class)
@@ -41,6 +45,7 @@ private const val TAG = "NavGraph_D210"
 fun NavGraph(
     innerPaddings: PaddingValues,
     navController: NavHostController,
+    loginViewModel: LoginViewModel = hiltViewModel()
 ) {
     AnimatedNavHost(
         modifier = Modifier.padding(innerPaddings),
@@ -60,6 +65,11 @@ fun NavGraph(
             route = Screen.Example.route,
         ) {
             ExampleScreen(navController = navController)
+        }
+        composable(
+            route = Screen.Main.route,
+        ) {
+            MainScreen()
         }
         composable(
             route = Screen.Home.route,
@@ -104,12 +114,12 @@ fun NavGraph(
         composable(
             route = Screen.AccountList.route,
         ) {
-            AccountListScreen(navController = navController)
+            AccountListScreen(navController = navController, loginViewModel = loginViewModel)
         }
         composable(
             route = Screen.CardList.route,
         ) {
-            CardListScreen(navController = navController)
+            CardListScreen(navController = navController, loginViewModel = loginViewModel)
         }
         composable(
             route = Screen.TravelMap.route,
@@ -155,6 +165,11 @@ fun NavGraph(
             route = Screen.TravelDetail.route,
         ) {
             DetailScreen(navController = navController)
+        }
+        composable(
+            route = Screen.NicknamePassword.route,
+        ) {
+            NicknamePasswordScreen(navController = navController, loginViewModel = loginViewModel)
         }
     }
 } // End of setUpNavGraph

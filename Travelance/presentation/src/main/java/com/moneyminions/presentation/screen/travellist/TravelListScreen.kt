@@ -62,7 +62,9 @@ import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.travellist.view.TravelCardView
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.DarkGray
+import com.moneyminions.presentation.theme.FloatingButtonColor
 import com.moneyminions.presentation.theme.PinkDarkest
+import com.moneyminions.presentation.theme.White
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.travellist.TravelListViewModel
 import kotlinx.coroutines.delay
@@ -72,6 +74,7 @@ private const val TAG = "TravelListScreen_D210"
 
 @OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TravelListScreen(
     travelListViewModel: TravelListViewModel = hiltViewModel(),
@@ -118,14 +121,11 @@ fun TravelListScreen(
                         style = pretendardBold14
                     )
                 },
-                icon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_add),
-                        tint = PinkDarkest,
-                        contentDescription = "room add icon"
-                    )
-                },
-                containerColor = CardLightGray,
+                icon = { Icon(
+                    painter = painterResource(id = R.drawable.ic_add),
+                    tint = PinkDarkest,
+                    contentDescription = "room add icon") },
+                containerColor = FloatingButtonColor,
                 onClick = {
                     navController.navigate(Screen.CreateTravel.route)
                 })

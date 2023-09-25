@@ -35,7 +35,6 @@ fun MinionPrimaryButton(
             contentColor = White,
         ),
         shape = RoundedCornerShape(8.dp),
-        elevation = ButtonDefaults.buttonElevation(4.dp),
         enabled = isEnabled.value,
     ) {
         Text(text = content, style = pretendardBold20)

@@ -24,13 +24,9 @@ import com.moneyminions.presentation.R
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.DarkGray
 import com.moneyminions.presentation.theme.PinkDarkest
+import com.moneyminions.presentation.utils.Constants
 
 
-private val cardFrameList = listOf(
-    R.drawable.ic_credit_card_1,
-    R.drawable.ic_credit_card_2,
-    R.drawable.ic_credit_card_3
-)
 
 private const val TAG = "CardRowItem D210"
 @Composable
@@ -80,7 +76,7 @@ fun CardRowItem(
                 }
             }
             Image(
-                painter = painterResource(id = cardFrameList[idx]),
+                painter = painterResource(id = Constants.CARD_FRAME_LIST[idx]),
                 contentDescription = null,
                 modifier = Modifier
                     .size(30.dp)
