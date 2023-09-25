@@ -5,6 +5,10 @@ sealed class Screen(val name: String, val route: String) {
         name = "Example",
         route = "example_screen",
     )
+    object Main : Screen(
+        name = "Main",
+        route = "main_screen",
+    )
     object Home : Screen(
         name = "Home",
         route = "home_screen",
@@ -80,6 +84,10 @@ sealed class Screen(val name: String, val route: String) {
     object TravelDetail : Screen(
         name = "TravelDetail",
         route = "travel_detail",
+    )
+    object NicknamePassword: Screen(
+        name = "NicknamePassword",
+        route = "nickname_password"
     )
 }
 

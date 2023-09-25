@@ -31,6 +31,9 @@ class MainActivity : FragmentActivity() {
             var isAuthenticated = remember { mutableStateOf(false) }
             val context = LocalContext.current
             MyApplicationTheme {
+
+                MainScreen()
+
                 val systemUiController = rememberSystemUiController()
                 SideEffect {
                     systemUiController.setStatusBarColor(

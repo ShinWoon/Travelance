@@ -10,9 +10,13 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import com.kakao.sdk.user.UserApiClient
+import com.moneyminions.domain.model.MemberInfo
 import com.moneyminions.domain.model.NetworkResult
+import com.moneyminions.domain.model.common.AccountDto
+import com.moneyminions.domain.model.common.CardDto
 import com.moneyminions.domain.model.login.JwtTokenDto
 import com.moneyminions.domain.model.login.LoginResultDto
+import com.moneyminions.domain.usecase.login.JoinUseCase
 import com.moneyminions.domain.usecase.login.LoginUseCase
 import com.moneyminions.domain.usecase.preference.GetJwtTokenUseCase
 import com.moneyminions.domain.usecase.preference.GetRoleUseCase
@@ -29,7 +33,8 @@ class LoginViewModel @Inject constructor(
     private val putRoleUseCase: PutRoleUseCase,
     private val getJwtTokenUseCase: GetJwtTokenUseCase,
     private val getRoleUseCase: GetRoleUseCase,
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val joinUseCase: JoinUseCase
 ): ViewModel() {
 
     private val _loginResult = MutableStateFlow<NetworkResult<LoginResultDto>>(NetworkResult.Idle)
@@ -94,6 +99,29 @@ class LoginViewModel @Inject constructor(
 
     suspend fun refreshNetworkState(){
         _loginResult.emit(NetworkResult.Idle)
+    }
+
+    val memberInfo: MemberInfo = MemberInfo(listOf(), listOf(), "", "")
+    fun setMemberAccountList(list: List<AccountDto>){
+        memberInfo.accountList = list
+    }
+    fun setMemberCardList(list: List<CardDto>){
+        memberInfo.cardList = list
+    }
+    fun setNickname(nickname: String){
+        memberInfo.nickname = nickname
+    }
+    fun setPassword(password: String){
+        memberInfo.password = password
+    }
+
+    private val _joinResult = MutableStateFlow<NetworkResult<JwtTokenDto>>(NetworkResult.Idle)
+    val joinResult = _joinResult.asStateFlow()
+    fun join(){
+        viewModelScope.launch {
+            Log.d(TAG, "최종 로그인 바디에  : $memberInfo")
+            _joinResult.emit(joinUseCase.invoke(memberInfo))
+        }
     }
 
 }

@@ -1,11 +1,16 @@
 package com.moneyminions.data.service
 
-import com.moneyminions.data.datasource.remote.common.response.CommonResponse
+import com.moneyminions.data.model.common.response.CommonResponse
+import com.moneyminions.data.model.login.response.AccountResponse
 import com.moneyminions.data.model.login.request.AuthenticationAccountRequest
 import com.moneyminions.data.model.login.request.LoginRequest
+import com.moneyminions.data.model.login.request.MemberInfoRequest
 import com.moneyminions.data.model.login.response.AuthenticationAccountResponse
+import com.moneyminions.data.model.login.response.CardResponse
+import com.moneyminions.data.model.login.response.JoinResponse
 import com.moneyminions.data.model.login.response.LoginResponse
 import retrofit2.http.Body
+import retrofit2.http.PATCH
 import com.moneyminions.data.model.travellist.request.CreateTravelRoomRequest
 import com.moneyminions.data.model.travellist.response.TravelRoomResponse
 import retrofit2.http.GET
@@ -35,7 +40,18 @@ interface BusinessService {
      * 내 전체 계좌 조회
      */
     @POST("account/allaccount")
-    suspend fun getAccountList()
+    suspend fun getAccountList(): List<AccountResponse>
+    /**
+     * 내 전체 카드 조회
+     */
+    @POST("card/allcard")
+    suspend fun getCardList(): List<CardResponse>
+    /**
+     * 회원 등록
+     */
+    @PATCH("member/additional")
+    suspend fun join(@Body memberInfoRequest: MemberInfoRequest): JoinResponse
+
     
     /**
      * 여행방 만들기 API
