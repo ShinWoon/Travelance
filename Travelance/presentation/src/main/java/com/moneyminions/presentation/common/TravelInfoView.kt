@@ -1,28 +1,16 @@
 package com.moneyminions.presentation.common
 
-import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonColors
-import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,19 +24,15 @@ import androidx.navigation.compose.rememberNavController
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold14
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold18
-import com.moneyminions.presentation.common.CustomTextStyle.pretendardSemiBold14
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.travellist.util.clickable
-import com.moneyminions.presentation.theme.BlueDarkest
-import com.moneyminions.presentation.theme.DarkGray
 import com.moneyminions.presentation.theme.DarkerGray
-import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.utils.MoneyUtils.makeComma
 
 private const val TAG = "싸피"
 
 @Composable
-fun DetailTopInfoView(
+fun TravelInfoView(
     startDate: String,
     endDate: String,
     budget: Int,
@@ -138,7 +122,7 @@ fun BudgetText(
 @Preview(showBackground = true)
 @Composable
 fun DetailPreview() {
-    DetailTopInfoView(
+    TravelInfoView(
         startDate = "2023/09/05",
         endDate = "2023/09/07",
         budget = 30000,

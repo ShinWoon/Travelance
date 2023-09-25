@@ -7,7 +7,6 @@ import androidx.navigation.NavHostController
 import com.moneyminions.presentation.screen.game.teamchooseview.TeamChooseStartView
 import com.moneyminions.presentation.viewmodel.game.ChooseTeamGameViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TeamBuildingGameScreen(
     navController: NavHostController,

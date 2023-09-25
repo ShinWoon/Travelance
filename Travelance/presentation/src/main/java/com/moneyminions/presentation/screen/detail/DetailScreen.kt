@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.moneyminions.presentation.common.TravelInfoView
 import com.moneyminions.presentation.screen.detail.view.DetailTabView
-import com.moneyminions.presentation.common.DetailTopInfoView
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -29,7 +29,7 @@ fun DetailScreen(
         tabWidthStateList
     }
     Column {
-        DetailTopInfoView(
+        TravelInfoView(
             startDate = "2023/09/05",
             endDate = "2023/09/07",
             budget = 30000,
