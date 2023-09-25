@@ -18,9 +18,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DismissDirection
 import androidx.compose.material3.DismissState
 import androidx.compose.material3.DismissValue
@@ -183,7 +186,7 @@ fun TravelRoomItem(
     val currentItem by rememberUpdatedState(travelRoomDto)
     val dismissState = rememberDismissState(
         confirmValueChange = {
-            if (it == DismissValue.DismissedToStart || it == DismissValue.DismissedToEnd) {
+            if (it == DismissValue.DismissedToStart) { // 오른쪽 -> 왼쪽으로 스와이프시 삭제
                 show = false
                 true
             } else false
@@ -221,29 +224,32 @@ fun TravelRoomItem(
 @Composable
 fun DismissBackground(dismissState: DismissState) {
     val color = when (dismissState.dismissDirection) {
-        DismissDirection.StartToEnd -> Color(0xFFFF1744)
-        DismissDirection.EndToStart -> Color(0xFF1DE9B6)
+        DismissDirection.StartToEnd -> Color.Transparent
+        DismissDirection.EndToStart -> PinkDarkest
         null -> Color.Transparent
     }
     val direction = dismissState.dismissDirection
-    
-    Row(
+
+    Card(
         modifier = Modifier
-            .fillMaxSize()
-            .background(color)
-            .padding(12.dp, 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+            .wrapContentHeight()
+            .padding(vertical = 4.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(CardLightGray),
     ) {
-        if (direction == DismissDirection.StartToEnd) Icon(
-            Icons.Default.Delete,
-            contentDescription = "delete"
-        )
-        Spacer(modifier = Modifier)
-        if (direction == DismissDirection.EndToStart) Icon(
-            // make sure add baseline_archive_24 resource to drawable folder
-            painter = painterResource(R.drawable.ic_edit),
-            contentDescription = "Archive"
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color)
+                .padding(12.dp, 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End,
+        ) {
+            if (direction == DismissDirection.EndToStart) Icon(
+                // make sure add baseline_archive_24 resource to drawable folder
+                Icons.Default.Delete,
+                contentDescription = "delete"
+            )
+        }
     }
 }

@@ -72,6 +72,7 @@ fun CreateTravelScreen(
             end.linkTo(parent.end, margin = 16.dp)
         }
     }
+
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
