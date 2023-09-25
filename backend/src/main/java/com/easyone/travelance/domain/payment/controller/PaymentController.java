@@ -32,7 +32,6 @@ public class PaymentController {
         return new ResponseEntity<>(resultDto, HttpStatus.OK);
     }
 
-
     @PostMapping("/push/alert")
     @Operation(summary = "푸시알림 공금 유무 선택 후 데이터 서버로 전송", description = "공금일 때에만 boolean값을 true로 변경 후 API 요청")
     public ResponseEntity<ResultDto> pushAlertData(PushAlertRequestDto pushAlertRequestDto) {
