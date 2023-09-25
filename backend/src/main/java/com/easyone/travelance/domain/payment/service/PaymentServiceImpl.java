@@ -106,7 +106,7 @@ public class PaymentServiceImpl implements PaymentService{
         payment.setIsWithPaid(pushAlertRequestDto.isWithPaid());
 
         paymentRepository.save(payment);
-        return "Payment updated successfully";
+        return "결제내역 저장 성공";
     }
 
 
