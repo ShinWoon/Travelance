@@ -33,7 +33,7 @@ spring:
 
   kafka:
     consumer:
-      bootstrap-servers: kafka:9092
+      bootstrap-servers: ubuntu-kafka-1:9092
       group-id: travelance
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
