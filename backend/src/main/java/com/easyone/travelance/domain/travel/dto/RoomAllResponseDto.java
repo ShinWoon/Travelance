@@ -24,8 +24,8 @@ public class RoomAllResponseDto {
         this.roomId=entity.getId();
         this.travelName=entity.getTravelName();
         this.budget=entity.getBudget();
-        this.endDate=entity.getEndDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
-        this.startDate=entity.getStartDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
+        this.endDate=entity.getEndDate();
+        this.startDate=entity.getStartDate();
         this.isDone=entity.getIsDone();
         this.use=totalprice;
     }

@@ -23,8 +23,8 @@ public class TravelRoom {
     private Long id;
 
     private String travelName;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private String startDate;
+    private String endDate;
 
     @Enumerated(EnumType.STRING)
     private RoomType isDone=RoomType.BEFORE;
@@ -42,7 +42,7 @@ public class TravelRoom {
     }
 
     @Builder
-    public TravelRoom(String travelName, Long id, LocalDateTime startDate, LocalDateTime endDate, RoomType isDone, Long budget) {
+    public TravelRoom(String travelName, Long id, String startDate, String endDate, RoomType isDone, Long budget) {
         this.travelName= travelName;
         this.id= id;
         this.budget= budget;

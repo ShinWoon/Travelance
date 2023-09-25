@@ -14,12 +14,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class RoomInfoRequestDto {
     private String travelName;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private String startDate;
+    private String endDate;
     private Long budget;
 
     @Builder
-    public RoomInfoRequestDto(String travelName, LocalDateTime startDate, LocalDateTime endDate, Long budget) {
+    public RoomInfoRequestDto(String travelName, String startDate, String endDate, Long budget) {
         this.travelName = travelName;
         this.startDate=startDate;
         this.endDate= endDate;
