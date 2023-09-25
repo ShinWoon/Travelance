@@ -115,7 +115,6 @@ public class MemberService {
         List<SelectedCardRequestDto> cardDtos = new ArrayList<>();
         for (Card card : cards){
             SelectedCardRequestDto cardDto = new SelectedCardRequestDto();
-            cardDto.setCardCoCode(card.getCardCoCode());
             cardDto.setCardNumber(card.getCardNumber());
             cardDto.setCardCoName(card.getCardCoName());
             cardDto.setIdx(card.getIdx());

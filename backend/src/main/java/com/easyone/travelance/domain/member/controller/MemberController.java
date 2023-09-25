@@ -96,13 +96,11 @@ public class MemberController {
             "        \"cardNumber\": \"4215154824392854\",\n" +
             "        \"cardCoName\": \"국민카드\",\n" +
             "        \"idx\": 1,\n" +
-            "        \"cardCoCode\": \"002\"\n" +
             "        },\n\n" +
             "        {\n\n" +
             "        \"cardNumber\": \"3737467972008765\",\n" +
             "        \"cardCoName\": \"국민카드\",\n" +
             "        \"idx\": 1,\n" +
-            "        \"cardCoCode\": \"002\"\n" +
             "        }\n\n" +
             "    ],\n\n" +
             "    \"password\": \"1234\",\n\n" +

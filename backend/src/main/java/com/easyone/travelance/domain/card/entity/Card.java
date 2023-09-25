@@ -25,7 +25,6 @@ public class Card {
     @Column(unique = true)
     private String cardNumber;
 
-    private String cardCoCode;
 
     private String cardCoName;
 

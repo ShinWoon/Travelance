@@ -42,13 +42,11 @@ public class CardController {
             "    \"cardNumber\": \"4215154824392854\",\n" +
             "    \"cardCoName\": \"국민카드\",\n" +
             "    \"idx\": 1,\n" +
-            "    \"cardCoCode\": \"002\"\n\n" +
             "  },\n\n" +
             "  {\n\n" +
             "    \"cardNumber\": \"3737467972008765\",\n" +
             "    \"cardCoName\": \"국민카드\",\n" +
             "    \"idx\": 1,\n" +
-            "    \"cardCoCode\": \"002\"\n" +
             "  }\n\n" +
             "]\n\n" + "이런 형식으로 넣으시면 됩니다.")
     @PostMapping("/selectedcard")
