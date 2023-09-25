@@ -13,6 +13,7 @@ import retrofit2.http.Body
 import retrofit2.http.PATCH
 import com.moneyminions.data.model.travellist.request.CreateTravelRoomRequest
 import com.moneyminions.data.model.travellist.response.TravelRoomResponse
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
@@ -63,6 +64,6 @@ interface BusinessService {
      * 여행 목록 요청 API
      */
     @GET("travel/room")
-    suspend fun travelList(): List<TravelRoomResponse>
+    suspend fun travelList(): MutableList<TravelRoomResponse>
 
 }
