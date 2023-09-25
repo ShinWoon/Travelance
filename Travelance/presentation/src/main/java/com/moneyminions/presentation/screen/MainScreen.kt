@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.screen
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -25,6 +26,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.moneyminions.presentation.MainBottomNavigationBar
+import com.moneyminions.presentation.isBottomNavItem
 import com.moneyminions.presentation.navigation.BottomNavItem
 import com.moneyminions.presentation.navigation.NavGraph
 import com.moneyminions.presentation.navigation.Screen
@@ -41,100 +44,19 @@ private const val TAG = "MainScreen_D210"
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
-//    navController: NavHostController = rememberAnimatedNavController(),
+    navController: NavHostController,
     mainViewModel: MainViewModel = hiltViewModel()
 ) {
-    val navController = rememberAnimatedNavController()
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
-    var startDestination = ""
-
-    Scaffold(
-        bottomBar = {
-            if (currentRoute == null || isBottomNavItem(currentRoute!!)) {
-                MainBottomNavigationBar(navController = navController)
-            }
-        },
-        containerColor = White,
-    ) {
-//        Surface(
-//            modifier = Modifier.padding(it),
-//        ) {
-//            NavGraph(navController = navController, startDestination = startDestination)
-//        }
-        if(mainViewModel.getRole() == "MEMBER"){
-            startDestination = Screen.Home.route
-        }else{
-            startDestination = Screen.Login.route
-        }
-        NavGraph(
-            innerPaddings = it,
-            navController = navController,
-        )
-    }
-}
-
-fun isBottomNavItem(route: String): Boolean {
-    return when (route) {
-        BottomNavItem.Home.route, BottomNavItem.TravelList.route, BottomNavItem.MyPage.route -> true
-        else -> false
-    }
-}
-
-@Composable
-fun MainBottomNavigationBar(navController: NavHostController) {
-    val backStackEntry = navController.currentBackStackEntryAsState()
-    val bottomNavItems = listOf(
-        BottomNavItem.TravelList,
-        BottomNavItem.Home,
-        BottomNavItem.MyPage,
-    )
-    NavigationBar(
-        tonalElevation = 0.dp,
-        modifier = Modifier.graphicsLayer {
-            clip = true
-            shadowElevation = 20f
-        }
-    ) {
-        bottomNavItems.forEach { item ->
-            val selected = item.route == backStackEntry.value?.destination?.route
-            val current = backStackEntry.value?.destination?.route
-
-            Log.d(TAG, "MainBottomNavigationBar: $selected / $current")
-
-            NavigationBarItem(
-                selected = selected,
-                // 해당 아이템의 route를 설정
-                onClick = {
-                    navController.navigate(item.route) {
-                        popUpTo(current!!) {
-                            inclusive = true
-                        }
-                    }
-                },
-                label = {
-                    Text(
-                        text = item.name,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                },
-                icon = {
-                    Icon(
-                        imageVector = item.icon,
-                        contentDescription = "${item.name} Icon",
-                    )
-                },
-                colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = PinkDarkest,
-                    selectedTextColor = PinkDarkest,
-                    unselectedIconColor = TextGray,
-                    unselectedTextColor = TextGray,
-                    indicatorColor = White
-                ),
-            )
-        }
+    Log.d(TAG, "MainScreen: ${mainViewModel.getJwtToken()}")
+    if(mainViewModel.getJwtToken().accessToken != null){
+        Log.d(TAG, "MainScreen에서 accessToken 있음")
+        navController.navigate(Screen.Home.route)
+    }else{
+        Log.d(TAG, "MainScreen에서 accessToken 없음")
+        navController.navigate(Screen.Login.route)
     }
 }
 
