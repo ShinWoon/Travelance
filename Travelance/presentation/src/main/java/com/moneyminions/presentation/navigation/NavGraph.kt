@@ -45,7 +45,6 @@ private const val TAG = "NavGraph_D210"
 fun NavGraph(
     innerPaddings: PaddingValues,
     navController: NavHostController,
-    startDestination: String,
     loginViewModel: LoginViewModel = hiltViewModel()
 ) {
     AnimatedNavHost(

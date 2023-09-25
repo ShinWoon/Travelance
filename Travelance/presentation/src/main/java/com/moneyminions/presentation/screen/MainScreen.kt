@@ -113,10 +113,6 @@ fun MainBottomNavigationBar(navController: NavHostController) {
                             inclusive = true
                         }
                     }
-<<<<<<< Travelance/presentation/src/main/java/com/moneyminions/presentation/screen/MainScreen.kt
-=======
-//                    startDestination = item.route
->>>>>>> Travelance/presentation/src/main/java/com/moneyminions/presentation/screen/MainScreen.kt
                 },
                 label = {
                     Text(
