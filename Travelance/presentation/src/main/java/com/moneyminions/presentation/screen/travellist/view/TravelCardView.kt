@@ -22,8 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.moneyminions.domain.model.travellist.TravelRoomDto
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold14
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold18
@@ -40,11 +40,7 @@ import com.moneyminions.presentation.utils.MoneyUtils
 @Composable
 fun TravelCardView(
     modifier: Modifier,
-    travelName: String,
-    travelStart: String,
-    travelEnd: String,
-    done: String,
-    moneyAmount: Int,
+    travelRoomDto: TravelRoomDto,
     iconId: Int,
 ) {
     Card(
@@ -68,17 +64,20 @@ fun TravelCardView(
             ) {
                 TopTravelInfoView(
                     modifier = modifier,
-                    travelName = travelName,
-                    done = done,
+                    travelName = travelRoomDto.travelName,
+                    done = travelRoomDto.isDone,
                     iconId = iconId,
                 )
                 TravelDateView(
-                    travelStart = travelStart,
-                    travelEnd = travelEnd,
+                    travelStart = travelRoomDto.startDate,
+                    travelEnd = travelRoomDto.endDate,
                     modifier = modifier,
                 )
             }
-            MoneyAmountView(moneyAmount = moneyAmount, modifier = modifier)
+            MoneyAmountView(
+                moneyAmount = travelRoomDto.budget,
+                modifier = modifier
+            )
         }
     }
 }
@@ -214,16 +213,16 @@ fun MoneyAmountView(moneyAmount: Int, modifier: Modifier) {
     }
 }
 
-@Composable
-@Preview(showBackground = true)
-fun TravelCardPreview() {
-    TravelCardView(
-        modifier = Modifier,
-        travelName = "룰루랄라",
-        travelStart = "2023.07.23",
-        travelEnd = "2023.07.30",
-        done = "done",
-        moneyAmount = 5500000,
-        iconId = R.drawable.ic_travel_2,
-    )
-}
+//@Composable
+//@Preview(showBackground = true)
+//fun TravelCardPreview() {
+//    TravelCardView(
+//        modifier = Modifier,
+//        travelName = "룰루랄라",
+//        travelStart = "2023.07.23",
+//        travelEnd = "2023.07.30",
+//        done = "done",
+//        moneyAmount = 5500000,
+//        iconId = R.drawable.ic_travel_2,
+//    )
+//}
