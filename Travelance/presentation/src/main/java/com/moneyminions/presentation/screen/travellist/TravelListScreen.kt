@@ -64,7 +64,6 @@ import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.DarkGray
 import com.moneyminions.presentation.theme.FloatingButtonColor
 import com.moneyminions.presentation.theme.PinkDarkest
-import com.moneyminions.presentation.theme.White
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.travellist.TravelListViewModel
 import kotlinx.coroutines.delay
@@ -72,7 +71,6 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "TravelListScreen_D210"
 
-@OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun TravelListScreen(
@@ -84,16 +82,13 @@ fun TravelListScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     
-    travelListViewModel.refresh()
-    
     // 여행 목록 GET 호출 부분
     val travelListState by travelListViewModel.networkTravelList.collectAsState()
-//    LaunchedEffect(Unit) {
-//        travelListViewModel.getTravelList()
-//    }
+    LaunchedEffect(Unit) {
+        travelListViewModel.getTravelList()
+    }
     
 
-    
     NetworkResultHandler(
         state = travelListState,
         errorAction = {
@@ -103,7 +98,7 @@ fun TravelListScreen(
         },
         successAction = {
             Log.d(TAG, "travelListResult : $it ")
-//            travelList = it.toMutableList()
+            travelListViewModel.refresh(it.toMutableList())
         }
     )
     
@@ -148,7 +143,6 @@ fun TravelListScreen(
                         travelRoomDto = item,
                         onRemove = travelListViewModel::removeItem
                     )
-
                 }
             },
         )

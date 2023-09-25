@@ -151,7 +151,7 @@ fun SettlementStateView(done: String, modifier: Modifier) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         when (done) {
-            "yet" -> {
+            "BEFORE" -> {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_circle),
                     tint = DarkGrayMiddle,
@@ -164,7 +164,7 @@ fun SettlementStateView(done: String, modifier: Modifier) {
                 )
             }
 
-            "doing" -> {
+            "NOW" -> {
                 RippleLoadingAnimation(modifier = modifier)
                 StateText(
                     text = "정산 중",
@@ -172,7 +172,12 @@ fun SettlementStateView(done: String, modifier: Modifier) {
                 )
             }
 
-            "done" -> {
+            // todo 정산 대기 구현 해야함
+            "WAIT" -> {
+
+            }
+
+            "DONE" -> {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_circle),
                     tint = GreenMiddle,

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moneyminions.domain.model.NetworkResult
+import com.moneyminions.domain.model.common.CommonResultDto
 import com.moneyminions.domain.model.travellist.TravelRoomDto
 import com.moneyminions.domain.usecase.travellist.CreateTravelRoomUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -49,7 +50,7 @@ class CreateTravelViewModel @Inject constructor(
     /**
      * 여행방 생성
      */
-    private val _createTravelRoomResult = MutableStateFlow<NetworkResult<String>>(NetworkResult.Idle)
+    private val _createTravelRoomResult = MutableStateFlow<NetworkResult<CommonResultDto>>(NetworkResult.Idle)
     val createTravelRoomResult = _createTravelRoomResult.asStateFlow()
     fun createTravelRoom() {
         viewModelScope.launch {
