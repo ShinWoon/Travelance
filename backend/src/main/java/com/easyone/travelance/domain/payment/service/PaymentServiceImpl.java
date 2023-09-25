@@ -21,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.persistence.EntityNotFoundException;
@@ -49,6 +50,7 @@ public class PaymentServiceImpl implements PaymentService{
     @Autowired
     private WebClient webClient;
 
+    @Transactional
     @KafkaListener(topics = "travelance", groupId = "travelance")
     public void receivePaymentAlert(PaymentAlertRequestDto paymentAlertRequestDto) throws IOException {
         // 1. memberPrivateId를 통해 member 찾기
