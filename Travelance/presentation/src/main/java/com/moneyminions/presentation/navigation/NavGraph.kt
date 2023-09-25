@@ -26,6 +26,7 @@ import com.moneyminions.presentation.screen.login.AccountAuthenticationScreen
 import com.moneyminions.presentation.screen.login.AccountListScreen
 import com.moneyminions.presentation.screen.login.CardListScreen
 import com.moneyminions.presentation.screen.login.LoginScreen
+import com.moneyminions.presentation.screen.login.NicknamePasswordScreen
 import com.moneyminions.presentation.screen.mypage.EditUserScreen
 import com.moneyminions.presentation.screen.mypage.MyPageScreeen
 import com.moneyminions.presentation.screen.mypage.SettingScreen
@@ -153,6 +154,11 @@ fun NavGraph(
             route = Screen.TravelDetail.route,
         ) {
             DetailScreen(navController = navController)
+        }
+        composable(
+            route = Screen.NicknamePassword.route,
+        ) {
+            NicknamePasswordScreen(navController = navController)
         }
     }
 } // End of setUpNavGraph

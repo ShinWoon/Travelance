@@ -3,6 +3,7 @@ package com.moneyminions.domain.repository.login
 import android.content.Context
 import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.common.AccountDto
+import com.moneyminions.domain.model.common.CardDto
 import com.moneyminions.domain.model.common.CommonResultDto
 import com.moneyminions.domain.model.login.AuthenticationAccountInfoDto
 import com.moneyminions.domain.model.login.AuthenticationAccountResultDto
@@ -13,4 +14,5 @@ interface LoginRepository {
     suspend fun postAuthenticationAccount(accountInfoDto: AuthenticationAccountInfoDto): NetworkResult<AuthenticationAccountResultDto>
     suspend fun confirmAuthenticationAccount(accountInfoDto: AuthenticationAccountInfoDto): NetworkResult<CommonResultDto>
     suspend fun getAccountList(): NetworkResult<List<AccountDto>>
+    suspend fun getCardList(): NetworkResult<List<CardDto>>
 }

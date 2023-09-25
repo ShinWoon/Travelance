@@ -11,6 +11,7 @@ import com.moneyminions.data.model.login.request.LoginRequest
 import com.moneyminions.data.service.handleApi
 import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.common.AccountDto
+import com.moneyminions.domain.model.common.CardDto
 import com.moneyminions.domain.model.common.CommonResultDto
 import com.moneyminions.domain.model.login.AuthenticationAccountInfoDto
 import com.moneyminions.domain.model.login.AuthenticationAccountResultDto
@@ -40,6 +41,10 @@ class LoginRepositoryImpl @Inject constructor(
         return handleApi { loginDataSource.getAccountList().map {
             Log.d(TAG, "getAccountList $it")
             it.toDomain() } }
+    }
+
+    override suspend fun getCardList(): NetworkResult<List<CardDto>> {
+        return handleApi { loginDataSource.getCardList().map { it.toDomain() } }
     }
 
 }

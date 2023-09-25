@@ -16,12 +16,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.moneyminions.presentation.navigation.BottomNavItem
 import com.moneyminions.presentation.navigation.NavGraph
 import com.moneyminions.presentation.navigation.Screen
+import com.moneyminions.presentation.viewmodel.MainViewModel
 
 //var startDestination: String = Screen.Home.route //나중에 viewModel로 빼야함
 var startDestination: String = Screen.Login.route //나중에 viewModel로 빼야함
@@ -30,6 +32,7 @@ var startDestination: String = Screen.Login.route //나중에 viewModel로 빼�
 @Composable
 fun MainScreen(
     navController: NavHostController,
+    mainViewModel: MainViewModel = hiltViewModel()
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route

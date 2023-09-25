@@ -1,11 +1,12 @@
 package com.moneyminions.data.datasource.remote.login
 
 import android.util.Log
-import com.moneyminions.data.datasource.remote.common.response.CommonResponse
-import com.moneyminions.data.model.common.response.AccountResponse
+import com.moneyminions.data.model.common.response.CommonResponse
+import com.moneyminions.data.model.login.response.AccountResponse
 import com.moneyminions.data.model.login.request.AuthenticationAccountRequest
 import com.moneyminions.data.model.login.request.LoginRequest
 import com.moneyminions.data.model.login.response.AuthenticationAccountResponse
+import com.moneyminions.data.model.login.response.CardResponse
 import com.moneyminions.data.model.login.response.LoginResponse
 import com.moneyminions.data.service.BusinessService
 
@@ -28,6 +29,10 @@ class LoginDataSourceImpl( //service 만들어야 함!
     override suspend fun getAccountList(): List<AccountResponse> {
         Log.d(TAG, "getAccountList: ${businessService.getAccountList()}")
         return businessService.getAccountList()
+    }
+
+    override suspend fun getCardList(): List<CardResponse> {
+        return businessService.getCardList()
     }
 
 }

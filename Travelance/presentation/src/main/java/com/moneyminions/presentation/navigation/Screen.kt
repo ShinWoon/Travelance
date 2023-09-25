@@ -81,5 +81,9 @@ sealed class Screen(val name: String, val route: String) {
         name = "TravelDetail",
         route = "travel_detail",
     )
+    object NicknamePassword: Screen(
+        name = "NicknamePassword",
+        route = "nickname_password"
+    )
 }
 

@@ -1,11 +1,13 @@
 package com.moneyminions.presentation.viewmodel.login
 
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.common.AccountDto
 import com.moneyminions.domain.model.common.CommonResultDto
 import com.moneyminions.domain.usecase.login.GetAccountListUseCase
+import com.moneyminions.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AccountListViewModel @Inject constructor(
-    private val getAccountListUseCase: GetAccountListUseCase
+    private val getAccountListUseCase: GetAccountListUseCase,
 ): ViewModel() {
 
     private val _accountListResult = MutableStateFlow<NetworkResult<List<AccountDto>>>(NetworkResult.Idle)
@@ -31,5 +33,6 @@ class AccountListViewModel @Inject constructor(
     suspend fun setAccountList(list: List<AccountDto>){
         _accountList.emit(list)
     }
+
 
 }
