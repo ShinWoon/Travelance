@@ -1,7 +1,10 @@
 package com.easyone.travelance.domain.member.service;
 
 
+import com.easyone.travelance.domain.account.dto.SelectedAccountRequestDto;
 import com.easyone.travelance.domain.account.entity.Account;
+import com.easyone.travelance.domain.card.dto.SelectedCardRequestDto;
+import com.easyone.travelance.domain.card.entity.Card;
 import com.easyone.travelance.domain.member.dto.MyAccountDto;
 import com.easyone.travelance.domain.member.entity.MainAccount;
 import com.easyone.travelance.domain.member.entity.Member;
@@ -13,6 +16,7 @@ import com.easyone.travelance.global.error.ErrorCode;
 import com.easyone.travelance.global.error.exception.AuthenticationException;
 import com.easyone.travelance.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +25,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -89,21 +93,37 @@ public class MemberService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_EXISTS));
     }
 
-    public List<MyAccountDto> findAllAccountsForMember(Member member) {
+    public List<SelectedAccountRequestDto> findAllAccountsForMember(Member member) {
         MainAccount mainAccount = member.getMainAccount();
         List<Account> accounts = mainAccount.getAccountList();
 
-        List<MyAccountDto> accountDtos = new ArrayList<>();
+        List<SelectedAccountRequestDto> accountDtos = new ArrayList<>();
         for (Account account : accounts) {
-            MyAccountDto accountDto = new MyAccountDto();
-            accountDto.setId(account.getId());
+            SelectedAccountRequestDto accountDto = new SelectedAccountRequestDto();
             accountDto.setAccount(account.getAccount());
-            accountDto.setAccountName(account.getAccountName());
+            accountDto.setBankName(account.getAccountName());
             accountDto.setIdx(account.getIdx());
             accountDtos.add(accountDto);
         }
 
         return accountDtos;
+    }
+
+    public List<SelectedCardRequestDto> findAllCardsForMember(Member member) {
+        List<Card> cards = member.getCardList();
+        log.info("cards : " + cards);
+        List<SelectedCardRequestDto> cardDtos = new ArrayList<>();
+        for (Card card : cards){
+            SelectedCardRequestDto cardDto = new SelectedCardRequestDto();
+            cardDto.setCardCoCode(card.getCardCoCode());
+            cardDto.setCardNumber(card.getCardNumber());
+            cardDto.setCardCoName(card.getCardCoName());
+            cardDto.setIdx(card.getIdx());
+            cardDtos.add(cardDto);
+
+
+        }
+        return cardDtos;
     }
 
 }

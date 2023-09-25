@@ -68,6 +68,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	//S3
 	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.2'
+	//redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
 }
 
 tasks.named('test') {

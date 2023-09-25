@@ -10,6 +10,7 @@ import com.easyone.travelance.domain.member.dto.request.AdditionalRequestDto;
 import com.easyone.travelance.domain.member.dto.MyAccountDto;
 import com.easyone.travelance.domain.member.dto.NicknameDto;
 import com.easyone.travelance.domain.member.dto.OneAccountDto;
+import com.easyone.travelance.domain.member.dto.response.MypageResponseDto;
 import com.easyone.travelance.domain.member.entity.MainAccount;
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.service.MemberInfoService;
@@ -57,6 +58,23 @@ public class MemberController {
         return ResponseEntity.ok(nicknameResponseDto);
     }
 
+    //마이페이지
+    @Operation(summary = "마이페이지 조회", description = "나의 메이페이지를 조회하는 메서드입니다.")
+    @PostMapping("/mypage")
+    public ResponseEntity<MypageResponseDto> myPage(@MemberInfo MemberInfoDto memberInfoDto){
+        Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
+        List<SelectedAccountRequestDto> accounts = memberService.findAllAccountsForMember(member);
+        List<SelectedCardRequestDto> cards = memberService.findAllCardsForMember(member);
+        log.info("cards : " + cards);
+        MypageResponseDto mypageResponseDto = new MypageResponseDto();
+        mypageResponseDto.setAccountList(accounts);
+        mypageResponseDto.setCardList(cards);
+        mypageResponseDto.setNickname(member.getNickname());
+        mypageResponseDto.setPassword(member.getPassword());
+
+        return ResponseEntity.ok(mypageResponseDto);
+
+    }
 
     // 추가정보 업데이트 메서드
     @Operation(summary = "추가정보 입력", description = "회원가입후 추가 정보 관련 메서드입니다. \n\n " +"\n\n### [ 수행절차 ]\n\n"+"- login 에서 발급 받은 access-token을 자물쇠에 넣고 Execute 해주세요. (request body는 아래에 예시값의 request값만 사용해주세요.)\n\n"+ "- Response body의 accessToken 또는 Response headers의 newtoken을 복사하여 새로 자물쇠에 넣어 주세요 \n\n" + "### [DTO 양식] \n\n" +
@@ -133,10 +151,18 @@ public class MemberController {
 
 
     @Operation(summary = "내가 등록한 계좌 조회", description = "내가 등록한 계좌를 조회하는 메서드입니다.")
-    @GetMapping("/search/myaccount")
-    public ResponseEntity<List<MyAccountDto>> myAccount(@MemberInfo MemberInfoDto memberInfoDto){
+    @PostMapping("/search/myaccount")
+    public ResponseEntity<List<SelectedAccountRequestDto>> myAccount(@MemberInfo MemberInfoDto memberInfoDto){
         Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
-        List<MyAccountDto> accounts = memberService.findAllAccountsForMember(member);
+        List<SelectedAccountRequestDto> accounts = memberService.findAllAccountsForMember(member);
+        return ResponseEntity.ok(accounts);
+    }
+
+    @Operation(summary = "내가 등록한 카드 조회", description = "내가 등록한 계좌를 조회하는 메서드입니다.")
+    @PostMapping("/search/mycard")
+    public ResponseEntity<List<SelectedCardRequestDto>> myCard(@MemberInfo MemberInfoDto memberInfoDto){
+        Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
+        List<SelectedCardRequestDto> accounts = memberService.findAllCardsForMember(member);
         return ResponseEntity.ok(accounts);
     }
 

@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 public class TransferRequestDto {
     private String password;
-    @Schema(example = "안적어도됩니당")
+    @Schema(example = "안적어도됩니당(본인이기에)")
     private String depositNumber;
     private Long amount;
     private String memo;
