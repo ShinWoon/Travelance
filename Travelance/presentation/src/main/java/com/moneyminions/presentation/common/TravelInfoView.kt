@@ -38,7 +38,7 @@ fun TravelInfoView(
     budget: Int,
     type: String,
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
 ) {
     Column(
         modifier = modifier
@@ -128,6 +128,6 @@ fun DetailPreview() {
         budget = 30000,
         type = "detail",
         modifier = Modifier,
-        navController = rememberNavController()
+        navController = rememberNavController(),
     )
 }
