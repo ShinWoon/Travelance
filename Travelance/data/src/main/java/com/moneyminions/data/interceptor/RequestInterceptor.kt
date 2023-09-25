@@ -15,16 +15,14 @@ class RequestInterceptor @Inject constructor(
         val builder: Request.Builder = chain.request().newBuilder()
         Log.d(TAG, "intercept.... ${preferenceDataSource.getJwtToken()}")
         try{
-//            preferenceDataSource.getJwtToken().let{ token ->
-//                token?.let {
-//                    builder.addHeader("Authorization", "Bearer ${token.accessToken}")
-//                    Log.d(TAG, "intercept: JWT AccessToken 헤더에 담았습니다. ${token.accessToken}")
-////                    Log.d(TAG, "intercept: body. ${builder.}")
-//                    return chain.proceed(builder.build())
-//                }
-//            }
-            builder.addHeader("Authorization", "Bearer 1234")
-            return chain.proceed(builder.build())
+            preferenceDataSource.getJwtToken().let{ token ->
+                token?.let {
+                    builder.addHeader("Authorization", "Bearer ${token.accessToken}")
+                    Log.d(TAG, "intercept: JWT AccessToken 헤더에 담았습니다. ${token.accessToken}")
+//                    Log.d(TAG, "intercept: body. ${builder.}")
+                    return chain.proceed(builder.build())
+                }
+            }
         }catch (e: Exception){
             Log.d(TAG, "intercept: $e")
             return chain.proceed(chain.request())
