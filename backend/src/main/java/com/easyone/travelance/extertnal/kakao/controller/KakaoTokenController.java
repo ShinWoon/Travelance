@@ -6,6 +6,7 @@ import com.easyone.travelance.extertnal.kakao.dto.KakaoTokenDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Tag(name = "Auth", description = "소셜로그인 관련 api")
 @Controller
+@Slf4j
 @RequiredArgsConstructor
 public class KakaoTokenController {
     private final KakaoTokenClient kakaoTokenClient;
@@ -33,6 +35,8 @@ public class KakaoTokenController {
     @Operation(summary = "카카오 토큰", description = "카카오 로그인 토큰 메서드입니다.")
     @GetMapping("/oauth/kakao/callback")
     public @ResponseBody String loginCallback(String code) {
+        log.info("====================카카오토큰컨트롤러 들어왔음!!!!!===================");
+        log.info(code);
         String contentType = "application/x-www-form-urlencoded;charset=utf-8";
         KakaoTokenDto.Request kakaoTokenRequestDto = KakaoTokenDto.Request.builder()
                 .client_id(clientId)
