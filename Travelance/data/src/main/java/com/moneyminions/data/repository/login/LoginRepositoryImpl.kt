@@ -1,6 +1,7 @@
 package com.moneyminions.data.repository.login
 
 import android.content.Context
+import android.util.Log
 import com.moneyminions.data.datasource.local.PreferenceDataSource
 import com.moneyminions.data.datasource.remote.login.LoginDataSource
 import com.moneyminions.data.mapper.example.toDomain
@@ -9,6 +10,7 @@ import com.moneyminions.data.mapper.toDomain
 import com.moneyminions.data.model.login.request.LoginRequest
 import com.moneyminions.data.service.handleApi
 import com.moneyminions.domain.model.NetworkResult
+import com.moneyminions.domain.model.common.AccountDto
 import com.moneyminions.domain.model.common.CommonResultDto
 import com.moneyminions.domain.model.login.AuthenticationAccountInfoDto
 import com.moneyminions.domain.model.login.AuthenticationAccountResultDto
@@ -17,6 +19,7 @@ import com.moneyminions.domain.repository.login.LoginRepository
 import javax.inject.Inject
 import kotlin.math.log
 
+private const val TAG = "LoginRepositoryImpl D210"
 class LoginRepositoryImpl @Inject constructor(
     val loginDataSource: LoginDataSource,
     val preferenceDataSource: PreferenceDataSource
@@ -33,8 +36,10 @@ class LoginRepositoryImpl @Inject constructor(
         return handleApi { loginDataSource.confirmAuthenticationAccount(accountInfoDto.toData()).toDomain() }
     }
 
-    override suspend fun getAccountList() {
-        loginDataSource.getAccountList()
+    override suspend fun getAccountList(): NetworkResult<List<AccountDto>> {
+        return handleApi { loginDataSource.getAccountList().map {
+            Log.d(TAG, "getAccountList $it")
+            it.toDomain() } }
     }
 
 }

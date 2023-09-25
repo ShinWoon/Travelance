@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,9 +34,6 @@ import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.login.AccountListViewModel
 import kotlinx.coroutines.launch
 
-val accountList = listOf<AccountDto>(
-)
-
 private const val TAG = "AccountListScreen D210"
 @Composable
 fun AccountListScreen(
@@ -48,13 +46,21 @@ fun AccountListScreen(
     NetworkResultHandler(
         state = accountListResultState,
         errorAction = {
+            Log.d(TAG, "AccountList error...")
         },
         successAction = {
             coroutineScope.launch {
-//                accountListViewModel.setAccountList()
+                Log.d(TAG, "AccountList success : $it ")
+                accountListViewModel.setAccountList(it)
             }
         }
     )
+
+    LaunchedEffect(
+        key1 = Unit,
+        block = {
+            accountListViewModel.getAccountList()
+        })
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -68,12 +74,12 @@ fun AccountListScreen(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             LazyColumn{
-                items(Constants.AUTHENTICATION_ACCOUNT_LIST){
+                items(accountListState.value){
                     var isSelectedState by remember { mutableStateOf(it.isSelected) }
                     Log.d(TAG, "AccountListScreen: $isSelectedState")
                     AccountRowItem(
                         logo = Constants.ACCOUNT_LOGO_LIST[it.idx],
-                        name = it.name,
+                        name = it.bankName,
                         number = it.accountNumber!!,
                         type = "select",
                         isSelected = isSelectedState,

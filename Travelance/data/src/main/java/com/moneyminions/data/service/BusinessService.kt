@@ -1,6 +1,7 @@
 package com.moneyminions.data.service
 
 import com.moneyminions.data.datasource.remote.common.response.CommonResponse
+import com.moneyminions.data.model.common.response.AccountResponse
 import com.moneyminions.data.model.login.request.AuthenticationAccountRequest
 import com.moneyminions.data.model.login.request.LoginRequest
 import com.moneyminions.data.model.login.response.AuthenticationAccountResponse
@@ -32,5 +33,5 @@ interface BusinessService {
      * 내 전체 계좌 조회
      */
     @POST("account/allaccount")
-    suspend fun getAccountList()
+    suspend fun getAccountList(): List<AccountResponse>
 }

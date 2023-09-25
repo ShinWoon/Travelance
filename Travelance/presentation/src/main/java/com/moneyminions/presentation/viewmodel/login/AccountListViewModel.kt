@@ -18,17 +18,17 @@ class AccountListViewModel @Inject constructor(
     private val getAccountListUseCase: GetAccountListUseCase
 ): ViewModel() {
 
-    private val _accountListResult = MutableStateFlow<NetworkResult<AccountDto>>(NetworkResult.Idle)
+    private val _accountListResult = MutableStateFlow<NetworkResult<List<AccountDto>>>(NetworkResult.Idle)
     val accountListResult = _accountListResult.asStateFlow()
     fun getAccountList(){
         viewModelScope.launch {
-//            _accountListResult.emit(getAccountListUseCase.invoke())
+            _accountListResult.emit(getAccountListUseCase.invoke())
         }
     }
 
-    private val _accountList = MutableStateFlow<MutableList<AccountDto>>(mutableListOf())
+    private val _accountList = MutableStateFlow<List<AccountDto>>(mutableListOf())
     val accoutList: StateFlow<List<AccountDto>> = _accountList
-    suspend fun setAccountList(list: MutableList<AccountDto>){
+    suspend fun setAccountList(list: List<AccountDto>){
         _accountList.emit(list)
     }
 

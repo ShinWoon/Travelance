@@ -40,7 +40,7 @@ fun AuthenticAccountListComponent(
         if(selectedAccountIndex == -1) {
             accountAuthenticationViewModel.setBankName("")
         }else{
-            accountAuthenticationViewModel.setBankName(Constants.AUTHENTICATION_ACCOUNT_LIST[selectedAccountIndex].name)
+            accountAuthenticationViewModel.setBankName(Constants.AUTHENTICATION_ACCOUNT_LIST[selectedAccountIndex].bankName)
         }
     }
 
@@ -58,7 +58,7 @@ fun AuthenticAccountListComponent(
             Log.d(TAG, "current : ${Constants.AUTHENTICATION_ACCOUNT_LIST.indexOf(it)}")
             AccountColumnItem(
                 logo = Constants.ACCOUNT_LOGO_LIST[it.idx],
-                compoany = it.name,
+                compoany = it.bankName,
                 isSelected = selectedAccountIndex == Constants.AUTHENTICATION_ACCOUNT_LIST.indexOf(it)
             ) {
                 Constants.AUTHENTICATION_ACCOUNT_LIST.forEach {

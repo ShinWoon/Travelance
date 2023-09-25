@@ -41,7 +41,7 @@ fun AccountListComponent(
         items(Constants.AUTHENTICATION_ACCOUNT_LIST){
             AccountRowItem(
                 logo = Constants.ACCOUNT_LOGO_LIST[it.idx],
-                name = it.name,
+                name = it.bankName,
                 number = it.accountNumber!!,
                 type = "delete",
                 onDeleted = {
