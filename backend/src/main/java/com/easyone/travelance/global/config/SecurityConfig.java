@@ -44,7 +44,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8081", "http://ec2-3-34-155-173.ap-northeast-2.compute.amazonaws.com:8080", "http://j9d210.p.ssafy.io:8081","http://3.39.110.134:8083/")); // 허용할 원본 도메인
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8081", "https://kauth.kakao.com","http://ec2-3-34-155-173.ap-northeast-2.compute.amazonaws.com:8080", "http://j9d210.p.ssafy.io:8081","http://3.39.110.134:8083/")); // 허용할 원본 도메인
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE")); // 허용할 HTTP 메서드
         configuration.setAllowCredentials(false); // 쿠키 등 자격 증명과 함께 요청을 할 수 있도록 허용
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type")); // 허용할 헤더
