@@ -3,6 +3,7 @@ package com.moneyminions.presentation.screen.travellist
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +26,7 @@ import androidx.constraintlayout.compose.ConstraintSet
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.common.MinionPrimaryButton
 import com.moneyminions.presentation.common.TextFieldWithTitle
 import com.moneyminions.presentation.common.TopBar
@@ -40,33 +42,12 @@ private const val TAG = "CreateTravelScreen_D210"
 @Composable
 fun CreateTravelScreen(
     createTravelViewModel: CreateTravelViewModel = hiltViewModel(),
-    navController: NavHostController,
-) {
-    
-    val snackbarHostState = remember { SnackbarHostState() }
-    val coroutineScope = rememberCoroutineScope()
-    
-    val travelRoomCreate by createTravelViewModel.createTravelRoomResult.collectAsState()
-    NetworkResultHandler(
-        state = travelRoomCreate,
-        errorAction = {
-            coroutineScope.launch {
-                snackbarHostState.showSnackbar("방 생성 실패")
-            }
-        },
-        successAction = {
-            // homeScreen으로 이동 (방 생성 stack pop)
-            Log.d(TAG, "CreateTravelScreen: $it")
-            navController.navigate(Screen.SubHome.route) {
-                popUpTo(Screen.TravelList.route)
-            }
-        }
-    )
-    
-    val createTravelConstraintSet = ConstraintSet {
+    navController: NavHostController
+){
+    val createTravelConstraintSet = ConstraintSet{
         val travelNameField = createRefFor("travelNameField")
-        
-        constrain(travelNameField) {
+
+        constrain(travelNameField){
             top.linkTo(parent.top, margin = 16.dp)
             start.linkTo(parent.start, margin = 16.dp)
             end.linkTo(parent.end, margin = 16.dp)
@@ -148,11 +129,11 @@ fun CreateTravelScreen(
                     }
                 }
             }
-            
+
         }
     }
-    
-    
+
+
 }
 
 

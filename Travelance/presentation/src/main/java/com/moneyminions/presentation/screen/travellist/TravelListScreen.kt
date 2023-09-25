@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,7 +33,9 @@ import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.travellist.view.TravelCardView
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.DarkGray
+import com.moneyminions.presentation.theme.FloatingButtonColor
 import com.moneyminions.presentation.theme.PinkDarkest
+import com.moneyminions.presentation.theme.White
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.travellist.TravelListViewModel
 import java.lang.Exception
@@ -40,6 +43,7 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "TravelListScreen_D210"
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TravelListScreen(
     travelListViewModel: TravelListViewModel = hiltViewModel(),
@@ -81,14 +85,11 @@ fun TravelListScreen(
                         style = pretendardBold14
                     )
                 },
-                icon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_add),
-                        tint = PinkDarkest,
-                        contentDescription = "room add icon"
-                    )
-                },
-                containerColor = CardLightGray,
+                icon = { Icon(
+                    painter = painterResource(id = R.drawable.ic_add),
+                    tint = PinkDarkest,
+                    contentDescription = "room add icon") },
+                containerColor = FloatingButtonColor,
                 onClick = {
                     navController.navigate(Screen.CreateTravel.route)
                 })

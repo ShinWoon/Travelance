@@ -25,6 +25,7 @@ val LightGray = Color(0xFFF6F7F9)
 val CardLightGray = Color(0xFFF9F9F9)
 val GraphGray = Color(0xFFD3D5D8)
 val BottomBarGray = Color(0xFFECEBEB)
+val FloatingButtonColor = Color(0xFFFDFDFD)
 
 val BlueDarkest = Color(0xFF00518B)
 val BlueMiddle = Color(0xFF284F9C)
