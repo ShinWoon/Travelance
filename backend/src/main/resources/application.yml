@@ -31,10 +31,6 @@ spring:
     host: redis
     port: 6379
 
-logging:
-  level:
-    org.hibernate.SQL: debug
-
   kafka:
     consumer:
       bootstrap-servers: kafka:9092
@@ -42,6 +38,10 @@ logging:
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+logging:
+  level:
+    org.hibernate.SQL: debug
 
 feign:
   client:
