@@ -49,7 +49,7 @@ public class KakaoTokenController {
                 .build();
 
         KakaoTokenDto.Response kakaoToken = kakaoTokenClient.requestKakaoToken(contentType, kakaoTokenRequestDto);
-
+        log.info("=====================================kakao token : " + kakaoToken);
         return "kakao token : " + kakaoToken;
     }
 
