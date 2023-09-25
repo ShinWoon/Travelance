@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,7 +30,6 @@ import com.moneyminions.presentation.theme.DarkerGray
 import com.wajahatkarim.flippable.FlipAnimationType
 import com.wajahatkarim.flippable.Flippable
 import com.wajahatkarim.flippable.FlippableController
-import kotlinx.coroutines.delay
 
 private const val TAG = "CardViews"
 
@@ -83,7 +81,6 @@ fun CardFourView(
 ) {
     val controller = remember(true) { FlippableController() }
     var isCardFlipSuccessVisible by remember { mutableStateOf(false) }
-    var touchEnable by remember { mutableStateOf(false) }
 
     if (shakeComplete.value) {
         controller.flipToBack()
@@ -133,7 +130,7 @@ fun CardFourView(
         },
         flipController = controller,
         flipEnabled = true,
-        flipOnTouch = touchEnable,
+        flipOnTouch = false,
         // If true, the Flippable will automatically flip back after
         // duration defined in autoFlipDurationMs. By default, this is false..
 //        autoFlip = true,
@@ -147,16 +144,14 @@ fun CardFourView(
         onFlippedListener = {
             Log.d(TAG, "CardFourView: 실행 완료")
             isCardFlipSuccessVisible = true
-            touchEnable = false
         },
     )
     if (isCardFlipSuccessVisible) {
         CardFlipSuccessView(modifier = modifier)
 
-        LaunchedEffect(isCardFlipSuccessVisible) {
-            delay(1200)
-            isCardFlipSuccessVisible = false
-            touchEnable = true
-        }
+//        LaunchedEffect(isCardFlipSuccessVisible) {
+//            delay(1200)
+//            isCardFlipSuccessVisible = false
+//        }
     }
 }

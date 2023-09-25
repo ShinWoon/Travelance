@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.screen.home
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +34,7 @@ import com.moneyminions.presentation.screen.home.view.TravelReadyComponent
 import com.moneyminions.presentation.screen.home.view.UseMoneyPage
 import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 
+private const val TAG = "HomeScreen_D210"
 @Composable
 fun HomeScreen(
     navController: NavHostController,
@@ -44,14 +46,12 @@ fun Home(
     navController: NavHostController,
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
+    Log.d(TAG, "Home: on")
     var scrollableState = rememberScrollState()
-    
-//    homeViewModel.setScrollState(scrollableState)
-//    scrollableState = homeViewModel.isScrollState.value
     
     // Main Card Height
     val cardHeight = 440.dp
-    
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -59,24 +59,22 @@ fun Home(
             .padding(16.dp, 16.dp, 16.dp, 16.dp),
     ) {
         TopComponent(
-            homeViewModel = homeViewModel,
             navController = navController,
         )
 
         Spacer(modifier = Modifier.height(8.dp))
-        
+
         if(homeViewModel.isTravelStart.value) { // 여행 시작
             TravelStartPager(cardHeight)
         } else { // 사전 정산 중
             TravelReadyPager(
-                homeViewModel,
                 cardHeight
             )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-        FriendComponent(homeViewModel)
-        
+        FriendComponent()
+
         Spacer(modifier = Modifier.height(16.dp))
         BottomCardContainer(navController)
     }
@@ -85,8 +83,8 @@ fun Home(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun TravelReadyPager(
-    homeViewModel: HomeViewModel,
-    cardHeight: Dp
+    cardHeight: Dp,
+    homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
     val pagerState = rememberPagerState()
     

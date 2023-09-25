@@ -11,7 +11,7 @@ fun DetailCommonText(text: String) {
     Text(
         text = text,
         color = DarkerGray,
-        style = CustomTextStyle.pretendardSemiBold14,
+        style = CustomTextStyle.pretendardSemiBold16,
     )
 }
 

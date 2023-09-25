@@ -6,6 +6,7 @@ import androidx.compose.material.icons.rounded.List
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 
+private const val TAG = "BottomNavItem_D210"
 sealed class BottomNavItem(val name: String, val route: String, val icon: ImageVector) {
     object Home: BottomNavItem(
         name = "Home",

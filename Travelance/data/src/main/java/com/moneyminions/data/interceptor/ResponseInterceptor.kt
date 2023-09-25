@@ -24,18 +24,18 @@ class ResponseInterceptor(
         Log.d(TAG, "intercept: 지금 네트워크 리스폰스 ${response.networkResponse}")
 
         when (response.code) {
-            400 -> {
-                Log.d(TAG, "intercept: 에러 : 400 에러입니다.")
-            }
-            401 -> {
-                val errorResponse = parseErrorResponse(response.body)
-                Log.d(TAG, "intercept: 에러 바디 파싱 !!!!!!!!!! ${errorResponse}")
+                400 -> {
+                    Log.d(TAG, "intercept: 에러 : 400 에러입니다.")
+                }
+                401 -> {
+                    val errorResponse = parseErrorResponse(response.body)
+                    Log.d(TAG, "intercept: 에러 바디 파싱 !!!!!!!!!! ${errorResponse}")
 
 //                when(errorResponse.errorCode){
 //
 //                }
-            }
-            403 -> {
+                }
+                403 -> {
                 Log.d(TAG, "intercept: 에러 : 403 에러입니다.")
                 val errorResponse = parseErrorResponse(response.body)
                 Log.d(TAG, "intercept: 에러 바디 파싱 !!!!!!!!!! ${errorResponse}")

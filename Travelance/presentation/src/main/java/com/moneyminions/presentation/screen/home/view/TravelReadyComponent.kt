@@ -2,6 +2,7 @@ package com.moneyminions.presentation.screen.home.view
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,7 +24,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
+import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
+import com.moneyminions.presentation.common.LottieLoader
 import com.moneyminions.presentation.screen.home.DotsIndicator
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.PinkDarkest
@@ -57,9 +60,11 @@ fun TravelReadyComponent(
                     .fillMaxWidth()
                     .weight(9f)
             ) {
-                /**
-                 * 애니메이션 들어갈 곳
-                 */
+                LottieLoader(
+                    modifier = Modifier.fillMaxSize(),
+                    res = R.raw.lottie_travel_ready,
+                    isLoop = true
+                ) {}
             }
             
             StartButtonComponent(

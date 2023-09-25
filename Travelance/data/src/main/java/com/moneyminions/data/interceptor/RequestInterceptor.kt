@@ -5,9 +5,7 @@ import com.moneyminions.data.datasource.local.PreferenceDataSource
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
-import java.lang.Exception
 import javax.inject.Inject
-import kotlin.math.log
 
 private const val TAG = "RequestInterceptor D210"
 class RequestInterceptor @Inject constructor(

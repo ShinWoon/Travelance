@@ -1,23 +1,26 @@
 package com.moneyminions.presentation.screen
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -27,8 +30,15 @@ import com.moneyminions.presentation.navigation.NavGraph
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.viewmodel.MainViewModel
 
+import com.moneyminions.presentation.theme.LightGray
+import com.moneyminions.presentation.theme.PinkDarkest
+import com.moneyminions.presentation.theme.TextGray
+import com.moneyminions.presentation.theme.White
+
+private const val TAG = "MainScreen_D210"
 //var startDestination: String = Screen.Home.route //나중에 viewModel로 빼야함
 //var startDestination: String = Screen.Login.route //나중에 viewModel로 빼야함
+
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
@@ -47,6 +57,7 @@ fun MainScreen(
                 MainBottomNavigationBar(navController = navController)
             }
         },
+        containerColor = White,
     ) {
 //        Surface(
 //            modifier = Modifier.padding(it),
@@ -61,7 +72,7 @@ fun MainScreen(
         NavGraph(
             innerPaddings = it,
             navController = navController,
-            startDestination = startDestination)
+        )
     }
 }
 
@@ -81,11 +92,17 @@ fun MainBottomNavigationBar(navController: NavHostController) {
         BottomNavItem.MyPage,
     )
     NavigationBar(
-        containerColor = MaterialTheme.colorScheme.primary,
+        tonalElevation = 0.dp,
+        modifier = Modifier.graphicsLayer {
+            clip = true
+            shadowElevation = 20f
+        }
     ) {
         bottomNavItems.forEach { item ->
             val selected = item.route == backStackEntry.value?.destination?.route
             val current = backStackEntry.value?.destination?.route
+
+            Log.d(TAG, "MainBottomNavigationBar: $selected / $current")
 
             NavigationBarItem(
                 selected = selected,
@@ -96,6 +113,10 @@ fun MainBottomNavigationBar(navController: NavHostController) {
                             inclusive = true
                         }
                     }
+<<<<<<< Travelance/presentation/src/main/java/com/moneyminions/presentation/screen/MainScreen.kt
+=======
+//                    startDestination = item.route
+>>>>>>> Travelance/presentation/src/main/java/com/moneyminions/presentation/screen/MainScreen.kt
                 },
                 label = {
                     Text(
@@ -109,11 +130,19 @@ fun MainBottomNavigationBar(navController: NavHostController) {
                         contentDescription = "${item.name} Icon",
                     )
                 },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = PinkDarkest,
+                    selectedTextColor = PinkDarkest,
+                    unselectedIconColor = TextGray,
+                    unselectedTextColor = TextGray,
+                    indicatorColor = White
+                ),
             )
         }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {

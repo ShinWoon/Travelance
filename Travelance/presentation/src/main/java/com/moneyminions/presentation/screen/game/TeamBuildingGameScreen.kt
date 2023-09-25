@@ -1,32 +1,16 @@
 package com.moneyminions.presentation.screen.game
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.moneyminions.presentation.common.TopBar
+import com.moneyminions.presentation.screen.game.teamchooseview.TeamChooseStartView
+import com.moneyminions.presentation.viewmodel.game.ChooseTeamGameViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TeamBuildingGameScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    teamChooseTeamGameViewModel: ChooseTeamGameViewModel = hiltViewModel(),
 ) {
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopBar(navController = navController, title = "팀 정하기")
-        },
-    ) {
-        Surface(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize()
-        ) {
-        
-        }
-    }
+    TeamChooseStartView(teamChooseTeamGameViewModel = teamChooseTeamGameViewModel)
 }

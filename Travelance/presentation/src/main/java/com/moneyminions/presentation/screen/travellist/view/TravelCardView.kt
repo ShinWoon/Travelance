@@ -47,18 +47,6 @@ fun TravelCardView(
     moneyAmount: Int,
     iconId: Int,
 ) {
-    val items = arrayOf(
-        R.drawable.ic_airballoon,
-        R.drawable.ic_camera,
-        R.drawable.ic_compass,
-        R.drawable.ic_flipflop,
-        R.drawable.ic_luggage,
-        R.drawable.ic_mountain,
-        R.drawable.ic_music,
-        R.drawable.ic_path,
-        R.drawable.ic_rocket,
-        R.drawable.ic_shoppingbag,
-    )
     Card(
         modifier = modifier
             .wrapContentHeight()
@@ -97,7 +85,7 @@ fun TravelCardView(
 
 @Composable
 fun TopTravelInfoView(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     travelName: String,
     done: String,
     iconId: Int,
@@ -236,6 +224,6 @@ fun TravelCardPreview() {
         travelEnd = "2023.07.30",
         done = "done",
         moneyAmount = 5500000,
-        iconId = R.drawable.ic_camera,
+        iconId = R.drawable.ic_travel_2,
     )
 }
