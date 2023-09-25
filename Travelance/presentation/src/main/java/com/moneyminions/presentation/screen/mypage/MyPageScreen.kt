@@ -98,9 +98,7 @@ fun MyPageScreeen(
                 CardFrame(
                     name = card.name,
                     number = card.number,
-                    idx = card.idx,
-                    company = card.company,
-                    logo = card.logo,
+                    idx = card.idx
                 )
             }
         }

@@ -2,10 +2,12 @@ package com.moneyminions.paybank.service
 
 import android.Manifest
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
+import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -14,9 +16,27 @@ import com.google.firebase.messaging.RemoteMessage
 import com.moneyminions.paybank.MainActivity
 import com.moneyminions.paybank.R
 import com.moneyminions.paybank.util.Constants
+import android.net.Uri
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 
 private const val TAG = "FCMService D210"
 class FCMService: FirebaseMessagingService() {
+
+
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
@@ -93,4 +113,54 @@ class FCMService: FirebaseMessagingService() {
             notify(101, notificationBuilder.build())
         }
     }
+
+
+}
+
+@Composable
+fun AlertDialog(onDismissRequest: () -> Unit, onConfirmation: () -> Unit, dialogTitle: String, dialogText: String, icon: ImageVector) {
+    Dialog(
+        onDismissRequest = {onDismissRequest()}
+    ) {
+        Surface(
+            color = Color.White,
+            shape = RoundedCornerShape(16.dp),
+        ){
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = dialogTitle
+                )
+                Spacer(modifier = Modifier.size(16.dp))
+                Text(
+                    text = dialogText
+                )
+                Spacer(modifier = Modifier.size(16.dp))
+                Row{
+                    Button(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(text = "확인")
+                    }
+                    Spacer(modifier = Modifier.size(4.dp))
+                    Button(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(text = "취소")
+                    }
+                }
+            }
+        }
+    }
+}
+
+// 시스템 설정 페이지로 이동
+private fun moveToSetting(context: Context) {
+    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+        data = Uri.fromParts("package", context.packageName, null)
+    }
+    context.startActivity(intent)
 }
