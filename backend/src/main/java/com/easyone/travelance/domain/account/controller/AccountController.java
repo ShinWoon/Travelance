@@ -139,7 +139,7 @@ public class AccountController {
     }
 
     @Operation(summary = "계좌 목록 DB 저장", description = " 내가 선택한 계좌를 DB에 저장하는 메서드 입니다\n\n" + "[\n\n" +
-            "    {\n" + "      \"account\": \"6666666666666666\",\n" + "      \"bankName\": \"대구은행\",\n" + "      \"idx\": 4\n" + "    },    \n" + "    {\n" + "      \"account\": \"7753621811018015\",\n" + "      \"bankName\": \"SC제일은행\",\n" + "      \"idx\": 0\n" + "    }    \n\n"+ "]\n\n" + "이런 형식으로 넣으시면 됩니다.")
+            "``` \n\n"+"    {\n" + "      \"account\": \"6666666666666666\",\n" + "      \"bankName\": \"대구은행\",\n" + "      \"idx\": 4\n" + "    },    \n" + "    {\n" + "      \"account\": \"7753621811018015\",\n" + "      \"bankName\": \"SC제일은행\",\n" + "      \"idx\": 0\n" + "    }    \n\n"+ "]\n\n ``` \n\n" + "이런 형식으로 넣으시면 됩니다.")
     @PostMapping("/selectedaccount")
     public ResponseEntity<String> SaveAccount(@RequestBody List<SelectedAccountRequestDto> selectedAccountRequestDtoList, @MemberInfo MemberInfoDto memberInfoDto) {
         Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
