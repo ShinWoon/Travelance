@@ -12,6 +12,6 @@ public class PaymentAlertRequestDto {
     private String paymentAt;
     private Long paymentAmount;
     private String paymentContent;
-    private String storeAddress;
     private String storeSector;
+    private String storeAddress;
 }
