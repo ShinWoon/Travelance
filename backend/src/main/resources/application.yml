@@ -39,6 +39,7 @@ spring:
       properties:
         spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
 
+
 logging:
   level:
     org.hibernate.SQL: trace
