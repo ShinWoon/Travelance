@@ -76,7 +76,9 @@ fun LoginScreen(
         successAction = {
             Log.d(TAG, "loginResult : $it ")
             if(it.role == "MEMBER"){
+                Log.d(TAG, "LoginScreen에서 member라서 바로 home으로")
                 //TODO homeScreen으로 이동
+                navController.navigate(Screen.Home.route)
             }else{
                 coroutineScope.launch {
                     loginViewModel.refreshNetworkState()
@@ -87,9 +89,7 @@ fun LoginScreen(
                 loginViewModel.updateRole(it.role)
                 Log.d(TAG, "갱신된 token : ${loginViewModel.getJwtToken()}")
                 Log.d(TAG, "갱신된 role : ${loginViewModel.getRole()}")
-                navController.navigate(Screen.AccountAuthentication.route){
-                    //TODO Back stack 관리 어떻게 할 지 정해라
-                }
+                navController.navigate(Screen.AccountAuthentication.route)
             }
         }
     )
