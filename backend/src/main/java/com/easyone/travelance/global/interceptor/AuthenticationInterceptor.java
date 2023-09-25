@@ -25,6 +25,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
+        System.out.println("=============================Auth=========================");
         log.info("Auth 인터셉터");
         // 1. Authorization Header 검증
         String authorizationHeader = request.getHeader("Authorization");

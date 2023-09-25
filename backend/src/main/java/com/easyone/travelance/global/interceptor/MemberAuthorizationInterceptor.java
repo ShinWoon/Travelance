@@ -24,7 +24,8 @@ public class MemberAuthorizationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        log.trace("MemberAuthorizationInter셉터임");
+        System.out.println("=============================member Auth=========================");
+        log.info("MemberAuthorizationInter셉터임");
         String authorizationHeader = request.getHeader("Authorization");
         String accessToken = authorizationHeader.split(" ")[1];
 
