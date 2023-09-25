@@ -63,7 +63,7 @@ public class CardService {
                     .cardNickname(selectedCardRequestDto.getCardCoName())
                     .cardNumber(selectedCardRequestDto.getCardNumber())
                     .idx(selectedCardRequestDto.getIdx())
-                    .color(Long.valueOf(selectedCardRequestDto.getCardCoCode()))
+                    .cardCoCode(selectedCardRequestDto.getCardCoCode())
                     .member(member)
                     .build();
 
