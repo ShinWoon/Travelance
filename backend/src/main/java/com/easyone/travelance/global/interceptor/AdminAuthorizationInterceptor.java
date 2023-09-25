@@ -24,7 +24,7 @@ public class AdminAuthorizationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        log.trace("어드민 인터셉터");
+        log.info("어드민 인터셉터");
         String authorizationHeader = request.getHeader("Authorization");
         String accessToken = authorizationHeader.split(" ")[1];
 

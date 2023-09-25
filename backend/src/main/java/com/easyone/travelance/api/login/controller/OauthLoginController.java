@@ -39,7 +39,7 @@ public class OauthLoginController {
     @PostMapping("/login")
     public ResponseEntity<OauthLoginDto.Response> oauthLogin(@RequestBody OauthLoginDto.Request oauthLoginRequestDto,
                                                              HttpServletRequest httpServletRequest) {
-        log.trace("들어오냐용");
+        log.info("들어오냐용");
         String authorizationHeader = httpServletRequest.getHeader("Authorization");
         AuthorizationHeaderUtils.validateAuthorization(authorizationHeader);
         oauthValidator.validateSocialType(oauthLoginRequestDto.getSocialType());
