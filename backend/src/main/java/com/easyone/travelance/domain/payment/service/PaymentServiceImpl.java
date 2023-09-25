@@ -49,7 +49,7 @@ public class PaymentServiceImpl implements PaymentService{
     @Autowired
     private WebClient webClient;
 
-//    @KafkaListener(topics = "topic name")
+    @KafkaListener(topics = "travelance")
     public void receivePaymentAlert(PaymentAlertRequestDto paymentAlertRequestDto) throws IOException {
         // 1. memberPrivateId를 통해 member 찾기
         Optional<Member> member = memberRepository.findByPrivateId(paymentAlertRequestDto.getMemberPrivateId());

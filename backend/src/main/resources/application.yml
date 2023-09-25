@@ -37,8 +37,8 @@ logging:
 
   kafka:
     consumer:
-      bootstrap-servers: localhost:9090
-      group-id: my_group
+      bootstrap-servers: 3.39.110.134:9092
+      group-id: travelance
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
