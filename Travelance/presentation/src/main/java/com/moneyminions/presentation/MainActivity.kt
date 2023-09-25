@@ -27,7 +27,7 @@ class MainActivity : FragmentActivity() {
             var isAuthenticated = remember { mutableStateOf(false) }
             val context = LocalContext.current
             MyApplicationTheme {
-                MainScreen(rememberAnimatedNavController())
+                MainScreen()
 
                 // 카카오
 //                var keyHash = Utility.getKeyHash(this)

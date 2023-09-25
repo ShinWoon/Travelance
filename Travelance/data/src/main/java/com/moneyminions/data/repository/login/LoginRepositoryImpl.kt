@@ -9,12 +9,14 @@ import com.moneyminions.data.mapper.toData
 import com.moneyminions.data.mapper.toDomain
 import com.moneyminions.data.model.login.request.LoginRequest
 import com.moneyminions.data.service.handleApi
+import com.moneyminions.domain.model.MemberInfo
 import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.common.AccountDto
 import com.moneyminions.domain.model.common.CardDto
 import com.moneyminions.domain.model.common.CommonResultDto
 import com.moneyminions.domain.model.login.AuthenticationAccountInfoDto
 import com.moneyminions.domain.model.login.AuthenticationAccountResultDto
+import com.moneyminions.domain.model.login.JwtTokenDto
 import com.moneyminions.domain.model.login.LoginResultDto
 import com.moneyminions.domain.repository.login.LoginRepository
 import javax.inject.Inject
@@ -45,6 +47,10 @@ class LoginRepositoryImpl @Inject constructor(
 
     override suspend fun getCardList(): NetworkResult<List<CardDto>> {
         return handleApi { loginDataSource.getCardList().map { it.toDomain() } }
+    }
+
+    override suspend fun join(memberInfo: MemberInfo): NetworkResult<JwtTokenDto> {
+        return handleApi { loginDataSource.join(memberInfo.toData()).toDomain() }
     }
 
 }

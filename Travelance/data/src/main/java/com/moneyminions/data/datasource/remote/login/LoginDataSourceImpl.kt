@@ -5,8 +5,10 @@ import com.moneyminions.data.model.common.response.CommonResponse
 import com.moneyminions.data.model.login.response.AccountResponse
 import com.moneyminions.data.model.login.request.AuthenticationAccountRequest
 import com.moneyminions.data.model.login.request.LoginRequest
+import com.moneyminions.data.model.login.request.MemberInfoRequest
 import com.moneyminions.data.model.login.response.AuthenticationAccountResponse
 import com.moneyminions.data.model.login.response.CardResponse
+import com.moneyminions.data.model.login.response.JoinResponse
 import com.moneyminions.data.model.login.response.LoginResponse
 import com.moneyminions.data.service.BusinessService
 
@@ -33,6 +35,10 @@ class LoginDataSourceImpl( //service 만들어야 함!
 
     override suspend fun getCardList(): List<CardResponse> {
         return businessService.getCardList()
+    }
+
+    override suspend fun join(memberInfoRequest: MemberInfoRequest): JoinResponse {
+        return businessService.join(memberInfoRequest)
     }
 
 }

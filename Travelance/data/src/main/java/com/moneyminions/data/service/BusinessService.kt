@@ -4,10 +4,13 @@ import com.moneyminions.data.model.common.response.CommonResponse
 import com.moneyminions.data.model.login.response.AccountResponse
 import com.moneyminions.data.model.login.request.AuthenticationAccountRequest
 import com.moneyminions.data.model.login.request.LoginRequest
+import com.moneyminions.data.model.login.request.MemberInfoRequest
 import com.moneyminions.data.model.login.response.AuthenticationAccountResponse
 import com.moneyminions.data.model.login.response.CardResponse
+import com.moneyminions.data.model.login.response.JoinResponse
 import com.moneyminions.data.model.login.response.LoginResponse
 import retrofit2.http.Body
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 
 interface BusinessService {
@@ -40,4 +43,10 @@ interface BusinessService {
      */
     @POST("card/allcard")
     suspend fun getCardList(): List<CardResponse>
+    /**
+     * 회원 등록
+     */
+    @PATCH("member/additional")
+    suspend fun join(@Body memberInfoRequest: MemberInfoRequest): JoinResponse
+
 }

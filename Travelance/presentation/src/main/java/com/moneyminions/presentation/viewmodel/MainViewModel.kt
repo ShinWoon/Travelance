@@ -5,25 +5,17 @@ import androidx.lifecycle.ViewModel
 import com.moneyminions.domain.model.MemberInfo
 import com.moneyminions.domain.model.common.AccountDto
 import com.moneyminions.domain.model.common.CardDto
+import com.moneyminions.domain.usecase.preference.GetRoleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-
+    private val getRoleUseCase: GetRoleUseCase
 ): ViewModel() {
 
-    val memberInfo: MemberInfo = MemberInfo(listOf(), listOf(), "", "")
-    fun setMemberAccountList(list: List<AccountDto>){
-        memberInfo.accountList = list
+    fun getRole(): String{
+        return getRoleUseCase.invoke()
     }
-    fun setMemberCardList(list: List<CardDto>){
-        memberInfo.cardList = list
-    }
-    fun setNickname(nickname: String){
-        memberInfo.nickname = nickname
-    }
-    fun setPassword(password: String){
-        memberInfo.password = password
-    }
+
 }

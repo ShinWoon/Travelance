@@ -33,6 +33,7 @@ import com.moneyminions.presentation.screen.mypage.view.accountList
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.MainViewModel
 import com.moneyminions.presentation.viewmodel.login.CardListViewModel
+import com.moneyminions.presentation.viewmodel.login.LoginViewModel
 import kotlinx.coroutines.launch
 
 
@@ -42,7 +43,7 @@ private const val TAG = "CardListScreen D210"
 fun CardListScreen(
     navController: NavHostController,
     cardListViewModel: CardListViewModel = hiltViewModel(),
-    mainViewModel: MainViewModel = hiltViewModel()
+    loginViewModel: LoginViewModel
 ){
     val coroutineScope = rememberCoroutineScope()
     val cardListResultState by cardListViewModel.cardListResult.collectAsState() //계좌 불러오는 api 결과 상태
@@ -100,8 +101,8 @@ fun CardListScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                mainViewModel.setMemberCardList(cardListState.value.filter { it.isSelected!! })
-                Log.d(TAG, "CardListScreen에서 mainviewmodel의 memberInfo : ${mainViewModel.memberInfo}")
+                loginViewModel.setMemberCardList(cardListState.value.filter { it.isSelected!! })
+                Log.d(TAG, "CardListScreen에서 mainviewmodel의 memberInfo : ${loginViewModel.memberInfo}")
                 navController.navigate(Screen.NicknamePassword.route)
             }
         }
@@ -112,5 +113,5 @@ fun CardListScreen(
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
 @Composable
 fun CardListScreenPreview(){
-    CardListScreen(navController = rememberNavController())
+//    CardListScreen(navController = rememberNavController())
 }
