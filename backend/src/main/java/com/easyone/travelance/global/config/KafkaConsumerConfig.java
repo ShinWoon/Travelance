@@ -27,18 +27,19 @@ public class KafkaConsumerConfig {
 
     @Bean
     public ConsumerFactory<String, PaymentAlertRequestDto> consumerFactory() {
-        JsonDeserializer<PaymentAlertRequestDto> deserializer = new JsonDeserializer<>(PaymentAlertRequestDto.class);
-        deserializer.setUseTypeMapperForKey(true);
-        deserializer.setUseTypeHeaders(false);
+        return new DefaultKafkaConsumerFactory<>(consumerProps(), new StringDeserializer(),
+                new JsonDeserializer<>(PaymentAlertRequestDto.class, false));
+    }
 
+    private Map<String, Object> consumerProps() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class.getName());
         props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
-        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), deserializer);
+        return props;
     }
-
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, PaymentAlertRequestDto> kafkaListenerContainerFactory() {
@@ -47,3 +48,4 @@ public class KafkaConsumerConfig {
         return factory;
     }
 }
+
