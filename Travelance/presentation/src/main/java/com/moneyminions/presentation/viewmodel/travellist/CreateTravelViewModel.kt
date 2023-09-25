@@ -45,7 +45,10 @@ class CreateTravelViewModel @Inject constructor(
     fun InputCheck(): Boolean {
         return _travelName.value.isNullOrEmpty() || _travelBudget.value.isNullOrEmpty() || _startDate.value.isNullOrEmpty() || _endDate.value.isNullOrEmpty()
     }
-    
+
+    /**
+     * 여행방 생성
+     */
     private val _createTravelRoomResult = MutableStateFlow<NetworkResult<String>>(NetworkResult.Idle)
     val createTravelRoomResult = _createTravelRoomResult.asStateFlow()
     fun createTravelRoom() {
