@@ -50,6 +50,7 @@ public class PaymentServiceImpl implements PaymentService{
     @Autowired
     private WebClient webClient;
 
+    @Transactional
     @KafkaListener(topics = "travelance", groupId = "travelance")
     public void receivePaymentAlert(PaymentAlertRequestDto paymentAlertRequestDto) throws IOException {
         processPayment(paymentAlertRequestDto);
