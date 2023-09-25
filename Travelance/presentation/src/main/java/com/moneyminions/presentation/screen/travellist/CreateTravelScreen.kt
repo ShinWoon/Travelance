@@ -26,7 +26,6 @@ import androidx.constraintlayout.compose.ConstraintSet
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.common.MinionPrimaryButton
 import com.moneyminions.presentation.common.TextFieldWithTitle
 import com.moneyminions.presentation.common.TopBar
@@ -38,16 +37,37 @@ import com.moneyminions.presentation.viewmodel.travellist.CreateTravelViewModel
 import kotlinx.coroutines.launch
 
 private const val TAG = "CreateTravelScreen_D210"
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CreateTravelScreen(
     createTravelViewModel: CreateTravelViewModel = hiltViewModel(),
-    navController: NavHostController
-){
-    val createTravelConstraintSet = ConstraintSet{
+    navController: NavHostController,
+) {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+
+    val travelRoomCreate by createTravelViewModel.createTravelRoomResult.collectAsState()
+    NetworkResultHandler(
+        state = travelRoomCreate,
+        errorAction = {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("방 생성 실패")
+            }
+        },
+        successAction = {
+            // homeScreen으로 이동 (방 생성 stack pop)
+            Log.d(TAG, "CreateTravelScreen: $it")
+            navController.navigate(Screen.SubHome.route) {
+                popUpTo(Screen.TravelList.route)
+            }
+        },
+    )
+
+    val createTravelConstraintSet = ConstraintSet {
         val travelNameField = createRefFor("travelNameField")
 
-        constrain(travelNameField){
+        constrain(travelNameField) {
             top.linkTo(parent.top, margin = 16.dp)
             start.linkTo(parent.start, margin = 16.dp)
             end.linkTo(parent.end, margin = 16.dp)
@@ -56,69 +76,62 @@ fun CreateTravelScreen(
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
-        }
+        },
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it)
+                .padding(it),
         ) {
             TopBar(
                 navController = navController,
-                title = "여행 생성"
+                title = "여행 생성",
             )
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 16.dp)
+                    .padding(top = 16.dp, start = 16.dp, bottom = 8.dp, end = 16.dp),
+                verticalArrangement = Arrangement.SpaceBetween,
             ) {
-                Spacer(
-                    modifier = Modifier.size(8.dp)
-                )
-                TextFieldWithTitle(
-                    title = "이름",
-                    hint = "여행 이름을 입력하세요",
-                    value = createTravelViewModel.travelName.value,
-                    onValueChange = {
-                        createTravelViewModel.setTravelName(it)
-                    }
-                )
-                Spacer(
-                    modifier = Modifier.size(8.dp)
-                )
-                TextFieldWithTitle(
-                    title = "예산",
-                    hint = "예산을 입력해주세요",
-                    value = createTravelViewModel.travelBudget.value,
-                    onValueChange = {
-                        createTravelViewModel.setTravelBudget(it)
-                    },
-                    keyboardType = KeyboardType.Number
-                )
-                Spacer(
-                    modifier = Modifier.size(8.dp)
-                )
+                Column {
+                    TextFieldWithTitle(
+                        title = "이름",
+                        hint = "여행 이름을 입력하세요",
+                        value = createTravelViewModel.travelName.value,
+                        onValueChange = {
+                            createTravelViewModel.setTravelName(it)
+                        },
+                    )
+                    Spacer(
+                        modifier = Modifier.size(16.dp),
+                    )
+                    TextFieldWithTitle(
+                        title = "예산",
+                        hint = "예산을 입력해주세요",
+                        value = createTravelViewModel.travelBudget.value,
+                        onValueChange = {
+                            createTravelViewModel.setTravelBudget(it)
+                        },
+                        keyboardType = KeyboardType.Number,
+                    )
+                }
                 Calendar()
-                Spacer(
-                    modifier = Modifier.size(8.dp)
-                )
-                DateTextComponent(
-                    text = "시작 날짜 : ",
-                    value = createTravelViewModel.startDate.value
-                )
-                Spacer(
-                    modifier = Modifier.size(8.dp)
-                )
-                DateTextComponent(
-                    text = "종료 날짜 : ",
-                    value = createTravelViewModel.endDate.value
-                )
-                Spacer(
-                    modifier = Modifier.size(8.dp)
-                )
+                Column {
+                    DateTextComponent(
+                        text = "시작 날짜 : ",
+                        value = createTravelViewModel.startDate.value,
+                    )
+                    Spacer(
+                        modifier = Modifier.size(16.dp),
+                    )
+                    DateTextComponent(
+                        text = "종료 날짜 : ",
+                        value = createTravelViewModel.endDate.value,
+                    )
+                }
                 MinionPrimaryButton(
                     content = "생성",
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     if (createTravelViewModel.InputCheck()) {
                         coroutineScope.launch {
@@ -129,13 +142,9 @@ fun CreateTravelScreen(
                     }
                 }
             }
-
         }
     }
-
-
 }
-
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
