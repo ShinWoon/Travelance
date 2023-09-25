@@ -4,15 +4,19 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Divider
+import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabPosition
@@ -34,7 +38,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold16
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardSemiBold16
+import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.PinkDarkest
+import com.moneyminions.presentation.theme.White
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -48,8 +54,8 @@ fun DetailTabView(
     val density = LocalDensity.current
     val coroutineScope = rememberCoroutineScope()
     TabRow(
-        modifier = modifier
-            .padding(bottom = 12.dp),
+//        modifier = modifier
+//            .padding(bottom = 8.dp),
         selectedTabIndex = selectedTabIndex.currentPage,
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
@@ -70,7 +76,13 @@ fun DetailTabView(
                 color = PinkDarkest, // 색상 지정
             )
         },
-        divider = {},
+        divider = {
+                  Divider(
+                      color = DividerDefaults.color,
+                      modifier = modifier.fillMaxWidth(),
+                      thickness = (0.5).dp
+                  )
+        },
         containerColor = Color.Transparent,
     ) {
         tabs.forEachIndexed { index, title ->
@@ -99,12 +111,13 @@ fun DetailTabView(
     HorizontalPager(
         state = selectedTabIndex,
         modifier = modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(color = White)
+            .padding(0.dp),
     ) { page ->
         when (page) {
-            0 -> DetailTotalScreenView()
+            0 -> DetailSettleScreenView()
             1 -> DetailMemberScreenView()
-            2 -> DetailSettleScreenView(modifier = modifier)
         }
     }
 }

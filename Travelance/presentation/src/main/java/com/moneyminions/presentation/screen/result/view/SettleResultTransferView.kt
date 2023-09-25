@@ -41,7 +41,7 @@ fun SettleResultTransferView(modifier: Modifier, result: String) {
         Spacer(modifier = modifier.height(4.dp))
         Divider(
             modifier = modifier,
-            thickness = DividerDefaults.Thickness,
+            thickness = (0.5).dp,
             color = DividerDefaults.color
         )
     }

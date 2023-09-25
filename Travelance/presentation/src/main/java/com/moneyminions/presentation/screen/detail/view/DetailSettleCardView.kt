@@ -7,30 +7,34 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.moneyminions.presentation.R
+import com.moneyminions.presentation.common.MinionPrimaryButton
+import com.moneyminions.presentation.theme.CardLightGray
+import com.moneyminions.presentation.theme.LightGray
+import com.moneyminions.presentation.theme.PinkDarkest
+import com.moneyminions.presentation.theme.TextGray
 
 @Composable
 fun DetailSettleCardView(modifier: Modifier, type: String) {
     Card(
         modifier = modifier
-            .fillMaxWidth()
-            .height(248.dp),
+            .fillMaxWidth(),
+        colors = CardDefaults.cardColors(CardLightGray),
     ) {
-        Column(
-            modifier = modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+        LazyColumn(
+            modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
-            if (type == "together") {
-                DetailCommonTitleText(text = "공금 내역")
-            } else {
-                DetailCommonTitleText(text = "결제 내역")
-            }
-            Spacer(modifier = modifier.height(8.dp))
-            LazyColumn() {
-                items(10) {
-                    DetailSettleContentView(modifier = modifier, type = type)
-                }
+            items(10) {
+                DetailSettleContentView(
+                    modifier = modifier,
+                    payDate = "2023-09-23 12:51",
+                    icon = R.drawable.ic_clear,
+                    iconColor = TextGray
+                )
             }
         }
     }

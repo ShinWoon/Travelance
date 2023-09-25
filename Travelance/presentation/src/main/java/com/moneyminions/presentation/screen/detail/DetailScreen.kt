@@ -19,7 +19,7 @@ fun DetailScreen(
     navController: NavController,
 ) {
 //    var selectedTabIndex = remember { mutableStateOf(0) }
-    val tabs = listOf("전체", "멤버", "정산")
+    val tabs = listOf("공금내역", "멤버내역")
     var selectedTabIndex = rememberPagerState(pageCount = { tabs.size })
     val tabWidths = remember {
         val tabWidthStateList = mutableStateListOf<Dp>()
