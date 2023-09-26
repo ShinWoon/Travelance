@@ -23,7 +23,7 @@ import com.moneyminions.presentation.theme.PinkDarkest
 @Composable
 fun MinionPrimaryButton(
     content: String,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     isEnabled: MutableState<Boolean> = mutableStateOf(true),
     onClick: () -> Unit,
 ) {
