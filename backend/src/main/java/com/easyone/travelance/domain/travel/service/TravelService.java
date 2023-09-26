@@ -46,6 +46,7 @@ public class TravelService {
     }
 
     //유저가 방에 추가되어 닉네임과 사진을 설정하고, 친구 목록을 반환
+    //Profileurl도 같이 반환
     @Transactional
     public List<RoomUserResponseDto> adduser(Long roomId, Member member, MultipartFile imageFile) {
 
@@ -71,17 +72,23 @@ public class TravelService {
         return travelRoomMemberList;
     }
 
+    //유저에 해당하는 방만 보내주기 -
     @Transactional(readOnly = true)
-    public List<RoomAllResponseDto> findAllDesc() {
-        return travelRoomRepository.findAll().stream()
-                .map(entity -> {
-//                  Long totalPrice = travelPaymentService.TotalPriceTravelId(entity.getId());
-                    Long totalPrice =0L;
-                    return new RoomAllResponseDto(entity, totalPrice);
+    public List<RoomAllResponseDto> findAllDesc(Member member) {
+        // travelroommember도메인에서 member에 해당하는  travelroom을 RoomAllResponseDto로 모두 반환
 
-                })
-                .collect(Collectors.toList());
+        List<TravelRoomMember> travelRoomMemberList = travelRoomMemberRepository.findAllByMember(member);
+
+        List<RoomAllResponseDto> roomAllResponseDtos = new ArrayList<>();
+        for (TravelRoomMember travelroommember : travelRoomMemberList) {
+            TravelRoom travelRoom = travelroommember.getTravelRoom();
+            Long totalPrice = travelPaymentService.TotalPriceTravelId(travelRoom.getId());
+            RoomAllResponseDto responseDto = new RoomAllResponseDto(travelRoom, totalPrice);
+            roomAllResponseDtos.add(responseDto);
+        }
+        return roomAllResponseDtos;
     }
+
 
     @Transactional(readOnly = true)
     public RoomStaticResponseDto findById(Long roomId, Member member) {

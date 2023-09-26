@@ -51,8 +51,9 @@ public class TravelController {
     @Operation(summary = "여행 전체 리스트 조회", description = "요청 시, 채팅방 전체리스트를 조회합니다. " +
             "travelName: 여행이름, location: 여행장소, startDate:여행시작일, endDate: 여행종료일, budget: 예산")
     @GetMapping(value = "")
-    public ResponseEntity<List<RoomAllResponseDto>> findAllDesc() {
-        List<RoomAllResponseDto> responseDtos = travelService.findAllDesc();
+    public ResponseEntity<List<RoomAllResponseDto>> findAllDesc(@MemberInfo MemberInfoDto memberInfo) {
+        Member member = memberService.findMemberByEmail(memberInfo.getEmail());
+        List<RoomAllResponseDto> responseDtos = travelService.findAllDesc(member);
         return new ResponseEntity<>(responseDtos, HttpStatus.OK);
     }
 

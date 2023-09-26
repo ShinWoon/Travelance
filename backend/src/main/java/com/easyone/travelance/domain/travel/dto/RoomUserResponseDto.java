@@ -15,6 +15,7 @@ import java.util.List;
 public class RoomUserResponseDto {
     private String email;
     private String nickName;
+    private String profileUrl;
 
 
     @Builder
