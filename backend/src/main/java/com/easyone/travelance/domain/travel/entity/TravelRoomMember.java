@@ -39,4 +39,8 @@ public class TravelRoomMember {
         this.travelNickName=nickName;
     }
 
+    public void setIsDone(boolean isDone) {
+        this.isDone = isDone;
+    }
+
 }
