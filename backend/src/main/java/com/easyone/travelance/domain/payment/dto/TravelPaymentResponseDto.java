@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class TravelPaymentResponseDto {
-    private Long id;
+    private Long paymentId;
     private String paymentAt;
     private Long paymentAmount;
     private String paymentContent;
@@ -14,7 +14,7 @@ public class TravelPaymentResponseDto {
     private Boolean isWithPaid;
 
     public TravelPaymentResponseDto(Payment payment) {
-        this.id = payment.getId();
+        this.paymentId = payment.getId();
         this.paymentAt = payment.getPaymentAt();
         this.paymentAmount = payment.getPaymentAmount();
         this.paymentContent = payment.getPaymentContent();
