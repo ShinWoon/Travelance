@@ -33,6 +33,7 @@ public class SecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFil
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
+                .httpBasic().disable()
                 .csrf().disable() // CSRF 보호 비활성화
                 .cors(Customizer.withDefaults()) // CORS 설정
                 .formLogin().disable() // 폼 기반 로그인 비활성화
