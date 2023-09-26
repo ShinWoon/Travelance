@@ -7,6 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.moneyminions.paybank.model.FcmTokenRequest
+import com.moneyminions.paybank.model.NetworkResult
+import com.moneyminions.paybank.model.PaymentRequest
+import com.moneyminions.paybank.model.PaymentResponse
 import com.moneyminions.paybank.service.BankService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +27,32 @@ class PayViewModel @Inject constructor(
         Log.d(TAG, "postFcmToken: ${fcmTokenRequest.fcmToken}")
         viewModelScope.launch {
             bankService.postFcmToken(fcmTokenRequest)
+        }
+    }
+
+    private val _postPaymentResult = MutableStateFlow<NetworkResult<PaymentResponse>>(NetworkResult.Idle)
+    val postPaymentResult = _postPaymentResult.asStateFlow()
+    fun postPaymentRequest(){
+        viewModelScope.launch {
+            val postBody = PaymentRequest(
+                cardNumber = cardNumber.value,
+                cvc = cvc.value,
+                paymentAmount = amount.value.toInt(),
+                paymentContent = storeName.value,
+                storeAddress = storeAddress.value,
+                storeSector = storeType.value
+            )
+            Log.d(TAG, "postPaymentRequest body $postBody")
+            _postPaymentResult.emit(bankService.postPaymentRequest(
+                PaymentRequest(
+                    cardNumber = cardNumber.value,
+                    cvc = cvc.value,
+                    paymentAmount = amount.value.toInt(),
+                    paymentContent = storeName.value,
+                    storeAddress = storeAddress.value,
+                    storeSector = storeType.value
+                )
+            ))
         }
     }
 

@@ -59,6 +59,7 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.moneyminions.paybank.R
 import com.moneyminions.paybank.model.FcmTokenRequest
 import com.moneyminions.paybank.util.Constants
+import com.moneyminions.paybank.util.NetworkResultHandler
 import com.moneyminions.paybank.util.createNotificationChannel
 import com.moneyminions.paybank.util.initFirebase
 import com.moneyminions.paybank.viewmodel.PayViewModel
@@ -107,6 +108,16 @@ fun PayScreen(
 
     }
 
+    val postPaymentResultState by payViewModel.postPaymentResult.collectAsState()
+    NetworkResultHandler(
+        state = postPaymentResultState,
+        errorAction = {
+            Log.d(TAG, "Payment post error... ")
+        },
+        successAction = {
+            Log.d(TAG, "Payment post success... ")
+        }
+    )
 
     val scrollableState = rememberScrollState()
 
@@ -192,6 +203,7 @@ fun PayScreen(
         Button(
             onClick = {
                 //결제 api 호출
+                payViewModel.postPaymentRequest()
                 payViewModel.setCardNumber("")
                 payViewModel.setCvc("")
                 payViewModel.setAmount("")

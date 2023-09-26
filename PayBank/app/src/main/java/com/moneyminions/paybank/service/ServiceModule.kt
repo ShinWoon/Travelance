@@ -29,7 +29,7 @@ object ServiceModule {
         .readTimeout(5000, TimeUnit.MILLISECONDS)
         .connectTimeout(5000, TimeUnit.MILLISECONDS)
         .addInterceptor(HttpLoggingInterceptor())
-//        .addInterceptor(ResponseInterceptor())
+        .addInterceptor(ResponseInterceptor())
         .addInterceptor(RequestInterceptor())
 //            .addNetworkInterceptor(XAccessTokenInterceptor()) // JWT 자동 헤더 전송
 //            .addInterceptor(AddCookiesInterceptor())  //쿠키 전송
