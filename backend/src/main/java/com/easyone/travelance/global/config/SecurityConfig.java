@@ -27,13 +27,14 @@ public class SecurityConfig {
     @Value("${jwt.refresh.expiration}")
     private String refreshTokenExpirationPeriod;
 
+    //필터 체인 반환
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .cors(Customizer.withDefaults())
-                .formLogin().disable();
-        // http.authorizeRequests().antMatchers("/**").permitAll();
+                .csrf().disable() //csrf보호 비활성화
+                .cors(Customizer.withDefaults()) //cors구성 기본 설정값으로
+                .formLogin().disable(); //폼기반 로그인 비활성화
+         http.authorizeRequests().antMatchers("/**").permitAll(); //프록시서버가 모두 들어오도록
         return http.build();
     }
     @Bean
