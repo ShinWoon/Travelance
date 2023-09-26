@@ -55,22 +55,21 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.moneyminions.domain.model.travellist.TravelRoomDto
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold14
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.travellist.view.TravelCardView
-import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.DarkGray
 import com.moneyminions.presentation.theme.FloatingButtonColor
 import com.moneyminions.presentation.theme.PinkDarkest
-import com.moneyminions.presentation.theme.White
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.travellist.TravelListViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 private const val TAG = "TravelListScreen_D210"
+
 
 @OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -83,17 +82,17 @@ fun TravelListScreen(
     Log.d(TAG, "TravelListScreen: on")
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
-    
+
     travelListViewModel.refresh()
-    
+
     // 여행 목록 GET 호출 부분
     val travelListState by travelListViewModel.networkTravelList.collectAsState()
 //    LaunchedEffect(Unit) {
 //        travelListViewModel.getTravelList()
 //    }
-    
 
-    
+
+
     NetworkResultHandler(
         state = travelListState,
         errorAction = {
@@ -103,10 +102,9 @@ fun TravelListScreen(
         },
         successAction = {
             Log.d(TAG, "travelListResult : $it ")
-//            travelList = it.toMutableList()
-        }
+        },
     )
-    
+
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
@@ -117,18 +115,22 @@ fun TravelListScreen(
                     Text(
                         text = "방 생성",
                         color = DarkGray,
-                        style = pretendardBold14
+                        style = pretendardBold14,
                     )
                 },
-                icon = { Icon(
-                    painter = painterResource(id = R.drawable.ic_add),
-                    tint = PinkDarkest,
-                    contentDescription = "room add icon") },
+                icon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_add),
+                        tint = PinkDarkest,
+                        contentDescription = "room add icon",
+                    )
+                },
                 containerColor = FloatingButtonColor,
                 onClick = {
                     navController.navigate(Screen.CreateTravel.route)
-                })
-        }
+                },
+            )
+        },
     ) {
         LazyColumn(
             modifier = modifier
@@ -142,7 +144,7 @@ fun TravelListScreen(
                         item.hashCode()
                     }
                 ) { _ , item: TravelRoomDto ->
-                    
+
                     TravelRoomItem(
                         modifier = Modifier,
                         travelRoomDto = item,
@@ -209,7 +211,7 @@ fun TravelRoomItem(
             }
         )
     }
-    
+
     LaunchedEffect(show) {
         if (!show) {
             delay(800)

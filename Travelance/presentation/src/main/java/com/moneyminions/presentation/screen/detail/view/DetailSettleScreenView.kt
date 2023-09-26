@@ -14,10 +14,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,26 +32,28 @@ import androidx.compose.ui.unit.dp
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold14
 import com.moneyminions.presentation.common.MinionPrimaryButton
+import com.moneyminions.presentation.common.SettleCardView
 import com.moneyminions.presentation.theme.DarkerGray
-import com.moneyminions.presentation.theme.PinkDarkest
-import com.moneyminions.presentation.theme.White
-import com.moneyminions.presentation.theme.pretendard
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailSettleScreenView(
     modifier: Modifier = Modifier,
 ) {
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(false) }
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(top = 8.dp, start = 16.dp, bottom = 8.dp, end = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
+        verticalArrangement = Arrangement.SpaceBetween,
     ) {
         Row(
             modifier = modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Button(
                 onClick = { /*TODO*/ },
@@ -71,9 +79,8 @@ fun DetailSettleScreenView(
                     contentDescription = "add settle button",
                 )
             }
-
         }
-        DetailSettleCardView(modifier = modifier, type = "together")
+        SettleCardView()
         Spacer(modifier = modifier.height(16.dp))
         MinionPrimaryButton(
             content = "정산요청",

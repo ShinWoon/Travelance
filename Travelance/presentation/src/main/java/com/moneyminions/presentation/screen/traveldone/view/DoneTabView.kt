@@ -1,4 +1,4 @@
-package com.moneyminions.presentation.screen.detail.view
+package com.moneyminions.presentation.screen.traveldone.view
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
@@ -32,19 +32,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.debugInspectorInfo
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold16
-import com.moneyminions.presentation.common.CustomTextStyle.pretendardSemiBold16
+import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.theme.White
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DetailTabView(
-    modifier: Modifier,
+fun DoneTabView(
+    modifier: Modifier = Modifier,
     tabs: List<String>,
     selectedTabIndex: PagerState,
     tabWidths: MutableList<Dp>,
@@ -52,8 +50,6 @@ fun DetailTabView(
     val density = LocalDensity.current
     val coroutineScope = rememberCoroutineScope()
     TabRow(
-//        modifier = modifier
-//            .padding(bottom = 8.dp),
         selectedTabIndex = selectedTabIndex.currentPage,
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
@@ -96,7 +92,7 @@ fun DetailTabView(
                     Text(
                         text = title,
                         color = MaterialTheme.colorScheme.onSurface, // if (selectedTabIndex.value == index) PointDeepGreen else
-                        style = if (selectedTabIndex.currentPage == index) pretendardBold16 else pretendardSemiBold16,
+                        style = if (selectedTabIndex.currentPage == index) CustomTextStyle.pretendardBold16 else CustomTextStyle.pretendardSemiBold16,
                         onTextLayout = { textLayoutResult ->
                             tabWidths[index] =
                                 with(density) { textLayoutResult.size.width.toDp() }
@@ -114,8 +110,9 @@ fun DetailTabView(
             .padding(0.dp),
     ) { page ->
         when (page) {
-            0 -> DetailSettleScreenView()
-            1 -> DetailMemberScreenView()
+            0 -> DoneTotalView()
+            1 -> DonePublicMoneyView()
+            2 -> DoneMembersView()
         }
     }
 }
@@ -141,10 +138,4 @@ fun Modifier.customTabIndicatorOffset(
         .wrapContentSize(Alignment.BottomStart) // indicator 표시 위치
         .offset(x = indicatorOffset)
         .width(currentTabWidth)
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DetailTabViewPreview() {
-//    DetailTabView(modifier = Modifier)
 }

@@ -24,11 +24,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.moneyminions.domain.model.travellist.TravelRoomDto
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold14
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold18
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBoldMoney20
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardSemiBold12
+import com.moneyminions.presentation.navigation.Screen
+import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.DarkGray
 import com.moneyminions.presentation.theme.DarkGrayMiddle
@@ -42,11 +46,17 @@ fun TravelCardView(
     modifier: Modifier,
     travelRoomDto: TravelRoomDto,
     iconId: Int,
+    navController: NavController,
 ) {
     Card(
         modifier = modifier
             .wrapContentHeight()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 4.dp)
+            .clickable {
+                if (done == "done") {
+                    navController.navigate(Screen.TravelDone.route)
+                }
+            },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(CardLightGray),
     ) {
@@ -213,16 +223,17 @@ fun MoneyAmountView(moneyAmount: Int, modifier: Modifier) {
     }
 }
 
-//@Composable
-//@Preview(showBackground = true)
-//fun TravelCardPreview() {
-//    TravelCardView(
-//        modifier = Modifier,
-//        travelName = "룰루랄라",
-//        travelStart = "2023.07.23",
-//        travelEnd = "2023.07.30",
-//        done = "done",
-//        moneyAmount = 5500000,
-//        iconId = R.drawable.ic_travel_2,
-//    )
-//}
+@Composable
+@Preview(showBackground = true)
+fun TravelCardPreview() {
+    TravelCardView(
+        modifier = Modifier,
+        travelName = "룰루랄라",
+        travelStart = "2023.07.23",
+        travelEnd = "2023.07.30",
+        done = "done",
+        moneyAmount = 5500000,
+        iconId = R.drawable.ic_travel_2,
+        navController = rememberNavController()
+    )
+}
