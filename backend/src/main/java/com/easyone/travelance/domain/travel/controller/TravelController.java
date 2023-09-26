@@ -44,10 +44,10 @@ public class TravelController {
     // 프로필 설정, 내 방에 맞는 프로필을 저장함
     @Operation(summary = "내 프로필 설정하기", description = "방에 입장하고 싶은 맴버 정보와 프로필 사진을 요청하면, 여행참가자가 되며 유저리스트를 전달합니다. ")
     @PostMapping(value = "/{roomId}/addUser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity <ResultDto> AddUser(@MemberInfo MemberInfoDto memberInfo, @RequestPart RoomUserRequestDto roomUserRequestDto, @PathVariable Long roomId) {
+    public ResponseEntity <ResultDto> AddUser(@MemberInfo MemberInfoDto memberInfo,  @RequestPart(value = "imageFiles") MultipartFile profileUrl, @RequestBody RoomUserRequestDto roomUserRequestDto, @PathVariable Long roomId) {
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
 
-        ResultDto resultDto =travelService.adduser(roomId, member, roomUserRequestDto);
+        ResultDto resultDto =travelService.adduser(roomId, member, roomUserRequestDto, profileUrl);
         return new ResponseEntity<>(resultDto, HttpStatus.OK);
     }
 
