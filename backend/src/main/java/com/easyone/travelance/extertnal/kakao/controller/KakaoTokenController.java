@@ -35,19 +35,20 @@ public class KakaoTokenController {
     @Operation(summary = "카카오 토큰", description = "카카오 로그인 토큰 메서드입니다.")
     @GetMapping("/oauth/kakao/callback")
     public @ResponseBody String loginCallback(String code) {
-//        log.info("====================카카오토큰컨트롤러 들어왔음!!!!!===================");
-//        log.info(code);
+       log.info("====================카카오토큰컨트롤러 들어왔음!!!!!===================");
+        log.info(code);
         String contentType = "application/x-www-form-urlencoded;charset=utf-8";
         KakaoTokenDto.Request kakaoTokenRequestDto = KakaoTokenDto.Request.builder()
                 .client_id(clientId)
                 .client_secret(clientSecret)
                 .grant_type("authorization_code")
                 .code(code)
-                .redirect_url("http://localhost:8081/oauth/kakao/callback")
-              //  .redirect_url("http://j9d210.p.ssafy.io:8081/oauth/kakao/callback")
+               // .redirect_url("http://localhost:8081/oauth/kakao/callback")
+                .redirect_url("http://j9d210.p.ssafy.io:8081/oauth/kakao/callback")
                // .redirect_url("https://j9d210.p.ssafy.io/oauth/kakao/callback")
                 .build();
 
+        log.info(String.valueOf(kakaoTokenRequestDto));
         KakaoTokenDto.Response kakaoToken = kakaoTokenClient.requestKakaoToken(contentType, kakaoTokenRequestDto);
         log.info("=====================================kakao token : " + kakaoToken);
         return "kakao token : " + kakaoToken;
