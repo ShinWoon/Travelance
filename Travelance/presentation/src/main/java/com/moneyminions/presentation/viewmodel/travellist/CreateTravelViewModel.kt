@@ -43,6 +43,18 @@ class CreateTravelViewModel @Inject constructor(
         _endDate.value = date
     }
     
+    private val _nickName = mutableStateOf("")
+    val nickName: State<String> = _nickName
+    fun setNickName(name: String) {
+        _nickName.value = name
+    }
+    
+    private val _profileImage = mutableStateOf(0)
+    val profileImage: State<Int> = _profileImage
+    fun setProfileImage(image: Int) {
+        _profileImage.value = image
+    }
+    
     fun InputCheck(): Boolean {
         return _travelName.value.isNullOrEmpty() || _travelBudget.value.isNullOrEmpty() || _startDate.value.isNullOrEmpty() || _endDate.value.isNullOrEmpty()
     }

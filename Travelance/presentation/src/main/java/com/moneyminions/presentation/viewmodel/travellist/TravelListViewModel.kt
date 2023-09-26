@@ -61,5 +61,5 @@ class TravelListViewModel @Inject constructor(
         }
     }
 
-
+    
 }

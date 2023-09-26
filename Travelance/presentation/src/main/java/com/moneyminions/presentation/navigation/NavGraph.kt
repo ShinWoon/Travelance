@@ -43,13 +43,13 @@ private const val TAG = "NavGraph_D210"
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavGraph(
-//    innerPaddings: PaddingValues,
+    innerPaddings: PaddingValues,
     navController: NavHostController,
     startDestination: String,
     loginViewModel: LoginViewModel = hiltViewModel()
 ) {
     AnimatedNavHost(
-//        modifier = Modifier.padding(innerPaddings),
+        modifier = Modifier.padding(innerPaddings),
         navController = navController,
         startDestination = startDestination,
         enterTransition = { fadeIn(tween(500)) },

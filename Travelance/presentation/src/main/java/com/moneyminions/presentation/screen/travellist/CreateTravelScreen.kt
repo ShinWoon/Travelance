@@ -16,8 +16,10 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,6 +34,7 @@ import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.travellist.view.Calendar
 import com.moneyminions.presentation.screen.travellist.view.DateTextComponent
+import com.moneyminions.presentation.screen.travellist.view.ProfileDialog
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.travellist.CreateTravelViewModel
 import kotlinx.coroutines.launch
@@ -73,6 +76,9 @@ fun CreateTravelScreen(
             end.linkTo(parent.end, margin = 16.dp)
         }
     }
+    
+    // 프로필 설정 다이얼로그
+    var openProfileDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         snackbarHost = {
@@ -139,11 +145,17 @@ fun CreateTravelScreen(
                             snackbarHostState.showSnackbar("입력을 확인하세요.")
                         }
                     } else {
-                        createTravelViewModel.createTravelRoom()
+                        openProfileDialog = true
+//                        createTravelViewModel.createTravelRoom()
                     }
                 }
             }
         }
+    }
+    
+    // 프로필 설정 다이얼로그
+    if(openProfileDialog) {
+        ProfileDialog(onDismiss = {openProfileDialog = false})
     }
 }
 
