@@ -35,9 +35,9 @@ public class TravelController {
             "<요청 값> profileUrl: 호스트 프로필사진, nickName: 호스트 닉네임, startdate: 시작시간, enddate: 끝시간, startDate:여행시작일, endDate: 여행종료일, budget: 예산" +
             "<응답 값> result: 방id(string값)")
     @PostMapping(value = "")
-    public ResponseEntity<RoomIdResponseDto> MakeRoom(@MemberInfo MemberInfoDto memberInfo, @RequestPart RoomUserRequestDto roomUserRequestDto, @RequestBody RoomInfoRequestDto roomInfoRequestDto) {
+    public ResponseEntity<RoomIdResponseDto> MakeRoom(@MemberInfo MemberInfoDto memberInfo, @RequestPart MultipartFile profileUrl, @RequestBody RoomInfoRequestDto roomInfoRequestDto) {
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
-        RoomIdResponseDto responseDto= travelService.save(roomInfoRequestDto, member, roomUserRequestDto);
+        RoomIdResponseDto responseDto= travelService.save(roomInfoRequestDto, member, profileUrl);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 

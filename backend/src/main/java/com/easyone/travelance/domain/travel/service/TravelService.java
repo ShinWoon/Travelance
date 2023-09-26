@@ -32,21 +32,21 @@ public class TravelService {
 
     //방만들기
     @Transactional
-    public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, RoomUserRequestDto roomUserRequestDto) {
+    public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, MultipartFile profileUrl) {
         //방 만든 직전에는 사전정산 상태
         RoomType roomType = RoomType.BEFORE;
         try {
             TravelRoom travelRoom = roomInfoRequestDto.toEntity(roomType);
             travelRoomRepository.save(roomInfoRequestDto.toEntity(roomType));
             //프로필 사진이 있으면, 프로필 사진 저장
-            if(roomUserRequestDto.getProfileUrl()!=null) {
-                travelProfileService.saveImage(travelRoom, roomUserRequestDto.getProfileUrl());
+            if(profileUrl!=null) {
+                travelProfileService.saveImage(travelRoom, profileUrl);
             }
 
             TravelRoomMember travelRoomMember = TravelRoomMember.builder()
                     .travelRoom(travelRoom)
                     .member(member)
-                    .nickName(roomUserRequestDto.getNickName())
+                    .nickName(roomInfoRequestDto.getNickName())
                     .isDone(false)
                     .build();
 
