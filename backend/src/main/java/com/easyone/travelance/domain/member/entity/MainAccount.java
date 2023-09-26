@@ -1,6 +1,7 @@
 package com.easyone.travelance.domain.member.entity;
 
 import com.easyone.travelance.domain.account.entity.Account;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ public class MainAccount {
 
     @OneToOne
     @JoinColumn(name="member_id")
+    @JsonBackReference
     private Member member;
 
     // 계좌 1 대 다 관계
