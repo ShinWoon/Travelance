@@ -34,8 +34,8 @@ public class TravelController {
     @Operation(summary = "여행방 생성", description = "여행방 만든 사용자의 프로필 이미지를 요청하면, 채팅방을 만들고, 채팅방의 참여자에 추가시킵니다." +
             "<요청 값> profileUrl: 호스트 프로필사진, nickName: 호스트 닉네임, startdate: 시작시간, enddate: 끝시간, startDate:여행시작일, endDate: 여행종료일, budget: 예산" +
             "<응답 값> result: 방id(string값)")
-    @PostMapping(value = "")
-    public ResponseEntity<RoomIdResponseDto> MakeRoom(@MemberInfo MemberInfoDto memberInfo, @RequestPart(value = "imageFiles", required = false) MultipartFile profileUrl, @RequestPart RoomInfoRequestDto roomInfoRequestDto) {
+    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<RoomIdResponseDto> MakeRoom(@MemberInfo MemberInfoDto memberInfo, @RequestPart(value = "imageFiles") MultipartFile profileUrl, @RequestBody RoomInfoRequestDto roomInfoRequestDto) {
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
         RoomIdResponseDto responseDto= travelService.save(roomInfoRequestDto, member, profileUrl);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
