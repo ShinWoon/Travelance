@@ -11,7 +11,9 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ContainerProperties;
+import org.springframework.kafka.listener.SeekToCurrentErrorHandler;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
+import org.springframework.util.backoff.FixedBackOff;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,6 +55,12 @@ public class KafkaConsumerConfig {
 
         // Set ackMode to MANUAL
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
+
+        // Configure the error handler to retry only once
+        FixedBackOff backOff = new FixedBackOff();
+        backOff.setInterval(1000L); // 1 second backoff interval
+        backOff.setMaxAttempts(1); // Only retry once
+        factory.setErrorHandler(new SeekToCurrentErrorHandler(backOff));
 
         return factory;
     }
