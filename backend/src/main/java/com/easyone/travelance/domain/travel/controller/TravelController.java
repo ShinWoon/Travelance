@@ -39,22 +39,21 @@ public class TravelController {
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
-    // 프로필 설정 : 모바일에서 방과 유저정보를 주면, 방에 유저를 저장함
-    @Operation(summary = "내 프로필 설정하기", description = "방에 입장하고 싶은 맴버 정보와 프로필 사진, 닉네임 정보와 함께 요청하면, 여행참가자가 되며 유저리스트를 전달합니다. ")
+    // 프로필 설정, 내 방에 맞는 프로필을 저장함
+    @Operation(summary = "내 프로필 설정하기", description = "방에 입장하고 싶은 맴버 정보와 프로필 사진을 요청하면, 여행참가자가 되며 유저리스트를 전달합니다. ")
     @PostMapping(value = "/{roomId}/addUser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<List<RoomUserResponseDto>> AddUser(@MemberInfo MemberInfoDto memberInfo, @RequestPart MultipartFile profileUrl, @PathVariable Long roomId) {
+    public ResponseEntity <ResultDto> AddUser(@MemberInfo MemberInfoDto memberInfo, @RequestPart MultipartFile profileUrl, @PathVariable Long roomId) {
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
-        List<RoomUserResponseDto> roomUserResponseDto=travelService.adduser(roomId, member, profileUrl);
-        return new ResponseEntity<>(roomUserResponseDto, HttpStatus.OK);
+        ResultDto resultDto =travelService.adduser(roomId, member, profileUrl);
+        return new ResponseEntity<>(resultDto, HttpStatus.OK);
     }
 
     //친구 목록 조회: 현재 여행방의 초대한 맴버(이미 프로필 설정까지 완료된)를 조회할 수 있는 컨트롤러
     @Operation(summary = "여행방 친구 조회하기", description = "여행하고 있는 유저리스트를 전달합니다.")
-    @GetMapping(value = "/{roomId}/UserList", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<List<RoomUserResponseDto>> GetUserList(@MemberInfo MemberInfoDto memberInfo, @RequestPart MultipartFile profileUrl, @PathVariable Long roomId) {
-        Member member = memberService.findMemberByEmail(memberInfo.getEmail());
+    @GetMapping(value = "/{roomId}/UserList")
+    public ResponseEntity<List<RoomUserResponseDto>> GetUserList( @PathVariable Long roomId) {
 
-        List<RoomUserResponseDto> roomUserResponseDto=travelService.adduser(roomId, member, profileUrl);
+        List<RoomUserResponseDto> roomUserResponseDto=travelService.getUserList(roomId);
         return new ResponseEntity<>(roomUserResponseDto, HttpStatus.OK);
     }
 
@@ -71,7 +70,6 @@ public class TravelController {
     }
 
     //여행 방 조회
-    // 예산 카테고리 분류 통계 추후 추가
     @Operation(summary = "특정 여행방 조회하기", description = "요청 시, 채팅방을 조회합니다. " +
             "member정보를 받아서 여행방에서 내가 쓴 목록과 전체 목록을 구분합니다.")
     @GetMapping(value = "/{roomId}")

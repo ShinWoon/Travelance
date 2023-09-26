@@ -60,28 +60,29 @@ public class TravelService {
     //유저가 방에 추가되어 닉네임과 사진을 설정하고, 친구 목록을 반환
     //Profileurl도 같이 반환
     @Transactional
-    public List<RoomUserResponseDto> adduser(Long roomId, Member member, MultipartFile imageFile) {
+    public ResultDto adduser(Long roomId, Member member, MultipartFile imageFile) {
 
-        TravelRoom travelRoom = travelRoomRepository.findById(roomId)
-                .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
+        try {
+            TravelRoom travelRoom = travelRoomRepository.findById(roomId)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
 
-        //프로필 사진이 있으면, 프로필 사진 저장
-        if(imageFile!=null) {
-            travelProfileService.saveImage(travelRoom,imageFile);
+            //프로필 사진이 있으면, 프로필 사진 저장
+            if (imageFile != null) {
+                travelProfileService.saveImage(travelRoom, imageFile);
+            }
+
+            TravelRoomMember travelRoomMember = TravelRoomMember.builder()
+                    .travelRoom(travelRoom)
+                    .member(member)
+                    .build();
+
+            travelRoomMemberRepository.save(travelRoomMember);
+            return new ResultDto("참여자 방에 저장");
+        }
+        catch (Exception e) {
+            throw new IllegalArgumentException("참여자가 방에 들어오지 않았습니다");
         }
 
-        TravelRoomMember travelRoomMember = TravelRoomMember.builder()
-                .travelRoom(travelRoom)
-                .member(member)
-                .build();
-
-        travelRoomMemberRepository.save(travelRoomMember);
-
-        List<RoomUserResponseDto> travelRoomMemberList = travelRoomMemberRepository.findAllByTravelRoom(travelRoom)
-                                        .stream().map(user -> new RoomUserResponseDto().builder().member(user.getMember())
-                                        .build()).collect(Collectors.toList());
-
-        return travelRoomMemberList;
     }
 
     //유저에 해당하는 방만 보내주기 -
@@ -160,5 +161,13 @@ public class TravelService {
     }
 
 
+    public List<RoomUserResponseDto> getUserList(Long roomId) {
+        TravelRoom travelRoom = travelRoomRepository.findById(roomId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
 
+        List<RoomUserResponseDto> travelRoomMemberList = travelRoomMemberRepository.findAllByTravelRoom(travelRoom)
+                                        .stream().map(user -> new RoomUserResponseDto().builder().member(user.getMember())
+                                        .build()).collect(Collectors.toList());
+        return travelRoomMemberList;
+    }
 }
