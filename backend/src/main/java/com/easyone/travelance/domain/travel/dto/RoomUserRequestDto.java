@@ -3,6 +3,7 @@ package com.easyone.travelance.domain.travel.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -10,10 +11,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class RoomUserRequestDto {
     private String nickname;
+    private MultipartFile profileUrl;
 
     @Builder
-    public RoomUserRequestDto(String nickname) {
+    public RoomUserRequestDto(String nickname, MultipartFile profileUrl) {
         this.nickname=nickname;
+        this.profileUrl = profileUrl;
     }
 
 }

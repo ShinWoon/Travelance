@@ -35,19 +35,19 @@ public class TravelController {
             "<요청 값> profileUrl: 호스트 프로필사진, nickName: 호스트 닉네임, startdate: 시작시간, enddate: 끝시간, startDate:여행시작일, endDate: 여행종료일, budget: 예산" +
             "<응답 값> result: 방id(string값)")
     @PostMapping(value = "")
-    public ResponseEntity<RoomIdResponseDto> MakeRoom(@MemberInfo MemberInfoDto memberInfo, @RequestPart MultipartFile profileUrl, @RequestBody RoomInfoRequestDto roomInfoRequestDto, String nickName) {
+    public ResponseEntity<RoomIdResponseDto> MakeRoom(@MemberInfo MemberInfoDto memberInfo, @RequestPart RoomUserRequestDto roomUserRequestDto, @RequestBody RoomInfoRequestDto roomInfoRequestDto) {
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
-        RoomIdResponseDto responseDto= travelService.save(roomInfoRequestDto, member, profileUrl, nickName);
+        RoomIdResponseDto responseDto= travelService.save(roomInfoRequestDto, member, roomUserRequestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     // 프로필 설정, 내 방에 맞는 프로필을 저장함
     @Operation(summary = "내 프로필 설정하기", description = "방에 입장하고 싶은 맴버 정보와 프로필 사진을 요청하면, 여행참가자가 되며 유저리스트를 전달합니다. ")
     @PostMapping(value = "/{roomId}/addUser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity <ResultDto> AddUser(@MemberInfo MemberInfoDto memberInfo, @RequestPart MultipartFile profileUrl, @PathVariable Long roomId, @RequestBody RoomUserRequestDto roomUserRequestDto) {
+    public ResponseEntity <ResultDto> AddUser(@MemberInfo MemberInfoDto memberInfo,  @RequestPart RoomUserRequestDto roomUserRequestDto, @PathVariable Long roomId) {
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
 
-        ResultDto resultDto =travelService.adduser(roomId, member, profileUrl, roomUserRequestDto);
+        ResultDto resultDto =travelService.adduser(roomId, member, roomUserRequestDto);
         return new ResponseEntity<>(resultDto, HttpStatus.OK);
     }
 

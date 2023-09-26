@@ -32,21 +32,21 @@ public class TravelService {
 
     //방만들기
     @Transactional
-    public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, MultipartFile imageFile, String nickName) {
+    public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, RoomUserRequestDto roomUserRequestDto) {
         //방 만든 직전에는 사전정산 상태
         RoomType roomType = RoomType.BEFORE;
         try {
             TravelRoom travelRoom = roomInfoRequestDto.toEntity(roomType);
             travelRoomRepository.save(roomInfoRequestDto.toEntity(roomType));
             //프로필 사진이 있으면, 프로필 사진 저장
-            if(imageFile!=null) {
-                travelProfileService.saveImage(travelRoom,imageFile);
+            if(roomUserRequestDto.getProfileUrl()!=null) {
+                travelProfileService.saveImage(travelRoom, roomUserRequestDto.getProfileUrl());
             }
 
             TravelRoomMember travelRoomMember = TravelRoomMember.builder()
                     .travelRoom(travelRoom)
                     .member(member)
-                    .nickName(nickName)
+                    .nickName(roomUserRequestDto.getNickname())
                     .isDone(false)
                     .build();
 
@@ -62,15 +62,15 @@ public class TravelService {
     //유저가 방에 추가되어 닉네임과 사진을 설정하고, 친구 목록을 반환
     //Profileurl도 같이 반환
     @Transactional
-    public ResultDto adduser(Long roomId, Member member, MultipartFile imageFile, RoomUserRequestDto roomUserRequestDto) {
+    public ResultDto adduser(Long roomId, Member member, RoomUserRequestDto roomUserRequestDto) {
 
         try {
             TravelRoom travelRoom = travelRoomRepository.findById(roomId)
                     .orElseThrow(() -> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
 
             //프로필 사진이 있으면, 프로필 사진 저장
-            if (imageFile != null) {
-                travelProfileService.saveImage(travelRoom, imageFile);
+            if (roomUserRequestDto.getProfileUrl() != null) {
+                travelProfileService.saveImage(travelRoom, roomUserRequestDto.getProfileUrl());
             }
 
             TravelRoomMember travelRoomMember = TravelRoomMember.builder()
