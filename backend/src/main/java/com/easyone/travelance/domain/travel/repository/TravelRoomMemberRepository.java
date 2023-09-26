@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public interface TravelRoomMemberRepository extends JpaRepository<TravelRoomMember, Long> {
 
@@ -14,4 +15,9 @@ public interface TravelRoomMemberRepository extends JpaRepository<TravelRoomMemb
 
         TravelRoomMember findByTravelRoomAndMember(TravelRoom travelRoom, Member member);
         List<TravelRoomMember> findAllByMember(Member member);
+
+        Optional<TravelRoomMember> findByTravelRoom_IdAndMember_Id(Long travelRoomId, Long memberId);
+        List<TravelRoomMember> findByTravelRoom(TravelRoom travelRoom);
+
+
 }
