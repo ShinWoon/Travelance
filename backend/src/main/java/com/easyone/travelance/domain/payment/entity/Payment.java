@@ -43,4 +43,7 @@ public class Payment {
         this.isWithPaid = isWithPaid;
     }
 
+    public Boolean getIsWithPaid() {
+        return isWithPaid;
+    }
 }

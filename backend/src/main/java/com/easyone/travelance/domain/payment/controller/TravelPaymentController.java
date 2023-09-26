@@ -3,6 +3,7 @@ package com.easyone.travelance.domain.payment.controller;
 import com.easyone.travelance.domain.common.ResultDto;
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.service.MemberService;
+import com.easyone.travelance.domain.payment.dto.TravelPaymentResponseDto;
 import com.easyone.travelance.domain.payment.entity.Payment;
 import com.easyone.travelance.domain.payment.service.TravelPaymentWithService;
 import com.easyone.travelance.domain.travel.dto.RoomAllResponseDto;
@@ -30,24 +31,23 @@ public class TravelPaymentController {
 
     @GetMapping(value = "/with")
     @Operation(summary = "내가 결제한 금액 중, 공금인 내역만 가져옵니다.")
-    public ResponseEntity<List<Payment>> getPaymentWith(@MemberInfo MemberInfoDto memberInfo) {
+    public ResponseEntity<List<TravelPaymentResponseDto>> getPaymentWith(@MemberInfo MemberInfoDto memberInfo) {
 
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
-        List<Payment> payments = travelPaymentWithService.getPaymentWith(member);
+        List<TravelPaymentResponseDto> travelPaymentResponseDtoList = travelPaymentWithService.getPaymentWith(member);
 
-        return new ResponseEntity<>(payments, HttpStatus.OK);
+        return new ResponseEntity<>(travelPaymentResponseDtoList, HttpStatus.OK);
     }
 
     @GetMapping(value = "/alone")
-    @Operation(summary = "내가 결제한 금액 중, 공금인 내역만 가져옵니다.")
-    public ResponseEntity<List<Payment>> getPaymentAlone(@MemberInfo MemberInfoDto memberInfo) {
+    @Operation(summary = "내가 결제한 금액 중, 개인 결제 내역만 가져옵니다.")
+    public ResponseEntity<List<TravelPaymentResponseDto>> getPaymentAlone(@MemberInfo MemberInfoDto memberInfo) {
 
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
-        List<Payment> payments = travelPaymentWithService.getPaymentAlone(member);
+        List<TravelPaymentResponseDto> travelPaymentResponseDtoList = travelPaymentWithService.getPaymentAlone(member);
 
-        return new ResponseEntity<>(payments, HttpStatus.OK);
+        return new ResponseEntity<>(travelPaymentResponseDtoList, HttpStatus.OK);
     }
-
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(EntityNotFoundException e){
