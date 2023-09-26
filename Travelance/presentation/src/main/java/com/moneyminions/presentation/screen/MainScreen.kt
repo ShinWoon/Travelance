@@ -52,9 +52,9 @@ fun MainScreen(
 ) {
     Log.d(TAG, "MainScreen: ${mainViewModel.getJwtToken()}")
     if(mainViewModel.getJwtToken().role == "MEMBER"){
-        navController.navigate(Screen.Login.route)
-    }else{
         navController.navigate(Screen.Home.route)
+    }else{
+        navController.navigate(Screen.Login.route)
     }
 }
 

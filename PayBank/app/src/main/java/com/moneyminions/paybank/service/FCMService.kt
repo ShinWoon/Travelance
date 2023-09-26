@@ -35,9 +35,6 @@ import androidx.compose.ui.window.Dialog
 
 private const val TAG = "FCMService D210"
 class FCMService: FirebaseMessagingService() {
-
-
-
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         Log.d(TAG, token)
@@ -106,6 +103,7 @@ class FCMService: FirebaseMessagingService() {
                         Manifest.permission.POST_NOTIFICATIONS
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
+//                    Log.d(TAG, "sendNotification permission not allowed")
                     return
                 }
             }

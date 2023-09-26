@@ -63,7 +63,7 @@ class MainActivity : FragmentActivity() {
                     containerColor = White,
                 ) {
                     NavGraph(
-//                    innerPaddings = it,
+                        innerPaddings = it,
                         startDestination = Screen.Main.route,
                         navController = navController,
                     )
