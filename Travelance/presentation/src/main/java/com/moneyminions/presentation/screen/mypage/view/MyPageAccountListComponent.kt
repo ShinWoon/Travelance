@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.moneyminions.domain.model.common.AccountDto
 import com.moneyminions.domain.model.common.CardDto
+import com.moneyminions.presentation.common.AccountFrame
 import com.moneyminions.presentation.common.CardFrame
 import com.moneyminions.presentation.common.CustomTextStyle
 
@@ -40,7 +41,7 @@ fun MyPageAccountListComponent(
         val account = accountList[idx]
         Card() {
             // Card content
-            CardFrame(
+            AccountFrame(
                 name = account.bankName,
                 number = account.accountNumber!!,
                 idx = account.idx
