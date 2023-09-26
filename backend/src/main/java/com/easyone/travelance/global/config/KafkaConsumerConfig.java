@@ -1,8 +1,10 @@
 package com.easyone.travelance.global.config;
 
 import com.easyone.travelance.domain.payment.dto.PaymentAlertRequestDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,10 +30,15 @@ public class KafkaConsumerConfig {
     @Value(value = "${spring.kafka.consumer.group-id}")
     private String groupId;
 
+    @Autowired
+    private ObjectMapper objectMapper; // 필드 주입 방식
+
     @Bean
     public ConsumerFactory<String, PaymentAlertRequestDto> consumerFactory() {
-        return new DefaultKafkaConsumerFactory<>(consumerProps(), new StringDeserializer(),
-                new JsonDeserializer<>(PaymentAlertRequestDto.class, false));
+        // CustomJsonDeserializer 사용
+        CustomJsonDeserializer<PaymentAlertRequestDto> customJsonDeserializer = new CustomJsonDeserializer<>(PaymentAlertRequestDto.class);
+
+        return new DefaultKafkaConsumerFactory<>(consumerProps(), new StringDeserializer(), customJsonDeserializer);
     }
 
     private Map<String, Object> consumerProps() {
