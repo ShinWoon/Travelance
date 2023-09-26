@@ -23,9 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.moneyminions.domain.model.travellist.TravelRoomDto
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.moneyminions.domain.model.travellist.TravelRoomDto
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold14
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold18
@@ -53,7 +52,7 @@ fun TravelCardView(
             .wrapContentHeight()
             .padding(vertical = 4.dp)
             .clickable {
-                if (done == "done") {
+                if (travelRoomDto.isDone == "done") {
                     navController.navigate(Screen.TravelDone.route)
                 }
             },
@@ -86,7 +85,7 @@ fun TravelCardView(
             }
             MoneyAmountView(
                 moneyAmount = travelRoomDto.budget,
-                modifier = modifier
+                modifier = modifier,
             )
         }
     }
@@ -223,17 +222,17 @@ fun MoneyAmountView(moneyAmount: Int, modifier: Modifier) {
     }
 }
 
-@Composable
-@Preview(showBackground = true)
-fun TravelCardPreview() {
-    TravelCardView(
-        modifier = Modifier,
-        travelName = "룰루랄라",
-        travelStart = "2023.07.23",
-        travelEnd = "2023.07.30",
-        done = "done",
-        moneyAmount = 5500000,
-        iconId = R.drawable.ic_travel_2,
-        navController = rememberNavController()
-    )
-}
+// @Composable
+// @Preview(showBackground = true)
+// fun TravelCardPreview() {
+//    TravelCardView(
+//        modifier = Modifier,
+//        travelName = "룰루랄라",
+//        travelStart = "2023.07.23",
+//        travelEnd = "2023.07.30",
+//        done = "done",
+//        moneyAmount = 5500000,
+//        iconId = R.drawable.ic_travel_2,
+//        navController = rememberNavController()
+//    )
+// }

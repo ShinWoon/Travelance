@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.moneyminions.presentation.screen.travellist
 
 import android.annotation.SuppressLint
@@ -11,7 +9,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,7 +16,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
@@ -50,15 +46,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavController
+import com.moneyminions.domain.model.travellist.TravelRoomDto
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold14
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.travellist.view.TravelCardView
+import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.DarkGray
 import com.moneyminions.presentation.theme.FloatingButtonColor
 import com.moneyminions.presentation.theme.PinkDarkest
@@ -66,17 +62,14 @@ import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.travellist.TravelListViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 private const val TAG = "TravelListScreen_D210"
 
-
-@OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun TravelListScreen(
     travelListViewModel: TravelListViewModel = hiltViewModel(),
-    navController: NavHostController,
+    navController: NavController,
     modifier: Modifier = Modifier,
 ) {
     Log.d(TAG, "TravelListScreen: on")
@@ -90,8 +83,6 @@ fun TravelListScreen(
 //    LaunchedEffect(Unit) {
 //        travelListViewModel.getTravelList()
 //    }
-
-
 
     NetworkResultHandler(
         state = travelListState,
@@ -140,17 +131,17 @@ fun TravelListScreen(
             content = {
                 itemsIndexed(
                     items = travelListViewModel.travelList.value,
-                    key = {_, item: TravelRoomDto ->
+                    key = { _, item: TravelRoomDto ->
                         item.hashCode()
-                    }
-                ) { _ , item: TravelRoomDto ->
+                    },
+                ) { _, item: TravelRoomDto ->
 
                     TravelRoomItem(
                         modifier = Modifier,
                         travelRoomDto = item,
-                        onRemove = travelListViewModel::removeItem
+                        onRemove = travelListViewModel::removeItem,
+                        navController = navController,
                     )
-
                 }
             },
         )
@@ -169,18 +160,13 @@ fun getResourceId(resName: String, resType: Class<*>): Int {
     return resId
 }
 
-@Preview(showBackground = true)
-@Composable
-fun TravelListScreenPreview() {
-    TravelListScreen(navController = rememberNavController())
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TravelRoomItem(
     modifier: Modifier,
     travelRoomDto: TravelRoomDto,
-    onRemove: (TravelRoomDto) -> Unit
+    onRemove: (TravelRoomDto) -> Unit,
+    navController: NavController,
 ) {
     val context = LocalContext.current
     var show by remember { mutableStateOf(true) }
@@ -190,11 +176,13 @@ fun TravelRoomItem(
             if (it == DismissValue.DismissedToStart) { // 오른쪽 -> 왼쪽으로 스와이프시 삭제
                 show = false
                 true
-            } else false
-        }, positionalThreshold = { 150.dp.toPx() }
+            } else {
+                false
+            }
+        }, positionalThreshold = { 150.dp.toPx() },
     )
     AnimatedVisibility(
-        show,exit = fadeOut(spring())
+        show, exit = fadeOut(spring()),
     ) {
         SwipeToDismiss(
             state = dismissState,
@@ -207,8 +195,9 @@ fun TravelRoomItem(
                     modifier = modifier,
                     travelRoomDto = travelRoomDto,
                     iconId = getResourceId("ic_travel_2", R.drawable::class.java),
+                    navController = navController,
                 )
-            }
+            },
         )
     }
 
@@ -246,11 +235,13 @@ fun DismissBackground(dismissState: DismissState) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End,
         ) {
-            if (direction == DismissDirection.EndToStart) Icon(
-                // make sure add baseline_archive_24 resource to drawable folder
-                Icons.Default.Delete,
-                contentDescription = "delete"
-            )
+            if (direction == DismissDirection.EndToStart) {
+                Icon(
+                    // make sure add baseline_archive_24 resource to drawable folder
+                    Icons.Default.Delete,
+                    contentDescription = "delete",
+                )
+            }
         }
     }
 }
