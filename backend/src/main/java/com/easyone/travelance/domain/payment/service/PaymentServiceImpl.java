@@ -16,10 +16,12 @@ import com.easyone.travelance.domain.travel.repository.TravelRoomRepository;
 import com.easyone.travelance.global.FCM.FirebaseCloudMessageService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -32,6 +34,7 @@ import java.util.Optional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class PaymentServiceImpl implements PaymentService{
 
@@ -52,8 +55,16 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Transactional
     @KafkaListener(topics = "travelance", groupId = "travelance")
-    public void receivePaymentAlert(PaymentAlertRequestDto paymentAlertRequestDto) throws IOException {
-        processPayment(paymentAlertRequestDto);
+    public void receivePaymentAlert(PaymentAlertRequestDto paymentAlertRequestDto, Acknowledgment ack) throws IOException {
+        try {
+            processPayment(paymentAlertRequestDto);
+            log.info("payment저장 성공");
+            // 메시지 처리가 성공적으로 완료된 후 offset을 커밋합니다.
+            ack.acknowledge();
+        } catch (Exception e) {
+            log.info("에러발생");
+            throw e; // 현재 상황에서는 예외를 다시 던져 처리하지 않은 메시지로 처리하게 합니다.
+        }
     }
 
     @Transactional
