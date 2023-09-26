@@ -6,6 +6,4 @@ import com.google.gson.annotations.SerializedName
 data class RoomUserRequest(
     @SerializedName("nickName")
     var nickName: String,
-    @SerializedName("profileUrl")
-    var profileUrl: String
 )

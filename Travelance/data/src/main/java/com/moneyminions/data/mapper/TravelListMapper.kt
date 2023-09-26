@@ -18,7 +18,6 @@ fun CreateTravelRoomDto.toData(): CreateTravelRoomRequest {
 fun TravelUserDto.toData(): RoomUserRequest {
     return RoomUserRequest (
         nickName = nickName,
-        profileUrl = profileUrl,
     )
 }
 

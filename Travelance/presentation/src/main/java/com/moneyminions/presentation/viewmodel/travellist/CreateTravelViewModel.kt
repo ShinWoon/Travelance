@@ -11,10 +11,12 @@ import com.moneyminions.domain.model.travellist.CreateTravelRoomDto
 import com.moneyminions.domain.model.travellist.TravelRoomDto
 import com.moneyminions.domain.model.travellist.TravelUserDto
 import com.moneyminions.domain.usecase.travellist.CreateTravelRoomUseCase
+import com.moneyminions.presentation.utils.UploadUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 private const val TAG = "CreateTravelViewModel_D210"
@@ -76,12 +78,11 @@ class CreateTravelViewModel @Inject constructor(
      */
     private val _createTravelRoomResult = MutableStateFlow<NetworkResult<CommonResultDto>>(NetworkResult.Idle)
     val createTravelRoomResult = _createTravelRoomResult.asStateFlow()
-    fun createTravelRoom() {
+    fun createTravelRoom(imageFiles: MultipartBody.Part?) {
         viewModelScope.launch {
             _createTravelRoomResult.emit(createTravelRoomUseCase.invoke(
                 CreateTravelRoomDto(
                     travelUserInfo = TravelUserDto(
-                        profileUrl = _travelName.value,
                         nickName = _profileImage.value,
                     ),
                     travelRoomInfo = TravelRoomDto(
@@ -89,7 +90,8 @@ class CreateTravelViewModel @Inject constructor(
                         endDate = _endDate.value,
                         startDate = _startDate.value,
                         travelName = _travelName.value
-                    )
+                    ),
+                    imageFiles = imageFiles
                 )
             ))
         }

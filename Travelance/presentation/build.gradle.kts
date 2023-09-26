@@ -137,4 +137,7 @@ dependencies {
 
     // system bars customization
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
+
+    //TedPermission
+    implementation ("io.github.ParkSangGwon:tedpermission-normal:3.3.0")
 }

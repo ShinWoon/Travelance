@@ -12,10 +12,15 @@ import com.moneyminions.data.model.login.response.LoginResponse
 import retrofit2.http.Body
 import retrofit2.http.PATCH
 import com.moneyminions.data.model.travellist.request.CreateTravelRoomRequest
+import com.moneyminions.data.model.travellist.request.RoomInfoRequest
+import com.moneyminions.data.model.travellist.request.RoomUserRequest
 import com.moneyminions.data.model.travellist.response.TravelRoomResponse
+import okhttp3.MultipartBody
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 
 interface BusinessService {
 
@@ -57,8 +62,14 @@ interface BusinessService {
     /**
      * 여행방 만들기 API
      */
+    @Multipart
     @POST("travel/room")
-    suspend fun createTravelRoom(@Body createTravelRoomRequest: CreateTravelRoomRequest): CommonResponse
+    suspend fun createTravelRoom(
+        @Part("roomUserRequestDto") roomUserRequest: RoomUserRequest,
+        @Part("roomInfoRequestDto") roomInfoRequest: RoomInfoRequest,
+        @Part imageFiles: MultipartBody.Part?
+    ): CommonResponse
+
 
     /**
      * 여행 목록 요청 API

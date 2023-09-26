@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,6 +29,7 @@ import com.moneyminions.presentation.common.TextFieldWithTitle
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.utils.NetworkResultHandler
+import com.moneyminions.presentation.utils.UploadUtils
 import com.moneyminions.presentation.viewmodel.travellist.CreateTravelViewModel
 
 private const val TAG = "ProfileDialog_D210"
@@ -37,6 +39,7 @@ fun ProfileDialog(
     onDismiss: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
     
     // 여행방 생성 (성공시 룸ID 반환 / 실패시 0 반환)
     val travelListState by createTravelViewModel.createTravelRoomResult.collectAsState()
@@ -89,7 +92,9 @@ fun ProfileDialog(
                         // todo API 호출 방 생성 + 프로필 정보
                         if(!createTravelViewModel.InputProfileCheck()) {
                             Log.d(TAG, "ProfileDialog: 여행방 등록 메서드 call")
-                            createTravelViewModel.createTravelRoom()
+                            // 이미지 url -> file로
+                            val imageFile = UploadUtils.createMultipartFromUri(context, "file", createTravelViewModel.profileImage.value)
+                            createTravelViewModel.createTravelRoom(imageFile)
                         }
                     }
                 )

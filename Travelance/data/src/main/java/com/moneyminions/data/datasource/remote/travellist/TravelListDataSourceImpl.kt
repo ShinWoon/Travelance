@@ -17,7 +17,11 @@ class TravelListDataSourceImpl(
      */
     override suspend fun createTravelRoom(createTravelRoomRequest: CreateTravelRoomRequest): CommonResponse {
         Log.d(TAG, "createTravelRoom: $createTravelRoomRequest")
-        return businessService.createTravelRoom(createTravelRoomRequest)
+        return businessService.createTravelRoom(
+            createTravelRoomRequest.roomUserRequestDto,
+            createTravelRoomRequest.roomInfoRequestDto,
+            createTravelRoomRequest.imageFiles
+        )
     }
 
     /**
