@@ -12,5 +12,6 @@ public interface TravelRoomMemberRepository extends JpaRepository<TravelRoomMemb
 
         List<TravelRoomMember> findAllByTravelRoom(TravelRoom travelRoom);
 
-    TravelRoomMember findByTravelRoomAndMember(TravelRoom travelRoom, Member member);
+        TravelRoomMember findByTravelRoomAndMember(TravelRoom travelRoom, Member member);
+        List<TravelRoomMember> findAllByMember(Member member);
 }

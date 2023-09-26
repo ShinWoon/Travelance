@@ -36,8 +36,8 @@ public class TravelController {
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
-    // 친구 초대 : 모바일에서 방과 유저정보를 주면, 방에 유저를 저장하고, 그 방에 있는 유저리스트를 전달
-    @Operation(summary = "여행방 친구 초대하기", description = "방에 입장하고 싶은 맴버 정보와 프로필 사진, 닉네임 정보와 함께 요청하면, 여행참가자가 되며 유저리스트를 전달합니다. ")
+    // 프로필 설정 : 모바일에서 방과 유저정보를 주면, 방에 유저를 저장함
+    @Operation(summary = "내 프로필 설정하기", description = "방에 입장하고 싶은 맴버 정보와 프로필 사진, 닉네임 정보와 함께 요청하면, 여행참가자가 되며 유저리스트를 전달합니다. ")
     @PostMapping(value = "/{roomId}/addUser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<List<RoomUserResponseDto>> AddUser(@MemberInfo MemberInfoDto memberInfo, @RequestPart MultipartFile profileUrl, @PathVariable Long roomId) {
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
@@ -46,13 +46,25 @@ public class TravelController {
         return new ResponseEntity<>(roomUserResponseDto, HttpStatus.OK);
     }
 
+    //친구 목록 조회: 현재 여행방의 초대한 맴버(이미 프로필 설정까지 완료된)를 조회할 수 있는 컨트롤러
+    @Operation(summary = "여행방 친구 조회하기", description = "여행하고 있는 유저리스트를 전달합니다.")
+    @GetMapping(value = "/{roomId}/UserList", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<List<RoomUserResponseDto>> GetUserList(@MemberInfo MemberInfoDto memberInfo, @RequestPart MultipartFile profileUrl, @PathVariable Long roomId) {
+        Member member = memberService.findMemberByEmail(memberInfo.getEmail());
+
+        List<RoomUserResponseDto> roomUserResponseDto=travelService.adduser(roomId, member, profileUrl);
+        return new ResponseEntity<>(roomUserResponseDto, HttpStatus.OK);
+    }
+
+
 
     //여행방 전체 리스트
-    @Operation(summary = "여행 전체 리스트 조회", description = "요청 시, 채팅방 전체리스트를 조회합니다. " +
+    @Operation(summary = "여행 전체 리스트 조회", description = "요청 시, 유저에 해당하는 채팅방 전체리스트를 조회합니다. " +
             "travelName: 여행이름, location: 여행장소, startDate:여행시작일, endDate: 여행종료일, budget: 예산")
     @GetMapping(value = "")
-    public ResponseEntity<List<RoomAllResponseDto>> findAllDesc() {
-        List<RoomAllResponseDto> responseDtos = travelService.findAllDesc();
+    public ResponseEntity<List<RoomAllResponseDto>> findAllDesc(@MemberInfo MemberInfoDto memberInfo) {
+        Member member = memberService.findMemberByEmail(memberInfo.getEmail());
+        List<RoomAllResponseDto> responseDtos = travelService.findAllDesc(member);
         return new ResponseEntity<>(responseDtos, HttpStatus.OK);
     }
 

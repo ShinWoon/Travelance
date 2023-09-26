@@ -35,8 +35,8 @@ public class KakaoTokenController {
     @Operation(summary = "카카오 토큰", description = "카카오 로그인 토큰 메서드입니다.")
     @GetMapping("/oauth/kakao/callback")
     public @ResponseBody String loginCallback(String code) {
-        log.info("====================카카오토큰컨트롤러 들어왔음!!!!!===================");
-        log.info(code);
+//        log.info("====================카카오토큰컨트롤러 들어왔음!!!!!===================");
+//        log.info(code);
         String contentType = "application/x-www-form-urlencoded;charset=utf-8";
         KakaoTokenDto.Request kakaoTokenRequestDto = KakaoTokenDto.Request.builder()
                 .client_id(clientId)
@@ -49,7 +49,7 @@ public class KakaoTokenController {
                 .build();
 
         KakaoTokenDto.Response kakaoToken = kakaoTokenClient.requestKakaoToken(contentType, kakaoTokenRequestDto);
-        log.info("=====================================kakao token : " + kakaoToken);
+//        log.info("=====================================kakao token : " + kakaoToken);
         return "kakao token : " + kakaoToken;
     }
 

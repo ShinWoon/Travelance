@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -35,15 +36,18 @@ public class TravelPaymentService {
 
     @Transactional(readOnly = true)
     public Long TotalPriceTravelId(Long roomId) {
-        List<Payment> payments = paymentRepository.findByTravelRoomId(roomId);
+        Optional<Payment> payments= paymentRepository.findByTravelRoomId(roomId);
 
-        if (payments.isEmpty()) {
+        if (payments.isPresent()) {
+            Long totalprice = payments.stream()
+                    .mapToLong(Payment::getPaymentAmount)
+                    .sum();
+            return totalprice;
+        }
+        else {
             return 0L;
         }
-        Long totalprice = payments.stream()
-                .mapToLong(Payment::getPaymentAmount)
-                .sum();
-        return totalprice;
+
     }
 
 

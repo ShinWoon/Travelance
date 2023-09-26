@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .cors(Customizer.withDefaults())
                 .formLogin().disable();
-        http.authorizeRequests().antMatchers("/**").permitAll();
+        // http.authorizeRequests().antMatchers("/**").permitAll();
         return http.build();
     }
     @Bean
