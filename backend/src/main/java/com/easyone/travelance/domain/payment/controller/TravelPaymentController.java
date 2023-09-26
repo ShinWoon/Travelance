@@ -24,9 +24,9 @@ public class TravelPaymentController {
 
     @GetMapping(value = "/with")
     @Operation(summary = "내가 결제한 금액 중, 공금인 내역만 가져옵니다.")
-    public ResponseEntity<List<TravelPaymentResponseDto>> getPaymentWith(@RequestParam TravelPaymentRequestDto travelPaymentRequestDto) {
+    public ResponseEntity<List<TravelPaymentResponseDto>> getPaymentWith(@RequestParam String email) {
 
-        Member member = memberService.findMemberByEmail(travelPaymentRequestDto.getEmail());
+        Member member = memberService.findMemberByEmail(email);
         List<TravelPaymentResponseDto> travelPaymentResponseDtoList = travelPaymentWithService.getPaymentWith(member);
 
         return new ResponseEntity<>(travelPaymentResponseDtoList, HttpStatus.OK);
@@ -34,9 +34,9 @@ public class TravelPaymentController {
 
     @GetMapping(value = "/alone")
     @Operation(summary = "내가 결제한 금액 중, 개인 결제 내역만 가져옵니다.")
-    public ResponseEntity<List<TravelPaymentResponseDto>> getPaymentAlone(@RequestParam TravelPaymentRequestDto travelPaymentRequestDto) {
+    public ResponseEntity<List<TravelPaymentResponseDto>> getPaymentAlone(@RequestParam String email) {
 
-        Member member = memberService.findMemberByEmail(travelPaymentRequestDto.getEmail());
+        Member member = memberService.findMemberByEmail(email);
         List<TravelPaymentResponseDto> travelPaymentResponseDtoList = travelPaymentWithService.getPaymentAlone(member);
 
         return new ResponseEntity<>(travelPaymentResponseDtoList, HttpStatus.OK);
