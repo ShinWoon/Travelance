@@ -20,6 +20,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = "mainAccount")
 public class Member {
 
     @Id

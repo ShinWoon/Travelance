@@ -3,6 +3,7 @@ package com.easyone.travelance.domain.payment.controller;
 import com.easyone.travelance.domain.common.ResultDto;
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.service.MemberService;
+import com.easyone.travelance.domain.payment.dto.TravelPaymentRequestDto;
 import com.easyone.travelance.domain.payment.dto.TravelPaymentResponseDto;
 import com.easyone.travelance.domain.payment.entity.Payment;
 import com.easyone.travelance.domain.payment.service.TravelPaymentWithService;
@@ -13,10 +14,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -31,9 +29,9 @@ public class TravelPaymentController {
 
     @GetMapping(value = "/with")
     @Operation(summary = "내가 결제한 금액 중, 공금인 내역만 가져옵니다.")
-    public ResponseEntity<List<TravelPaymentResponseDto>> getPaymentWith(@MemberInfo MemberInfoDto memberInfo) {
+    public ResponseEntity<List<TravelPaymentResponseDto>> getPaymentWith(@RequestBody TravelPaymentRequestDto travelPaymentRequestDto) {
 
-        Member member = memberService.findMemberByEmail(memberInfo.getEmail());
+        Member member = memberService.findMemberByEmail(travelPaymentRequestDto.getEmail());
         List<TravelPaymentResponseDto> travelPaymentResponseDtoList = travelPaymentWithService.getPaymentWith(member);
 
         return new ResponseEntity<>(travelPaymentResponseDtoList, HttpStatus.OK);
@@ -41,9 +39,9 @@ public class TravelPaymentController {
 
     @GetMapping(value = "/alone")
     @Operation(summary = "내가 결제한 금액 중, 개인 결제 내역만 가져옵니다.")
-    public ResponseEntity<List<TravelPaymentResponseDto>> getPaymentAlone(@MemberInfo MemberInfoDto memberInfo) {
+    public ResponseEntity<List<TravelPaymentResponseDto>> getPaymentAlone(@RequestBody TravelPaymentRequestDto travelPaymentRequestDto) {
 
-        Member member = memberService.findMemberByEmail(memberInfo.getEmail());
+        Member member = memberService.findMemberByEmail(travelPaymentRequestDto.getEmail());
         List<TravelPaymentResponseDto> travelPaymentResponseDtoList = travelPaymentWithService.getPaymentAlone(member);
 
         return new ResponseEntity<>(travelPaymentResponseDtoList, HttpStatus.OK);
