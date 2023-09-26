@@ -66,6 +66,7 @@ public class Member {
 
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<TravelRoomMember> travelRoomMember;
 
         public void updateRefreshToken(JwtDto jwtDto) {
