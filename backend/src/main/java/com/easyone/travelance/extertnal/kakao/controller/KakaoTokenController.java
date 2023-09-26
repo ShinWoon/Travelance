@@ -48,7 +48,7 @@ public class KakaoTokenController {
                // .redirect_url("https://j9d210.p.ssafy.io/oauth/kakao/callback")
                 .build();
 
-        log.info(String.valueOf(kakaoTokenRequestDto));
+        log.info(String.valueOf(kakaoTokenRequestDto.getRedirect_url()));
         KakaoTokenDto.Response kakaoToken = kakaoTokenClient.requestKakaoToken(contentType, kakaoTokenRequestDto);
         log.info("=====================================kakao token : " + kakaoToken);
         return "kakao token : " + kakaoToken;
