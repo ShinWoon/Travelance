@@ -1,12 +1,15 @@
 package com.moneyminions.presentation.viewmodel.travellist
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.common.CommonResultDto
+import com.moneyminions.domain.model.travellist.CreateTravelRoomDto
 import com.moneyminions.domain.model.travellist.TravelRoomDto
+import com.moneyminions.domain.model.travellist.TravelUserDto
 import com.moneyminions.domain.usecase.travellist.CreateTravelRoomUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val TAG = "CreateTravelViewModel_D210"
 @HiltViewModel
 class CreateTravelViewModel @Inject constructor(
     private val createTravelRoomUseCase: CreateTravelRoomUseCase,
@@ -49,14 +53,22 @@ class CreateTravelViewModel @Inject constructor(
         _nickName.value = name
     }
     
-    private val _profileImage = mutableStateOf(0)
-    val profileImage: State<Int> = _profileImage
-    fun setProfileImage(image: Int) {
+    private val _profileImage = mutableStateOf("")
+    val profileImage: State<String> = _profileImage
+    fun setProfileImage(image: String) {
+        Log.d(TAG, "setProfileImage: $image")
         _profileImage.value = image
     }
     
-    fun InputCheck(): Boolean {
+    // 여행방 입력 check
+    fun InputTravelCheck(): Boolean {
         return _travelName.value.isNullOrEmpty() || _travelBudget.value.isNullOrEmpty() || _startDate.value.isNullOrEmpty() || _endDate.value.isNullOrEmpty()
+    }
+    
+    // 프로필 등록 입력 check
+    fun InputProfileCheck(): Boolean {
+        Log.d(TAG, "InputProfileCheck: ${_nickName.value} / ${_profileImage.value}")
+        return _nickName.value.isNullOrEmpty() || _profileImage.value.isNullOrEmpty()
     }
 
     /**
@@ -67,11 +79,17 @@ class CreateTravelViewModel @Inject constructor(
     fun createTravelRoom() {
         viewModelScope.launch {
             _createTravelRoomResult.emit(createTravelRoomUseCase.invoke(
-                TravelRoomDto(
-                    budget = _travelBudget.value.toInt(),
-                    endDate = _endDate.value,
-                    startDate = _startDate.value,
-                    travelName = _travelName.value
+                CreateTravelRoomDto(
+                    travelUserInfo = TravelUserDto(
+                        profileUrl = _travelName.value,
+                        nickName = _profileImage.value,
+                    ),
+                    travelRoomInfo = TravelRoomDto(
+                        budget = _travelBudget.value.toInt(),
+                        endDate = _endDate.value,
+                        startDate = _startDate.value,
+                        travelName = _travelName.value
+                    )
                 )
             ))
         }

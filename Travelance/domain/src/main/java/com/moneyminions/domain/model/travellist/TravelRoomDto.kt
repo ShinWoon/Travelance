@@ -7,5 +7,5 @@ data class TravelRoomDto(
     var roomId: Int = 0,
     var startDate: String = "",
     var travelName: String = "",
-    var use: Int = 0
+    var use: Int = 0,
 )

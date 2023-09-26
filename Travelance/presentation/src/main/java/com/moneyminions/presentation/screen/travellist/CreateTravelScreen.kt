@@ -140,7 +140,7 @@ fun CreateTravelScreen(
                     content = "생성",
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    if (createTravelViewModel.InputCheck()) {
+                    if (createTravelViewModel.InputTravelCheck()) {
                         coroutineScope.launch {
                             snackbarHostState.showSnackbar("입력을 확인하세요.")
                         }

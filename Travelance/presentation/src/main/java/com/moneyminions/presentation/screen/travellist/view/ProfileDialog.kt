@@ -1,5 +1,9 @@
 package com.moneyminions.presentation.screen.travellist.view
 
+import android.net.Uri
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -9,6 +13,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -20,13 +27,33 @@ import com.moneyminions.presentation.common.MinionProfile
 import com.moneyminions.presentation.common.TextFieldWithTitle
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.PinkDarkest
+import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.travellist.CreateTravelViewModel
 
+private const val TAG = "ProfileDialog_D210"
 @Composable
 fun ProfileDialog(
     createTravelViewModel: CreateTravelViewModel = hiltViewModel(),
     onDismiss: () -> Unit,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+    
+    // 여행방 생성 (성공시 룸ID 반환 / 실패시 0 반환)
+    val travelListState by createTravelViewModel.createTravelRoomResult.collectAsState()
+    NetworkResultHandler(
+        state = travelListState,
+        errorAction = {
+            Log.d(TAG, "ProfileDialog: 서버 오류")
+        },
+        successAction = {
+            Log.d(TAG, "ProfileDialog : $it ")
+            // 정상적으로 방이 생성되었다면... 다이얼로그 off
+            if(it.result.toInt() != 0) {
+                onDismiss()
+            }
+        }
+    )
+    
     Dialog(
       onDismissRequest = onDismiss
     ) {
@@ -40,7 +67,7 @@ fun ProfileDialog(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
     
-                ProfileImage()
+                ProfileImage(createTravelViewModel)
                 
                 Spacer(modifier = Modifier.height(32.dp))
                 
@@ -60,7 +87,10 @@ fun ProfileDialog(
                     modifier = Modifier,
                     onClick = {
                         // todo API 호출 방 생성 + 프로필 정보
-                        onDismiss()
+                        if(!createTravelViewModel.InputProfileCheck()) {
+                            Log.d(TAG, "ProfileDialog: 여행방 등록 메서드 call")
+                            createTravelViewModel.createTravelRoom()
+                        }
                     }
                 )
             }
@@ -70,12 +100,18 @@ fun ProfileDialog(
 
 @Composable
 fun ProfileImage(
-
+    createTravelViewModel: CreateTravelViewModel
 ) {
+    val launcher = rememberLauncherForActivityResult(contract =
+    ActivityResultContracts.GetContent()) { uri: Uri? ->
+        Log.d(TAG, "ProfileImage: $uri")
+        createTravelViewModel.setProfileImage(uri.toString())
+    }
+    
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        MinionProfile(size = 120.dp)
+        MinionProfile(size = 120.dp, createTravelViewModel.profileImage.value)
         
         Spacer(modifier = Modifier.height(4.dp))
         
@@ -85,6 +121,7 @@ fun ProfileImage(
             style = CustomTextStyle.pretendardBold12,
             modifier = Modifier.clickable {
                 // todo : 사진 추가하기
+                launcher.launch("image/*")
             }
         )
     }

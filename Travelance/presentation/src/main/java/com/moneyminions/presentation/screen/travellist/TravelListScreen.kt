@@ -83,9 +83,9 @@ fun TravelListScreen(
     val coroutineScope = rememberCoroutineScope()
     
     // 여행 목록 GET
-//    LaunchedEffect(Unit) {
-//        travelListViewModel.getTravelList()
-//    }
+    LaunchedEffect(Unit) {
+        travelListViewModel.getTravelList()
+    }
     
     // 여행 목록 GET 호출 부분
     val travelListState by travelListViewModel.networkTravelList.collectAsState()
