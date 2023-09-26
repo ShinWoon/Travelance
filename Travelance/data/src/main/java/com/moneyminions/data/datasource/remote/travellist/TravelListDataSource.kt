@@ -2,11 +2,7 @@ package com.moneyminions.data.datasource.remote.travellist
 
 import com.moneyminions.data.model.common.response.CommonResponse
 import com.moneyminions.data.model.travellist.request.CreateTravelRoomRequest
-import com.moneyminions.data.model.travellist.request.RoomInfoRequest
-import com.moneyminions.data.model.travellist.request.RoomUserRequest
 import com.moneyminions.data.model.travellist.response.TravelRoomResponse
-import okhttp3.MultipartBody
-
 
 interface TravelListDataSource {
     /**

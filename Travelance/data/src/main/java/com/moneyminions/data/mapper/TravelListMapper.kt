@@ -12,6 +12,7 @@ fun CreateTravelRoomDto.toData(): CreateTravelRoomRequest {
     return CreateTravelRoomRequest(
         roomUserRequestDto = travelUserInfo.toData(),
         roomInfoRequestDto = travelRoomInfo.toData(),
+        imageFiles = imageFiles
     )
 }
 
