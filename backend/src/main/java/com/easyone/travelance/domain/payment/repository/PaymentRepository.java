@@ -1,5 +1,6 @@
 package com.easyone.travelance.domain.payment.repository;
 
+import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.payment.entity.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,4 +15,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
     List<Payment> findByTravelRoomIdAndMemberId(Long roomId, Long memberId);
 
     List<Payment> findByIsWithPaidAndTravelRoomId(boolean isPaidWith, Long roomId);
+    List<Payment> findAllByTravelRoom_IdAndMemberAndIsWithPaidTrue(Long roomId, Member member);
+    List<Payment> findAllByTravelRoom_IdAndMemberAndIsWithPaidFalse(Long roomId, Member member);
+
 }

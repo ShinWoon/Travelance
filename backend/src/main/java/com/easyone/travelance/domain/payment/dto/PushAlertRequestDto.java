@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class PushAlertRequestDto {
-    private Long memberId;
+    private String email;
     private Long roomNumber;
     private Long paymentId;
     private String paymentAt;

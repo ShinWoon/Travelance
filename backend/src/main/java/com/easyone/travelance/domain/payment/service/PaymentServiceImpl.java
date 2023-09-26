@@ -139,8 +139,8 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Override
     public String completeCalculation(CompleteCalculationRequestDto completeCalculationRequestDto) {
-        Optional<TravelRoom> travelRoomOptional = travelRoomRepository.findByIdAndMemberId(completeCalculationRequestDto.getRoomNumber(),
-                completeCalculationRequestDto.getMemberId());
+        Optional<TravelRoom> travelRoomOptional = travelRoomRepository.findByIdAndMemberEmail(completeCalculationRequestDto.getRoomNumber(),
+                completeCalculationRequestDto.getEmail());
         if (travelRoomOptional.isEmpty()) {
             throw new EntityNotFoundException("여행방을 찾을 수 없습니다.");
         }
@@ -162,9 +162,9 @@ public class PaymentServiceImpl implements PaymentService{
         }
 
         // 2. 유저의 Travel Room isDone 변경
-        TravelRoomMember travelRoomMember = travelRoomMemberRepository.findByTravelRoom_IdAndMember_Id(
+        TravelRoomMember travelRoomMember = travelRoomMemberRepository.findByTravelRoom_IdAndMember_Email(
                 completeCalculationRequestDto.getRoomNumber(),
-                completeCalculationRequestDto.getMemberId()
+                completeCalculationRequestDto.getEmail()
         ).orElseThrow(() -> new EntityNotFoundException("여행방 멤버를 찾을 수 없습니다."));
 
         travelRoomMember.setIsDone(true);
@@ -176,7 +176,7 @@ public class PaymentServiceImpl implements PaymentService{
         boolean allMembersDone = true;
         boolean anyMemberDone = false;
         for (TravelRoomMember member : members) {
-            if (member.getMember().getId().equals(completeCalculationRequestDto.getMemberId())) {
+            if (member.getMember().getId().equals(completeCalculationRequestDto.getEmail())) {
                 member.setIsDone(true);
                 travelRoomMemberRepository.save(member); // 상태 변경이 있으므로 저장합니다.
             }
@@ -268,7 +268,7 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Override
     public String registerCash(RegisterCashRequestDto registerCashRequestDto){
-        Optional<Member> existMember = memberRepository.findById(registerCashRequestDto.getMemberId());
+        Optional<Member> existMember = memberRepository.findByEmail(registerCashRequestDto.getEmail());
         Optional<TravelRoom> existTravelRoom = travelRoomRepository.findById(registerCashRequestDto.getRoomNumber());
 
         if (existMember.isEmpty() || existTravelRoom.isEmpty()) {

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisterCashRequestDto {
-    private Long memberId;
+    private String email;
     private Long roomNumber;
     private String paymentContent;
     private Long paymentAmount;
