@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class PushAlertRequestDto {
-    private String memberId;
-    private String roomNumber;
+    private Long memberId;
+    private Long roomNumber;
     private Long paymentId;
     private String paymentAt;
     private Long paymentAmount;

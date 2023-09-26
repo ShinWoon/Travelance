@@ -167,7 +167,7 @@ public class PaymentServiceImpl implements PaymentService{
         }else{
             // 정산 로직
             calculateTransfer(travelRoom.getId());
-            // 정산완료 FCM 알림 추가
+            // 정산완료 FCM 알림
             sendFcmNotificationToAllMembers(travelRoom);
         }
 

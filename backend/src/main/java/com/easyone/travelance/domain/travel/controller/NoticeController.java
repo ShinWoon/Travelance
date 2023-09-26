@@ -37,7 +37,7 @@ public class NoticeController {
 
     @PostMapping("/save")
     @Operation(summary = "공지사항 등록")
-    public ResponseEntity<String> saveNotice(@RequestPart NoticeRequestDto noticeRequestDto){
+    public ResponseEntity<String> saveNotice(@RequestBody NoticeRequestDto noticeRequestDto){
         String response = noticeService.saveNotice(noticeRequestDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

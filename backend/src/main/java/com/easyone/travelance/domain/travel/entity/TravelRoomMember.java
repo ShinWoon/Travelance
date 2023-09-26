@@ -24,6 +24,7 @@ public class TravelRoomMember {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="travel_room_id", nullable = false)
+    @JsonBackReference
     private TravelRoom travelRoom;
 
     @Builder
