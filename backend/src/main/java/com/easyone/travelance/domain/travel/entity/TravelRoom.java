@@ -4,6 +4,7 @@ import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.payment.entity.Payment;
 import com.easyone.travelance.domain.travel.dto.RoomInfoRequestDto;
 import com.easyone.travelance.domain.travel.enumclass.RoomType;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,9 +33,11 @@ public class TravelRoom {
     private Long budget;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "travelRoom", cascade = CascadeType.ALL,  orphanRemoval = true)
+    @JsonManagedReference
     private List<TravelRoomMember> travelRoomMembers = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "travelRoom", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Payment> payments = new ArrayList<>();
 
     public RoomType getIsDone() {
