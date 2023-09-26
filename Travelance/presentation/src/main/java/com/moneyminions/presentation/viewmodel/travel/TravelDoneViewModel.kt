@@ -2,6 +2,15 @@ package com.moneyminions.presentation.viewmodel.travel
 
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
+import com.moneyminions.presentation.theme.CategoryAccommodation
+import com.moneyminions.presentation.theme.CategoryAlcohol
+import com.moneyminions.presentation.theme.CategoryCoffee
+import com.moneyminions.presentation.theme.CategoryDining
+import com.moneyminions.presentation.theme.CategoryGroceries
+import com.moneyminions.presentation.theme.CategoryLeisure
+import com.moneyminions.presentation.theme.CategoryMinimarts
+import com.moneyminions.presentation.theme.CategoryShopping
+import com.moneyminions.presentation.theme.CategoryTransportation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -10,16 +19,18 @@ class TravelDoneViewModel @Inject constructor(
 
 ) : ViewModel() {
     companion object {
-        val categoryColorMap = mapOf<String, Color>(
-            "식비" to ,
-            "커피와 디저트" to ,
-            "주류" to,
-            "마트" to ,
-            "편의점" to ,
-            "교통/자동차" to,
-            "숙소" to ,
-            "쇼핑" to ,
-            "레저" to ,
+        val categoryColorMap = mapOf(
+            "식비" to CategoryDining,
+            "커피와 디저트" to CategoryCoffee,
+            "주류" to CategoryAlcohol,
+            "마트" to CategoryGroceries,
+            "편의점" to CategoryMinimarts,
+            "교통/자동차" to CategoryTransportation,
+            "숙소" to CategoryAccommodation,
+            "쇼핑" to CategoryShopping,
+            "레저" to CategoryLeisure,
         )
     }
+
+
 }

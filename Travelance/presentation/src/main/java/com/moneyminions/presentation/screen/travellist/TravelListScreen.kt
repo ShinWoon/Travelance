@@ -114,6 +114,19 @@ fun TravelListScreen(
                         done = "doing",
                         moneyAmount = 5500000,
                         iconId = resourceId,
+                        navController = navController
+                    )
+                }
+                item {
+                    TravelCardView(
+                        modifier = modifier,
+                        travelName = "룰루랄라",
+                        travelStart = "2023.07.23",
+                        travelEnd = "2023.07.30",
+                        done = "done",
+                        moneyAmount = 5500000,
+                        iconId = R.drawable.ic_travel_1,
+                        navController = navController
                     )
                 }
             },

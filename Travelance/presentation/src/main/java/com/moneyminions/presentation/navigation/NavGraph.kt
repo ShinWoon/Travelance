@@ -30,6 +30,7 @@ import com.moneyminions.presentation.screen.login.LoginScreen
 import com.moneyminions.presentation.screen.mypage.EditUserScreen
 import com.moneyminions.presentation.screen.mypage.MyPageScreeen
 import com.moneyminions.presentation.screen.mypage.SettingScreen
+import com.moneyminions.presentation.screen.traveldone.TravelDoneScreen
 import com.moneyminions.presentation.screen.travellist.CreateTravelScreen
 import com.moneyminions.presentation.screen.travellist.TravelListScreen
 import com.moneyminions.presentation.screen.travelmap.travelMapScreen
@@ -155,6 +156,11 @@ fun NavGraph(
             route = Screen.TravelDetail.route,
         ) {
             DetailScreen(navController = navController)
+        }
+        composable(
+            route = Screen.TravelDone.route,
+        ) {
+            TravelDoneScreen(navController = navController)
         }
     }
 } // End of setUpNavGraph
