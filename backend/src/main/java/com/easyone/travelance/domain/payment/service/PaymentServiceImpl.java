@@ -52,6 +52,8 @@ public class PaymentServiceImpl implements PaymentService{
     private FirebaseCloudMessageService firebaseCloudMessageService;
     @Autowired
     private WebClient webClient;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Transactional
     @KafkaListener(topics = "travelance", groupId = "travelance")
@@ -67,7 +69,6 @@ public class PaymentServiceImpl implements PaymentService{
         }
     }
 
-    @Transactional
     public void processPayment(PaymentAlertRequestDto paymentAlertRequestDto) throws IOException {
         // 1. memberPrivateId를 통해 member 찾기
         Optional<Member> member = memberRepository.findByPrivateId(paymentAlertRequestDto.getMemberPrivateId());
@@ -106,7 +107,7 @@ public class PaymentServiceImpl implements PaymentService{
             String title = "결제 알림";
             String body = savedPayment.getPaymentContent() + "에서 " + savedPayment.getPaymentAmount() + "원 사용되었습니다.";
 
-            ObjectMapper objectMapper = new ObjectMapper();
+            // 변경: 이미 주입된 objectMapper 인스턴스 사용
             String paymentJson = objectMapper.writeValueAsString(savedPayment);
 
             firebaseCloudMessageService.sendMessageTo(fcmToken, title, body, paymentJson);
