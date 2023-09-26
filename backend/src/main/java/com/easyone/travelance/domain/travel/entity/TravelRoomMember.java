@@ -15,7 +15,11 @@ public class TravelRoomMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
+
+    private boolean isDone;
+
+    private String travelNickName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id", nullable = false)
@@ -28,9 +32,11 @@ public class TravelRoomMember {
     private TravelRoom travelRoom;
 
     @Builder
-    public TravelRoomMember(Member member, TravelRoom travelRoom) {
+    public TravelRoomMember(Member member, TravelRoom travelRoom, boolean isDone, String nickName) {
         this.member=member;
         this.travelRoom=travelRoom;
+        this.isDone=isDone;
+        this.travelNickName=nickName;
     }
 
 }

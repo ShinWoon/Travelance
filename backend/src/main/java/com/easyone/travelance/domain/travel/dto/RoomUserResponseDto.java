@@ -14,15 +14,15 @@ import java.util.List;
 @NoArgsConstructor
 public class RoomUserResponseDto {
     private String email;
-    private String nickName;
+    private String travelNickname;
     private String profileUrl;
 
 
     @Builder
-    public RoomUserResponseDto(Member member) {
+    public RoomUserResponseDto(Member member, String travelNickname, String profileUrl) {
         this.email=member.getEmail();
-        this.nickName=member.getNickname();
-
+        this.travelNickname = travelNickname;
+        this.profileUrl=profileUrl;
     }
 
 

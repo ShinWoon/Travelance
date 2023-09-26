@@ -31,7 +31,9 @@ public class TravelController {
     private final MemberRepository memberRepository;
 
     // 방 만들기
-    @Operation(summary = "여행방 생성", description = "여행방 만든 사용자의 프로필 이미지를 요청하면, 채팅방을 만들고, 채팅방의 참여자에 추가시킵니다.")
+    @Operation(summary = "여행방 생성", description = "여행방 만든 사용자의 프로필 이미지를 요청하면, 채팅방을 만들고, 채팅방의 참여자에 추가시킵니다." +
+            "<요청 값> profileUrl: 호스트 프로필사진, nickName: 호스트 닉네임, startdate: 시작시간, enddate: 끝시간, startDate:여행시작일, endDate: 여행종료일, budget: 예산" +
+            "<응답 값> result: 방id(string값)")
     @PostMapping(value = "")
     public ResponseEntity<RoomIdResponseDto> MakeRoom(@MemberInfo MemberInfoDto memberInfo, @RequestPart MultipartFile profileUrl, @RequestBody RoomInfoRequestDto roomInfoRequestDto) {
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
@@ -42,9 +44,10 @@ public class TravelController {
     // 프로필 설정, 내 방에 맞는 프로필을 저장함
     @Operation(summary = "내 프로필 설정하기", description = "방에 입장하고 싶은 맴버 정보와 프로필 사진을 요청하면, 여행참가자가 되며 유저리스트를 전달합니다. ")
     @PostMapping(value = "/{roomId}/addUser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity <ResultDto> AddUser(@MemberInfo MemberInfoDto memberInfo, @RequestPart MultipartFile profileUrl, @PathVariable Long roomId) {
+    public ResponseEntity <ResultDto> AddUser(@MemberInfo MemberInfoDto memberInfo, @RequestPart MultipartFile profileUrl, @PathVariable Long roomId, @RequestBody RoomUserRequestDto roomUserRequestDto) {
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
-        ResultDto resultDto =travelService.adduser(roomId, member, profileUrl);
+
+        ResultDto resultDto =travelService.adduser(roomId, member, profileUrl, roomUserRequestDto);
         return new ResponseEntity<>(resultDto, HttpStatus.OK);
     }
 
@@ -59,7 +62,7 @@ public class TravelController {
 
     //여행방 전체 리스트
     @Operation(summary = "여행 전체 리스트 조회", description = "요청 시, 유저에 해당하는 채팅방 전체리스트를 조회합니다. " +
-            "travelName: 여행이름, location: 여행장소, startDate:여행시작일, endDate: 여행종료일, budget: 예산")
+            "travelName: 여행이름, startDate:여행시작일, endDate: 여행종료일, budget: 예산")
     @GetMapping(value = "")
     public ResponseEntity<List<RoomAllResponseDto>> findAllDesc(@MemberInfo MemberInfoDto memberInfo) {
 

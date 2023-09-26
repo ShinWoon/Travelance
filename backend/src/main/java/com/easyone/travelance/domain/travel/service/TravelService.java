@@ -46,11 +46,13 @@ public class TravelService {
             TravelRoomMember travelRoomMember = TravelRoomMember.builder()
                     .travelRoom(travelRoom)
                     .member(member)
+                    .nickName(roomInfoRequestDto.getNickName())
+                    .isDone(false)
                     .build();
 
             travelRoomMemberRepository.save(travelRoomMember);
 
-            return new RoomIdResponseDto(travelRoom.getId());
+            return new RoomIdResponseDto(travelRoom.getId().toString());
         }
         catch (Exception e) {
             throw new IllegalArgumentException("여행방이 생성되지 않았습니다");
@@ -60,7 +62,7 @@ public class TravelService {
     //유저가 방에 추가되어 닉네임과 사진을 설정하고, 친구 목록을 반환
     //Profileurl도 같이 반환
     @Transactional
-    public ResultDto adduser(Long roomId, Member member, MultipartFile imageFile) {
+    public ResultDto adduser(Long roomId, Member member, MultipartFile imageFile, RoomUserRequestDto roomUserRequestDto) {
 
         try {
             TravelRoom travelRoom = travelRoomRepository.findById(roomId)
@@ -74,18 +76,20 @@ public class TravelService {
             TravelRoomMember travelRoomMember = TravelRoomMember.builder()
                     .travelRoom(travelRoom)
                     .member(member)
+                    .isDone(false)
+                    .nickName(roomUserRequestDto.getNickname())
                     .build();
 
             travelRoomMemberRepository.save(travelRoomMember);
             return new ResultDto("참여자 방에 저장");
         }
         catch (Exception e) {
-            throw new IllegalArgumentException("참여자가 방에 들어오지 않았습니다");
+            throw new IllegalArgumentException("참여자가 방에 들어오지 못했습니다");
         }
 
     }
 
-    //유저에 해당하는 방만 보내주기 -
+    //유저에 해당하는 방만 보내주기
     @Transactional(readOnly = true)
     public List<RoomAllResponseDto> findAllDesc(Member member) {
         // travelroommember도메인에서 member에 해당하는  travelroom을 RoomAllResponseDto로 모두 반환
@@ -157,7 +161,6 @@ public class TravelService {
             return new ResultDto("여행방 나가기 실패");
         }
 
-
     }
 
 
@@ -165,9 +168,21 @@ public class TravelService {
         TravelRoom travelRoom = travelRoomRepository.findById(roomId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
 
-        List<RoomUserResponseDto> travelRoomMemberList = travelRoomMemberRepository.findAllByTravelRoom(travelRoom)
-                                        .stream().map(user -> new RoomUserResponseDto().builder().member(user.getMember())
-                                        .build()).collect(Collectors.toList());
+        List<RoomUserResponseDto> travelRoomMemberList = new ArrayList<>();
+
+        List<TravelRoomMember> travelRoomMember = travelRoomMemberRepository.findAllByTravelRoom(travelRoom);
+        for (TravelRoomMember travelRoomMember1 : travelRoomMember) {
+            TravelRoom travelRoom1 = travelRoomMember1.getTravelRoom();
+            Member member = travelRoomMember1.getMember();
+            String nickname = travelRoomMember1.getTravelNickName();
+
+            //여행방별로 저장된 멤버 이미지를 가져오기
+            String profileUrl = profileRepository.findByMemberAndTravelRoom(member, travelRoom1).getProfileUrl();
+            RoomUserResponseDto roomUserResponseDto = new RoomUserResponseDto(member, nickname, profileUrl);
+            travelRoomMemberList.add(roomUserResponseDto);
+        }
+
+
         return travelRoomMemberList;
     }
 }

@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class RoomIdResponseDto {
-    private Long roomId;
+    private String result;
 
     @Builder
-    public RoomIdResponseDto(Long roomId) {
-        this.roomId = roomId;
+    public RoomIdResponseDto(String roomId) {
+        this.result = roomId;
     }
 
 

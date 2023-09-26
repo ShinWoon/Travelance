@@ -9,12 +9,11 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class RoomUserRequestDto {
-    private String profileUrl;
     private String nickname;
 
     @Builder
-    public RoomUserRequestDto(String profileUrl, String nickname) {
-
+    public RoomUserRequestDto(String nickname) {
+        this.nickname=nickname;
     }
 
 }
