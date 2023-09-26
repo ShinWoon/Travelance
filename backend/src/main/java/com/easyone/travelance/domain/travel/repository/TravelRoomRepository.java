@@ -14,4 +14,6 @@ public interface TravelRoomRepository extends JpaRepository<TravelRoom, Long> {
 
     @Query("SELECT tr FROM TravelRoom tr JOIN tr.travelRoomMembers trm WHERE tr.id = :roomId AND trm.member.id = :memberId")
     Optional<TravelRoom> findByIdAndMemberId(@Param("roomId") Long roomId, @Param("memberId") Long memberId);
-}
+
+    @Query("SELECT tr FROM TravelRoom tr JOIN tr.travelRoomMembers trm JOIN trm.member m WHERE m.email = :email AND tr.id = :id")
+    Optional<TravelRoom> findByIdAndMemberEmail(@Param("id") Long id, @Param("email") String email);}
