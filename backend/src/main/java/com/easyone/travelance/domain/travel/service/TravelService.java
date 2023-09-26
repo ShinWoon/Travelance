@@ -32,16 +32,28 @@ public class TravelService {
 
     //방만들기
     @Transactional
-    public ResultDto save(RoomInfoRequestDto roomInfoRequestDto) {
+    public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, MultipartFile imageFile) {
         //방 만든 직전에는 사전정산 상태
         RoomType roomType = RoomType.BEFORE;
         try {
             TravelRoom travelRoom = roomInfoRequestDto.toEntity(roomType);
             travelRoomRepository.save(roomInfoRequestDto.toEntity(roomType));
-            return new ResultDto("여행방 생성 성공");
+            //프로필 사진이 있으면, 프로필 사진 저장
+            if(imageFile!=null) {
+                travelProfileService.saveImage(travelRoom,imageFile);
+            }
+
+            TravelRoomMember travelRoomMember = TravelRoomMember.builder()
+                    .travelRoom(travelRoom)
+                    .member(member)
+                    .build();
+
+            travelRoomMemberRepository.save(travelRoomMember);
+
+            return new RoomIdResponseDto(travelRoom.getId());
         }
         catch (Exception e) {
-            return new ResultDto("여행방 생성 실패");
+            throw new IllegalArgumentException("여행방이 생성되지 않았습니다");
         }
     }
 

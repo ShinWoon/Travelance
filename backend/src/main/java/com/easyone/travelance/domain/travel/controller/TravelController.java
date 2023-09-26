@@ -3,6 +3,7 @@ package com.easyone.travelance.domain.travel.controller;
 
 import com.easyone.travelance.domain.common.ResultDto;
 import com.easyone.travelance.domain.member.entity.Member;
+import com.easyone.travelance.domain.member.respository.MemberRepository;
 import com.easyone.travelance.domain.member.service.MemberService;
 import com.easyone.travelance.domain.travel.dto.*;
 import com.easyone.travelance.domain.travel.service.TravelService;
@@ -27,12 +28,14 @@ public class TravelController {
 
     private final TravelService travelService;
     private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
     // 방 만들기
-    @Operation(summary = "여행방 생성", description = "요청 시, 채팅방을 만듭니다. ")
+    @Operation(summary = "여행방 생성", description = "여행방 만든 사용자의 프로필 이미지를 요청하면, 채팅방을 만들고, 채팅방의 참여자에 추가시킵니다.")
     @PostMapping(value = "")
-    public ResponseEntity<ResultDto> MakeRoom(@RequestBody RoomInfoRequestDto roomInfoRequestDto) {
-        ResultDto responseDto= travelService.save(roomInfoRequestDto);
+    public ResponseEntity<RoomIdResponseDto> MakeRoom(@MemberInfo MemberInfoDto memberInfo, @RequestPart MultipartFile profileUrl, @RequestBody RoomInfoRequestDto roomInfoRequestDto) {
+        Member member = memberService.findMemberByEmail(memberInfo.getEmail());
+        RoomIdResponseDto responseDto= travelService.save(roomInfoRequestDto, member, profileUrl);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
@@ -41,7 +44,6 @@ public class TravelController {
     @PostMapping(value = "/{roomId}/addUser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<List<RoomUserResponseDto>> AddUser(@MemberInfo MemberInfoDto memberInfo, @RequestPart MultipartFile profileUrl, @PathVariable Long roomId) {
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
-
         List<RoomUserResponseDto> roomUserResponseDto=travelService.adduser(roomId, member, profileUrl);
         return new ResponseEntity<>(roomUserResponseDto, HttpStatus.OK);
     }
@@ -56,14 +58,14 @@ public class TravelController {
         return new ResponseEntity<>(roomUserResponseDto, HttpStatus.OK);
     }
 
-
-
     //여행방 전체 리스트
     @Operation(summary = "여행 전체 리스트 조회", description = "요청 시, 유저에 해당하는 채팅방 전체리스트를 조회합니다. " +
             "travelName: 여행이름, location: 여행장소, startDate:여행시작일, endDate: 여행종료일, budget: 예산")
     @GetMapping(value = "")
     public ResponseEntity<List<RoomAllResponseDto>> findAllDesc(@MemberInfo MemberInfoDto memberInfo) {
+
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
+
         List<RoomAllResponseDto> responseDtos = travelService.findAllDesc(member);
         return new ResponseEntity<>(responseDtos, HttpStatus.OK);
     }
@@ -74,8 +76,8 @@ public class TravelController {
             "member정보를 받아서 여행방에서 내가 쓴 목록과 전체 목록을 구분합니다.")
     @GetMapping(value = "/{roomId}")
     public ResponseEntity<RoomStaticResponseDto> findById(@MemberInfo MemberInfoDto memberInfo, @PathVariable Long roomId) {
-        Member member = memberService.findMemberByEmail(memberInfo.getEmail());
 
+        Member member = memberService.findMemberByEmail(memberInfo.getEmail());
         RoomStaticResponseDto responseDto=  travelService.findById(roomId, member);
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
@@ -97,11 +99,6 @@ public class TravelController {
         return new ResponseEntity<>(resultDto,HttpStatus.OK);
     }
 
-    //여행 공지사항 등록
-
-
-
-    //여행 맵 표시
 
 
 
