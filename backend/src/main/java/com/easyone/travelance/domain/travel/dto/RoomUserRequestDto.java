@@ -11,12 +11,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class RoomUserRequestDto {
     private String nickName;
-    private MultipartFile profileUrl;
 
     @Builder
-    public RoomUserRequestDto(String nickname, MultipartFile profileUrl) {
+    public RoomUserRequestDto(String nickname) {
         this.nickName=nickname;
-        this.profileUrl = profileUrl;
     }
 
 }
