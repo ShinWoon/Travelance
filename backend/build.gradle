@@ -71,6 +71,9 @@ dependencies {
 	//redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.boot:spring-boot-starter-cache'
+
+	//localdatetime관련
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.5'
 }
 
 tasks.named('test') {
