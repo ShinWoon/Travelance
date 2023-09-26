@@ -46,7 +46,7 @@ public class TravelService {
             TravelRoomMember travelRoomMember = TravelRoomMember.builder()
                     .travelRoom(travelRoom)
                     .member(member)
-                    .nickName(roomUserRequestDto.getNickname())
+                    .nickName(roomUserRequestDto.getNickName())
                     .isDone(false)
                     .build();
 
@@ -77,7 +77,7 @@ public class TravelService {
                     .travelRoom(travelRoom)
                     .member(member)
                     .isDone(false)
-                    .nickName(roomUserRequestDto.getNickname())
+                    .nickName(roomUserRequestDto.getNickName())
                     .build();
 
             travelRoomMemberRepository.save(travelRoomMember);
