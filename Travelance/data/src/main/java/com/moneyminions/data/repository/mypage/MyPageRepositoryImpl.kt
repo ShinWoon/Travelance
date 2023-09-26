@@ -5,6 +5,7 @@ import com.moneyminions.data.mapper.toDomain
 import com.moneyminions.data.service.handleApi
 import com.moneyminions.domain.model.MemberInfo
 import com.moneyminions.domain.model.NetworkResult
+import com.moneyminions.domain.model.common.CommonResultDto
 import com.moneyminions.domain.repository.mypage.MyPageRepository
 
 class MyPageRepositoryImpl(
@@ -12,5 +13,9 @@ class MyPageRepositoryImpl(
 ): MyPageRepository {
     override suspend fun getMemberInfo(): NetworkResult<MemberInfo> {
         return handleApi { myPageDataSource.getMemberInfo().toDomain() }
+    }
+
+    override suspend fun updateNickname(nickname: String): NetworkResult<CommonResultDto> {
+        return handleApi { myPageDataSource.updateNickname(nickname).toDomain() }
     }
 }

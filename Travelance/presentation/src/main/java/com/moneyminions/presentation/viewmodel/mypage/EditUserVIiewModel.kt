@@ -6,7 +6,9 @@ import com.moneyminions.domain.model.MemberInfo
 import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.common.AccountDto
 import com.moneyminions.domain.model.common.CardDto
+import com.moneyminions.domain.model.common.CommonResultDto
 import com.moneyminions.domain.usecase.mypage.GetMemberInfoUseCase
+import com.moneyminions.domain.usecase.mypage.UpdateNicknameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,8 +17,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class EditUserVIiewModel @Inject constructor(
-    private val getMemberInfoUseCase: GetMemberInfoUseCase
+class EditUserViewModel @Inject constructor(
+    private val getMemberInfoUseCase: GetMemberInfoUseCase,
+    private val updateNicknameUseCase: UpdateNicknameUseCase
 ): ViewModel() {
     private val _memberInfoResult = MutableStateFlow<NetworkResult<MemberInfo>>(NetworkResult.Idle)
     val memberInfoResult = _memberInfoResult.asStateFlow()
@@ -56,6 +59,14 @@ class EditUserVIiewModel @Inject constructor(
     fun setPassword(password: String){
         viewModelScope.launch {
             _password.emit(password)
+        }
+    }
+
+    private val _updateNicknameResult = MutableStateFlow<NetworkResult<CommonResultDto>>(NetworkResult.Idle)
+    val updateNicknameResult = _updateNicknameResult.asStateFlow()
+    fun updateNickname(){
+        viewModelScope.launch {
+            _updateNicknameResult.emit(updateNicknameUseCase.invoke(nickname.value))
         }
     }
 }

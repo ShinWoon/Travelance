@@ -54,38 +54,48 @@ import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.theme.PinkLight
 import com.moneyminions.presentation.theme.White
 import com.moneyminions.presentation.utils.NetworkResultHandler
-import com.moneyminions.presentation.viewmodel.mypage.EditUserVIiewModel
+import com.moneyminions.presentation.viewmodel.mypage.EditUserViewModel
 
 private const val TAG = "EditUserScreen D210"
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EditUserScreen(
     navController: NavHostController,
-    editUserVIiewModel: EditUserVIiewModel = hiltViewModel()
+    editUserViewModel: EditUserViewModel = hiltViewModel()
 ) {
-    val memberInfoResultState by editUserVIiewModel.memberInfoResult.collectAsState()
+    val memberInfoResultState by editUserViewModel.memberInfoResult.collectAsState()
     NetworkResultHandler(
         state = memberInfoResultState,
         errorAction = {
             Log.d(TAG, "MemberInfo 조회 오류")
         },
         successAction = {
-            editUserVIiewModel.setCardList(it.cardList)
-            editUserVIiewModel.setAccountList(it.accountList)
-            editUserVIiewModel.setNickname(it.nickname)
+            editUserViewModel.setCardList(it.cardList)
+            editUserViewModel.setAccountList(it.accountList)
+            editUserViewModel.setNickname(it.nickname)
         }
     )
     LaunchedEffect(
         key1 = Unit,
         block = {
-            editUserVIiewModel.getMemberInfo()
+            editUserViewModel.getMemberInfo()
         }
     )
-    val nicknameState = editUserVIiewModel.nickname.collectAsState()
 
-    val accountListState = editUserVIiewModel.accountList.collectAsState()
+    val nicknameState = editUserViewModel.nickname.collectAsState()
+    val updateNicknameResultState by editUserViewModel.updateNicknameResult.collectAsState()
+    NetworkResultHandler(
+        state = updateNicknameResultState,
+        errorAction = {
+            Log.d(TAG, "update nickname error....")
+        },
+        successAction = {
+            editUserViewModel.updateNickname()
+        }
+    )
 
-    val cardListState = editUserVIiewModel.cardList.collectAsState()
+    val accountListState = editUserViewModel.accountList.collectAsState()
+    val cardListState = editUserViewModel.cardList.collectAsState()
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -101,8 +111,9 @@ fun EditUserScreen(
         ) {
             Spacer(modifier = Modifier.size(16.dp))
             EditName(
-                value = "",
+                value = nicknameState.value,
                 onValueChange = {
+                    editUserViewModel.setNickname(it)
                 },
                 onClick = { // 완료 버튼 눌렀을 때
                 },

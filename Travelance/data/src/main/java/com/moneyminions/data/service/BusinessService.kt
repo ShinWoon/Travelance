@@ -16,6 +16,7 @@ import com.moneyminions.data.model.travellist.request.CreateTravelRoomRequest
 import com.moneyminions.data.model.travellist.response.TravelRoomResponse
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface BusinessService {
 
@@ -70,5 +71,10 @@ interface BusinessService {
      */
     @POST("member/mypage")
     suspend fun getMemberInfo(): MemberInfoResponse
+    /**
+     * 닉네임 수정
+     */
+    @PATCH("member/update/nickname")
+    suspend fun updateNickname(@Query("nickname") nickname: String): CommonResponse
 
 }
