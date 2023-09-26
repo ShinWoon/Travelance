@@ -1,10 +1,14 @@
 package com.moneyminions.presentation
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.location.Address
+import android.location.Geocoder
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -36,6 +40,7 @@ import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.theme.TextGray
 import com.moneyminions.presentation.theme.White
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.IOException
 
 private const val TAG = "MainActivity D210"
 
@@ -49,6 +54,15 @@ class MainActivity : FragmentActivity() {
         setContent {
             var isAuthenticated = remember { mutableStateOf(false) }
             val context = LocalContext.current
+
+            if(Build.VERSION.SDK_INT < 33) {
+                val list = Geocoder(context).getFromLocationName("경상북도 구미시 비산동 108", 5)!!
+                Log.d(TAG, "address list : $list")
+            }else{
+                val list = Geocoder(context).getFromLocationName("경상북도 구미시 비산동 108", 5){
+                    Log.d(TAG, "33 이상 list : $it")
+                }
+            }
 
             val navController = rememberAnimatedNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -212,4 +226,25 @@ fun MainBottomNavigationBar(navController: NavHostController) {
     }
 }
 
+
+private fun searchAddress(
+    context: Context,
+    address: String
+){
+    lateinit var list: MutableList<Address>
+    try{
+        list = Geocoder(context).getFromLocationName(address, 5)!!
+    }catch(e: IOException){
+        e.printStackTrace()
+        Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+    }
+
+    if(list.size == 0){
+        Toast.makeText(context, "일치하는 주소가 없습니다.", Toast.LENGTH_SHORT).show()
+    }else{
+        val address = list.get(0)
+        val lat = address.latitude
+        val lng = address.longitude
+    }
+}
 
