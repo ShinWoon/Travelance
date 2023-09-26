@@ -35,9 +35,6 @@ import androidx.compose.ui.window.Dialog
 
 private const val TAG = "FCMService D210"
 class FCMService: FirebaseMessagingService() {
-
-
-
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         Log.d(TAG, token)
@@ -106,6 +103,7 @@ class FCMService: FirebaseMessagingService() {
                         Manifest.permission.POST_NOTIFICATIONS
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
+//                    Log.d(TAG, "sendNotification permission not allowed")
                     return
                 }
             }
@@ -115,52 +113,4 @@ class FCMService: FirebaseMessagingService() {
     }
 
 
-}
-
-@Composable
-fun AlertDialog(onDismissRequest: () -> Unit, onConfirmation: () -> Unit, dialogTitle: String, dialogText: String, icon: ImageVector) {
-    Dialog(
-        onDismissRequest = {onDismissRequest()}
-    ) {
-        Surface(
-            color = Color.White,
-            shape = RoundedCornerShape(16.dp),
-        ){
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Text(
-                    text = dialogTitle
-                )
-                Spacer(modifier = Modifier.size(16.dp))
-                Text(
-                    text = dialogText
-                )
-                Spacer(modifier = Modifier.size(16.dp))
-                Row{
-                    Button(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(text = "확인")
-                    }
-                    Spacer(modifier = Modifier.size(4.dp))
-                    Button(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(text = "취소")
-                    }
-                }
-            }
-        }
-    }
-}
-
-// 시스템 설정 페이지로 이동
-private fun moveToSetting(context: Context) {
-    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-        data = Uri.fromParts("package", context.packageName, null)
-    }
-    context.startActivity(intent)
 }
