@@ -17,7 +17,6 @@ import com.moneyminions.domain.model.common.AccountDto
 import com.moneyminions.domain.model.common.CardDto
 import com.moneyminions.presentation.common.CardFrame
 import com.moneyminions.presentation.common.CustomTextStyle
-import com.moneyminions.presentation.screen.mypage.view.cardList
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

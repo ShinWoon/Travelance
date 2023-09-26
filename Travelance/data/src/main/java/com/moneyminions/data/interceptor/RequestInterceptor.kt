@@ -23,7 +23,7 @@ class RequestInterceptor @Inject constructor(
 //                    return chain.proceed(builder.build())
 //                }
 //            }
-            builder.addHeader("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBQ0NFU1MiLCJpYXQiOjE2OTU3MDY0MjAsImV4cCI6MTY5NTcwODIyMCwiZW1haWwiOiJ0anNnaDE1MTJAbmF2ZXIuY29tIiwicm9sZSI6Ik1FTUJFUiJ9.XknLNqiI3untr67GF9x_UwO0u6nMc9Sx9FdcoPvDlJFjX8jRAlpmJ1bOsiiO-cWrlmNSL0DLl4mdzkCjsFILuw")
+            builder.addHeader("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBQ0NFU1MiLCJpYXQiOjE2OTU3MDg2MzYsImV4cCI6MTY5NTcxMDQzNiwiZW1haWwiOiJ0anNnaDE1MTJAbmF2ZXIuY29tIiwicm9sZSI6Ik1FTUJFUiJ9.0j5KBo0OXJRlwZipoPZ8nmo_opi8xh5_vS3qNHZcnmmq8_r2JrtjiQLJt4z8Bu8EelKeqR_ybQgqpM6JPVf6Uw")
             return chain.proceed(builder.build())
 
         }catch (e: Exception){

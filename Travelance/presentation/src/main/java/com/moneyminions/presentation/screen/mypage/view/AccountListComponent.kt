@@ -24,7 +24,7 @@ val accountList = listOf<AccountDto>(
 
 @Composable
 fun AccountListComponent(
-
+    accountList: List<AccountDto>
 ){
     Text(
         text = "계좌 목록",
@@ -38,7 +38,7 @@ fun AccountListComponent(
         .padding(horizontal = 16.dp)
     )
     LazyColumn{
-        items(Constants.AUTHENTICATION_ACCOUNT_LIST){
+        items(accountList){
             AccountRowItem(
                 logo = Constants.ACCOUNT_LOGO_LIST[it.idx],
                 name = it.bankName,
