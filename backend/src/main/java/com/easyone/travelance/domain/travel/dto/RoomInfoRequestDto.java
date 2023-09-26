@@ -1,5 +1,6 @@
 package com.easyone.travelance.domain.travel.dto;
 
+import com.easyone.travelance.domain.member.dto.NicknameDto;
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.travel.entity.TravelRoom;
 import com.easyone.travelance.domain.travel.enumclass.RoomType;
@@ -17,10 +18,10 @@ public class RoomInfoRequestDto {
     private String startDate;
     private String endDate;
     private Long budget;
-    private String nickName;
+    private RoomUserRequestDto nickName;
 
     @Builder
-    public RoomInfoRequestDto(String travelName, String startDate, String endDate, Long budget, String nickName) {
+    public RoomInfoRequestDto(String travelName, String startDate, String endDate, Long budget, RoomUserRequestDto nickName) {
         this.travelName = travelName;
         this.startDate=startDate;
         this.endDate= endDate;
