@@ -12,6 +12,7 @@ import com.easyone.travelance.domain.payment.repository.PaymentRepository;
 import com.easyone.travelance.domain.travel.entity.TravelRoom;
 import com.easyone.travelance.domain.travel.entity.TravelRoomMember;
 import com.easyone.travelance.domain.travel.enumclass.RoomType;
+import com.easyone.travelance.domain.travel.repository.TravelRoomMemberRepository;
 import com.easyone.travelance.domain.travel.repository.TravelRoomRepository;
 import com.easyone.travelance.global.FCM.FirebaseCloudMessageService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -44,6 +45,8 @@ public class PaymentServiceImpl implements PaymentService{
     private MainAccountRepository mainAccountRepository;
     @Autowired
     private TravelRoomRepository travelRoomRepository;
+    @Autowired
+    private TravelRoomMemberRepository travelRoomMemberRepository;
     @Autowired
     private PaymentRepository paymentRepository;
     @Autowired
@@ -136,6 +139,14 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Override
     public String completeCalculation(CompleteCalculationRequestDto completeCalculationRequestDto) {
+        Optional<TravelRoom> travelRoomOptional = travelRoomRepository.findByIdAndMemberId(completeCalculationRequestDto.getRoomNumber(),
+                completeCalculationRequestDto.getMemberId());
+        if (travelRoomOptional.isEmpty()) {
+            throw new EntityNotFoundException("여행방을 찾을 수 없습니다.");
+        }
+        TravelRoom travelRoom = travelRoomOptional.get();
+        log.info("여행방 찾기 완료");
+
         // 1. 최종 공금내역 DB 저장
         for (CompleteCalculationRequestDto.PaymentWith paymentWith : completeCalculationRequestDto.getPaymentWithList()){
             Optional<Payment> paymentOptional = paymentRepository.findById(paymentWith.getPaymentId());
@@ -147,37 +158,46 @@ public class PaymentServiceImpl implements PaymentService{
             payment.setIsWithPaid(paymentWith.getIsWithPaid());
 
             paymentRepository.save(payment);
+            log.info("공금 내역 저장 완료");
         }
 
-        // 2. 유저의 Travel RoomType 변경
-        Optional<TravelRoom> travelRoomOptional = travelRoomRepository.findByIdAndMemberId(completeCalculationRequestDto.getRoomNumber(),
-                completeCalculationRequestDto.getMemberId());
+        // 2. 유저의 Travel Room isDone 변경
+        TravelRoomMember travelRoomMember = travelRoomMemberRepository.findByTravelRoom_IdAndMember_Id(
+                completeCalculationRequestDto.getRoomNumber(),
+                completeCalculationRequestDto.getMemberId()
+        ).orElseThrow(() -> new EntityNotFoundException("여행방 멤버를 찾을 수 없습니다."));
 
-        if (travelRoomOptional.isEmpty()) {
-            throw new EntityNotFoundException("여행방을 찾을 수 없습니다.");
+        travelRoomMember.setIsDone(true);
+        travelRoomMemberRepository.save(travelRoomMember);
+        log.info("isDone 저장 완료");
+
+        List<TravelRoomMember> members = travelRoomMemberRepository.findByTravelRoom(travelRoom);
+        // isDone 상태 확인
+        boolean allMembersDone = true;
+        boolean anyMemberDone = false;
+        for (TravelRoomMember member : members) {
+            if (member.getMember().getId().equals(completeCalculationRequestDto.getMemberId())) {
+                member.setIsDone(true);
+                travelRoomMemberRepository.save(member); // 상태 변경이 있으므로 저장합니다.
+            }
+            if (member.isDone()) {
+                anyMemberDone = true;
+            } else {
+                allMembersDone = false;
+            }
         }
 
-        TravelRoom travelRoom = travelRoomOptional.get();
-        travelRoom.setRoomType(RoomType.WAIT);
-        travelRoomRepository.save(travelRoom);
-
-        // roomType 확인
-        if (!areAllMembersInwaitState(travelRoom)){
-            throw new IllegalStateException("정산 진행 중입니다.");
-        }else{
-            // 정산 로직
+        // 조건에 따라 TravelRoom의 RoomType을 변경하거나 calculateTransfer 함수를 실행합니다.
+        if (allMembersDone) {
             calculateTransfer(travelRoom.getId());
-            // 정산완료 FCM 알림
             sendFcmNotificationToAllMembers(travelRoom);
+            log.info("함수호출");
+        } else if (anyMemberDone) {
+            travelRoom.setRoomType(RoomType.WAIT);
+            travelRoomRepository.save(travelRoom);
+            log.info("RoomType WAIT 변경");
         }
-
         return null;
-    }
-
-    private boolean areAllMembersInwaitState(TravelRoom travelRoom){
-        return travelRoom.getTravelRoomMembers()
-                .stream()
-                .allMatch(travelRoomMember -> travelRoomMember.getTravelRoom().getIsDone()==RoomType.WAIT);
     }
 
     public void calculateTransfer(Long travelRoomId){
