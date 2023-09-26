@@ -23,7 +23,8 @@ class RequestInterceptor @Inject constructor(
 //                    return chain.proceed(builder.build())
 //                }
 //            }
-            builder.addHeader("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBQ0NFU1MiLCJpYXQiOjE2OTU3MTM0MzUsImV4cCI6MTY5NTcxNTIzNSwiZW1haWwiOiJ0anNnaDE1MTJAbmF2ZXIuY29tIiwicm9sZSI6Ik1FTUJFUiJ9.yZ9m2cebq1O4gGLAdnnonErsuc3uxMH0Vc7SAtfTLvasXImcJrI5IvqMlgtESj6t5lGhQaFY8pWf963jptUDXQ")
+            val sampleToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBQ0NFU1MiLCJpYXQiOjE2OTU3NDMyNjIsImV4cCI6MTY5NTc0NTA2MiwiZW1haWwiOiJ0anNnaDE1MTJAbmF2ZXIuY29tIiwicm9sZSI6Ik1FTUJFUiJ9.Q2poT2kgr07wamTevyWT7GA4mTH9TcU6dY2qERjuf-B0fNXmlZYg8uzuUyKM2yB4q6vtPUPS0tRpIKuy9ksk5A"
+            builder.addHeader("Authorization", "Bearer $sampleToken")
             return chain.proceed(builder.build())
 
         }catch (e: Exception){

@@ -69,4 +69,12 @@ class EditUserViewModel @Inject constructor(
             _updateNicknameResult.emit(updateNicknameUseCase.invoke(nickname.value))
         }
     }
+
+    private val _isAccountDeleteDialogShow = MutableStateFlow<Boolean>(false)
+    val isAccountDeleteDialogShow: StateFlow<Boolean> = _isAccountDeleteDialogShow
+    fun setIsAccountDeleteDialogShow(value: Boolean){
+        viewModelScope.launch {
+            _isAccountDeleteDialogShow.emit(value)
+        }
+    }
 }

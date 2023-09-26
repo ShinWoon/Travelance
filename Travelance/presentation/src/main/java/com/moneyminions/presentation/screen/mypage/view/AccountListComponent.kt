@@ -24,7 +24,8 @@ val accountList = listOf<AccountDto>(
 
 @Composable
 fun AccountListComponent(
-    accountList: List<AccountDto>
+    accountList: List<AccountDto>,
+    onDelete: () -> Unit
 ){
     Text(
         text = "계좌 목록",
@@ -44,9 +45,7 @@ fun AccountListComponent(
                 name = it.bankName,
                 number = it.accountNumber!!,
                 type = "delete",
-                onDeleted = {
-                    // 삭제 로직
-                }
+                onDeleted = onDelete
             )
         }
     }

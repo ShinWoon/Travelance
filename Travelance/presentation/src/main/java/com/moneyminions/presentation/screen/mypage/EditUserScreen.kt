@@ -44,6 +44,7 @@ import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.AccountRowItem
 import com.moneyminions.presentation.common.CardRowItem
 import com.moneyminions.presentation.common.CustomTextStyle
+import com.moneyminions.presentation.common.SimpleDeleteDialog
 import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.screen.mypage.view.AccountListComponent
 import com.moneyminions.presentation.screen.mypage.view.CardListComponent
@@ -97,6 +98,8 @@ fun EditUserScreen(
     val accountListState = editUserViewModel.accountList.collectAsState()
     val cardListState = editUserViewModel.cardList.collectAsState()
 
+    val isAccountDeleteDialogShowState = editUserViewModel.isAccountDeleteDialogShow.collectAsState()
+
     Column(
         modifier = Modifier.fillMaxSize(),
     ) {
@@ -119,9 +122,25 @@ fun EditUserScreen(
                 },
             )
             Spacer(modifier = Modifier.size(16.dp))
-            AccountListComponent(accountListState.value)
+            AccountListComponent(
+                accountList = accountListState.value,
+                onDelete = {
+                    editUserViewModel.setIsAccountDeleteDialogShow(true)
+                }
+            )
             Spacer(modifier = Modifier.size(16.dp))
             CardListComponent(cardListState.value)
+        }
+        if(isAccountDeleteDialogShowState.value){
+            SimpleDeleteDialog(
+                onDismiss = {
+                    editUserViewModel.setIsAccountDeleteDialogShow(false)
+                },
+                onConfirm = {
+                    //계좌 삭제 api 호출
+                }
+            )
+
         }
     }
 }
