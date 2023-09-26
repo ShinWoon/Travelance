@@ -9,6 +9,7 @@ import com.moneyminions.data.model.login.response.AuthenticationAccountResponse
 import com.moneyminions.data.model.login.response.CardResponse
 import com.moneyminions.data.model.login.response.JoinResponse
 import com.moneyminions.data.model.login.response.LoginResponse
+import com.moneyminions.data.model.login.response.MemberInfoResponse
 import retrofit2.http.Body
 import retrofit2.http.PATCH
 import com.moneyminions.data.model.travellist.request.CreateTravelRoomRequest
@@ -64,5 +65,10 @@ interface BusinessService {
      */
     @GET("travel/room")
     suspend fun travelList(): MutableList<TravelRoomResponse>
+    /**
+     * 마이페이지 조회
+     */
+    @POST("member/mypage")
+    suspend fun getMemberInfo(): MemberInfoResponse
 
 }

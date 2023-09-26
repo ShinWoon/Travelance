@@ -76,13 +76,13 @@ fun CardFrame(
         ) {
             Text(
                 text = name,
-                style = CustomTextStyle.pretendardSemiBold16,
+                style = CustomTextStyle.pretendardSemiBold12,
                 color = Color.White,
                 modifier = Modifier.layoutId("name")
             )
             Text(
                 text = formatNumberWithHyphens(number),
-                style = CustomTextStyle.pretendardBold16,
+                style = CustomTextStyle.pretendardBold12,
                 color = Color.White,
                 modifier = Modifier.layoutId("number")
             )
