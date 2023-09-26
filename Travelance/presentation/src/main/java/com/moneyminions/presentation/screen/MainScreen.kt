@@ -54,7 +54,7 @@ fun MainScreen(
     if(mainViewModel.getJwtToken().role == "MEMBER"){
         navController.navigate(Screen.Home.route)
     }else{
-        navController.navigate(Screen.Login.route)
+        navController.navigate(Screen.Home.route)
     }
 }
 
