@@ -9,6 +9,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.moneyminions.paybank.model.FcmTokenRequest
 import com.moneyminions.paybank.service.BankService
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -59,5 +61,13 @@ class PayViewModel @Inject constructor(
     val storeAddress: State<String> = _storeAddress
     fun setStoreAddress(address: String){
         _storeAddress.value = address
+    }
+
+    private val _isShowDialog = MutableStateFlow(false)
+    val isShowDialog = _isShowDialog.asStateFlow()
+    fun setIsShowDialog(value: Boolean){
+        viewModelScope.launch {
+            _isShowDialog.emit(value)
+        }
     }
 }

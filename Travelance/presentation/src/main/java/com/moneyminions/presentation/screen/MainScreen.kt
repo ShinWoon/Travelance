@@ -51,12 +51,10 @@ fun MainScreen(
     mainViewModel: MainViewModel = hiltViewModel()
 ) {
     Log.d(TAG, "MainScreen: ${mainViewModel.getJwtToken()}")
-    if(mainViewModel.getJwtToken().accessToken != null){
-        Log.d(TAG, "MainScreen에서 accessToken 있음")
+    if(mainViewModel.getJwtToken().role == "MEMBER"){
         navController.navigate(Screen.Home.route)
     }else{
-        Log.d(TAG, "MainScreen에서 accessToken 없음")
-        navController.navigate(Screen.Login.route)
+        navController.navigate(Screen.Home.route)
     }
 }
 
