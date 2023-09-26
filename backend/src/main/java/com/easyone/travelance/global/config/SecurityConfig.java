@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -18,7 +16,7 @@ import java.util.Arrays;
 
 @RequiredArgsConstructor
 @Configuration
-public class SecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
+public class SecurityConfig {
 
     @Value("${jwt.secretKey}")
     private String secretKey;
@@ -30,22 +28,15 @@ public class SecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFil
     private String refreshTokenExpirationPeriod;
 
     //필터 체인 반환
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .httpBasic().disable()
-                .csrf().disable() // CSRF 보호 비활성화
-                .cors(Customizer.withDefaults()) // CORS 설정
-                .formLogin().disable() // 폼 기반 로그인 비활성화
-                .authorizeRequests()
-                //.antMatchers("/spiiters/me").hasRole("MEMBER")
-                //.antMatchers(HttpMethod.POST, "/spittles").hasRole("SPITTER")
-                .anyRequest().permitAll()
-                .and()
-                .requiresChannel()
-                .antMatchers("/spitter/form").requiresSecure();
+                .csrf().disable() //csrf보호 비활성화
+                .cors(Customizer.withDefaults()); //cors구성 기본 설정값으로
+               // .formLogin().disable(); //폼기반 로그인 비활성화
+         http.authorizeRequests().antMatchers("/**").permitAll(); //프록시서버가 모두 들어오도록
+        return http.build();
     }
-
     @Bean
     public TokenManager tokenManager() {
         return new TokenManager(accessTokenExpirationPeriod, refreshTokenExpirationPeriod, secretKey);
