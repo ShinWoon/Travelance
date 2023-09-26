@@ -52,11 +52,14 @@ public class PaymentServiceImpl implements PaymentService{
     private FirebaseCloudMessageService firebaseCloudMessageService;
     @Autowired
     private WebClient webClient;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Transactional
     @KafkaListener(topics = "travelance", groupId = "travelance")
     public void receivePaymentAlert(PaymentAlertRequestDto paymentAlertRequestDto, Acknowledgment ack) throws IOException {
         try {
+            log.info("processPayment 진행 시작");
             processPayment(paymentAlertRequestDto);
             log.info("payment저장 성공");
             // 메시지 처리가 성공적으로 완료된 후 offset을 커밋합니다.
@@ -67,13 +70,13 @@ public class PaymentServiceImpl implements PaymentService{
         }
     }
 
-    @Transactional
     public void processPayment(PaymentAlertRequestDto paymentAlertRequestDto) throws IOException {
         // 1. memberPrivateId를 통해 member 찾기
         Optional<Member> member = memberRepository.findByPrivateId(paymentAlertRequestDto.getMemberPrivateId());
         if (member.isEmpty()){
             throw new EntityNotFoundException("사용자가 존재하지 않습니다.");
         }
+        log.info("사용자 찾기 완료");
 
         // 2. member에 연결된 TravelRoom 중에서 roomType이 NOW인 것 찾기
         TravelRoom currentTravelRoom = member.get().getTravelRoomMember().stream()
@@ -81,6 +84,7 @@ public class PaymentServiceImpl implements PaymentService{
                 .filter(room -> room.getIsDone() == RoomType.NOW)
                 .findFirst()
                 .orElseThrow(()-> new EntityNotFoundException("여행중인 방이 존재하지 않습니다."));
+        log.info("여행방 찾기 완료");
 
         // 3. DTO에서 받은 정보를 payment DB에 저장
         Payment payment = Payment.builder()
@@ -96,6 +100,7 @@ public class PaymentServiceImpl implements PaymentService{
 
         // 4. DB 저장
         Payment savedPayment = paymentRepository.save(payment);
+        log.info("DB 저장 완료");
 
         // 5. FCM 알림 전송 (memberId랑 roomNum 같이 전송)
         Long paymentId = savedPayment.getId();
@@ -106,11 +111,12 @@ public class PaymentServiceImpl implements PaymentService{
             String title = "결제 알림";
             String body = savedPayment.getPaymentContent() + "에서 " + savedPayment.getPaymentAmount() + "원 사용되었습니다.";
 
-            ObjectMapper objectMapper = new ObjectMapper();
+            // 변경: 이미 주입된 objectMapper 인스턴스 사용
             String paymentJson = objectMapper.writeValueAsString(savedPayment);
 
             firebaseCloudMessageService.sendMessageTo(fcmToken, title, body, paymentJson);
         }
+        log.info("알림 전송 완료");
     }
 
     @Override

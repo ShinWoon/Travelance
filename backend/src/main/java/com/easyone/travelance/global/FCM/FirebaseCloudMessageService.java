@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
-import io.swagger.v3.core.util.Json;
 import lombok.RequiredArgsConstructor;
 import okhttp3.*;
 import org.springframework.http.HttpHeaders;

@@ -5,6 +5,7 @@ import com.easyone.travelance.domain.travel.entity.TravelRoomMember;
 import com.easyone.travelance.domain.member.constant.Role;
 import com.easyone.travelance.global.jwt.dto.JwtDto;
 import com.easyone.travelance.global.util.DateTimeUtils;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -50,6 +51,7 @@ public class Member {
     // 멤버 계좌와 1 대 1 관계
     @OneToOne
     @JoinColumn(name="main_account_id")
+    @JsonManagedReference
     private MainAccount mainAccount;
 
     // 멤버 프로필과 1 대 다 관계
