@@ -1,6 +1,5 @@
 package com.moneyminions.presentation.viewmodel.travel
 
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.moneyminions.presentation.theme.CategoryAccommodation
 import com.moneyminions.presentation.theme.CategoryAlcohol
@@ -15,9 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class TravelDoneViewModel @Inject constructor(
-
-) : ViewModel() {
+class TravelDoneViewModel @Inject constructor() : ViewModel() {
     companion object {
         val categoryColorMap = mapOf(
             "식비" to CategoryDining,
@@ -31,6 +28,4 @@ class TravelDoneViewModel @Inject constructor(
             "레저" to CategoryLeisure,
         )
     }
-
-
 }

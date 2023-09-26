@@ -111,8 +111,8 @@ fun DoneTabView(
     ) { page ->
         when (page) {
             0 -> DoneTotalView()
-            1 -> DoneMembersView()
-            2 -> DonePublicMoneyView()
+            1 -> DonePublicMoneyView()
+            2 -> DoneMembersView()
         }
     }
 }

@@ -20,7 +20,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,24 +30,23 @@ import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold14
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.travellist.view.TravelCardView
-import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.DarkGray
 import com.moneyminions.presentation.theme.FloatingButtonColor
 import com.moneyminions.presentation.theme.PinkDarkest
-import com.moneyminions.presentation.theme.White
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.travellist.TravelListViewModel
-import java.lang.Exception
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 private const val TAG = "TravelListScreen_D210"
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TravelListScreen(
     travelListViewModel: TravelListViewModel = hiltViewModel(),
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Log.d(TAG, "TravelListScreen: on")
     val snackbarHostState = remember { SnackbarHostState() }
@@ -69,7 +67,7 @@ fun TravelListScreen(
         },
         successAction = {
             Log.d(TAG, "travelListResult : $it ")
-        }
+        },
     )
 
     Scaffold(
@@ -82,18 +80,22 @@ fun TravelListScreen(
                     Text(
                         text = "방 생성",
                         color = DarkGray,
-                        style = pretendardBold14
+                        style = pretendardBold14,
                     )
                 },
-                icon = { Icon(
-                    painter = painterResource(id = R.drawable.ic_add),
-                    tint = PinkDarkest,
-                    contentDescription = "room add icon") },
+                icon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_add),
+                        tint = PinkDarkest,
+                        contentDescription = "room add icon",
+                    )
+                },
                 containerColor = FloatingButtonColor,
                 onClick = {
                     navController.navigate(Screen.CreateTravel.route)
-                })
-        }
+                },
+            )
+        },
     ) {
         LazyColumn(
             modifier = modifier
@@ -101,9 +103,9 @@ fun TravelListScreen(
                 .wrapContentHeight()
                 .padding(16.dp, 24.dp, 16.dp, 0.dp),
             content = {
-                items(10) {index ->
+                items(10) { index ->
                     // card icon 값을 index 값에 따라 부여
-                    val drawableResName = "ic_travel_${(index%11)+1}"
+                    val drawableResName = "ic_travel_${(index % 11) + 1}"
                     val resourceId = getResourceId(drawableResName, R.drawable::class.java)
 
                     TravelCardView(
@@ -114,7 +116,7 @@ fun TravelListScreen(
                         done = "doing",
                         moneyAmount = 5500000,
                         iconId = resourceId,
-                        navController = navController
+                        navController = navController,
                     )
                 }
                 item {
@@ -126,7 +128,7 @@ fun TravelListScreen(
                         done = "done",
                         moneyAmount = 5500000,
                         iconId = R.drawable.ic_travel_1,
-                        navController = navController
+                        navController = navController,
                     )
                 }
             },

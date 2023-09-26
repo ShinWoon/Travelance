@@ -17,7 +17,7 @@ import com.moneyminions.presentation.screen.traveldone.view.DoneTabView
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TravelDoneScreen(
-    navController: NavController
+    navController: NavController,
 ) {
     val tabs = listOf("전체", "공금내역", "멤버들")
     var selectedTabIndex = rememberPagerState(pageCount = { tabs.size })
