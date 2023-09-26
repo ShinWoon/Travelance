@@ -32,18 +32,18 @@ public class SecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFil
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+                .csrf().disable() // CSRF 보호 비활성화
+                .cors(Customizer.withDefaults()) // CORS 설정
+                .formLogin().disable() // 폼 기반 로그인 비활성화
                 .authorizeRequests()
-                    .antMatchers("/**").permitAll()
-                    .anyRequest().authenticated()
-                    .and()
-                .formLogin()
-                    .loginPage("/api/oauth/login")
-                    .permitAll()
-                    .and()
-                .logout()
-                    .permitAll();
+//                .antMatchers("/spiiters/me").hasRole("SPITTER")
+//                .antMatchers(HttpMethod.POST, "/spittles").hasRole("SPITTER")
+                .anyRequest().permitAll()
+                .and()
+                .requiresChannel();
+                //.antMatchers("/spitter/form").requiresSecure();
     }
+
 
 
 
@@ -81,15 +81,14 @@ public class SecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFil
 //    @Override
 //    public void configure(HttpSecurity http) throws Exception {
 //        http
-//                .csrf().disable()
+//                .csrf().disable() // CSRF 보호 비활성화
+//                .cors(Customizer.withDefaults()) // CORS 설정
+//                .formLogin().disable() // 폼 기반 로그인 비활성화
 //                .authorizeRequests()
-//                    .antMatchers("/**").permitAll()
-//                    .anyRequest().authenticated()
-//                    .and()
-//                .formLogin()
-//                    .loginPage("/api/oauth/login")
-//                    .permitAll()
-//                    .and()
-//                .logout()
-//                    .permitAll();
+//                .antMatchers("/spiiters/me").hasRole("SPITTER")
+//                .antMatchers(HttpMethod.POST, "/spittles").hasRole("SPITTER")
+//                .anyRequest().permitAll()
+//                .and()
+//                .requiresChannel()
+//                .antMatchers("/spitter/form").requiresSecure();
 //    }
