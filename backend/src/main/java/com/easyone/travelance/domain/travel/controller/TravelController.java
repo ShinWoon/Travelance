@@ -103,6 +103,13 @@ public class TravelController {
         return new ResponseEntity<>(resultDto,HttpStatus.OK);
     }
 
+    //여행 시작
+    @Operation(summary = "여행시작", description = "요청 시, 방의 여행이 시작되며, 정산중으로 상태가 바뀝니다. ")
+    @PostMapping(value = "/{roomId}/start")
+    public ResponseEntity<ResultDto> startTravel(@PathVariable Long roomId) {
+        ResultDto resultDto = travelService.startTravel(roomId);
+        return new ResponseEntity<>(resultDto,HttpStatus.OK);
+    }
 
 
 
