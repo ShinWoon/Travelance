@@ -25,6 +25,7 @@ public class UserProfileRequestDto {
                 .ProfileName(imageName)
                 .member(member)
                 .travelRoom(travelRoom)
+                .member(member)
                 .build();
     }
 
