@@ -23,7 +23,7 @@ class RequestInterceptor @Inject constructor(
 //                    return chain.proceed(builder.build())
 //                }
 //            }
-            builder.addHeader("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBQ0NFU1MiLCJpYXQiOjE2OTU3MTc0OTcsImV4cCI6MTY5NTcxOTI5NywiZW1haWwiOiJtaW1pZ2ExQG5hdmVyLmNvbSIsInJvbGUiOiJNRU1CRVIifQ.rOhUkV9YISha_K0RfqR53kaoxUjWzZDuJ9WZMZ1HgcDjrq57N10jjGmJiujoM1WCw4npxtXRJeBeaC375G9zHA")
+            builder.addHeader("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBQ0NFU1MiLCJpYXQiOjE2OTU3OTAxNDIsImV4cCI6MTY5NTc5MDMyMiwiZW1haWwiOiJtaW1pZ2ExQG5hdmVyLmNvbSIsInJvbGUiOiJNRU1CRVIifQ.rLQhLOKhKaZreATjWpgvi3dttcoJqwBGjhiJeQq2KpnWeooMw8BXQTGUlUBukec1GXe8Tzr9kg2lFf1hWvq_jg")
             return chain.proceed(builder.build())
         }catch (e: Exception){
             Log.d(TAG, "intercept: $e")

@@ -5,8 +5,6 @@ import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.util.Log
-import androidx.core.content.FileProvider
-import com.gun0912.tedpermission.provider.TedPermissionProvider
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -24,22 +22,30 @@ object UploadUtils {
      */
     fun createMultipartFromUri(context: Context, key: String, filePath: String): MultipartBody.Part? {
         try {
-            val uri = FileProvider.getUriForFile(
-                TedPermissionProvider.context,
-                "com.moneyminions.fileprovider",
-                File(filePath),
-            )
+//            val uri = FileProvider.getUriForFile(
+////                TedPermissionProvider.context,
+//                context,
+//                "com.moneyminions.fileprovider",
+//                File(filePath),
+//            )
+    
+            val uri = Uri.parse(filePath)
+            Log.d(TAG, "createMultipartFromUri: 1 $uri")
 
             val file: File? = getFileFromUri(context, uri)
             if (file == null) {
                 // 파일을 가져오지 못한 경우 처리할 로직을 작성하세요.
                 return null
             }
+            Log.d(TAG, "createMultipartFromUri: 2 $file")
 
             val requestFile: RequestBody = createRequestBodyFromFile(file)
+            
+            Log.d(TAG, "createMultipartFromUri: 3 $requestFile")
+            
             return MultipartBody.Part.createFormData(key, file.name, requestFile)
         } catch (e: Exception) {
-            Log.d(TAG, "createMultipartFromUri: ${e.message}")
+            Log.d(TAG, "createMultipartFromUri Exception: ${e.message}")
             return null
         }
     }
@@ -58,6 +64,7 @@ object UploadUtils {
      */
     @SuppressLint("Range")
     private fun uriToFilePath(context: Context, uri: Uri): String? {
+        Log.d(TAG, "uriToFilePath: $uri")
         lateinit var filePath: String
         context.contentResolver.query(uri, null, null, null, null).use { cursor ->
             cursor?.let {

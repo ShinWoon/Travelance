@@ -16,11 +16,11 @@ class TravelListDataSourceImpl(
      * 여행 방 생성
      */
     override suspend fun createTravelRoom(createTravelRoomRequest: CreateTravelRoomRequest): CommonResponse {
-        Log.d(TAG, "createTravelRoom: $createTravelRoomRequest")
+        Log.d(TAG, "createTravelRoom 끝단: $createTravelRoomRequest")
         return businessService.createTravelRoom(
+            createTravelRoomRequest.imageFiles,
             createTravelRoomRequest.roomUserRequestDto,
             createTravelRoomRequest.roomInfoRequestDto,
-            createTravelRoomRequest.imageFiles
         )
     }
 

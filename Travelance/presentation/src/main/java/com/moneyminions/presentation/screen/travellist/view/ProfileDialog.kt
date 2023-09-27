@@ -93,9 +93,12 @@ fun ProfileDialog(
                         if(!createTravelViewModel.InputProfileCheck()) {
                             Log.d(TAG, "ProfileDialog: 여행방 등록 메서드 call")
                             // 이미지 url -> file로
+                            Log.d(TAG, " -> ProfileDialog url: ${createTravelViewModel.profileImage.value} ")
                             val imageFile = UploadUtils.createMultipartFromUri(context, "file", createTravelViewModel.profileImage.value)
-                            createTravelViewModel.createTravelRoom(imageFile)
+                            Log.d(TAG, " -> ProfileDialog imageFile: $imageFile")
+//                            createTravelViewModel.createTravelRoom(imageFile)
                         }
+                        onDismiss()
                     }
                 )
             }
@@ -109,7 +112,7 @@ fun ProfileImage(
 ) {
     val launcher = rememberLauncherForActivityResult(contract =
     ActivityResultContracts.GetContent()) { uri: Uri? ->
-        Log.d(TAG, "ProfileImage: $uri")
+        Log.d(TAG, "First Select ProfileImage: $uri")
         createTravelViewModel.setProfileImage(uri.toString())
     }
     

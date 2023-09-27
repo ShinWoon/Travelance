@@ -11,7 +11,6 @@ import com.moneyminions.domain.model.travellist.CreateTravelRoomDto
 import com.moneyminions.domain.model.travellist.TravelRoomDto
 import com.moneyminions.domain.model.travellist.TravelUserDto
 import com.moneyminions.domain.usecase.travellist.CreateTravelRoomUseCase
-import com.moneyminions.presentation.utils.UploadUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -80,10 +79,11 @@ class CreateTravelViewModel @Inject constructor(
     val createTravelRoomResult = _createTravelRoomResult.asStateFlow()
     fun createTravelRoom(imageFiles: MultipartBody.Part?) {
         viewModelScope.launch {
+            Log.d(TAG, "createTravelRoom: $imageFiles")
             _createTravelRoomResult.emit(createTravelRoomUseCase.invoke(
                 CreateTravelRoomDto(
                     travelUserInfo = TravelUserDto(
-                        nickName = _profileImage.value,
+                        nickName = _nickName.value,
                     ),
                     travelRoomInfo = TravelRoomDto(
                         budget = _travelBudget.value.toInt(),
