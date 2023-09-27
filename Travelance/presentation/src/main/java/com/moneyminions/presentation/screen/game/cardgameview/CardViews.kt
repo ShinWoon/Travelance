@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -109,23 +110,23 @@ fun CardFourView(
                     modifier = modifier.graphicsLayer(translationX = offset * 200) // 여기에 수정
                         .padding(8.dp),
                 )
-
-                Column(
-                    modifier = modifier
-                        .graphicsLayer(translationX = offset * 200) // 여기에 수정
-                        .padding(8.dp)
-                        .rotate(-18.00f),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                ) {
-                    MinionProfile(size = 80.dp)
-                    Spacer(modifier = modifier.height(64.dp))
-                    Text(
-                        text = "하동혁",
-                        color = DarkerGray,
-                        style = pretendardBold32,
-                    )
-                }
+//
+//                Column(
+//                    modifier = modifier
+//                        .graphicsLayer(translationX = offset * 200) // 여기에 수정
+//                        .padding(8.dp)
+//                        .rotate(-18.00f),
+//                    horizontalAlignment = Alignment.CenterHorizontally,
+//                    verticalArrangement = Arrangement.Center,
+//                ) {
+//                    MinionProfile(size = 80.dp)
+//                    Spacer(modifier = modifier.height(64.dp))
+//                    Text(
+//                        text = "하동혁",
+//                        color = DarkerGray,
+//                        style = pretendardBold32,
+//                    )
+//                }
             }
         },
         flipController = controller,
@@ -148,10 +149,5 @@ fun CardFourView(
     )
     if (isCardFlipSuccessVisible) {
         CardFlipSuccessView(modifier = modifier)
-
-//        LaunchedEffect(isCardFlipSuccessVisible) {
-//            delay(1200)
-//            isCardFlipSuccessVisible = false
-//        }
     }
 }
