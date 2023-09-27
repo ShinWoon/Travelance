@@ -42,14 +42,14 @@ public class TravelService {
             String ReturnUrl = travelProfileService.saveImage(travelRoom, profileUrl, member);
             System.out.println(ReturnUrl);
 
-            TravelRoomMember travelRoomMember = TravelRoomMember.builder()
-                    .travelRoom(travelRoom)
-                    .member(member)
-                    .nickName(roomUserRequestDto.getNickName())
-                    .isDone(false)
-                    .build();
-
-            travelRoomMemberRepository.save(travelRoomMember);
+//            TravelRoomMember travelRoomMember = TravelRoomMember.builder()
+//                    .travelRoom(travelRoom)
+//                    .member(member)
+//                    .nickName(roomUserRequestDto.getNickName())
+//                    .isDone(false)
+//                    .build();
+//
+//            travelRoomMemberRepository.save(travelRoomMember);
 
             return new RoomIdResponseDto(travelRoom.getId().toString());
         }
