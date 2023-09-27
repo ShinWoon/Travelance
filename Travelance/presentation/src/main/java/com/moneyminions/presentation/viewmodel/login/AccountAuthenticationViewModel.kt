@@ -14,6 +14,7 @@ import com.moneyminions.domain.usecase.login.ConfirmAuthenticationAccountUseCase
 import com.moneyminions.domain.usecase.login.PostAuthenticationAccountUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -89,5 +90,13 @@ class AccountAuthenticationViewModel @Inject constructor(
     suspend  fun refreshNetworkState(){
         _authenticationResult.emit(NetworkResult.Idle)
         _confirmResult.emit(NetworkResult.Idle)
+    }
+
+    private val _isShowDialog = MutableStateFlow<Boolean>(false)
+    val isShowDialog: StateFlow<Boolean> = _isShowDialog
+    fun setIsShowDialog(value: Boolean){
+        viewModelScope.launch {
+            _isShowDialog.emit(value)
+        }
     }
 }

@@ -10,11 +10,14 @@ import com.moneyminions.data.model.login.response.CardResponse
 import com.moneyminions.data.model.login.response.JoinResponse
 import com.moneyminions.data.model.login.response.LoginResponse
 import com.moneyminions.data.model.login.response.MemberInfoResponse
+import com.moneyminions.data.model.login.response.ReAccessTokenResponse
 import retrofit2.http.Body
 import retrofit2.http.PATCH
 import com.moneyminions.data.model.travellist.request.CreateTravelRoomRequest
 import com.moneyminions.data.model.travellist.response.TravelRoomResponse
+import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -76,5 +79,10 @@ interface BusinessService {
      */
     @PATCH("member/update/nickname")
     suspend fun updateNickname(@Query("nickname") nickname: String): CommonResponse
+    /**
+     * ACCESS 토큰 재발급
+     */
+    @POST("api/accounts/access-token/re")
+    suspend fun postReAccessToken(@Header("Authorization") refreshToken: String): Response<ReAccessTokenResponse>
 
 }

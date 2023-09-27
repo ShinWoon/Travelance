@@ -53,7 +53,7 @@ fun AccountAuthenticationScreen(
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
-    var showDialog by remember { mutableStateOf(false) }
+    val isShowDialogState = accountAuthenticationViewModel.isShowDialog.collectAsState()
     val authenticationState by accountAuthenticationViewModel.authenticationResult.collectAsState()
     NetworkResultHandler(
         state = authenticationState,
@@ -64,7 +64,7 @@ fun AccountAuthenticationScreen(
         },
         successAction = {
 //            navController.navigate(Screen.AccountList.route)
-            showDialog = true
+            accountAuthenticationViewModel.setIsShowDialog(true)
         }
     )
     val confirmResultState by accountAuthenticationViewModel.confirmResult.collectAsState()
@@ -145,8 +145,9 @@ fun AccountAuthenticationScreen(
 
     AuthenticationDialog(
         navController = navController,
-        showDialog = showDialog,
-        onDismiss = { showDialog = false },
+        showDialog = isShowDialogState.value,
+        onDismiss = { accountAuthenticationViewModel.setIsShowDialog(false)
+            Log.d(TAG, "취소 클릭 : ${accountAuthenticationViewModel.isShowDialog.value}")},
         type = "account",
         value = accountAuthenticationViewModel.verifyCode.value,
         onValueChange = {
