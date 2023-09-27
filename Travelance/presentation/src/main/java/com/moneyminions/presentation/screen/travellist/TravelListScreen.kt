@@ -182,6 +182,7 @@ fun TravelRoomItem(
     modifier: Modifier,
     travelRoomDto: TravelRoomDto,
     onRemove: (TravelRoomDto) -> Unit,
+    navController: NavController
 ) {
     val context = LocalContext.current
     
