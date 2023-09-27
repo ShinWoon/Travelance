@@ -16,7 +16,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class FirebaseCloudMessageService {
-    private final String API_URL = "dfdf";
+    private final String API_URL = "https://fcm.googleapis.com/v1/projects/travelance-fada4/messages:send";
     private final ObjectMapper objectMapper;
 
     public void sendMessageTo(String targetToken, String title, String body,String targetData) throws IOException {
@@ -57,7 +57,7 @@ public class FirebaseCloudMessageService {
 
     private String getAccessToken() throws IOException {
         // 클래스패스 내의 리소스로 파일 로드
-        InputStream is = getClass().getResourceAsStream("/travel-6a9f8-firebase-adminsdk-ytgqw-2bd1da4b43");
+        InputStream is = getClass().getResourceAsStream("/travelance-fada4-firebase-adminsdk-66uyr-4c861b19d8");
 
         GoogleCredentials googleCredentials = GoogleCredentials
                 .fromStream(is)
