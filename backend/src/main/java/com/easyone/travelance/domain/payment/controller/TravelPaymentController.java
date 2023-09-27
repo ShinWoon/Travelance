@@ -5,6 +5,8 @@ import com.easyone.travelance.domain.member.service.MemberService;
 import com.easyone.travelance.domain.payment.dto.TravelPaymentPlusDto;
 import com.easyone.travelance.domain.payment.dto.TravelPaymentResponseDto;
 import com.easyone.travelance.domain.payment.service.TravelPaymentWithService;
+import com.easyone.travelance.global.memberInfo.MemberInfo;
+import com.easyone.travelance.global.memberInfo.MemberInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,9 +26,9 @@ public class TravelPaymentController {
 
     @GetMapping(value = "/with")
     @Operation(summary = "내가 결제한 금액 중, 공금인 내역만 가져옵니다.")
-    public ResponseEntity<TravelPaymentPlusDto> getPaymentWith(@RequestParam String email) {
+    public ResponseEntity<TravelPaymentPlusDto> getPaymentWith(@MemberInfo MemberInfoDto memberInfoDto) {
 
-        Member member = memberService.findMemberByEmail(email);
+        Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
         TravelPaymentPlusDto travelPaymentPlusDto = travelPaymentWithService.getPaymentWith(member);
 
         return new ResponseEntity<>(travelPaymentPlusDto, HttpStatus.OK);
@@ -34,9 +36,9 @@ public class TravelPaymentController {
 
     @GetMapping(value = "/alone")
     @Operation(summary = "내가 결제한 금액 중, 개인 결제 내역만 가져옵니다.")
-    public ResponseEntity<List<TravelPaymentResponseDto>> getPaymentAlone(@RequestParam String email) {
+    public ResponseEntity<List<TravelPaymentResponseDto>> getPaymentAlone(@MemberInfo MemberInfoDto memberInfoDto) {
 
-        Member member = memberService.findMemberByEmail(email);
+        Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
         List<TravelPaymentResponseDto> travelPaymentResponseDtoList = travelPaymentWithService.getPaymentAlone(member);
 
         return new ResponseEntity<>(travelPaymentResponseDtoList, HttpStatus.OK);
