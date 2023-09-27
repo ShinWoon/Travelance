@@ -32,7 +32,7 @@ public class TravelService {
 
     //방만들기
     @Transactional
-    public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, MultipartFile profileUrl) {
+    public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, MultipartFile profileUrl, RoomUserRequestDto roomUserRequestDto) {
         //방 만든 직전에는 사전정산 상태
         log.info(String.valueOf(profileUrl));
         log.info(roomInfoRequestDto.getTravelName());
@@ -47,11 +47,10 @@ public class TravelService {
                 travelProfileService.saveImage(travelRoom, profileUrl, member);
             }
 
-//
 //            TravelRoomMember travelRoomMember = TravelRoomMember.builder()
 //                    .travelRoom(travelRoom)
 //                    .member(member)
-//                    .nickName(roomInfoRequestDto.getTravelName())
+//                    .nickName(roomUserRequestDto.getNickName())
 //                    .isDone(false)
 //                    .build();
 //
