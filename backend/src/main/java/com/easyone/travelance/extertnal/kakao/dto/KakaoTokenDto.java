@@ -2,6 +2,7 @@ package com.easyone.travelance.extertnal.kakao.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 public class KakaoTokenDto {
@@ -17,10 +18,12 @@ public class KakaoTokenDto {
         private String code;
     }
 
+
+
     // 토큰 응답 결과
-    @ToString
     @Builder
     @Getter
+    @ToString
     public static class Response {
         private String token_type;
         private String access_token;
@@ -29,7 +32,19 @@ public class KakaoTokenDto {
         private Integer refresh_token_expires_in;
         private String scope;
 
+        public Response() {
+            // 기본 생성자
+        }
 
+        @Builder
+        public Response(String token_type, String access_token, Integer expires_in, String refresh_token, Integer refresh_token_expires_in, String scope) {
+            this.token_type = token_type;
+            this.access_token = access_token;
+            this.expires_in = expires_in;
+            this.refresh_token = refresh_token;
+            this.refresh_token_expires_in = refresh_token_expires_in;
+            this.scope = scope;
+        }
     }
 
 
