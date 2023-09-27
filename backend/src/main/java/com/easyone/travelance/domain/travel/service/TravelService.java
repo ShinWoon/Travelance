@@ -42,6 +42,8 @@ public class TravelService {
             if(profileUrl!=null) {
                 travelProfileService.saveImage(travelRoom, profileUrl);
             }
+            log.info(String.valueOf(profileUrl));
+            log.info(travelRoom.getId().toString());
 
             TravelRoomMember travelRoomMember = TravelRoomMember.builder()
                     .travelRoom(travelRoom)
@@ -51,7 +53,7 @@ public class TravelService {
                     .build();
 
             travelRoomMemberRepository.save(travelRoomMember);
-
+            log.info("여행방 맵버"+ travelRoomMember.getTravelNickName());
             return new RoomIdResponseDto(travelRoom.getId().toString());
         }
         catch (Exception e) {
