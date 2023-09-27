@@ -72,9 +72,9 @@ public class WebConfig implements WebMvcConfigurer {
         resolvers.add(memberInfoArgumentResolver);
     }
 
-    @Override
-    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-        converters.add(new ByteArrayHttpMessageConverter());
-    }
+//    @Override
+//    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+//        converters.add(new ByteArrayHttpMessageConverter());
+//    }
 
 }

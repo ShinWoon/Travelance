@@ -34,27 +34,23 @@ public class TravelService {
     @Transactional
     public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, MultipartFile profileUrl, RoomUserRequestDto roomUserRequestDto) {
         //방 만든 직전에는 사전정산 상태
-        log.info(String.valueOf(profileUrl));
-        log.info(roomInfoRequestDto.getTravelName());
-        log.info("여행방 맵버"+ profileUrl.getOriginalFilename());
-
         RoomType roomType = RoomType.BEFORE;
         try {
             TravelRoom travelRoom = roomInfoRequestDto.toEntity(roomType);
             travelRoomRepository.save(travelRoom);
-            //프로필 사진이 있으면, 프로필 사진 저장
-            if(profileUrl!=null) {
-                travelProfileService.saveImage(travelRoom, profileUrl, member);
-            }
 
-//            TravelRoomMember travelRoomMember = TravelRoomMember.builder()
-//                    .travelRoom(travelRoom)
-//                    .member(member)
-//                    .nickName(roomUserRequestDto.getNickName())
-//                    .isDone(false)
-//                    .build();
-//
-//            travelRoomMemberRepository.save(travelRoomMember);
+            String ReturnUrl = travelProfileService.saveImage(travelRoom, profileUrl, member);
+            System.out.println(ReturnUrl);
+
+            TravelRoomMember travelRoomMember = TravelRoomMember.builder()
+                    .travelRoom(travelRoom)
+                    .member(member)
+                    .nickName(roomUserRequestDto.getNickName())
+                    .isDone(false)
+                    .build();
+
+            travelRoomMemberRepository.save(travelRoomMember);
+
             return new RoomIdResponseDto(travelRoom.getId().toString());
         }
         catch (Exception e) {
@@ -156,8 +152,8 @@ public class TravelService {
                 .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
         TravelRoomMember travelRoomMember = travelRoomMemberRepository.findByTravelRoomAndMember(travelRoom, member);
 
-       if (travelRoomMember!=null) {
-           travelRoomMemberRepository.delete(travelRoomMember);
+        if (travelRoomMember!=null) {
+            travelRoomMemberRepository.delete(travelRoomMember);
             return new ResultDto("여행방 나가기 성공");
         }
         else {
