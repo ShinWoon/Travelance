@@ -18,15 +18,13 @@ public class RoomInfoRequestDto {
     private String startDate;
     private String endDate;
     private Long budget;
-    private RoomUserRequestDto nickName;
 
     @Builder
-    public RoomInfoRequestDto(String travelName, String startDate, String endDate, Long budget, RoomUserRequestDto nickName) {
+    public RoomInfoRequestDto(String travelName, String startDate, String endDate, Long budget) {
         this.travelName = travelName;
         this.startDate=startDate;
         this.endDate= endDate;
         this.budget = budget;
-        this.nickName=nickName;
     }
 
     public TravelRoom toEntity(RoomType isDone) {
