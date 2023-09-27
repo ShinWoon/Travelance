@@ -74,7 +74,7 @@ fun EditName(
             onClick = onClick
         ) {
             Text(
-                text = "완료",
+                text = "수정",
                 style = CustomTextStyle.pretendardBold12,
                 color = White
             )

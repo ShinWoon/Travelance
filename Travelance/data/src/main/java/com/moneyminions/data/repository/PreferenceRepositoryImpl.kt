@@ -5,6 +5,7 @@ import com.moneyminions.data.datasource.local.PreferenceDataSource
 import com.moneyminions.domain.model.login.JwtTokenDto
 import com.moneyminions.domain.repository.PreferenceRepository
 import javax.inject.Inject
+import com.google.firebase.messaging.FirebaseMessaging
 
 private const val TAG = "PreferenceRepositoryImp D210"
 class PreferenceRepositoryImpl @Inject constructor(
@@ -19,12 +20,20 @@ class PreferenceRepositoryImpl @Inject constructor(
         return preferenceDataSource.getJwtToken()
     }
 
-    override fun putRole(role: String?) {
-        preferenceDataSource.putRole(role)
+//    override fun putRole(role: String?) {
+//        preferenceDataSource.putRole(role)
+//    }
+//
+//    override fun getRole(): String {
+//        return preferenceDataSource.getRole()
+//    }
+
+    override fun putFCMToken() {
+        preferenceDataSource.putFCMToken()
     }
 
-    override fun getRole(): String {
-        return preferenceDataSource.getRole()
+    override fun getFCMToken(): String {
+        return preferenceDataSource.getFCMToken()
     }
 
 }

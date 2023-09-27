@@ -28,7 +28,7 @@ class LoginRepositoryImpl @Inject constructor(
     val preferenceDataSource: PreferenceDataSource
 ): LoginRepository {
     override suspend fun login(socialType: String): NetworkResult<LoginResultDto> {
-        return handleApi { loginDataSource.login(LoginRequest(socialType)).toDomain() }
+        return handleApi { loginDataSource.login(LoginRequest(socialType, preferenceDataSource.getFCMToken())).toDomain() }
     }
 
     override suspend fun postAuthenticationAccount(accountInfoDto: AuthenticationAccountInfoDto): NetworkResult<AuthenticationAccountResultDto> {

@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetRoleUseCase@Inject constructor(
     private val preferenceRepository: PreferenceRepository
 ) {
-    operator fun invoke(): String{
-        return preferenceRepository.getRole()
-    }
+//    operator fun invoke(): String{
+//        return preferenceRepository.getRole()
+//    }
 }

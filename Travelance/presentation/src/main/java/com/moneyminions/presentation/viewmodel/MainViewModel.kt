@@ -17,9 +17,9 @@ class MainViewModel @Inject constructor(
     private val getJwtTokenUseCase: GetJwtTokenUseCase
 ): ViewModel() {
 
-    fun getRole(): String{
-        return getRoleUseCase.invoke()
-    }
+//    fun getRole(): String{
+//        return getRoleUseCase.invoke()
+//    }
     fun getJwtToken(): JwtTokenDto {
         return getJwtTokenUseCase.invoke()
     }

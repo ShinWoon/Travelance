@@ -23,6 +23,7 @@ import androidx.constraintlayout.compose.ConstraintSet
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter.State.Empty.painter
 import com.moneyminions.presentation.R
+import com.moneyminions.presentation.theme.Black
 import com.moneyminions.presentation.utils.Constants
 
 @Composable
@@ -76,14 +77,14 @@ fun CardFrame(
         ) {
             Text(
                 text = name,
-                style = CustomTextStyle.pretendardSemiBold16,
-                color = Color.White,
+                style = CustomTextStyle.pretendardSemiBold12,
+                color = Black,
                 modifier = Modifier.layoutId("name")
             )
             Text(
                 text = formatNumberWithHyphens(number),
-                style = CustomTextStyle.pretendardBold16,
-                color = Color.White,
+                style = CustomTextStyle.pretendardBold12,
+                color = Black,
                 modifier = Modifier.layoutId("number")
             )
         }
