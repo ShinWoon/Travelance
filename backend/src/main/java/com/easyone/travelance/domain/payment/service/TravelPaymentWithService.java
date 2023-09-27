@@ -1,6 +1,7 @@
 package com.easyone.travelance.domain.payment.service;
 
 import com.easyone.travelance.domain.member.entity.Member;
+import com.easyone.travelance.domain.payment.dto.TravelPaymentPlusDto;
 import com.easyone.travelance.domain.payment.dto.TravelPaymentResponseDto;
 import com.easyone.travelance.domain.payment.entity.Payment;
 import com.easyone.travelance.domain.payment.repository.PaymentRepository;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,8 +24,7 @@ public class TravelPaymentWithService {
     @Autowired
     private PaymentRepository paymentRepository;
 
-    public List<TravelPaymentResponseDto> getPaymentWith(Member member) {
-
+    public TravelPaymentPlusDto getPaymentWith(Member member) {
         // 1. 현재 회원이 속한 여행방 중에서 RoomType이 NOW인 것을 조회
         List<TravelRoom> travelRooms = travelRoomRepository.findAllByTravelRoomMembers_MemberAndIsDone(member, RoomType.NOW);
 
@@ -34,11 +35,26 @@ public class TravelPaymentWithService {
         // 첫 번째 NOW 상태의 여행방의 ID를 가져옵니다.
         Long roomId = travelRooms.get(0).getId();
 
-        // 2. roomId와 memberId를 이용해서 Payment 내역 중 withPaid가 True인 것만 조회
+        // 2. 해당 roomId와 memberId를 이용해서 Payment 내역 조회 및 DTO 변환
         List<Payment> paymentsList = paymentRepository.findAllByTravelRoom_IdAndMemberAndIsWithPaidTrue(roomId, member);
+        List<TravelPaymentResponseDto> travelPaymentResponseDtos = paymentsList.stream()
+                .map(TravelPaymentResponseDto::new)
+                .collect(Collectors.toList());
 
-        return paymentsList.stream().map(TravelPaymentResponseDto::new).collect(Collectors.toList());
+        // 3. FriendPayment와 TravelRoomInfo 정보 조회 및 DTO 변환 (여기서는 예시로만 작성)
+        // 실제 구현은 관련 Repository나 Service를 사용해야 합니다.
+        List<TravelPaymentPlusDto.FriendPayment> friendPayments = new ArrayList<>(); // 조회 후 DTO 변환
+        List<TravelPaymentPlusDto.TravelRoomInfo> travelRoomInfos = new ArrayList<>(); // 조회 후 DTO 변환
+
+        // 4. 결과 DTO 생성 및 반환
+        TravelPaymentPlusDto result = new TravelPaymentPlusDto();
+        result.setTravelPaymentResponseDto(travelPaymentResponseDtos);
+        result.setFriendPayments(friendPayments);
+        result.setTravelRoomInfo(travelRoomInfos);
+
+        return result;
     }
+
 
 
     public List<TravelPaymentResponseDto> getPaymentAlone(Member member) {

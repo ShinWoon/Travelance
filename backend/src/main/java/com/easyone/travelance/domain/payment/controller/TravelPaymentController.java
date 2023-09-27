@@ -2,7 +2,7 @@ package com.easyone.travelance.domain.payment.controller;
 
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.service.MemberService;
-import com.easyone.travelance.domain.payment.dto.TravelPaymentRequestDto;
+import com.easyone.travelance.domain.payment.dto.TravelPaymentPlusDto;
 import com.easyone.travelance.domain.payment.dto.TravelPaymentResponseDto;
 import com.easyone.travelance.domain.payment.service.TravelPaymentWithService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,12 +24,12 @@ public class TravelPaymentController {
 
     @GetMapping(value = "/with")
     @Operation(summary = "내가 결제한 금액 중, 공금인 내역만 가져옵니다.")
-    public ResponseEntity<List<TravelPaymentResponseDto>> getPaymentWith(@RequestParam String email) {
+    public ResponseEntity<TravelPaymentPlusDto> getPaymentWith(@RequestParam String email) {
 
         Member member = memberService.findMemberByEmail(email);
-        List<TravelPaymentResponseDto> travelPaymentResponseDtoList = travelPaymentWithService.getPaymentWith(member);
+        TravelPaymentPlusDto travelPaymentPlusDto = travelPaymentWithService.getPaymentWith(member);
 
-        return new ResponseEntity<>(travelPaymentResponseDtoList, HttpStatus.OK);
+        return new ResponseEntity<>(travelPaymentPlusDto, HttpStatus.OK);
     }
 
     @GetMapping(value = "/alone")
