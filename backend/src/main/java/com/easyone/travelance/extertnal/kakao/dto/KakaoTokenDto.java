@@ -31,19 +31,21 @@ public class KakaoTokenDto {
         private String refresh_token;
         private Integer refresh_token_expires_in;
         private String scope;
+        private String id_token;
 
         public Response() {
             // 기본 생성자
         }
 
         @Builder
-        public Response(String token_type, String access_token, Integer expires_in, String refresh_token, Integer refresh_token_expires_in, String scope) {
+        public Response(String token_type, String access_token, Integer expires_in, String refresh_token, Integer refresh_token_expires_in, String scope, String id_token) {
             this.token_type = token_type;
             this.access_token = access_token;
             this.expires_in = expires_in;
             this.refresh_token = refresh_token;
             this.refresh_token_expires_in = refresh_token_expires_in;
             this.scope = scope;
+            this.id_token = id_token;
         }
     }
 
