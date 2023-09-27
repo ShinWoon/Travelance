@@ -19,8 +19,8 @@ public class OauthLoginDto {
         @Schema(example = "KAKAO")
         private String socialType;
 
-//        @Schema(example = "")
-//        private String firebaseToken;
+        @Schema(example = "")
+        private String firebaseToken;
     }
 
     @Getter

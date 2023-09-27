@@ -98,6 +98,13 @@ public class Member {
         this.nickname = nickname;
     }
 
+    public String getFirebaseToken() {
+        return fcmToken;
+    }
+
+    public void setFirebaseToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
 
     @Override
     public String toString() {
