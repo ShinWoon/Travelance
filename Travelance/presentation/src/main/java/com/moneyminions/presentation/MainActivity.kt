@@ -35,7 +35,6 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.moneyminions.presentation.navigation.BottomNavItem
 import com.moneyminions.presentation.navigation.NavGraph
 import com.moneyminions.presentation.navigation.Screen
-import com.moneyminions.presentation.screen.MainScreen
 import com.moneyminions.presentation.theme.MyApplicationTheme
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.theme.TextGray
@@ -138,6 +137,8 @@ class MainActivity : FragmentActivity() {
 //                                    .show()
 //                                isAuthenticated.value = true
 //                            }
+//                            Log.d(TAG, "onCreate: 지문인증 성공")
+//                            isAuthenticated.value = true
 //                        },
 //                        onError = { _, _ ->
 //                            /*
@@ -152,8 +153,9 @@ class MainActivity : FragmentActivity() {
 //                                    Toast.LENGTH_SHORT,
 //                                )
 //                                    .show()
-//                                Log.d("Fail ->", "")
+//                                Log.d(TAG, "지문 인증 실패")
 //                            }
+//                            Log.d(TAG, "지문 인증 실패")
 //                        },
 //                    )
 //                }

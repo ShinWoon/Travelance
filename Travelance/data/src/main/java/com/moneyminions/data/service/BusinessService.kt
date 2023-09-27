@@ -1,14 +1,25 @@
 package com.moneyminions.data.service
 
 import com.moneyminions.data.model.common.response.CommonResponse
-import com.moneyminions.data.model.login.response.AccountResponse
 import com.moneyminions.data.model.login.request.AuthenticationAccountRequest
 import com.moneyminions.data.model.login.request.LoginRequest
 import com.moneyminions.data.model.login.request.MemberInfoRequest
+import com.moneyminions.data.model.login.response.AccountResponse
 import com.moneyminions.data.model.login.response.AuthenticationAccountResponse
 import com.moneyminions.data.model.login.response.CardResponse
 import com.moneyminions.data.model.login.response.JoinResponse
 import com.moneyminions.data.model.login.response.LoginResponse
+import com.moneyminions.data.model.travellist.request.RoomInfoRequest
+import com.moneyminions.data.model.travellist.request.RoomUserRequest
+import com.moneyminions.data.model.travellist.response.TravelRoomResponse
+import okhttp3.MultipartBody
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.Multipart
+import retrofit2.http.PATCH
+import retrofit2.http.POST
+import retrofit2.http.Part
 import com.moneyminions.data.model.login.response.MemberInfoResponse
 import com.moneyminions.data.model.login.response.ReAccessTokenResponse
 import retrofit2.http.Body
@@ -20,6 +31,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
+
 
 interface BusinessService {
 
@@ -61,8 +73,13 @@ interface BusinessService {
     /**
      * 여행방 만들기 API
      */
+    @Multipart
     @POST("travel/room")
-    suspend fun createTravelRoom(@Body createTravelRoomRequest: CreateTravelRoomRequest): String
+    suspend fun createTravelRoom(
+        @Part("imageFiles") imageFiles: MultipartBody.Part?,
+        @Part("roomUserRequestDto") roomUserRequest: RoomUserRequest,
+        @Part("roomInfoRequestDto") roomInfoRequest: RoomInfoRequest,
+    ): CommonResponse
 
     /**
      * 여행 목록 요청 API
@@ -84,5 +101,12 @@ interface BusinessService {
      */
     @POST("api/accounts/access-token/re")
     suspend fun postReAccessToken(@Header("Authorization") refreshToken: String): Response<ReAccessTokenResponse>
+
+    /**
+     * 여행방 삭제 API
+     */
+    @DELETE("travel/room/{roomId}")
+    suspend fun deleteTravelRoom(roomId: Int): CommonResponse
+
 
 }

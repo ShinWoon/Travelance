@@ -47,17 +47,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.moneyminions.domain.model.travellist.TravelRoomDto
 import com.moneyminions.presentation.R
-import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold14
+import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.travellist.view.TravelCardView
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.DarkGray
 import com.moneyminions.presentation.theme.FloatingButtonColor
 import com.moneyminions.presentation.theme.PinkDarkest
+import com.moneyminions.presentation.utils.BiometricUtils
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.travellist.TravelListViewModel
 import kotlinx.coroutines.delay
@@ -75,15 +77,14 @@ fun TravelListScreen(
     Log.d(TAG, "TravelListScreen: on")
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
-
-    travelListViewModel.refresh()
-
+    
+    // 여행 목록 GET
+    LaunchedEffect(Unit) {
+        travelListViewModel.getTravelList()
+    }
+    
     // 여행 목록 GET 호출 부분
     val travelListState by travelListViewModel.networkTravelList.collectAsState()
-//    LaunchedEffect(Unit) {
-//        travelListViewModel.getTravelList()
-//    }
-
     NetworkResultHandler(
         state = travelListState,
         errorAction = {
@@ -93,9 +94,25 @@ fun TravelListScreen(
         },
         successAction = {
             Log.d(TAG, "travelListResult : $it ")
-        },
+            travelListViewModel.refresh(it.toMutableList())
+        }
     )
-
+    
+    // 여행 목록 삭제
+    val deleteTravelRoomResult by travelListViewModel.deleteTravelRoomResult.collectAsState()
+    NetworkResultHandler(
+        state = deleteTravelRoomResult,
+        errorAction = {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("서버 오류")
+            }
+        },
+        successAction = {
+            Log.d(TAG, "삭제 성공 여부 : $it ")
+        }
+    )
+    
+    
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
@@ -106,14 +123,14 @@ fun TravelListScreen(
                     Text(
                         text = "방 생성",
                         color = DarkGray,
-                        style = pretendardBold14,
+                        style = CustomTextStyle.pretendardBold14
                     )
                 },
                 icon = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_add),
                         tint = PinkDarkest,
-                        contentDescription = "room add icon",
+                        contentDescription = "room add icon"
                     )
                 },
                 containerColor = FloatingButtonColor,
@@ -133,9 +150,8 @@ fun TravelListScreen(
                     items = travelListViewModel.travelList.value,
                     key = { _, item: TravelRoomDto ->
                         item.hashCode()
-                    },
+                    }
                 ) { _, item: TravelRoomDto ->
-
                     TravelRoomItem(
                         modifier = Modifier,
                         travelRoomDto = item,
@@ -166,9 +182,13 @@ fun TravelRoomItem(
     modifier: Modifier,
     travelRoomDto: TravelRoomDto,
     onRemove: (TravelRoomDto) -> Unit,
-    navController: NavController,
 ) {
     val context = LocalContext.current
+    
+    var isAuthenticated = remember { mutableStateOf(false) }
+    val fragmentActivity = LocalContext.current as FragmentActivity
+    val con = BiometricUtils.status(LocalContext.current)
+    
     var show by remember { mutableStateOf(true) }
     val currentItem by rememberUpdatedState(travelRoomDto)
     val dismissState = rememberDismissState(
@@ -182,7 +202,7 @@ fun TravelRoomItem(
         }, positionalThreshold = { 150.dp.toPx() },
     )
     AnimatedVisibility(
-        show, exit = fadeOut(spring()),
+        show, exit = fadeOut(spring())
     ) {
         SwipeToDismiss(
             state = dismissState,
@@ -200,11 +220,17 @@ fun TravelRoomItem(
             },
         )
     }
-
+    // 삭제 되는 순간 실행
     LaunchedEffect(show) {
         if (!show) {
             delay(800)
-            onRemove(currentItem)
+//            bioAuth(
+//                isAuthenticated = isAuthenticated,
+//                fragmentActivity = fragmentActivity,
+//                con = con,
+//                currentItem = currentItem,
+//            )
+            onRemove(currentItem) // 삭제 API 요청 -> viewModel에 구현
             Toast.makeText(context, "Item removed", Toast.LENGTH_SHORT).show()
         }
     }
@@ -219,7 +245,7 @@ fun DismissBackground(dismissState: DismissState) {
         null -> Color.Transparent
     }
     val direction = dismissState.dismissDirection
-
+    
     Card(
         modifier = Modifier
             .wrapContentHeight()
@@ -235,13 +261,35 @@ fun DismissBackground(dismissState: DismissState) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End,
         ) {
-            if (direction == DismissDirection.EndToStart) {
-                Icon(
-                    // make sure add baseline_archive_24 resource to drawable folder
-                    Icons.Default.Delete,
-                    contentDescription = "delete",
-                )
-            }
+            if (direction == DismissDirection.EndToStart) Icon(
+                Icons.Default.Delete,
+                contentDescription = "delete"
+            )
         }
     }
 }
+
+//fun bioAuth(
+//    isAuthenticated: MutableState<Boolean>,
+//    fragmentActivity: FragmentActivity,
+//    con: Boolean,
+//    currentItem: TravelRoomDto
+//) {
+//    if (con && !isAuthenticated.value) {
+//        BiometricUtils.authenticate(
+//            fragmentActivity,
+//            title = "Authentication Required",
+//            negativeText = "Password",
+//            onSuccess = {
+//                Log.d(TAG, "지문인증 성공")
+//                isAuthenticated.value = true
+//            },
+//            onError = { _, _ ->
+//                Log.d(TAG, "지문인증 에러")
+//            },
+//            onFailed = {
+//                Log.d(TAG, "지문 인증 실패")
+//            },
+//        )
+//    }
+//}
