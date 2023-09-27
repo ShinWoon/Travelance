@@ -21,10 +21,11 @@ import com.moneyminions.presentation.R
 @Composable
 fun MinionProfile(
     size: Dp,
+    img: String? = "",
 ) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
-            .data("https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg")
+            .data(img)
             .error(R.drawable.ic_default_profile)
             .build(),
         placeholder = painterResource(id = R.drawable.ic_default_profile), // 이미지가 없을때 넣을 것
@@ -39,5 +40,5 @@ fun MinionProfile(
 @Preview(showBackground = true)
 @Composable
 fun MinionProfilePreview() {
-    MinionProfile(size = 48.dp)
+    MinionProfile(size = 48.dp, "")
 }
