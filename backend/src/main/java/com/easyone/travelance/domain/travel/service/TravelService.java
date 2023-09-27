@@ -44,7 +44,7 @@ public class TravelService {
             travelRoomRepository.save(roomInfoRequestDto.toEntity(roomType));
             //프로필 사진이 있으면, 프로필 사진 저장
             if(profileUrl!=null) {
-                travelProfileService.saveImage(travelRoom, profileUrl);
+                travelProfileService.saveImage(travelRoom, profileUrl, member);
             }
 
 
@@ -74,7 +74,7 @@ public class TravelService {
 
             //프로필 사진이 있으면, 프로필 사진 저장
             if (profileUrl != null) {
-                travelProfileService.saveImage(travelRoom, profileUrl);
+                travelProfileService.saveImage(travelRoom, profileUrl, member);
             }
 
             TravelRoomMember travelRoomMember = TravelRoomMember.builder()
