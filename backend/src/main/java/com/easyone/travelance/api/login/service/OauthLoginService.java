@@ -37,9 +37,14 @@ public class OauthLoginService {
         Member oauthMember;
         if (optionalMember.isEmpty()) { // 신규 회원가입
             oauthMember = userInfo.toMemberEntity(socialType);
-            // Firebase 토큰 값 설정
-            oauthMember.setFirebaseToken(firebaseToken);
-            oauthMember = memberService.registerMember(oauthMember);
+            if (firebaseToken.isEmpty() || firebaseToken.isBlank()){
+                throw new RuntimeException("fcm토큰이 없습니다");
+            }
+            else{
+                // Firebase 토큰 값 설정
+                oauthMember.setFirebaseToken(firebaseToken);
+                oauthMember = memberService.registerMember(oauthMember);
+            }
         } else { // 기존 회원
             oauthMember = optionalMember.get();
             // 기존 회원의 Firebase 토큰 업데이트
