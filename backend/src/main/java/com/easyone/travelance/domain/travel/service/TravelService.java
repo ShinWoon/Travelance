@@ -165,7 +165,7 @@ public class TravelService {
 
     }
 
-
+    @Transactional(readOnly = true)
     public List<RoomUserResponseDto> getUserList(Long roomId) {
         TravelRoom travelRoom = travelRoomRepository.findById(roomId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
@@ -188,6 +188,7 @@ public class TravelService {
         return travelRoomMemberList;
     }
 
+    @Transactional
     public ResultDto startTravel(Long roomId) {
         try {
             TravelRoom travelRoom = travelRoomRepository.findById(roomId)
