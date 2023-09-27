@@ -10,6 +10,7 @@ import com.easyone.travelance.domain.travel.entity.TravelRoomMember;
 import com.easyone.travelance.domain.travel.enumclass.RoomType;
 import com.easyone.travelance.domain.travel.repository.TravelRoomMemberRepository;
 import com.easyone.travelance.domain.travel.repository.TravelRoomRepository;
+import com.easyone.travelance.global.service.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -28,24 +28,36 @@ public class TravelService {
     private final TravelRoomMemberRepository travelRoomMemberRepository;
     private final TravelPaymentService travelPaymentService;
     private final ProfileRepository profileRepository;
-    private final TravelProfileService travelProfileService;
+//    private final TravelProfileService travelProfileService;
+    private final S3Uploader awsS3Service;
+
 
     //방만들기
     @Transactional
-    public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, MultipartFile profileUrl, RoomUserRequestDto roomUserRequestDto) {
+    public void save(RoomInfoRequestDto roomInfoRequestDto, Member member, MultipartFile profileUrl, RoomUserRequestDto roomUserRequestDto) {
         //방 만든 직전에는 사전정산 상태
         RoomType roomType = RoomType.BEFORE;
         log.info(String.valueOf(profileUrl));
         log.info(member.getEmail());
         log.info(roomUserRequestDto.getNickName());
-
-
+        try {
             TravelRoom travelRoom = roomInfoRequestDto.toEntity(roomType);
             travelRoomRepository.save(travelRoom);
-        try {
-            String ReturnUrl = travelProfileService.saveImage(travelRoom, profileUrl, member);
-            System.out.println(ReturnUrl);
+
+//            String ReturnUrl = travelProfileService.saveImage(travelRoom, profileUrl, member);
+//            System.out.println(ReturnUrl);
 //
+            String imageUrl = awsS3Service.uploadFile(profileUrl, "profile")
+                    .orElseThrow(() -> new IllegalArgumentException("유저의 프로필 사진을 저장할 수 없습니다" + member.getId()));;
+
+
+            UserProfileRequestDto requestDto = UserProfileRequestDto.builder()
+                    .imageName(profileUrl.getOriginalFilename())
+                    .imageUrl(imageUrl)
+                    .build();
+
+            Profile profile = requestDto.toEntity(travelRoom,member);
+            profileRepository.save(profile);
 //            TravelRoomMember travelRoomMember = TravelRoomMember.builder()
 //                    .travelRoom(travelRoom)
 //                    .member(member)
@@ -55,43 +67,43 @@ public class TravelService {
 //
 //            travelRoomMemberRepository.save(travelRoomMember);
 
-            return new RoomIdResponseDto(travelRoom.getId().toString());
+//            return new RoomIdResponseDto(travelRoom.getId().toString());
         }
         catch (Exception e) {
-            log.info("이미지 저장이 안됩니다 왜", e);
-            throw new IllegalArgumentException("여행방이 생성되지 않았습니다");
+            log.error("예외 발생 위치: SomeMethod", e);
         }
     }
+
 
     //유저가 방에 추가되어 닉네임과 사진을 설정하고, 친구 목록을 반환
     //Profileurl도 같이 반환
-    @Transactional
-    public ResultDto adduser(Long roomId, Member member, RoomUserRequestDto roomUserRequestDto, MultipartFile profileUrl) {
-
-        try {
-            TravelRoom travelRoom = travelRoomRepository.findById(roomId)
-                    .orElseThrow(() -> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
-
-            //프로필 사진이 있으면, 프로필 사진 저장
-            if (profileUrl != null) {
-                travelProfileService.saveImage(travelRoom, profileUrl, member);
-            }
-
-            TravelRoomMember travelRoomMember = TravelRoomMember.builder()
-                    .travelRoom(travelRoom)
-                    .member(member)
-                    .isDone(false)
-                    .nickName(roomUserRequestDto.getNickName())
-                    .build();
-
-            travelRoomMemberRepository.save(travelRoomMember);
-            return new ResultDto("참여자 방에 저장");
-        }
-        catch (Exception e) {
-            throw new IllegalArgumentException("참여자가 방에 들어오지 못했습니다");
-        }
-
-    }
+//    @Transactional
+//    public ResultDto adduser(Long roomId, Member member, RoomUserRequestDto roomUserRequestDto, MultipartFile profileUrl) {
+//
+//        try {
+//            TravelRoom travelRoom = travelRoomRepository.findById(roomId)
+//                    .orElseThrow(() -> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
+//
+//            //프로필 사진이 있으면, 프로필 사진 저장
+//            if (profileUrl != null) {
+//                travelProfileService.saveImage(travelRoom, profileUrl, member);
+//            }
+//
+//            TravelRoomMember travelRoomMember = TravelRoomMember.builder()
+//                    .travelRoom(travelRoom)
+//                    .member(member)
+//                    .isDone(false)
+//                    .nickName(roomUserRequestDto.getNickName())
+//                    .build();
+//
+//            travelRoomMemberRepository.save(travelRoomMember);
+//            return new ResultDto("참여자 방에 저장");
+//        }
+//        catch (Exception e) {
+//            throw new IllegalArgumentException("참여자가 방에 들어오지 못했습니다");
+//        }
+//
+//    }
 
     //유저에 해당하는 방만 보내주기
     @Transactional(readOnly = true)

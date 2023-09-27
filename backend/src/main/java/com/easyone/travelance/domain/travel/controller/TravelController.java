@@ -36,15 +36,15 @@ public class TravelController {
             "<요청 값> profileUrl: 호스트 프로필사진, nickName: 호스트 닉네임, startdate: 시작시간, enddate: 끝시간, startDate:여행시작일, endDate: 여행종료일, budget: 예산" +
             "<응답 값> result: 방id(string값)")
     @PostMapping(value = "")
-    public ResponseEntity<RoomIdResponseDto> MakeRoom(@MemberInfo MemberInfoDto memberInfo,
+    public ResponseEntity<Void> MakeRoom(@MemberInfo MemberInfoDto memberInfo,
                                                       @RequestPart RoomInfoRequestDto roomInfoRequestDto,
                                                       @RequestPart(value = "imageFiles", required = false) MultipartFile imageFiles,
                                                       @RequestPart RoomUserRequestDto roomUserRequestDto) {
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
 
-        RoomIdResponseDto responseDto= travelService.save(roomInfoRequestDto, member, imageFiles, roomUserRequestDto);
+         travelService.save(roomInfoRequestDto, member, imageFiles, roomUserRequestDto);
 
-        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     // 프로필 설정, 내 방에 맞는 프로필을 저장함(build test)
