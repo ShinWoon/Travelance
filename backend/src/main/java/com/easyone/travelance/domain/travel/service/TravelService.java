@@ -2,7 +2,6 @@ package com.easyone.travelance.domain.travel.service;
 
 import com.easyone.travelance.domain.common.ResultDto;
 import com.easyone.travelance.domain.member.entity.Member;
-import com.easyone.travelance.domain.member.entity.Profile;
 import com.easyone.travelance.domain.member.respository.ProfileRepository;
 import com.easyone.travelance.domain.travel.dto.*;
 import com.easyone.travelance.domain.travel.entity.TravelRoom;
@@ -10,7 +9,6 @@ import com.easyone.travelance.domain.travel.entity.TravelRoomMember;
 import com.easyone.travelance.domain.travel.enumclass.RoomType;
 import com.easyone.travelance.domain.travel.repository.TravelRoomMemberRepository;
 import com.easyone.travelance.domain.travel.repository.TravelRoomRepository;
-import com.easyone.travelance.global.service.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,9 +26,7 @@ public class TravelService {
     private final TravelRoomMemberRepository travelRoomMemberRepository;
     private final TravelPaymentService travelPaymentService;
     private final ProfileRepository profileRepository;
-//    private final TravelProfileService travelProfileService;
-    private final S3Uploader awsS3Service;
-
+    private final TravelProfileService travelProfileService;
 
     //방만들기
     @Transactional
@@ -44,20 +40,9 @@ public class TravelService {
             TravelRoom travelRoom = roomInfoRequestDto.toEntity(roomType);
             travelRoomRepository.save(travelRoom);
 
-//            String ReturnUrl = travelProfileService.saveImage(travelRoom, profileUrl, member);
-//            System.out.println(ReturnUrl);
+            travelProfileService.saveImage(travelRoom, profileUrl, member);
+
 //
-            String imageUrl = awsS3Service.uploadFile(profileUrl, "profile")
-                    .orElseThrow(() -> new IllegalArgumentException("유저의 프로필 사진을 저장할 수 없습니다" + member.getId()));;
-
-
-            UserProfileRequestDto requestDto = UserProfileRequestDto.builder()
-                    .imageName(profileUrl.getOriginalFilename())
-                    .imageUrl(imageUrl)
-                    .build();
-
-            Profile profile = requestDto.toEntity(travelRoom,member);
-            profileRepository.save(profile);
 //            TravelRoomMember travelRoomMember = TravelRoomMember.builder()
 //                    .travelRoom(travelRoom)
 //                    .member(member)
@@ -70,40 +55,39 @@ public class TravelService {
 //            return new RoomIdResponseDto(travelRoom.getId().toString());
         }
         catch (Exception e) {
-            log.error("예외 발생 위치: SomeMethod", e);
+            throw new IllegalArgumentException("여행방이 생성되지 않았습니다");
         }
     }
 
-
     //유저가 방에 추가되어 닉네임과 사진을 설정하고, 친구 목록을 반환
     //Profileurl도 같이 반환
-//    @Transactional
-//    public ResultDto adduser(Long roomId, Member member, RoomUserRequestDto roomUserRequestDto, MultipartFile profileUrl) {
-//
-//        try {
-//            TravelRoom travelRoom = travelRoomRepository.findById(roomId)
-//                    .orElseThrow(() -> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
-//
-//            //프로필 사진이 있으면, 프로필 사진 저장
-//            if (profileUrl != null) {
-//                travelProfileService.saveImage(travelRoom, profileUrl, member);
-//            }
-//
-//            TravelRoomMember travelRoomMember = TravelRoomMember.builder()
-//                    .travelRoom(travelRoom)
-//                    .member(member)
-//                    .isDone(false)
-//                    .nickName(roomUserRequestDto.getNickName())
-//                    .build();
-//
-//            travelRoomMemberRepository.save(travelRoomMember);
-//            return new ResultDto("참여자 방에 저장");
-//        }
-//        catch (Exception e) {
-//            throw new IllegalArgumentException("참여자가 방에 들어오지 못했습니다");
-//        }
-//
-//    }
+    @Transactional
+    public ResultDto adduser(Long roomId, Member member, RoomUserRequestDto roomUserRequestDto, MultipartFile profileUrl) {
+
+        try {
+            TravelRoom travelRoom = travelRoomRepository.findById(roomId)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
+
+            //프로필 사진이 있으면, 프로필 사진 저장
+            if (profileUrl != null) {
+                travelProfileService.saveImage(travelRoom, profileUrl, member);
+            }
+
+            TravelRoomMember travelRoomMember = TravelRoomMember.builder()
+                    .travelRoom(travelRoom)
+                    .member(member)
+                    .isDone(false)
+                    .nickName(roomUserRequestDto.getNickName())
+                    .build();
+
+            travelRoomMemberRepository.save(travelRoomMember);
+            return new ResultDto("참여자 방에 저장");
+        }
+        catch (Exception e) {
+            throw new IllegalArgumentException("참여자가 방에 들어오지 못했습니다");
+        }
+
+    }
 
     //유저에 해당하는 방만 보내주기
     @Transactional(readOnly = true)

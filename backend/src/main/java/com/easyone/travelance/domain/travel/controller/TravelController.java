@@ -47,18 +47,18 @@ public class TravelController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-//    // 프로필 설정, 내 방에 맞는 프로필을 저장함(build test)
-//    @Operation(summary = "내 프로필 설정하기", description = "방에 입장하고 싶은 맴버 정보와 프로필 사진을 요청하면, 여행참가자가 되며 유저리스트를 전달합니다. ")
-//    @PostMapping(value = "/{roomId}/addUser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ResponseEntity <ResultDto> AddUser(@MemberInfo MemberInfoDto memberInfo,
-//                                              @RequestPart(value = "imageFiles", required = false) MultipartFile profileUrl,
-//                                              @PathVariable Long roomId) {
-//        Member member = memberService.findMemberByEmail(memberInfo.getEmail());
-//        log.info(String.valueOf(profileUrl));
-//        RoomUserRequestDto roomUserRequestDto=new RoomUserRequestDto("닉네임");
-//        ResultDto resultDto =travelService.adduser(roomId, member, roomUserRequestDto, profileUrl);
-//        return new ResponseEntity<>(resultDto, HttpStatus.OK);
-//    }
+    // 프로필 설정, 내 방에 맞는 프로필을 저장함(build test)
+    @Operation(summary = "내 프로필 설정하기", description = "방에 입장하고 싶은 맴버 정보와 프로필 사진을 요청하면, 여행참가자가 되며 유저리스트를 전달합니다. ")
+    @PostMapping(value = "/{roomId}/addUser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity <ResultDto> AddUser(@MemberInfo MemberInfoDto memberInfo,
+                                              @RequestPart(value = "imageFiles", required = false) MultipartFile profileUrl,
+                                              @PathVariable Long roomId) {
+        Member member = memberService.findMemberByEmail(memberInfo.getEmail());
+        log.info(String.valueOf(profileUrl));
+        RoomUserRequestDto roomUserRequestDto=new RoomUserRequestDto("닉네임");
+        ResultDto resultDto =travelService.adduser(roomId, member, roomUserRequestDto, profileUrl);
+        return new ResponseEntity<>(resultDto, HttpStatus.OK);
+    }
 
     //친구 목록 조회: 현재 여행방의 초대한 맴버(이미 프로필 설정까지 완료된)를 조회할 수 있는 컨트롤러
     @Operation(summary = "여행방 친구 조회하기", description = "여행하고 있는 유저리스트를 전달합니다.")
