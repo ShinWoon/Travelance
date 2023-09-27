@@ -4,5 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class LoginRequest(
     @SerializedName("socialType")
-    val socialType: String
+    val socialType: String,
+    @SerializedName("firebaseToken")
+    val fcmToken: String
 )

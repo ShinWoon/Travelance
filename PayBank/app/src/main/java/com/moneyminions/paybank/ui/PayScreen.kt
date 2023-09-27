@@ -8,12 +8,17 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
-import androidx.activity.ComponentActivity
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -28,6 +33,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,38 +52,72 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.moneyminions.paybank.MainActivity
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.moneyminions.paybank.R
 import com.moneyminions.paybank.model.FcmTokenRequest
 import com.moneyminions.paybank.util.Constants
+import com.moneyminions.paybank.util.NetworkResultHandler
 import com.moneyminions.paybank.util.createNotificationChannel
 import com.moneyminions.paybank.util.initFirebase
 import com.moneyminions.paybank.viewmodel.PayViewModel
 
+
+private const val TAG = "PayScreen D210"
+@OptIn(ExperimentalPermissionsApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PayScreen(
     context: Context,
     payViewModel: PayViewModel = hiltViewModel()
 ){
-    val notificationManager: NotificationManager by lazy {
-        context.getSystemService(ComponentActivity.NOTIFICATION_SERVICE) as NotificationManager
-    }
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        if (ActivityCompat.checkSelfPermission(
-                context,
+    val isShowDialogState by payViewModel.isShowDialog.collectAsState()
+    val permissionList: List<String> =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            listOf(
                 Manifest.permission.POST_NOTIFICATIONS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-
-            return
+            )
+        } else{
+            listOf()
         }
+    val permissionState = rememberMultiplePermissionsState(permissions = permissionList)
+    if (permissionState.allPermissionsGranted) { //모든 권한 허용된 상태
+    } else if (permissionState.shouldShowRationale) {//한번 거절했을때
+        Toast.makeText(context, "사용을 위해서 허가가 필요합니다!", Toast.LENGTH_LONG).show()
+        SideEffect {
+            permissionState.launchMultiplePermissionRequest()
+        }
+        payViewModel.setIsShowDialog(true)
+    } else { //최초
+        Log.d("권한", "LoginDetailScreen: 최초")
+        SideEffect {
+            permissionState.launchMultiplePermissionRequest()
+        }
+        if(isShowDialogState){
+            Column {
+                AlertDialog(
+                    onDismissRequest = { payViewModel.setIsShowDialog(false) },
+                    dialogTitle = "서비스 이용 알림",
+                    dialogText = "해당 기능에 대한 권한 사용을 거부하였습니다. 기능 사용을 원하실 경우 휴대폰 설정 > 애플리케이션 관리자에서 해당 앱의 권한을 허용해주세요.",
+                    icon = Icons.Default.Info
+                )
+            }
+        }
+
     }
-    createNotificationChannel(notificationManager, Constants.CHANNEL_ID, Constants.CHANNEL_NAME)
-//        fcmToken = initFirebase()
-    initFirebase()
+
+    val postPaymentResultState by payViewModel.postPaymentResult.collectAsState()
+    NetworkResultHandler(
+        state = postPaymentResultState,
+        errorAction = {
+            Log.d(TAG, "Payment post error... ")
+        },
+        successAction = {
+            Log.d(TAG, "Payment post success... ")
+        }
+    )
 
     val scrollableState = rememberScrollState()
 
@@ -162,6 +203,7 @@ fun PayScreen(
         Button(
             onClick = {
                 //결제 api 호출
+                payViewModel.postPaymentRequest()
                 payViewModel.setCardNumber("")
                 payViewModel.setCvc("")
                 payViewModel.setAmount("")
@@ -177,40 +219,11 @@ fun PayScreen(
         }
     }
 
-    var showDialog by remember { mutableStateOf(false) }
-    if (showDialog) {
-        CheckPermissionDialog(onDismissRequest = {
-//            onDismissRequest()
-            showDialog = !showDialog
-        }) {
-            moveToSetting(context)
-            showDialog = !showDialog
-        }
-    }
-}
-
-// 시스템 설정 페이지로 이동
-private fun moveToSetting(context: Context) {
-    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-        data = Uri.fromParts("package", context.packageName, null)
-    }
-    context.startActivity(intent)
-}
-
-@Composable
-fun CheckPermissionDialog(onDismissRequest: () -> Unit, onConfirmation: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = { },
-        onConfirmation = { },
-        dialogTitle = "서비스 이용 알림",
-        dialogText = "해당 기능에 대한 권한 사용을 거부하였습니다. 기능 사용을 원하실 경우 휴대폰 설정 > 애플리케이션 관리자에서 해당 앱의 권한을 허용해주세요.",
-        icon = Icons.Default.Info
-    )
 }
 
 
 @Composable
-fun AlertDialog(onDismissRequest: () -> Unit, onConfirmation: () -> Unit, dialogTitle: String, dialogText: String, icon: ImageVector) {
+fun AlertDialog(onDismissRequest: () -> Unit, dialogTitle: String, dialogText: String, icon: ImageVector) {
     Dialog(
         onDismissRequest = {onDismissRequest()}
     ) {
@@ -229,20 +242,10 @@ fun AlertDialog(onDismissRequest: () -> Unit, onConfirmation: () -> Unit, dialog
                     text = dialogText
                 )
                 Spacer(modifier = Modifier.size(16.dp))
-                Row{
-                    Button(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(text = "확인")
-                    }
-                    Spacer(modifier = Modifier.size(4.dp))
-                    Button(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(text = "취소")
-                    }
+                Button(
+                    onClick = {onDismissRequest()}
+                ) {
+                    Text(text = "확인")
                 }
             }
         }

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,7 +37,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold16
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardSemiBold16
-import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.theme.White
 import kotlinx.coroutines.launch
@@ -77,11 +75,11 @@ fun DetailTabView(
             )
         },
         divider = {
-                  Divider(
-                      color = DividerDefaults.color,
-                      modifier = modifier.fillMaxWidth(),
-                      thickness = (0.5).dp
-                  )
+            Divider(
+                color = DividerDefaults.color,
+                modifier = modifier.fillMaxWidth(),
+                thickness = (0.5).dp,
+            )
         },
         containerColor = Color.Transparent,
     ) {

@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.moneyminions.presentation.screen.travellist
 
 import android.annotation.SuppressLint
@@ -48,12 +46,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavController
 import com.moneyminions.domain.model.travellist.TravelRoomDto
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
@@ -75,7 +71,7 @@ private const val TAG = "TravelListScreen_D210"
 @Composable
 fun TravelListScreen(
     travelListViewModel: TravelListViewModel = hiltViewModel(),
-    navController: NavHostController,
+    navController: NavController,
     modifier: Modifier = Modifier,
 ) {
     Log.d(TAG, "TravelListScreen: on")
@@ -140,8 +136,9 @@ fun TravelListScreen(
                 containerColor = FloatingButtonColor,
                 onClick = {
                     navController.navigate(Screen.CreateTravel.route)
-                })
-        }
+                },
+            )
+        },
     ) {
         LazyColumn(
             modifier = modifier
@@ -158,7 +155,8 @@ fun TravelListScreen(
                     TravelRoomItem(
                         modifier = Modifier,
                         travelRoomDto = item,
-                        onRemove = travelListViewModel::removeItem
+                        onRemove = travelListViewModel::removeItem,
+                        navController = navController,
                     )
                 }
             },
@@ -176,12 +174,6 @@ fun getResourceId(resName: String, resType: Class<*>): Int {
         -1
     }
     return resId
-}
-
-@Preview(showBackground = true)
-@Composable
-fun TravelListScreenPreview() {
-    TravelListScreen(navController = rememberNavController())
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -204,8 +196,10 @@ fun TravelRoomItem(
             if (it == DismissValue.DismissedToStart) { // 오른쪽 -> 왼쪽으로 스와이프시 삭제
                 show = false
                 true
-            } else false
-        }, positionalThreshold = { 150.dp.toPx() }
+            } else {
+                false
+            }
+        }, positionalThreshold = { 150.dp.toPx() },
     )
     AnimatedVisibility(
         show, exit = fadeOut(spring())
@@ -221,8 +215,9 @@ fun TravelRoomItem(
                     modifier = modifier,
                     travelRoomDto = travelRoomDto,
                     iconId = getResourceId("ic_travel_2", R.drawable::class.java),
+                    navController = navController,
                 )
-            }
+            },
         )
     }
     // 삭제 되는 순간 실행

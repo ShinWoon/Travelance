@@ -7,9 +7,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.moneyminions.paybank.model.FcmTokenRequest
+import com.moneyminions.paybank.model.NetworkResult
+import com.moneyminions.paybank.model.PaymentRequest
+import com.moneyminions.paybank.model.PaymentResponse
 import com.moneyminions.paybank.service.BankService
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 
 private const val TAG = "PayViewModel D210"
@@ -22,6 +28,38 @@ class PayViewModel @Inject constructor(
         Log.d(TAG, "postFcmToken: ${fcmTokenRequest.fcmToken}")
         viewModelScope.launch {
             bankService.postFcmToken(fcmTokenRequest)
+        }
+    }
+
+    private val _postPaymentResult = MutableStateFlow<NetworkResult<PaymentResponse>>(NetworkResult.Idle)
+    val postPaymentResult = _postPaymentResult.asStateFlow()
+    fun postPaymentRequest(){
+        viewModelScope.launch {
+            val postBody = PaymentRequest(
+                cardNumber = cardNumber.value,
+                cvc = cvc.value,
+                paymentAmount = amount.value.toInt(),
+                paymentContent = storeName.value,
+                storeAddress = storeAddress.value,
+                storeSector = storeType.value
+            )
+            Log.d(TAG, "postPaymentRequest body $postBody")
+            try {
+                _postPaymentResult.emit(
+                    bankService.postPaymentRequest(
+                        PaymentRequest(
+                            cardNumber = cardNumber.value,
+                            cvc = cvc.value,
+                            paymentAmount = amount.value.toInt(),
+                            paymentContent = storeName.value,
+                            storeAddress = storeAddress.value,
+                            storeSector = storeType.value
+                        )
+                    )
+                )
+            }catch (e: Exception){
+                Log.d(TAG, "postPaymentRequest: $e")
+            }
         }
     }
 
@@ -59,5 +97,13 @@ class PayViewModel @Inject constructor(
     val storeAddress: State<String> = _storeAddress
     fun setStoreAddress(address: String){
         _storeAddress.value = address
+    }
+
+    private val _isShowDialog = MutableStateFlow(false)
+    val isShowDialog = _isShowDialog.asStateFlow()
+    fun setIsShowDialog(value: Boolean){
+        viewModelScope.launch {
+            _isShowDialog.emit(value)
+        }
     }
 }

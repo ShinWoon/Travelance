@@ -122,7 +122,6 @@ dependencies {
     implementation("com.airbnb.android:lottie-compose:6.1.0")
 
     // 애니메이션
-
     implementation("androidx.compose.foundation:foundation:1.1.0")
     implementation("androidx.compose.animation:animation:1.1.0")
 

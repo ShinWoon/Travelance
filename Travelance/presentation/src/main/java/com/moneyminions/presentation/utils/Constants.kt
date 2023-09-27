@@ -19,5 +19,14 @@ object Constants {
         R.drawable.ic_credit_card_bc, R.drawable.ic_credit_card_kb, R.drawable.ic_credit_card_nh, R.drawable.ic_credit_card_lotte,
         R.drawable.ic_credit_card_samsung, R.drawable.ic_credit_card_shinhan, R.drawable.ic_credit_card_hana, R.drawable.ic_credit_card_hyundai,
     )
+    val ACCOUNT_FRAME_LIST = listOf(
+        R.drawable.ic_account_jaeil, R.drawable.ic_account_kb, R.drawable.ic_account_ibk, R.drawable.ic_account_nh, R.drawable.ic_account_daegu,
+        R.drawable.ic_account_kdb, R.drawable.ic_account_saemaeul, R.drawable.ic_account_shinhan, R.drawable.ic_account_we, R.drawable.ic_account_hana
+    )
+
+    // Notification
+    const val CHANNEL_ID = "travelance_channel"
+    const val CHANNEL_NAME = "TRAVELANCE"
+
 
 }
