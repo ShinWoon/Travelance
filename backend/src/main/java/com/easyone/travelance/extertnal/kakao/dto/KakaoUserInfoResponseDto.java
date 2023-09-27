@@ -26,9 +26,21 @@ public class KakaoUserInfoResponseDto {
 
         @Getter
         @Setter
-        @Builder
+        @JsonIgnoreProperties(ignoreUnknown = true)
         public static class Profile {
+
             private String nickname;
+
+            public Profile() {
+            }
+
+            public String getNickname() {
+                return nickname;
+            }
+
+            public void setNickname(String nickname) {
+                this.nickname = nickname;
+            }
         }
     }
 
