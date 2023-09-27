@@ -1,11 +1,13 @@
 package com.easyone.travelance.extertnal.kakao.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true) // 이 어노테이션 추가
 public class KakaoUserInfoResponseDto {
 
     private String id;
