@@ -32,7 +32,7 @@ public class TravelService {
 
     //방만들기
     @Transactional
-    public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, MultipartFile profileUrl, RoomUserRequestDto roomUserRequestDto) {
+    public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, MultipartFile profileUrl) {
         //방 만든 직전에는 사전정산 상태
         RoomType roomType = RoomType.BEFORE;
         try {
@@ -46,7 +46,7 @@ public class TravelService {
             TravelRoomMember travelRoomMember = TravelRoomMember.builder()
                     .travelRoom(travelRoom)
                     .member(member)
-                    .nickName(roomUserRequestDto.getNickName())
+                    .nickName(roomInfoRequestDto.getTravelName())
                     .isDone(false)
                     .build();
 
