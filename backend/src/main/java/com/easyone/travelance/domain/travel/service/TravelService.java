@@ -34,6 +34,10 @@ public class TravelService {
     @Transactional
     public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, MultipartFile profileUrl) {
         //방 만든 직전에는 사전정산 상태
+        log.info(String.valueOf(profileUrl));
+        log.info(roomInfoRequestDto.getTravelName());
+        log.info("여행방 맵버"+ profileUrl.getOriginalFilename());
+
         RoomType roomType = RoomType.BEFORE;
         try {
             TravelRoom travelRoom = roomInfoRequestDto.toEntity(roomType);
@@ -42,8 +46,7 @@ public class TravelService {
             if(profileUrl!=null) {
                 travelProfileService.saveImage(travelRoom, profileUrl);
             }
-            log.info(String.valueOf(profileUrl));
-            log.info(travelRoom.getId().toString());
+
 
             TravelRoomMember travelRoomMember = TravelRoomMember.builder()
                     .travelRoom(travelRoom)
@@ -53,7 +56,6 @@ public class TravelService {
                     .build();
 
             travelRoomMemberRepository.save(travelRoomMember);
-            log.info("여행방 맵버"+ travelRoomMember.getTravelNickName());
             return new RoomIdResponseDto(travelRoom.getId().toString());
         }
         catch (Exception e) {
