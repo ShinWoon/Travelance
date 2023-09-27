@@ -36,16 +36,9 @@ public class SecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFil
                 .cors(Customizer.withDefaults()) // CORS 설정
                 .formLogin().disable() // 폼 기반 로그인 비활성화
                 .authorizeRequests()
-//                .antMatchers("/spiiters/me").hasRole("SPITTER")
-//                .antMatchers(HttpMethod.POST, "/spittles").hasRole("SPITTER")
-                .anyRequest().permitAll()
-                .and()
-                .requiresChannel();
-                //.antMatchers("/spitter/form").requiresSecure();
+                .anyRequest().permitAll(); // 모든 요청에 대해 허용
+
     }
-
-
-
 
     @Bean
     public TokenManager tokenManager() {
