@@ -31,7 +31,7 @@ public class TravelProfileService {
 
         Profile profile = requestDto.toEntity(travelRoom, member);
         log.info(profile.getProfileUrl());
-//        profileRepository.save(profile);
+        profileRepository.save(profile);
     }
 
 

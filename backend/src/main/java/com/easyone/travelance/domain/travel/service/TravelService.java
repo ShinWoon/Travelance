@@ -55,7 +55,9 @@ public class TravelService {
 //            return new RoomIdResponseDto(travelRoom.getId().toString());
         }
         catch (Exception e) {
-            throw new IllegalArgumentException("여행방이 생성되지 않았습니다");
+//            throw new IllegalArgumentException("여행방이 생성되지 않았습니다");
+            e.printStackTrace();
+            e.getMessage();
         }
     }
 
