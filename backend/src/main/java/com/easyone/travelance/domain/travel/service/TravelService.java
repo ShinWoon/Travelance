@@ -38,12 +38,13 @@ public class TravelService {
         log.info(String.valueOf(profileUrl));
         log.info(member.getEmail());
         log.info(roomUserRequestDto.getNickName());
-        try {
+
+
             TravelRoom travelRoom = roomInfoRequestDto.toEntity(roomType);
             travelRoomRepository.save(travelRoom);
-
-//            String ReturnUrl = travelProfileService.saveImage(travelRoom, profileUrl, member);
-//            System.out.println(ReturnUrl);
+        try {
+            String ReturnUrl = travelProfileService.saveImage(travelRoom, profileUrl, member);
+            System.out.println(ReturnUrl);
 //
 //            TravelRoomMember travelRoomMember = TravelRoomMember.builder()
 //                    .travelRoom(travelRoom)
@@ -57,6 +58,7 @@ public class TravelService {
             return new RoomIdResponseDto(travelRoom.getId().toString());
         }
         catch (Exception e) {
+            log.info("이미지 저장이 안됩니다 왜", e);
             throw new IllegalArgumentException("여행방이 생성되지 않았습니다");
         }
     }
