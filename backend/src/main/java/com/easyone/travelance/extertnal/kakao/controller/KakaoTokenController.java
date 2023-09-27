@@ -43,8 +43,8 @@ public class KakaoTokenController {
                 .client_secret(clientSecret)
                 .grant_type("authorization_code")
                 .code(code)
-               // .redirect_url("http://localhost:8081/oauth/kakao/callback")
-                .redirect_url("http://j9d210.p.ssafy.io:8081/oauth/kakao/callback")
+                .redirect_url("http://localhost:8081/oauth/kakao/callback")
+//                .redirect_url("http://j9d210.p.ssafy.io:8081/oauth/kakao/callback")
                // .redirect_url("https://j9d210.p.ssafy.io/oauth/kakao/callback")
                 .build();
 
