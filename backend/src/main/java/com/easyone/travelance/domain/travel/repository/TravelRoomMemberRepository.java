@@ -22,4 +22,6 @@ public interface TravelRoomMemberRepository extends JpaRepository<TravelRoomMemb
         @Query("SELECT trm FROM TravelRoomMember trm JOIN trm.member m WHERE trm.travelRoom.id = :travelRoomId AND m.email = :email")
         Optional<TravelRoomMember> findByTravelRoom_IdAndMember_Email(@Param("travelRoomId") Long travelRoomId, @Param("email") String email);
 
+        // 회원에 해당하는 MainAccount를 삭제하는 메서드
+        void deleteAllByMember(Member member);
 }

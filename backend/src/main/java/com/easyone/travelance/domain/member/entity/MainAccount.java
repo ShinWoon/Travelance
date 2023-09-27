@@ -30,7 +30,7 @@ public class MainAccount {
     private Member member;
 
     // 계좌 1 대 다 관계
-    @OneToMany(mappedBy = "mainAccount")
+    @OneToMany(mappedBy = "mainAccount", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Account> accountList = new ArrayList<>();
 

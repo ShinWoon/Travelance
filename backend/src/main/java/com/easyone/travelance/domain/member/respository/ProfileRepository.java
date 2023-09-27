@@ -10,4 +10,7 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
     Profile findByMember(Member member);
 
     Profile findByMemberAndTravelRoom(Member member, TravelRoom travelRoom);
+
+    // 회원에 해당하는 MainAccount를 삭제하는 메서드
+    void deleteAllByMember(Member member);
 }

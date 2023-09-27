@@ -50,18 +50,18 @@ public class Member {
 
 
     // 멤버 계좌와 1 대 1 관계
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="main_account_id")
     @JsonManagedReference
     private MainAccount mainAccount;
 
     // 멤버 프로필과 1 대 다 관계
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Profile> profileList = new ArrayList<>();
 
     // 카드와 1 대 다 관계
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Card> cardList = new ArrayList<>();
 

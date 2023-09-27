@@ -5,6 +5,7 @@ import com.easyone.travelance.domain.account.dto.SelectedAccountRequestDto;
 import com.easyone.travelance.domain.account.entity.Account;
 import com.easyone.travelance.domain.card.dto.SelectedCardRequestDto;
 import com.easyone.travelance.domain.card.entity.Card;
+import com.easyone.travelance.domain.card.respository.CardRepository;
 import com.easyone.travelance.domain.member.dto.MyAccountDto;
 import com.easyone.travelance.domain.member.entity.MainAccount;
 import com.easyone.travelance.domain.member.entity.Member;
@@ -12,6 +13,8 @@ import com.easyone.travelance.domain.member.entity.Member;
 //import com.easyone.travelance.domain.member.respository.MemberAuthRepository;
 import com.easyone.travelance.domain.member.respository.MainAccountRepository;
 import com.easyone.travelance.domain.member.respository.MemberRepository;
+import com.easyone.travelance.domain.member.respository.ProfileRepository;
+import com.easyone.travelance.domain.travel.repository.TravelRoomMemberRepository;
 import com.easyone.travelance.global.error.ErrorCode;
 import com.easyone.travelance.global.error.exception.AuthenticationException;
 import com.easyone.travelance.global.error.exception.BusinessException;
@@ -33,6 +36,9 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final MainAccountRepository mainAccountRepository;
+    private final CardRepository cardRepository;
+    private final ProfileRepository profileRepository;
+    private final TravelRoomMemberRepository travelRoomMemberRepository;
 
     public Member registerMember(Member member) {
         validateDuplicateMember(member);
@@ -123,6 +129,22 @@ public class MemberService {
 
         }
         return cardDtos;
+    }
+
+    @Transactional
+    public void deleteMember(String privateId) {
+        // memberId에 해당하는 회원 정보를 조회합니다.
+        Member member = memberRepository.findByPrivateId(privateId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원을 찾을 수 없습니다. privateId: " + privateId));
+
+        // 회원과 연관된 엔터티들을 삭제합니다.
+        mainAccountRepository.deleteByMember(member);
+        profileRepository.deleteAllByMember(member);
+        cardRepository.deleteAllByMember(member);
+        travelRoomMemberRepository.deleteAllByMember(member);
+
+        // 회원을 삭제합니다.
+        memberRepository.delete(member);
     }
 
 }

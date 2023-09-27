@@ -6,6 +6,7 @@ import com.easyone.travelance.domain.account.entity.Account;
 import com.easyone.travelance.domain.account.service.AccountService;
 import com.easyone.travelance.domain.card.dto.SelectedCardRequestDto;
 import com.easyone.travelance.domain.card.service.CardService;
+import com.easyone.travelance.domain.common.ResultDto;
 import com.easyone.travelance.domain.member.dto.request.AdditionalRequestDto;
 import com.easyone.travelance.domain.member.dto.MyAccountDto;
 import com.easyone.travelance.domain.member.dto.NicknameDto;
@@ -184,6 +185,14 @@ public class MemberController {
         }
 
 
+    }
+
+    @Operation(summary = "회원탈퇴",description = "현재 로그인한 유저의 회원탈퇴 메서드입니다.")
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResultDto> deleteMember(@MemberInfo MemberInfoDto memberInfoDto) {
+        Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
+        memberService.deleteMember(member.getPrivateId());
+        return ResponseEntity.ok(new ResultDto("회원탈퇴 완료"));
     }
 
 }
