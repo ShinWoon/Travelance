@@ -2,12 +2,13 @@ package com.easyone.travelance.extertnal.kakao.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@JsonIgnoreProperties(ignoreUnknown = true) // 이 어노테이션 추가
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class KakaoUserInfoResponseDto {
 
     private String id;
@@ -15,9 +16,9 @@ public class KakaoUserInfoResponseDto {
     @JsonProperty("kakao_account")
     private KakaoAccount kakaoAccount;
 
-    // account 안에 이메일, 프로필 있고 프로필안에 닉네임 프사 있음
     @Getter
     @Setter
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class KakaoAccount {
 
         private String email;
@@ -25,10 +26,30 @@ public class KakaoUserInfoResponseDto {
 
         @Getter
         @Setter
+        @JsonIgnoreProperties(ignoreUnknown = true)
         public static class Profile {
+
             private String nickname;
 
+            public Profile() {
+            }
 
+            public String getNickname() {
+                return nickname;
+            }
+
+            public void setNickname(String nickname) {
+                this.nickname = nickname;
+            }
         }
+    }
+
+    // 기본 생성자 추가
+    public KakaoUserInfoResponseDto() {}
+
+    @Builder
+    public KakaoUserInfoResponseDto(String id, KakaoAccount kakaoAccount) {
+        this.id = id;
+        this.kakaoAccount = kakaoAccount;
     }
 }
