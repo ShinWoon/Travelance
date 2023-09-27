@@ -32,6 +32,9 @@ public class KakaoUserInfoResponseDto {
         }
     }
 
+    // 기본 생성자 추가
+    public KakaoUserInfoResponseDto() {}
+
     @Builder
     public KakaoUserInfoResponseDto(String id, KakaoAccount kakaoAccount) {
         this.id = id;
