@@ -1,5 +1,6 @@
 package com.easyone.travelance.domain.travel.service;
 
+import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.entity.Profile;
 import com.easyone.travelance.domain.member.respository.ProfileRepository;
 import com.easyone.travelance.domain.travel.dto.UserProfileRequestDto;
@@ -19,7 +20,7 @@ public class TravelProfileService {
 
 
     // 게시글 이미지 저장
-    public void saveImage(TravelRoom travelRoom, MultipartFile imageFile){
+    public void saveImage(TravelRoom travelRoom, MultipartFile imageFile, Member member){
         String imageUrl = awsS3Service.upload(imageFile, "profile").toString();
         UserProfileRequestDto requestDto = UserProfileRequestDto.builder()
                 .imageName(imageFile.getOriginalFilename())
