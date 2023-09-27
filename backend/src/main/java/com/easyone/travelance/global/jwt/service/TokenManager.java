@@ -92,7 +92,7 @@ public class TokenManager {
             log.info("token 만료", e);
             throw new AuthenticationException(ErrorCode.TOKEN_EXPIRED);
         } catch (Exception e) {
-            log.info("유효하지 않은 token", e);
+            log.info("validateToken 유효하지 않은 token", e);
             throw new AuthenticationException(ErrorCode.INVALID_TOKEN);
         }
     }
@@ -103,7 +103,7 @@ public class TokenManager {
             claims = Jwts.parser().setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
                     .parseClaimsJws(token).getBody();
         } catch (Exception e) {
-            log.info("유효하지 않은 token", e);
+            log.info("getTokenClaims 유효하지 않은 token", e);
             throw new AuthenticationException(ErrorCode.INVALID_TOKEN);
         }
         return claims;
