@@ -8,4 +8,6 @@ interface PreferenceRepository {
     fun getJwtToken(): JwtTokenDto
     fun putRole(role: String?)
     fun getRole(): String
+    fun putFCMToken()
+    fun getFCMToken(): String
 }

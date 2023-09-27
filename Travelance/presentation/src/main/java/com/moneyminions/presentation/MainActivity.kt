@@ -1,6 +1,7 @@
 package com.moneyminions.presentation
 
 import android.annotation.SuppressLint
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.location.Address
@@ -39,6 +40,9 @@ import com.moneyminions.presentation.theme.MyApplicationTheme
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.theme.TextGray
 import com.moneyminions.presentation.theme.White
+import com.moneyminions.presentation.utils.Constants.CHANNEL_ID
+import com.moneyminions.presentation.utils.Constants.CHANNEL_NAME
+import com.moneyminions.presentation.utils.createNotificationChannel
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
 
@@ -46,12 +50,21 @@ private const val TAG = "MainActivity D210"
 
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
+
+
+    private val notificationManager: NotificationManager by lazy {
+        getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+    }
+
+
     @OptIn(ExperimentalAnimationApi::class)
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            createNotificationChannel(notificationManager, CHANNEL_ID, CHANNEL_NAME)
+
             var isAuthenticated = remember { mutableStateOf(false) }
             val context = LocalContext.current
 

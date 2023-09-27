@@ -18,8 +18,10 @@ import com.moneyminions.domain.model.login.JwtTokenDto
 import com.moneyminions.domain.model.login.LoginResultDto
 import com.moneyminions.domain.usecase.login.JoinUseCase
 import com.moneyminions.domain.usecase.login.LoginUseCase
+import com.moneyminions.domain.usecase.preference.GetFCMTokenUseCase
 import com.moneyminions.domain.usecase.preference.GetJwtTokenUseCase
 import com.moneyminions.domain.usecase.preference.GetRoleUseCase
+import com.moneyminions.domain.usecase.preference.PutFCMTokenUseCase
 import com.moneyminions.domain.usecase.preference.PutJwtTokenUseCase
 import com.moneyminions.domain.usecase.preference.PutRoleUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +36,9 @@ class LoginViewModel @Inject constructor(
     private val getJwtTokenUseCase: GetJwtTokenUseCase,
     private val getRoleUseCase: GetRoleUseCase,
     private val loginUseCase: LoginUseCase,
-    private val joinUseCase: JoinUseCase
+    private val joinUseCase: JoinUseCase,
+    private val putFCMTokenUseCase: PutFCMTokenUseCase,
+    private val getFCMTokenUseCase: GetFCMTokenUseCase
 ): ViewModel() {
 
     private val _loginResult = MutableStateFlow<NetworkResult<LoginResultDto>>(NetworkResult.Idle)
@@ -49,6 +53,8 @@ class LoginViewModel @Inject constructor(
                     Log.d(TAG, "kakao login success -> access Token : ${token.accessToken}")
                     Log.d(TAG, "kakao login success -> refresh Token : ${token.refreshToken}")
                     updateJwtToken(token.accessToken, token.refreshToken)
+                    putFCMTokenUseCase.invoke()
+                    Log.d(TAG, "preference의 fcmTOKEN : ${getFCMTokenUseCase.invoke()}")
                     //로그인 api 호출
                     viewModelScope.launch {
                         _loginResult.emit(loginUseCase.invoke("KAKAO"))

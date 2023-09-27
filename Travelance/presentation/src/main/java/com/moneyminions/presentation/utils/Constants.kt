@@ -24,4 +24,9 @@ object Constants {
         R.drawable.ic_account_kdb, R.drawable.ic_account_saemaeul, R.drawable.ic_account_shinhan, R.drawable.ic_account_we, R.drawable.ic_account_hana
     )
 
+    // Notification
+    const val CHANNEL_ID = "travelance_channel"
+    const val CHANNEL_NAME = "TRAVELANCE"
+
+
 }
