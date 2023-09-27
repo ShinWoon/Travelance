@@ -40,6 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.moneyminions.domain.usecase.preference.GetRoleUseCase
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.navigation.Screen
@@ -76,7 +77,8 @@ fun LoginScreen(
         successAction = {
             Log.d(TAG, "loginResult : $it ")
             if(it.role == "MEMBER"){
-                Log.d(TAG, "LoginScreen에서 member라서 바로 home으로")
+                Log.d(TAG, "LoginScreen에서 member라서 바로 home으로 $it")
+                loginViewModel.updateJwtToken(it.accessToken,it.refreshToken,it.role)
                 //TODO homeScreen으로 이동
                 navController.navigate(Screen.Home.route)
             }else{
@@ -84,11 +86,8 @@ fun LoginScreen(
                     loginViewModel.refreshNetworkState()
                 }
                 Log.d(TAG, "갱신 전 token : ${loginViewModel.getJwtToken()}")
-                Log.d(TAG, "갱신 전 role : ${loginViewModel.getRole()}")
-                loginViewModel.updateJwtToken(it.accessToken,it.refreshToken)
-                loginViewModel.updateRole(it.role)
+                loginViewModel.updateJwtToken(it.accessToken,it.refreshToken,it.role)
                 Log.d(TAG, "갱신된 token : ${loginViewModel.getJwtToken()}")
-                Log.d(TAG, "갱신된 role : ${loginViewModel.getRole()}")
                 navController.navigate(Screen.AccountAuthentication.route)
             }
         }
@@ -132,5 +131,5 @@ fun LoginScreen(
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview(){
-    LoginScreen(navController = rememberNavController())
+//    LoginScreen(navController = rememberNavController())
 }

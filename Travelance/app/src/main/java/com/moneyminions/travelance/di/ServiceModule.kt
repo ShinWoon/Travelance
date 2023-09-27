@@ -7,6 +7,7 @@ import com.moneyminions.data.interceptor.RequestInterceptor
 import com.moneyminions.data.interceptor.ResponseInterceptor
 import com.moneyminions.data.service.BusinessService
 import com.moneyminions.data.service.example.ExampleService
+import com.moneyminions.data.utils.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,7 +31,7 @@ object  ServiceModule {
     @Singleton
     @Provides
     @Named("BASE_URL")
-    fun BaseUrl() : String = "http://j9d210.p.ssafy.io:8081/"
+    fun BaseUrl() : String = Constants.BASE_URL
 
     @Singleton
     @Provides

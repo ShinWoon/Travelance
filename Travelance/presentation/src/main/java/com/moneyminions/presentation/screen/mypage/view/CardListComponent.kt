@@ -18,27 +18,10 @@ import com.moneyminions.presentation.common.CardRowItem
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.theme.GraphGray
 
-val cardList = listOf(
-    CardDto(
-        name = "카드 별칭 1",
-        number = "123456789012",
-        idx = 0
-    ),
-    CardDto(
-        name = "카드 별칭 2",
-        number = "123456789012",
-        idx = 1
-    ),
-    CardDto(
-        name = "카드 별칭 3",
-        number = "123456789012",
-        idx = 2
-    )
-)
 
 @Composable
 fun CardListComponent(
-
+    cardList: List<CardDto>
 ){
     Text(
         text = "카드 목록",
