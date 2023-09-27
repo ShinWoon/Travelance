@@ -43,22 +43,24 @@ class PreferenceDataSource @Inject constructor(
     fun putJwtToken(jwtTokenDto: JwtTokenDto){
         if(jwtTokenDto.accessToken != null) putString(X_ACCESS_TOKEN, jwtTokenDto.accessToken)
         if(jwtTokenDto.refreshToken != null) putString(X_REFRESH_TOKEN, jwtTokenDto.refreshToken)
+        if(jwtTokenDto.role != null) putString(X_ROLE, jwtTokenDto.role)
     }
 
     fun getJwtToken(): JwtTokenDto{
         return JwtTokenDto(
             getString(X_ACCESS_TOKEN),
-            getString(X_REFRESH_TOKEN)
+            getString(X_REFRESH_TOKEN),
+            getString(X_ROLE)
         )
     }
 
-    fun putRole(role: String?){
-        putString(X_ROLE, role)
-    }
-
-    fun getRole(): String{
-        return getString(X_ROLE) ?: "NONE"
-    }
+//    fun putRole(role: String?){
+//        putString(X_ROLE, role)
+//    }
+//
+//    fun getRole(): String{
+//        return getString(X_ROLE) ?: "NONE"
+//    }
 
     fun putFCMToken(){
         FirebaseMessaging.getInstance().token.addOnCompleteListener {

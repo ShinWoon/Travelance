@@ -20,13 +20,13 @@ class PreferenceRepositoryImpl @Inject constructor(
         return preferenceDataSource.getJwtToken()
     }
 
-    override fun putRole(role: String?) {
-        preferenceDataSource.putRole(role)
-    }
-
-    override fun getRole(): String {
-        return preferenceDataSource.getRole()
-    }
+//    override fun putRole(role: String?) {
+//        preferenceDataSource.putRole(role)
+//    }
+//
+//    override fun getRole(): String {
+//        return preferenceDataSource.getRole()
+//    }
 
     override fun putFCMToken() {
         preferenceDataSource.putFCMToken()

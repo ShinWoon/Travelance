@@ -52,7 +52,7 @@ class LoginViewModel @Inject constructor(
                 token != null -> {
                     Log.d(TAG, "kakao login success -> access Token : ${token.accessToken}")
                     Log.d(TAG, "kakao login success -> refresh Token : ${token.refreshToken}")
-                    updateJwtToken(token.accessToken, token.refreshToken)
+                    updateJwtToken(token.accessToken, token.refreshToken, null)
                     putFCMTokenUseCase.invoke()
                     Log.d(TAG, "preference의 fcmTOKEN : ${getFCMTokenUseCase.invoke()}")
                     //로그인 api 호출
@@ -87,21 +87,21 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun updateJwtToken(accessToken: String?, refreshToken: String?){
-        putJwtTokenUseCase.invoke(JwtTokenDto(accessToken, refreshToken))
+    fun updateJwtToken(accessToken: String?, refreshToken: String?, role: String?){
+        putJwtTokenUseCase.invoke(JwtTokenDto(accessToken, refreshToken, role))
     }
 
-    fun updateRole(role: String?){
-        putRoleUseCase.invoke(role)
-    }
+//    fun updateRole(role: String?){
+//        putRoleUseCase.invoke(role)
+//    }
 
     fun getJwtToken(): JwtTokenDto{
         return getJwtTokenUseCase.invoke()
     }
 
-    fun getRole(): String{
-        return getRoleUseCase.invoke()
-    }
+//    fun getRole(): String{
+//        return getRoleUseCase.invoke()
+//    }
 
     suspend fun refreshNetworkState(){
         _loginResult.emit(NetworkResult.Idle)
