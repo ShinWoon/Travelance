@@ -35,13 +35,16 @@ public class TravelService {
     public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, MultipartFile profileUrl, RoomUserRequestDto roomUserRequestDto) {
         //방 만든 직전에는 사전정산 상태
         RoomType roomType = RoomType.BEFORE;
+        log.info(String.valueOf(profileUrl));
+        log.info(member.getEmail());
+        log.info(roomUserRequestDto.getNickName());
         try {
             TravelRoom travelRoom = roomInfoRequestDto.toEntity(roomType);
             travelRoomRepository.save(travelRoom);
 
-            String ReturnUrl = travelProfileService.saveImage(travelRoom, profileUrl, member);
-            System.out.println(ReturnUrl);
-
+//            String ReturnUrl = travelProfileService.saveImage(travelRoom, profileUrl, member);
+//            System.out.println(ReturnUrl);
+//
 //            TravelRoomMember travelRoomMember = TravelRoomMember.builder()
 //                    .travelRoom(travelRoom)
 //                    .member(member)
