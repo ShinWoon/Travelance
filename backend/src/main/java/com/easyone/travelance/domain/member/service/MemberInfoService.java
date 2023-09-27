@@ -8,21 +8,27 @@ import com.easyone.travelance.domain.member.dto.OneAccountDto;
 import com.easyone.travelance.domain.member.entity.MainAccount;
 import com.easyone.travelance.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+
 
 @Service
 @RequiredArgsConstructor
 public class MemberInfoService {
 
     private final MemberService memberService;
-    
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     // 추가정보 업데이트
     @Transactional
     public MemberDto.Response updateAdditionalInfo(String password, String nickname, String email) {
         Member member = memberService.findMemberByEmail(email);
 
-        member.updateAdditionalInfo(nickname,password, Role.MEMBER);
+        String encodedPassword  = bCryptPasswordEncoder.encode(password);
+
+        member.updateAdditionalInfo(nickname,encodedPassword, Role.MEMBER);
 
         return MemberDto.Response.builder()
                 .email(member.getEmail())

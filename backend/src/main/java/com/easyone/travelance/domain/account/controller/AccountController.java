@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -29,6 +30,7 @@ public class AccountController {
 
     private final MemberService memberService;
     private final AccountService accountService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Operation(summary = "1원이체 요청", description = "요청 시 사용자의 계좌로 1원 및 랜덤으로 생성된 4자리 숫자를 보냅니다." +
             "name : 사용자이름, bankname: 은행명, account : 계좌번호 \n\n" + "### [DTO] \n\n" + "```\n\n" +
@@ -113,8 +115,10 @@ public class AccountController {
         String myPassword = member.getPassword();
         // 요청받은 비밀번호
         String requestPassword = transferRequestDto.getPassword();
+        log.info(myPassword + " and " + requestPassword );
+        log.info(String.valueOf(bCryptPasswordEncoder.matches(requestPassword, myPassword)));
 
-        if (myPassword.equals(requestPassword)){
+        if (bCryptPasswordEncoder.matches(requestPassword, myPassword)){
             return accountService.transferAccount(account,transferRequestDto)
                     .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
                     .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND)); // 만약 데이터가 없을 경우의 처리

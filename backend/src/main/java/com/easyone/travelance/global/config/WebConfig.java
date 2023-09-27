@@ -6,8 +6,10 @@ import com.easyone.travelance.global.interceptor.AuthenticationInterceptor;
 import com.easyone.travelance.global.interceptor.MemberAuthorizationInterceptor;
 import com.easyone.travelance.global.memberInfo.MemberInfoArgumentResolver;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -24,21 +26,6 @@ public class WebConfig implements WebMvcConfigurer {
     private final MemberInfoArgumentResolver memberInfoArgumentResolver;
     private final MemberAuthorizationInterceptor memberAuthorizationInterceptor;
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**") // 어떤 api 경로에 매핑할지
-//                .allowedOrigins("http://localhost:8082") // 어떤 경로에서 오는걸 cors 허용할지 , 콤마 써서 여러개 쓸 수 있음
-                .allowedOrigins("*")
-                .allowedMethods( // 허용할 http 메소드
-                        HttpMethod.GET.name(),
-                        HttpMethod.POST.name(),
-                        HttpMethod.PUT.name(),
-                        HttpMethod.PATCH.name(),
-                        HttpMethod.DELETE.name(),
-                        HttpMethod.OPTIONS.name()
-                )
-                .maxAge(3600); // preflight 시간 설정
-    }
 
     // HTTP 요청을 처리하는 과정에 인터셉터를 추가
     @Override

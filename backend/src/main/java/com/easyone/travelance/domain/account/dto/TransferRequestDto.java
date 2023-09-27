@@ -15,6 +15,8 @@ public class TransferRequestDto {
     private LocalDateTime transferAt;
     private String withdrawalNumber;
 
+    public TransferRequestDto() {
+    }
 
     public TransferRequestDto(String depositNumber, Long amount, String memo
             , LocalDateTime transferAt, String withdrawalNumber){
