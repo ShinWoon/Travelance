@@ -32,7 +32,7 @@ public class TravelService {
 
     //방만들기
     @Transactional
-    public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, MultipartFile profileUrl) {
+    public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, MultipartFile profileUrl, RoomUserRequestDto roomUserRequestDto) {
         //방 만든 직전에는 사전정산 상태
         RoomType roomType = RoomType.BEFORE;
         try {
@@ -46,7 +46,7 @@ public class TravelService {
             TravelRoomMember travelRoomMember = TravelRoomMember.builder()
                     .travelRoom(travelRoom)
                     .member(member)
-                    .nickName(roomInfoRequestDto.getNickName())
+                    .nickName(roomUserRequestDto.getNickName())
                     .isDone(false)
                     .build();
 
@@ -62,15 +62,15 @@ public class TravelService {
     //유저가 방에 추가되어 닉네임과 사진을 설정하고, 친구 목록을 반환
     //Profileurl도 같이 반환
     @Transactional
-    public ResultDto adduser(Long roomId, Member member, RoomUserRequestDto roomUserRequestDto) {
+    public ResultDto adduser(Long roomId, Member member, RoomUserRequestDto roomUserRequestDto, MultipartFile profileUrl) {
 
         try {
             TravelRoom travelRoom = travelRoomRepository.findById(roomId)
                     .orElseThrow(() -> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
 
             //프로필 사진이 있으면, 프로필 사진 저장
-            if (roomUserRequestDto.getProfileUrl() != null) {
-                travelProfileService.saveImage(travelRoom, roomUserRequestDto.getProfileUrl());
+            if (profileUrl != null) {
+                travelProfileService.saveImage(travelRoom, profileUrl);
             }
 
             TravelRoomMember travelRoomMember = TravelRoomMember.builder()
