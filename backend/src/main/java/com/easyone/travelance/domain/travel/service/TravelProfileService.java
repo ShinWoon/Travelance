@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URL;
+
 @RequiredArgsConstructor
 @Service
 public class TravelProfileService {
@@ -18,7 +20,7 @@ public class TravelProfileService {
 
     // 게시글 이미지 저장
     public void saveImage(TravelRoom travelRoom, MultipartFile imageFile){
-        String imageUrl = awsS3Service.upload(imageFile, "profile").getPath();
+        String imageUrl = awsS3Service.upload(imageFile, "profile").toString();
         UserProfileRequestDto requestDto = UserProfileRequestDto.builder()
                 .imageName(imageFile.getOriginalFilename())
                 .imageUrl(imageUrl)
