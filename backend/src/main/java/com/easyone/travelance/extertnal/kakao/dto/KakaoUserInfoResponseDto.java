@@ -21,6 +21,8 @@ public class KakaoUserInfoResponseDto {
     public static class KakaoAccount {
 
         private String email;
+        
+        @JsonIgnoreProperties(ignoreUnknown = true)
         private Profile profile;
 
         @Getter
