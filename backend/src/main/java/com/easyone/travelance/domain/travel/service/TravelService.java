@@ -187,4 +187,17 @@ public class TravelService {
 
         return travelRoomMemberList;
     }
+
+    public ResultDto startTravel(Long roomId) {
+        try {
+            TravelRoom travelRoom = travelRoomRepository.findById(roomId)
+                    .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
+            travelRoom.setRoomType(RoomType.NOW);
+            return new ResultDto("여행시작 성공");
+        }
+        catch (Exception e) {
+            return new ResultDto("여행방 시작 실패");
+        }
+
+    }
 }
