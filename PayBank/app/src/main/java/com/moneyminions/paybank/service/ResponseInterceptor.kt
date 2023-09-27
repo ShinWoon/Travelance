@@ -29,7 +29,6 @@ class ResponseInterceptor(
             401 -> {
                 val errorResponse = parseErrorResponse(response.body)
                 Log.d(TAG, "intercept: 에러 바디 파싱 !!!!!!!!!! ${errorResponse}")
-
 //                when(errorResponse.errorCode){
 //
 //                }

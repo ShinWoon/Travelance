@@ -15,6 +15,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 
 private const val TAG = "PayViewModel D210"
@@ -43,16 +44,22 @@ class PayViewModel @Inject constructor(
                 storeSector = storeType.value
             )
             Log.d(TAG, "postPaymentRequest body $postBody")
-            _postPaymentResult.emit(bankService.postPaymentRequest(
-                PaymentRequest(
-                    cardNumber = cardNumber.value,
-                    cvc = cvc.value,
-                    paymentAmount = amount.value.toInt(),
-                    paymentContent = storeName.value,
-                    storeAddress = storeAddress.value,
-                    storeSector = storeType.value
+            try {
+                _postPaymentResult.emit(
+                    bankService.postPaymentRequest(
+                        PaymentRequest(
+                            cardNumber = cardNumber.value,
+                            cvc = cvc.value,
+                            paymentAmount = amount.value.toInt(),
+                            paymentContent = storeName.value,
+                            storeAddress = storeAddress.value,
+                            storeSector = storeType.value
+                        )
+                    )
                 )
-            ))
+            }catch (e: Exception){
+                Log.d(TAG, "postPaymentRequest: $e")
+            }
         }
     }
 
