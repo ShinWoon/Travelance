@@ -41,8 +41,8 @@ public class TravelController {
                                                       @RequestPart(value = "imageFiles", required = false) MultipartFile imageFiles,
                                                       @RequestPart RoomUserRequestDto roomUserRequestDto) {
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
-
-         travelService.save(roomInfoRequestDto, member, imageFiles, roomUserRequestDto);
+        log.info("이미지 파일:" + imageFiles);
+        travelService.save(roomInfoRequestDto, member, imageFiles, roomUserRequestDto);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
