@@ -3,6 +3,7 @@ package com.easyone.travelance.domain.card.controller;
 import com.easyone.travelance.domain.account.dto.SelectedAccountRequestDto;
 import com.easyone.travelance.domain.card.dto.SelectedCardRequestDto;
 import com.easyone.travelance.domain.card.service.CardService;
+import com.easyone.travelance.domain.common.ResultDto;
 import com.easyone.travelance.domain.member.entity.MainAccount;
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.service.MemberService;
@@ -40,23 +41,25 @@ public class CardController {
     "[\n\n" +
             "  {\n\n" +
             "    \"cardNumber\": \"4215154824392854\",\n" +
-            "    \"cardCoName\": \"국민카드\",\n" +
-            "    \"idx\": 1,\n" +
+            "    \"cardCoName\": \"KB국민\",\n" +
+            "    \"idx\": 1\n" +
             "  },\n\n" +
             "  {\n\n" +
             "    \"cardNumber\": \"3737467972008765\",\n" +
-            "    \"cardCoName\": \"국민카드\",\n" +
-            "    \"idx\": 1,\n" +
+            "    \"cardCoName\": \"KB국민\",\n" +
+            "    \"idx\": 1\n" +
             "  }\n\n" +
             "]\n\n" + "이런 형식으로 넣으시면 됩니다.")
     @PostMapping("/selectedcard")
-    public ResponseEntity<String> SaveCard(@RequestBody List<SelectedCardRequestDto> selectedCardRequestDtoList, @MemberInfo MemberInfoDto memberInfoDto) {
+    public ResponseEntity<ResultDto> SaveCard(@RequestBody List<SelectedCardRequestDto> selectedCardRequestDtoList, @MemberInfo MemberInfoDto memberInfoDto) {
         Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
 
         for (SelectedCardRequestDto selectedCardRequestDto : selectedCardRequestDtoList) {
             cardService.SaveCard(member,selectedCardRequestDto);
         }
 
-        return ResponseEntity.ok("success");
+        ResultDto resultDto = new ResultDto("저장 성공");
+        return ResponseEntity.ok(resultDto);
+
     }
 }

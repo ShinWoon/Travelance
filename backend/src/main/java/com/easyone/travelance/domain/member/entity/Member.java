@@ -39,7 +39,6 @@ public class Member {
     @Column(unique = true)
     private String refreshToken;
 
-    @Column(unique = true)
     private String fcmToken;
 
     private String privateId;
