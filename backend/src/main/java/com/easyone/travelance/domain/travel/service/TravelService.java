@@ -93,11 +93,10 @@ public class TravelService {
     public List<RoomAllResponseDto> findAllDesc(Member member) {
         // travelroommember도메인에서 member에 해당하는  travelroom을 RoomAllResponseDto로 모두 반환
 
-        List<TravelRoomMember> travelRoomMemberList = travelRoomMemberRepository.findAllByMember(member);
+        List<TravelRoom> travelRoomMemberList = travelRoomRepository.findAllByTravelRoomMembersMember(member);
 
         List<RoomAllResponseDto> roomAllResponseDtos = new ArrayList<>();
-        for (TravelRoomMember travelroommember : travelRoomMemberList) {
-            TravelRoom travelRoom = travelroommember.getTravelRoom();
+        for (TravelRoom travelRoom : travelRoomMemberList) {
             Long totalPrice = travelPaymentService.TotalPriceTravelId(travelRoom.getId());
             RoomAllResponseDto responseDto = new RoomAllResponseDto(travelRoom, totalPrice);
             roomAllResponseDtos.add(responseDto);
