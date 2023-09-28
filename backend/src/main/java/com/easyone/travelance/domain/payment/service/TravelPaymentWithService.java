@@ -1,6 +1,8 @@
 package com.easyone.travelance.domain.payment.service;
 
 import com.easyone.travelance.domain.member.entity.Member;
+import com.easyone.travelance.domain.member.entity.Profile;
+import com.easyone.travelance.domain.member.respository.ProfileRepository;
 import com.easyone.travelance.domain.payment.dto.TravelPaymentPlusDto;
 import com.easyone.travelance.domain.payment.dto.TravelPaymentResponseDto;
 import com.easyone.travelance.domain.payment.entity.Payment;
@@ -26,6 +28,9 @@ public class TravelPaymentWithService {
     @Autowired
     private PaymentRepository paymentRepository;
 
+    @Autowired
+    private ProfileRepository profileRepository;
+
     public TravelPaymentPlusDto getPaymentWith(Member member) {
         // 1. 현재 회원이 속한 여행방 중에서 RoomType이 NOW인 것을 조회
         List<TravelRoom> travelRooms = travelRoomRepository.findAllByTravelRoomMembers_MemberAndIsDone(member, RoomType.NOW);
@@ -48,27 +53,27 @@ public class TravelPaymentWithService {
         // 3. FriendPayment와 TravelRoomInfo 정보 조회 및 DTO 변환
         List<TravelPaymentPlusDto.FriendPayment> friendPayments = travelRoomMembers.stream()
                 .map(travelRoomMember -> {
-                    // 해당 회원과 일치하는 결제 내역 조회
-                    List<Payment> memberPayments = travelRoom.getPayments()
-                            .stream()
-                            .filter(payment -> payment.getMember().getId().equals(travelRoomMember.getMember().getId()))
-                            .collect(Collectors.toList());
+                    // 해당 여행방과 memberId로 해당 회원의 지불 내역 조회
+                    List<Payment> memberPayments = paymentRepository.findAllByTravelRoom_IdAndMemberAndIsWithPaidTrue(roomId, travelRoomMember.getMember());
 
-                    // 결제 내역 합계 계산
+                    // 결제 내역 합계 계산 (isWithPaid가 true인 것만 합산)
                     Long totalPayment = memberPayments.stream()
+                            .filter(Payment::getIsWithPaid)
                             .mapToLong(Payment::getPaymentAmount)
                             .sum();
+                    Profile profile = profileRepository.findByMemberAndTravelRoom(travelRoomMember.getMember(), travelRoom); // profileRepository가 필요합니다.
 
                     // FriendPayment DTO 생성
                     TravelPaymentPlusDto.FriendPayment friendPayment = new TravelPaymentPlusDto.FriendPayment();
                     friendPayment.setNickName(travelRoomMember.getTravelNickName());
-                    // 여기에서 profileUrl 등 필요한 정보를 설정하실 수 있습니다.
+                    friendPayment.setProfileUrl(profile.getProfileUrl());
                     friendPayment.setPaymentAmount(totalPayment);
                     friendPayment.setIsDone(travelRoomMember.isDone());
 
                     return friendPayment;
                 })
                 .collect(Collectors.toList());
+
 
         // TravelRoomInfo DTO 생성 및 설정 (필요한 경우)
         TravelPaymentPlusDto.TravelRoomInfo roomInfo = new TravelPaymentPlusDto.TravelRoomInfo();
