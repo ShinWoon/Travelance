@@ -42,6 +42,7 @@ import com.moneyminions.presentation.screen.login.view.AuthenticAccountListCompo
 import com.moneyminions.presentation.screen.mypage.view.AccountColumnItem
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.login.AccountAuthenticationViewModel
+import com.moneyminions.presentation.viewmodel.mypage.EditUserViewModel
 import kotlinx.coroutines.launch
 
 private const val TAG = "AccountAuthenticationSc D210"
@@ -51,6 +52,9 @@ fun AccountAuthenticationScreen(
     navController: NavHostController,
     accountAuthenticationViewModel: AccountAuthenticationViewModel = hiltViewModel()
 ) {
+    val previous = navController.previousBackStackEntry?.savedStateHandle?.get<String>("previous") ?: "join"
+    Log.d(TAG, "AccountAuthenticationScreen: $previous")
+
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val isShowDialogState = accountAuthenticationViewModel.isShowDialog.collectAsState()
@@ -162,5 +166,5 @@ fun AccountAuthenticationScreen(
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
 @Composable
 fun AccountAuthenticationScreenPreview(){
-    AccountAuthenticationScreen(navController = rememberNavController())
+//    AccountAuthenticationScreen(navController = rememberNavController())
 }

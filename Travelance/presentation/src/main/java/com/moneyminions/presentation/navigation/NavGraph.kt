@@ -15,6 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
+import com.kakao.sdk.common.KakaoSdk.type
 import com.moneyminions.presentation.screen.MainScreen
 import com.moneyminions.presentation.screen.announcement.AnnouncementScreen
 import com.moneyminions.presentation.screen.detail.DetailScreen
@@ -37,6 +38,7 @@ import com.moneyminions.presentation.screen.travellist.CreateTravelScreen
 import com.moneyminions.presentation.screen.travellist.TravelListScreen
 import com.moneyminions.presentation.screen.travelmap.travelMapScreen
 import com.moneyminions.presentation.viewmodel.login.LoginViewModel
+import com.moneyminions.presentation.viewmodel.mypage.EditUserViewModel
 
 private const val TAG = "NavGraph_D210"
 @OptIn(ExperimentalAnimationApi::class)
@@ -108,7 +110,7 @@ fun NavGraph(
             EditUserScreen(navController = navController)
         }
         composable(
-            route = Screen.AccountAuthentication.route,
+            route = Screen.AccountAuthentication.route
         ) {
             AccountAuthenticationScreen(navController = navController)
         }

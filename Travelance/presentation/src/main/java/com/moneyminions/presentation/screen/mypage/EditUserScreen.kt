@@ -17,8 +17,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.moneyminions.presentation.common.MinionPrimaryButton
 import com.moneyminions.presentation.common.SimpleDeleteDialog
 import com.moneyminions.presentation.common.TopBar
+import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.mypage.view.AccountListComponent
 import com.moneyminions.presentation.screen.mypage.view.CardListComponent
 import com.moneyminions.presentation.screen.mypage.view.EditName
@@ -67,6 +69,7 @@ fun EditUserScreen(
     val cardListState = editUserViewModel.cardList.collectAsState()
 
     val isAccountDeleteDialogShowState = editUserViewModel.isAccountDeleteDialogShow.collectAsState()
+    val isCardDeleteDialogShowState = editUserViewModel.isCardDeleteDialogShow.collectAsState()
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -94,15 +97,45 @@ fun EditUserScreen(
                 accountList = accountListState.value,
                 onDelete = {
                     editUserViewModel.setIsAccountDeleteDialogShow(true)
+                },
+                onPlus = {
+                    navController.navigate(Screen.AccountAuthentication.route)
                 }
             )
             Spacer(modifier = Modifier.size(16.dp))
-            CardListComponent(cardListState.value)
+            CardListComponent(
+                cardList = cardListState.value,
+                onDelete = {
+                    editUserViewModel.setIsCardDeleteDialogShow(true)
+                },
+                onPlus = {
+                    navController.navigate(Screen.AccountAuthentication.route)
+                }
+            )
+            Spacer(modifier = Modifier.size(16.dp))
+            MinionPrimaryButton(
+                content = "마이데이터 자산 추가하기",
+                modifier = Modifier
+            ) {
+                navController.currentBackStackEntry?.savedStateHandle?.set(key = "previous", value = "editUser")
+                navController.navigate(Screen.AccountAuthentication.route)
+            }
         }
         if(isAccountDeleteDialogShowState.value){
             SimpleDeleteDialog(
                 onDismiss = {
                     editUserViewModel.setIsAccountDeleteDialogShow(false)
+                },
+                onConfirm = {
+                    //계좌 삭제 api 호출
+                }
+            )
+
+        }
+        if(isCardDeleteDialogShowState.value){
+            SimpleDeleteDialog(
+                onDismiss = {
+                    editUserViewModel.setIsCardDeleteDialogShow(false)
                 },
                 onConfirm = {
                     //계좌 삭제 api 호출

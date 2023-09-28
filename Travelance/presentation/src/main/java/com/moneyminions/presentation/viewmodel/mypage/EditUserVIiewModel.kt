@@ -77,4 +77,12 @@ class EditUserViewModel @Inject constructor(
             _isAccountDeleteDialogShow.emit(value)
         }
     }
+
+    private val _isCardDeleteDialogShow = MutableStateFlow<Boolean>(false)
+    val isCardDeleteDialogShow: StateFlow<Boolean> = _isCardDeleteDialogShow
+    fun setIsCardDeleteDialogShow(value: Boolean){
+        viewModelScope.launch {
+            _isCardDeleteDialogShow.emit(value)
+        }
+    }
 }
