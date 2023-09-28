@@ -281,35 +281,36 @@ public class PaymentServiceImpl implements PaymentService{
             log.warn("1인당 지출금액" + perPersonAmount);
 
             // 5. 각 인원별로 지불해야할 금액과 실제 지출한 금액의 차이를 계산하여 이체해야하는 금액을 계산
-            for(TravelRoomMember member : allMembers){
-                Long paidAmount = memberPayments.getOrDefault(member, 0L);
-                Long difference = paidAmount - perPersonAmount; // 실제 지출한 금액 - 1인당 지출해야하는 금액
+            for (TravelRoomMember member : allMembers) {
+                Long paidAmount = memberPayments.getOrDefault(member.getMember(), 0L); // 수정된 부분
+                Long difference = paidAmount - perPersonAmount;
                 log.warn("차액" + difference);
-                for(TravelRoomMember otherMember : allMembers){
-                    if(!member.equals(otherMember) && difference > 0){
-                        Long otherPaidAmount = memberPayments.getOrDefault(otherMember, 0L);
-                        Long otherDifference = otherPaidAmount - perPersonAmount;
 
-                        if(otherDifference < 0){ // 다른 사람이 받아야하는 금액이 있다면
-                            Long transferAmount = Math.min(difference, -otherDifference); // 실제로 보낼 금액
+                // 이 멤버가 더 많은 돈을 지불했을 경우
+                if (difference < 0) {
+                    for (TravelRoomMember otherMember : allMembers) {
+                        if (!member.equals(otherMember)) {
+                            Long otherPaidAmount = memberPayments.getOrDefault(otherMember.getMember(), 0L); // 수정된 부분
+                            Long otherDifference = otherPaidAmount - perPersonAmount;
 
-                            Calculation calculation = Calculation.builder()
-                                    .fromMemberId(member.getId())
-                                    .toMemberId(otherMember.getId())
-                                    .amount(transferAmount)
-                                    .isTransfer(false)
-                                    .travelRoom(travelRoom)
-                                    .build();
-
-                            calculationRepository.save(calculation);
-
-                            difference -= transferAmount;
-                        }
+                            // 다른 멤버가 더 적은 돈을 지불했을 경우
+                            if (otherDifference > 0) {
+                                Long transferAmount = Math.min(-difference, otherDifference);
+                                Calculation calculation = Calculation.builder()
+                                        .fromMemberId(member.getId())
+                                        .toMemberId(otherMember.getId())
+                                        .amount(transferAmount)
+                                        .isTransfer(false)
+                                        .travelRoom(travelRoom)
+                                        .build();
+                                calculationRepository.save(calculation);
+                                difference += transferAmount;
+                                if (difference >= 0) break;
+                            }
                         }
                     }
                 }
             }
-
 
 
     private void sendFcmNotificationToAllMembers(TravelRoom travelRoom){
