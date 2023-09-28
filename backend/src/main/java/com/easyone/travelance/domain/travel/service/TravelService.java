@@ -30,34 +30,34 @@ public class TravelService {
 
     //방만들기
     @Transactional
-    public void save(RoomInfoRequestDto roomInfoRequestDto, Member member, MultipartFile profileUrl, RoomUserRequestDto roomUserRequestDto) {
+    public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, RoomUserRequestDto roomUserRequestDto) {
         //방 만든 직전에는 사전정산 상태
         RoomType roomType = RoomType.BEFORE;
-        log.info(String.valueOf(profileUrl));
+//        log.info(String.valueOf(profileUrl));
         log.info(member.getEmail());
         log.info(roomUserRequestDto.getNickName());
         try {
             TravelRoom travelRoom = roomInfoRequestDto.toEntity(roomType);
             travelRoomRepository.save(travelRoom);
 
-            travelProfileService.saveImage(travelRoom, profileUrl, member);
+//            travelProfileService.saveImage(travelRoom, profileUrl, member);
 
 //
-//            TravelRoomMember travelRoomMember = TravelRoomMember.builder()
-//                    .travelRoom(travelRoom)
-//                    .member(member)
-//                    .nickName(roomUserRequestDto.getNickName())
-//                    .isDone(false)
-//                    .build();
-//
-//            travelRoomMemberRepository.save(travelRoomMember);
+            TravelRoomMember travelRoomMember = TravelRoomMember.builder()
+                    .travelRoom(travelRoom)
+                    .member(member)
+                    .nickName(roomUserRequestDto.getNickName())
+                    .isDone(false)
+                    .build();
 
-//            return new RoomIdResponseDto(travelRoom.getId().toString());
+            travelRoomMemberRepository.save(travelRoomMember);
+
+            return new RoomIdResponseDto(travelRoom.getId().toString());
         }
         catch (Exception e) {
-//            throw new IllegalArgumentException("여행방이 생성되지 않았습니다");
-            e.printStackTrace();
-            e.getMessage();
+            throw new IllegalArgumentException("여행방이 생성되지 않았습니다");
+//            e.printStackTrace();
+//            e.getMessage();
         }
     }
 
