@@ -55,8 +55,6 @@ public class TravelPaymentWithService {
                 .map(travelRoomMember -> {
                     // 해당 여행방과 memberId로 해당 회원의 지불 내역 조회
                     List<Payment> memberPayments = paymentRepository.findAllByTravelRoom_IdAndMemberAndIsWithPaidTrue(roomId, travelRoomMember.getMember());
-
-                    // 결제 내역 합계 계산 (isWithPaid가 true인 것만 합산)
                     Long totalPayment = memberPayments.stream()
                             .filter(Payment::getIsWithPaid)
                             .mapToLong(Payment::getPaymentAmount)
