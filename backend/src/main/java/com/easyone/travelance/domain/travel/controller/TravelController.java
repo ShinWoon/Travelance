@@ -24,7 +24,7 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("travel/room")
+@RequestMapping("/travel/room")
 public class TravelController {
 
     private final TravelService travelService;

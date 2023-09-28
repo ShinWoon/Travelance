@@ -227,26 +227,36 @@ public class PaymentServiceImpl implements PaymentService{
             Long paidAmount = entry.getValue();
             Long difference = perPersonAmount - paidAmount;
             log.warn("지불금액:" + paidAmount);
+            log.warn("차액:" + difference);
 
-            // 차액이 양수라면 이 회원이 다른 사람에게 돈을 보내야함 (DB저장)
-            if (difference > 0){
+            if (difference > 0){ // 돈을 보내야하는 경우
                 for (Map.Entry<Member, Long> innerEntry : memberPayments.entrySet()){
-                    if(!member.equals(innerEntry.getKey()) && innerEntry.getValue() - perPersonAmount >0){
-                        // 5. 차액을 기반으로 calculation DB에 저장
+                    Member targetMember = innerEntry.getKey();
+                    Long targetPaidAmount = innerEntry.getValue();
+                    Long targetDifference = perPersonAmount - targetPaidAmount;
+
+                    if(!member.equals(targetMember) && targetDifference < 0){
+                        Long transferAmount = Math.min(difference, -targetDifference); // 실제로 보낼 금액
+
                         Calculation calculation = Calculation.builder()
                                 .fromMemberId(member.getId())
-                                .toMemberId(innerEntry.getKey().getId())
-                                .amount(difference)
+                                .toMemberId(targetMember.getId())
+                                .amount(transferAmount)
                                 .isTransfer(false)
                                 .travelRoom(payments.get(0).getTravelRoom())
                                 .build();
 
                         calculationRepository.save(calculation);
-                        break;
+
+                        difference -= transferAmount; // 보낸 금액만큼 차감
+
+                        // 모든 차액을 보냈으면 더 이상 보낼 필요 없음
+                        if (difference <= 0) break;
                     }
                 }
             }
         }
+
     }
 
     private void sendFcmNotificationToAllMembers(TravelRoom travelRoom){
