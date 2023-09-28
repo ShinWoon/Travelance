@@ -189,9 +189,9 @@ public class PaymentServiceImpl implements PaymentService{
 
         // 조건에 따라 TravelRoom의 RoomType을 변경하거나 calculateTransfer 함수를 실행합니다.
         if (allMembersDone) {
-            calculateTransfer(travelRoom.getId());
-            sendFcmNotificationToAllMembers(travelRoom);
             log.info("함수호출");
+            calculateTransfer(travelRoom.getId());
+//            sendFcmNotificationToAllMembers(travelRoom);
         } else if (anyMemberDone) {
             travelRoom.setRoomType(RoomType.WAIT);
             travelRoomRepository.save(travelRoom);
@@ -203,7 +203,7 @@ public class PaymentServiceImpl implements PaymentService{
     public void calculateTransfer(Long travelRoomId){
         // 1. DB에서 isWithPaid가 true인 Payment를 가져옴
         List<Payment> payments = paymentRepository.findByIsWithPaidAndTravelRoomId(true, travelRoomId);
-
+        log.warn("payment 가져옴");
         Map<Member, Long> memberPayments = new HashMap<>();
         Long totalAmount = 0L;
 
@@ -212,17 +212,18 @@ public class PaymentServiceImpl implements PaymentService{
             totalAmount += payment.getPaymentAmount();
             memberPayments.put(payment.getMember(), memberPayments.getOrDefault(payment.getMember(), 0L) + payment.getPaymentAmount());
         }
+        log.warn("총 합계 : " + totalAmount);
 
-        log.warn("총 합계 : " + String.valueOf(totalAmount));
         // 3. TravelRoom의 인원 수로 총 합을 나눔
         Long perPersonAmount = totalAmount/memberPayments.size();
-        log.warn("인당 낼 금액 : " + String.valueOf(perPersonAmount));
+        log.warn("인당 낼 금액 : " + perPersonAmount);
 
         // 4. 각 인원의 지출 금액과 1인당 지출 금액을 비교하여 차액을 계산
         for(Map.Entry<Member, Long> entry : memberPayments.entrySet()){
             Member member = entry.getKey();
             Long paidAmount = entry.getValue();
             Long difference = perPersonAmount - paidAmount;
+            log.warn("지불금액:" + paidAmount);
 
             // 차액이 양수라면 이 회원이 다른 사람에게 돈을 보내야함 (DB저장)
             if (difference > 0){
