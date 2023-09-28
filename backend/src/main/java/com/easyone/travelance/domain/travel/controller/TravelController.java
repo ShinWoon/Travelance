@@ -38,7 +38,8 @@ public class TravelController {
     @PostMapping(value = "")
     public ResponseEntity<RoomIdResponseDto> MakeRoom(@MemberInfo MemberInfoDto memberInfo,
                                                       @RequestPart RoomInfoRequestDto roomInfoRequestDto,
-                                                    @RequestPart RoomUserRequestDto roomUserRequestDto) {
+                                                      @RequestPart(value = "imageFiles", required = false) MultipartFile imageFiles,
+                                                      @RequestPart RoomUserRequestDto roomUserRequestDto) {
 
 //        System.out.println(imageFiles.isEmpty());
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
