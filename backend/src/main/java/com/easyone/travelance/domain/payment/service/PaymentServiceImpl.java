@@ -218,6 +218,7 @@ public class PaymentServiceImpl implements PaymentService{
         TravelRoom travelRoom = travelRoomRepository.findById(travelRoomId).orElseThrow(() -> new EntityNotFoundException("TravelRoom을 찾을 수 없습니다."));
         int totalMembers = travelRoom.getTravelRoomMembers().size();
         Long perPersonAmount = totalAmount / totalMembers;
+
         log.warn("인당 낼 금액 : " + perPersonAmount);
 
         // 4. 각 인원의 지출 금액과 1인당 지출 금액을 비교하여 차액을 계산
