@@ -47,6 +47,8 @@ fun CardListScreen(
     loginViewModel: LoginViewModel,
     editUserViewModel: EditUserViewModel
 ){
+    cardListViewModel.setExistingCardList(editUserViewModel)
+
     val coroutineScope = rememberCoroutineScope()
     val cardListResultState by cardListViewModel.cardListResult.collectAsState() //계좌 불러오는 api 결과 상태
     val cardListState  = cardListViewModel.cardList.collectAsState() //내가 이 화면에 사용할 내 계좌 리스트의 상태
@@ -98,14 +100,20 @@ fun CardListScreen(
                 }
             }
             MinionPrimaryButton(
-                content = "다음",
+                content = if (cardListViewModel.isEmptyExistingCardList()) "다음" else "완료",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                loginViewModel.setMemberCardList(cardListState.value.filter { it.isSelected!! })
-                Log.d(TAG, "CardListScreen에서 mainviewmodel의 memberInfo : ${loginViewModel.memberInfo}")
-                navController.navigate(Screen.NicknamePassword.route)
+                if(cardListViewModel.isEmptyExistingCardList()){
+                    //닉네임, 비밀번호 설정 화면으로 이동
+                    loginViewModel.setMemberCardList(cardListState.value.filter { it.isSelected!! })
+                    Log.d(TAG, "CardListScreen에서 mainviewmodel의 memberInfo : ${loginViewModel.memberInfo}")
+                    navController.navigate(Screen.NicknamePassword.route)
+                }else{
+                    //새로운 카드목록, 계좌목록 전송
+
+                }
             }
         }
     }
