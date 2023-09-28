@@ -32,7 +32,7 @@ public class TravelRoom {
 
     private Long budget;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "travelRoom", cascade = CascadeType.ALL,  orphanRemoval = true)
+    @OneToMany(mappedBy = "travelRoom", cascade = CascadeType.ALL,  orphanRemoval = true)
     @JsonManagedReference
     private List<TravelRoomMember> travelRoomMembers = new ArrayList<>();
 
