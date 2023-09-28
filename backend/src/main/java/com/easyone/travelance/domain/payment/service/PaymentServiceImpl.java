@@ -26,6 +26,7 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.threeten.bp.LocalDateTime;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
@@ -189,7 +190,7 @@ public class PaymentServiceImpl implements PaymentService{
 
         // 조건에 따라 TravelRoom의 RoomType을 변경하거나 calculateTransfer 함수를 실행합니다.
         if (allMembersDone) {
-            log.info("함수호출");
+            log.info("금액 정산 & FCM 알림 전송");
             calculateTransfer(travelRoom.getId());
 //            sendFcmNotificationToAllMembers(travelRoom);
         } else if (anyMemberDone) {
@@ -200,55 +201,60 @@ public class PaymentServiceImpl implements PaymentService{
         return null;
     }
 
-    public void calculateTransfer(Long travelRoomId){
-        // 1. DB에서 isWithPaid가 true인 Payment를 가져옴
+    public void calculateTransfer(Long travelRoomId) {
+        // 1. DB에서 해당 TravelRoom에 대한 공금 Payment를 가져옴
         List<Payment> payments = paymentRepository.findByIsWithPaidAndTravelRoomId(true, travelRoomId);
-        log.warn("payment 가져옴");
-        Map<Member, Long> memberPayments = new HashMap<>();
-        Long totalAmount = 0L;
 
-        // 2. 총 합과 각 개인이 사용한 금액을 구함
+        // 2. 해당 여행방의 모든 인원을 가져옴
+        TravelRoom travelRoom = travelRoomRepository.findById(travelRoomId).orElseThrow(() -> new EntityNotFoundException("TravelRoom을 찾을 수 없습니다."));
+        List<TravelRoomMember> allMembers = travelRoom.getTravelRoomMembers();
+
+        // 3. 총 지출과 각 인원별 지출을 계산
+        Long totalAmount = 0L;
+        Map<Member, Long> memberPayments = new HashMap<>();
         for (Payment payment : payments) {
             totalAmount += payment.getPaymentAmount();
             memberPayments.put(payment.getMember(), memberPayments.getOrDefault(payment.getMember(), 0L) + payment.getPaymentAmount());
         }
-        log.warn("총 합계 : " + totalAmount);
+        log.warn("총 금액:" + totalAmount);
 
-        // 3. TravelRoom의 인원 수로 총 합을 나눔
-        TravelRoom travelRoom = travelRoomRepository.findById(travelRoomId).orElseThrow(() -> new EntityNotFoundException("TravelRoom을 찾을 수 없습니다."));
-        int totalMembers = travelRoom.getTravelRoomMembers().size();
+        // 4. 1인당 지출금액을 계산
+        int totalMembers = allMembers.size();
         Long perPersonAmount = totalAmount / totalMembers;
+        log.warn("1인당 지출금액" + perPersonAmount);
 
-        log.warn("인당 낼 금액 : " + perPersonAmount);
+        // 5. 각 인원별로 지불해야할 금액과 실제 지출한 금액의 차이를 계산하여 이체해야하는 금액을 계산
+        for (TravelRoomMember member : allMembers) {
+            Long paidAmount = memberPayments.getOrDefault(member.getMember(), 0L); // 수정된 부분
+            Long difference = paidAmount - perPersonAmount;
+            log.warn("차액" + difference);
 
-        // 4. 각 인원의 지출 금액과 1인당 지출 금액을 비교하여 차액을 계산
-        for(Map.Entry<Member, Long> entry : memberPayments.entrySet()){
-            Member member = entry.getKey();
-            Long paidAmount = entry.getValue();
-            Long difference = perPersonAmount - paidAmount;
-            log.warn("지불금액:" + paidAmount);
+            // 이 멤버가 더 많은 돈을 지불했을 경우
+            if (difference < 0) {
+                for (TravelRoomMember otherMember : allMembers) {
+                    if (!member.equals(otherMember)) {
+                        Long otherPaidAmount = memberPayments.getOrDefault(otherMember.getMember(), 0L); // 수정된 부분
+                        Long otherDifference = otherPaidAmount - perPersonAmount;
 
-            // 차액이 양수라면 이 회원이 다른 사람에게 돈을 보내야함 (DB저장)
-            if (difference > 0){
-                for (Map.Entry<Member, Long> innerEntry : memberPayments.entrySet()){
-                    if(!member.equals(innerEntry.getKey()) && innerEntry.getValue() - perPersonAmount >0){
-                        // 5. 차액을 기반으로 calculation DB에 저장
-                        Calculation calculation = Calculation.builder()
-                                .fromMemberId(member.getId())
-                                .toMemberId(innerEntry.getKey().getId())
-                                .amount(difference)
-                                .isTransfer(false)
-                                .travelRoom(payments.get(0).getTravelRoom())
-                                .build();
-
-                        calculationRepository.save(calculation);
-                        break;
+                        // 다른 멤버가 더 적은 돈을 지불했을 경우
+                        if (otherDifference > 0) {
+                            Long transferAmount = Math.min(-difference, otherDifference);
+                            Calculation calculation = Calculation.builder()
+                                    .fromMemberId(member.getId())
+                                    .toMemberId(otherMember.getId())
+                                    .amount(transferAmount)
+                                    .isTransfer(false)
+                                    .travelRoom(travelRoom)
+                                    .build();
+                            calculationRepository.save(calculation);
+                            difference += transferAmount;
+                            if (difference >= 0) break;
+                        }
                     }
                 }
             }
         }
     }
-
     private void sendFcmNotificationToAllMembers(TravelRoom travelRoom){
         List<Member> members = travelRoom.getTravelRoomMembers()
                 .stream()
@@ -294,33 +300,59 @@ public class PaymentServiceImpl implements PaymentService{
     @Override
     public String transferAccount(TransferAccountRequestDto transferAccountRequestDto) {
         Optional<TravelRoom> existTravelRoom = travelRoomRepository.findById(transferAccountRequestDto.getRoomNumber());
+
         if (existTravelRoom.isEmpty()){
             throw new EntityNotFoundException("여행방이 존재하지 않습니다.");
         }
-        Optional<MainAccount> fromAccountOpt = mainAccountRepository.findByMemberId(transferAccountRequestDto.getFromMemberId());
-        String depositNumber = fromAccountOpt.isPresent() ? fromAccountOpt.get().getOneAccount() : null;
 
-        Optional<MainAccount> toAccountOpt = mainAccountRepository.findByMemberId(transferAccountRequestDto.getToMemberId());
-        String withdrawalNumber = toAccountOpt.isPresent() ? toAccountOpt.get().getOneAccount() : null;
+        // 1. 해당 roomNumber로 Calculation을 가져옴
+        List<Calculation> calculations = calculationRepository.findByTravelRoom(existTravelRoom.get().getId());
 
-        TransferRequestToBankDto transferRequestToBankDto = new TransferRequestToBankDto();
-        transferRequestToBankDto.setDepositNumber(depositNumber);
-        transferRequestToBankDto.setWithdrawalNumber(withdrawalNumber);
-        transferRequestToBankDto.setAmount(transferAccountRequestDto.getAmount());
-        transferRequestToBankDto.setMemo(existTravelRoom.get().getTravelName());
+        // 해당 roomNumber와 fromMemberId가 일치하는 Calculation만 필터링
+        List<Calculation> matchedCalculations = calculations.stream()
+                .filter(calculation -> calculation.getFromMemberId().equals(transferAccountRequestDto.getFromMemberId()))
+                .collect(Collectors.toList());
 
-        try {
-            ResponseEntity<String> result = webClient.post()
-                    .uri("/account/transfer")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .bodyValue(transferRequestToBankDto)
-                    .retrieve()
-                    .toEntity(String.class)
-                    .block();
-            return result.getBody();
+        for (Calculation calculation : matchedCalculations) {
+            // 2. TransferRequestToBankDto 준비
+            TransferRequestToBankDto transferRequestToBankDto = new TransferRequestToBankDto();
 
-        }catch (Exception e){
-            throw new RuntimeException(e);
+            // 3. fromMemberId의 MainAccount로 depositNumber 설정
+            Optional<MainAccount> fromAccountOpt = mainAccountRepository.findByMemberId(calculation.getFromMemberId());
+            transferRequestToBankDto.setDepositNumber(fromAccountOpt.orElseThrow(() -> new EntityNotFoundException("From Member의 MainAccount를 찾을 수 없습니다.")).getOneAccount());
+
+            // 4. toMemberId의 MainAccount로 withdrawalNumber 설정
+            Optional<MainAccount> toAccountOpt = mainAccountRepository.findByMemberId(calculation.getToMemberId());
+            transferRequestToBankDto.setWithdrawalNumber(toAccountOpt.orElseThrow(() -> new EntityNotFoundException("To Member의 MainAccount를 찾을 수 없습니다.")).getOneAccount());
+
+            // 5. amount와 memo 설정
+            transferRequestToBankDto.setAmount(calculation.getAmount());
+            transferRequestToBankDto.setMemo(existTravelRoom.get().getTravelName());
+
+            // 6. 계좌 이체 요청
+            try {
+                ResponseEntity<String> result = webClient.post()
+                        .uri("/account/transfer")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(transferRequestToBankDto)
+                        .retrieve()
+                        .toEntity(String.class)
+                        .block();
+
+                // 이체 성공시 해당 Calculation의 isTransfer와 transferedAt 업데이트
+                calculation.setIsTransfer(true);
+                calculation.setTransferedAt(LocalDateTime.now());
+                calculationRepository.save(calculation);
+
+                return result.getBody();
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
+
+        return "모든 이체가 완료되었습니다."; // 모든 계산이 완료된 후에 반환될 메시지
     }
+
+
 }
