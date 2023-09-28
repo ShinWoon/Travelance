@@ -284,6 +284,7 @@ public class PaymentServiceImpl implements PaymentService{
             for (TravelRoomMember member : allMembers) {
                 Long paidAmount = memberPayments.getOrDefault(member.getMember(), 0L); // 수정된 부분
                 Long difference = paidAmount - perPersonAmount;
+                log.warn("차액" + difference);
 
                 // 이 멤버가 더 많은 돈을 지불했을 경우
                 if (difference < 0) {
