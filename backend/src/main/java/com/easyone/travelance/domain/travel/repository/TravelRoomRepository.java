@@ -23,4 +23,5 @@ public interface TravelRoomRepository extends JpaRepository<TravelRoom, Long> {
 
     List<TravelRoom> findAllByTravelRoomMembers_MemberAndIsDone(Member member, RoomType roomType);
 
+    List<TravelRoom> findAllByTravelRoomMembersMember(Member member);
 }
