@@ -284,29 +284,27 @@ public class PaymentServiceImpl implements PaymentService{
             for(TravelRoomMember member : allMembers){
                 Long paidAmount = memberPayments.getOrDefault(member, 0L);
                 Long difference = paidAmount - perPersonAmount; // 실제 지출한 금액 - 1인당 지출해야하는 금액
-                log.warn("차액:" + difference);
-                if(difference > 0) { // 다른 사람에게 보내야 하는 경우
-                    for(TravelRoomMember otherMember : allMembers){
-                        if(!member.equals(otherMember)){
-                            Long otherPaidAmount = memberPayments.getOrDefault(otherMember, 0L);
-                            Long otherDifference = otherPaidAmount - perPersonAmount;
+                log.warn("차액" + difference);
+                for(TravelRoomMember otherMember : allMembers){
+                    if(!member.equals(otherMember) && difference > 0){
+                        Long otherPaidAmount = memberPayments.getOrDefault(otherMember, 0L);
+                        Long otherDifference = otherPaidAmount - perPersonAmount;
 
-                            if(otherDifference < 0){ // 다른 사람이 받아야하는 금액이 있다면
-                                Long transferAmount = Math.min(difference, -otherDifference); // 실제로 보낼 금액
+                        if(otherDifference < 0){ // 다른 사람이 받아야하는 금액이 있다면
+                            Long transferAmount = Math.min(difference, -otherDifference); // 실제로 보낼 금액
 
-                                Calculation calculation = Calculation.builder()
-                                        .fromMemberId(member.getId())
-                                        .toMemberId(otherMember.getId())
-                                        .amount(transferAmount)
-                                        .isTransfer(false)
-                                        .travelRoom(travelRoom)
-                                        .build();
+                            Calculation calculation = Calculation.builder()
+                                    .fromMemberId(member.getId())
+                                    .toMemberId(otherMember.getId())
+                                    .amount(transferAmount)
+                                    .isTransfer(false)
+                                    .travelRoom(travelRoom)
+                                    .build();
 
-                                calculationRepository.save(calculation);
+                            calculationRepository.save(calculation);
 
-                                difference -= transferAmount;
-                                if(difference <= 0) break; // 모든 금액을 보냈으면 다음 인원으로
-                            }
+                            difference -= transferAmount;
+                        }
                         }
                     }
                 }
