@@ -51,8 +51,11 @@ public class TravelPaymentWithService {
                     // 해당 회원과 일치하는 결제 내역 조회
                     List<Payment> memberPayments = travelRoom.getPayments()
                             .stream()
-                            .filter(payment -> payment.getMember().getId().equals(travelRoomMember.getMember().getId()))
+                            .filter(payment -> payment.getMember().getId().equals(travelRoomMember.getMember().getId())
+                                    && payment.getIsWithPaid() == true
+                                    && payment.getTravelRoom().getId().equals(roomId))
                             .collect(Collectors.toList());
+
 
                     // 결제 내역 합계 계산
                     Long totalPayment = memberPayments.stream()
