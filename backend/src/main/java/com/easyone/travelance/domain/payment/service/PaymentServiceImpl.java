@@ -26,6 +26,7 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.threeten.bp.LocalDateTime;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
@@ -189,7 +190,7 @@ public class PaymentServiceImpl implements PaymentService{
 
         // 조건에 따라 TravelRoom의 RoomType을 변경하거나 calculateTransfer 함수를 실행합니다.
         if (allMembersDone) {
-            log.info("함수호출");
+            log.info("금액 정산 & FCM 알림 전송");
             calculateTransfer(travelRoom.getId());
 //            sendFcmNotificationToAllMembers(travelRoom);
         } else if (anyMemberDone) {
@@ -299,33 +300,59 @@ public class PaymentServiceImpl implements PaymentService{
     @Override
     public String transferAccount(TransferAccountRequestDto transferAccountRequestDto) {
         Optional<TravelRoom> existTravelRoom = travelRoomRepository.findById(transferAccountRequestDto.getRoomNumber());
+
         if (existTravelRoom.isEmpty()){
             throw new EntityNotFoundException("여행방이 존재하지 않습니다.");
         }
-        Optional<MainAccount> fromAccountOpt = mainAccountRepository.findByMemberId(transferAccountRequestDto.getFromMemberId());
-        String depositNumber = fromAccountOpt.isPresent() ? fromAccountOpt.get().getOneAccount() : null;
 
-        Optional<MainAccount> toAccountOpt = mainAccountRepository.findByMemberId(transferAccountRequestDto.getToMemberId());
-        String withdrawalNumber = toAccountOpt.isPresent() ? toAccountOpt.get().getOneAccount() : null;
+        // 1. 해당 roomNumber로 Calculation을 가져옴
+        List<Calculation> calculations = calculationRepository.findByTravelRoom(existTravelRoom.get().getId());
 
-        TransferRequestToBankDto transferRequestToBankDto = new TransferRequestToBankDto();
-        transferRequestToBankDto.setDepositNumber(depositNumber);
-        transferRequestToBankDto.setWithdrawalNumber(withdrawalNumber);
-        transferRequestToBankDto.setAmount(transferAccountRequestDto.getAmount());
-        transferRequestToBankDto.setMemo(existTravelRoom.get().getTravelName());
+        // 해당 roomNumber와 fromMemberId가 일치하는 Calculation만 필터링
+        List<Calculation> matchedCalculations = calculations.stream()
+                .filter(calculation -> calculation.getFromMemberId().equals(transferAccountRequestDto.getFromMemberId()))
+                .collect(Collectors.toList());
 
-        try {
-            ResponseEntity<String> result = webClient.post()
-                    .uri("/account/transfer")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .bodyValue(transferRequestToBankDto)
-                    .retrieve()
-                    .toEntity(String.class)
-                    .block();
-            return result.getBody();
+        for (Calculation calculation : matchedCalculations) {
+            // 2. TransferRequestToBankDto 준비
+            TransferRequestToBankDto transferRequestToBankDto = new TransferRequestToBankDto();
 
-        }catch (Exception e){
-            throw new RuntimeException(e);
+            // 3. fromMemberId의 MainAccount로 depositNumber 설정
+            Optional<MainAccount> fromAccountOpt = mainAccountRepository.findByMemberId(calculation.getFromMemberId());
+            transferRequestToBankDto.setDepositNumber(fromAccountOpt.orElseThrow(() -> new EntityNotFoundException("From Member의 MainAccount를 찾을 수 없습니다.")).getOneAccount());
+
+            // 4. toMemberId의 MainAccount로 withdrawalNumber 설정
+            Optional<MainAccount> toAccountOpt = mainAccountRepository.findByMemberId(calculation.getToMemberId());
+            transferRequestToBankDto.setWithdrawalNumber(toAccountOpt.orElseThrow(() -> new EntityNotFoundException("To Member의 MainAccount를 찾을 수 없습니다.")).getOneAccount());
+
+            // 5. amount와 memo 설정
+            transferRequestToBankDto.setAmount(calculation.getAmount());
+            transferRequestToBankDto.setMemo(existTravelRoom.get().getTravelName());
+
+            // 6. 계좌 이체 요청
+            try {
+                ResponseEntity<String> result = webClient.post()
+                        .uri("/account/transfer")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(transferRequestToBankDto)
+                        .retrieve()
+                        .toEntity(String.class)
+                        .block();
+
+                // 이체 성공시 해당 Calculation의 isTransfer와 transferedAt 업데이트
+                calculation.setIsTransfer(true);
+                calculation.setTransferedAt(LocalDateTime.now());
+                calculationRepository.save(calculation);
+
+                return result.getBody();
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
+
+        return "모든 이체가 완료되었습니다."; // 모든 계산이 완료된 후에 반환될 메시지
     }
+
+
 }
