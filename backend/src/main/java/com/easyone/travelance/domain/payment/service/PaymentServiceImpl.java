@@ -200,64 +200,120 @@ public class PaymentServiceImpl implements PaymentService{
         return null;
     }
 
-    public void calculateTransfer(Long travelRoomId){
-        // 1. DB에서 isWithPaid가 true인 Payment를 가져옴
-        List<Payment> payments = paymentRepository.findByIsWithPaidAndTravelRoomId(true, travelRoomId);
-        log.warn("payment 가져옴");
-        Map<Member, Long> memberPayments = new HashMap<>();
-        Long totalAmount = 0L;
+//    public void calculateTransfer(Long travelRoomId){
+//        // 1. DB에서 isWithPaid가 true인 Payment를 가져옴
+//        List<Payment> payments = paymentRepository.findByIsWithPaidAndTravelRoomId(true, travelRoomId);
+//        log.warn("payment 가져옴");
+//        Map<Member, Long> memberPayments = new HashMap<>();
+//        Long totalAmount = 0L;
+//
+//        // 2. 총 합과 각 개인이 사용한 금액을 구함
+//        for (Payment payment : payments) {
+//            totalAmount += payment.getPaymentAmount();
+//            memberPayments.put(payment.getMember(), memberPayments.getOrDefault(payment.getMember(), 0L) + payment.getPaymentAmount());
+//        }
+//        log.warn("총 합계 : " + totalAmount);
+//
+//        // 3. TravelRoom의 인원 수로 총 합을 나눔
+//        TravelRoom travelRoom = travelRoomRepository.findById(travelRoomId).orElseThrow(() -> new EntityNotFoundException("TravelRoom을 찾을 수 없습니다."));
+//        int totalMembers = travelRoom.getTravelRoomMembers().size();
+//        Long perPersonAmount = totalAmount / totalMembers;
+//
+//        log.warn("인당 낼 금액 : " + perPersonAmount);
+//
+//        // 4. 각 인원의 지출 금액과 1인당 지출 금액을 비교하여 차액을 계산
+//        for(Map.Entry<Member, Long> entry : memberPayments.entrySet()){
+//            Member member = entry.getKey();
+//            Long paidAmount = entry.getValue();
+//            Long difference = perPersonAmount - paidAmount;
+//            log.warn("지불금액:" + paidAmount);
+//            log.warn("차액:" + difference);
+//
+//            if (difference > 0){ // 돈을 보내야하는 경우
+//                for (Map.Entry<Member, Long> innerEntry : memberPayments.entrySet()){
+//                    Member targetMember = innerEntry.getKey();
+//                    Long targetPaidAmount = innerEntry.getValue();
+//                    Long targetDifference = perPersonAmount - targetPaidAmount;
+//
+//                    if(!member.equals(targetMember) && targetDifference < 0){
+//                        Long transferAmount = Math.min(difference, -targetDifference); // 실제로 보낼 금액
+//
+//                        Calculation calculation = Calculation.builder()
+//                                .fromMemberId(member.getId())
+//                                .toMemberId(targetMember.getId())
+//                                .amount(transferAmount)
+//                                .isTransfer(false)
+//                                .travelRoom(payments.get(0).getTravelRoom())
+//                                .build();
+//
+//                        calculationRepository.save(calculation);
+//
+//                        difference -= transferAmount; // 보낸 금액만큼 차감
+//
+//                        // 모든 차액을 보냈으면 더 이상 보낼 필요 없음
+//                        if (difference <= 0) break;
+//                    }
+//                }
+//            }
+//        }
+//
+//    }
+        public void calculateTransfer(Long travelRoomId){
+            // 1. DB에서 해당 TravelRoom에 대한 공금 Payment를 가져옴
+            List<Payment> payments = paymentRepository.findByIsWithPaidAndTravelRoomId(true, travelRoomId);
 
-        // 2. 총 합과 각 개인이 사용한 금액을 구함
-        for (Payment payment : payments) {
-            totalAmount += payment.getPaymentAmount();
-            memberPayments.put(payment.getMember(), memberPayments.getOrDefault(payment.getMember(), 0L) + payment.getPaymentAmount());
-        }
-        log.warn("총 합계 : " + totalAmount);
+            // 2. 해당 여행방의 모든 인원을 가져옴
+            TravelRoom travelRoom = travelRoomRepository.findById(travelRoomId).orElseThrow(() -> new EntityNotFoundException("TravelRoom을 찾을 수 없습니다."));
+            List<TravelRoomMember> allMembers = travelRoom.getTravelRoomMembers();
 
-        // 3. TravelRoom의 인원 수로 총 합을 나눔
-        TravelRoom travelRoom = travelRoomRepository.findById(travelRoomId).orElseThrow(() -> new EntityNotFoundException("TravelRoom을 찾을 수 없습니다."));
-        int totalMembers = travelRoom.getTravelRoomMembers().size();
-        Long perPersonAmount = totalAmount / totalMembers;
+            // 3. 총 지출과 각 인원별 지출을 계산
+            Long totalAmount = 0L;
+            Map<Member, Long> memberPayments = new HashMap<>();
+            for(Payment payment : payments){
+                totalAmount += payment.getPaymentAmount();
+                memberPayments.put(payment.getMember(), memberPayments.getOrDefault(payment.getMember(), 0L) + payment.getPaymentAmount());
+            }
+            log.warn("총 금액:" + totalAmount);
 
-        log.warn("인당 낼 금액 : " + perPersonAmount);
+            // 4. 1인당 지출금액을 계산
+            int totalMembers = allMembers.size();
+            Long perPersonAmount = totalAmount / totalMembers;
+            log.warn("1인당 지출금액" + perPersonAmount);
 
-        // 4. 각 인원의 지출 금액과 1인당 지출 금액을 비교하여 차액을 계산
-        for(Map.Entry<Member, Long> entry : memberPayments.entrySet()){
-            Member member = entry.getKey();
-            Long paidAmount = entry.getValue();
-            Long difference = perPersonAmount - paidAmount;
-            log.warn("지불금액:" + paidAmount);
-            log.warn("차액:" + difference);
+            // 5. 각 인원별로 지불해야할 금액과 실제 지출한 금액의 차이를 계산하여 이체해야하는 금액을 계산
+            for(TravelRoomMember member : allMembers){
+                Long paidAmount = memberPayments.getOrDefault(member, 0L);
+                Long difference = paidAmount - perPersonAmount; // 실제 지출한 금액 - 1인당 지출해야하는 금액
+                log.warn("차액:" + difference);
+                if(difference > 0) { // 다른 사람에게 보내야 하는 경우
+                    for(TravelRoomMember otherMember : allMembers){
+                        if(!member.equals(otherMember)){
+                            Long otherPaidAmount = memberPayments.getOrDefault(otherMember, 0L);
+                            Long otherDifference = otherPaidAmount - perPersonAmount;
 
-            if (difference > 0){ // 돈을 보내야하는 경우
-                for (Map.Entry<Member, Long> innerEntry : memberPayments.entrySet()){
-                    Member targetMember = innerEntry.getKey();
-                    Long targetPaidAmount = innerEntry.getValue();
-                    Long targetDifference = perPersonAmount - targetPaidAmount;
+                            if(otherDifference < 0){ // 다른 사람이 받아야하는 금액이 있다면
+                                Long transferAmount = Math.min(difference, -otherDifference); // 실제로 보낼 금액
 
-                    if(!member.equals(targetMember) && targetDifference < 0){
-                        Long transferAmount = Math.min(difference, -targetDifference); // 실제로 보낼 금액
+                                Calculation calculation = Calculation.builder()
+                                        .fromMemberId(member.getId())
+                                        .toMemberId(otherMember.getId())
+                                        .amount(transferAmount)
+                                        .isTransfer(false)
+                                        .travelRoom(travelRoom)
+                                        .build();
 
-                        Calculation calculation = Calculation.builder()
-                                .fromMemberId(member.getId())
-                                .toMemberId(targetMember.getId())
-                                .amount(transferAmount)
-                                .isTransfer(false)
-                                .travelRoom(payments.get(0).getTravelRoom())
-                                .build();
+                                calculationRepository.save(calculation);
 
-                        calculationRepository.save(calculation);
-
-                        difference -= transferAmount; // 보낸 금액만큼 차감
-
-                        // 모든 차액을 보냈으면 더 이상 보낼 필요 없음
-                        if (difference <= 0) break;
+                                difference -= transferAmount;
+                                if(difference <= 0) break; // 모든 금액을 보냈으면 다음 인원으로
+                            }
+                        }
                     }
                 }
             }
         }
 
-    }
+
 
     private void sendFcmNotificationToAllMembers(TravelRoom travelRoom){
         List<Member> members = travelRoom.getTravelRoomMembers()
