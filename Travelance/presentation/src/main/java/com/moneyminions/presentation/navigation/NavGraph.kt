@@ -48,7 +48,8 @@ fun NavGraph(
     innerPaddings: PaddingValues,
     navController: NavHostController,
     startDestination: String,
-    loginViewModel: LoginViewModel = hiltViewModel()
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    editUserViewModel: EditUserViewModel = hiltViewModel()
 ) {
     AnimatedNavHost(
         modifier = Modifier.padding(innerPaddings),
@@ -107,7 +108,7 @@ fun NavGraph(
         composable(
             route = Screen.EditUser.route,
         ) {
-            EditUserScreen(navController = navController)
+            EditUserScreen(navController = navController, editUserViewModel = editUserViewModel)
         }
         composable(
             route = Screen.AccountAuthentication.route
@@ -117,12 +118,12 @@ fun NavGraph(
         composable(
             route = Screen.AccountList.route,
         ) {
-            AccountListScreen(navController = navController, loginViewModel = loginViewModel)
+            AccountListScreen(navController = navController, loginViewModel = loginViewModel, editUserViewModel = editUserViewModel)
         }
         composable(
             route = Screen.CardList.route,
         ) {
-            CardListScreen(navController = navController, loginViewModel = loginViewModel)
+            CardListScreen(navController = navController, loginViewModel = loginViewModel, editUserViewModel = editUserViewModel)
         }
         composable(
             route = Screen.TravelMap.route,

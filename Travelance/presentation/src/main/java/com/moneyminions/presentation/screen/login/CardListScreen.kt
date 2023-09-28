@@ -34,6 +34,7 @@ import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.MainViewModel
 import com.moneyminions.presentation.viewmodel.login.CardListViewModel
 import com.moneyminions.presentation.viewmodel.login.LoginViewModel
+import com.moneyminions.presentation.viewmodel.mypage.EditUserViewModel
 import kotlinx.coroutines.launch
 
 
@@ -43,7 +44,8 @@ private const val TAG = "CardListScreen D210"
 fun CardListScreen(
     navController: NavHostController,
     cardListViewModel: CardListViewModel = hiltViewModel(),
-    loginViewModel: LoginViewModel
+    loginViewModel: LoginViewModel,
+    editUserViewModel: EditUserViewModel
 ){
     val coroutineScope = rememberCoroutineScope()
     val cardListResultState by cardListViewModel.cardListResult.collectAsState() //계좌 불러오는 api 결과 상태

@@ -52,8 +52,6 @@ fun AccountAuthenticationScreen(
     navController: NavHostController,
     accountAuthenticationViewModel: AccountAuthenticationViewModel = hiltViewModel()
 ) {
-    val previous = navController.previousBackStackEntry?.savedStateHandle?.get<String>("previous") ?: "join"
-    Log.d(TAG, "AccountAuthenticationScreen: $previous")
 
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()

@@ -34,6 +34,7 @@ import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.MainViewModel
 import com.moneyminions.presentation.viewmodel.login.AccountListViewModel
 import com.moneyminions.presentation.viewmodel.login.LoginViewModel
+import com.moneyminions.presentation.viewmodel.mypage.EditUserViewModel
 import kotlinx.coroutines.launch
 
 private const val TAG = "AccountListScreen D210"
@@ -41,8 +42,11 @@ private const val TAG = "AccountListScreen D210"
 fun AccountListScreen(
     navController: NavHostController,
     accountListViewModel: AccountListViewModel = hiltViewModel(),
-    loginViewModel: LoginViewModel
+    loginViewModel: LoginViewModel,
+    editUserViewModel: EditUserViewModel
 ){
+    accountListViewModel.setExistingAccountList(editUserViewModel)
+
     val coroutineScope = rememberCoroutineScope()
     val accountListResultState by accountListViewModel.accountListResult.collectAsState() //계좌 불러오는 api 결과 상태
     val accountListState  = accountListViewModel.accoutList.collectAsState() //내가 이 화면에 사용할 내 계좌 리스트의 상태

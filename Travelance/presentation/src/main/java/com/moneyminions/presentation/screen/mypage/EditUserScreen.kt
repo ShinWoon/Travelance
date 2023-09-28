@@ -32,7 +32,7 @@ private const val TAG = "EditUserScreen D210"
 @Composable
 fun EditUserScreen(
     navController: NavHostController,
-    editUserViewModel: EditUserViewModel = hiltViewModel()
+    editUserViewModel: EditUserViewModel
 ) {
     val memberInfoResultState by editUserViewModel.memberInfoResult.collectAsState()
     NetworkResultHandler(
@@ -117,7 +117,6 @@ fun EditUserScreen(
                 content = "마이데이터 자산 추가하기",
                 modifier = Modifier
             ) {
-                navController.currentBackStackEntry?.savedStateHandle?.set(key = "previous", value = "editUser")
                 navController.navigate(Screen.AccountAuthentication.route)
             }
         }
@@ -151,5 +150,5 @@ fun EditUserScreen(
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
 @Composable
 fun EditUserScreenPreview() {
-    EditUserScreen(navController = rememberNavController())
+    EditUserScreen(navController = rememberNavController(), editUserViewModel = hiltViewModel())
 }
