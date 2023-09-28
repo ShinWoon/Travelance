@@ -213,8 +213,10 @@ public class PaymentServiceImpl implements PaymentService{
             memberPayments.put(payment.getMember(), memberPayments.getOrDefault(payment.getMember(), 0L) + payment.getPaymentAmount());
         }
 
+        log.warn("총 합계 : " + String.valueOf(totalAmount));
         // 3. TravelRoom의 인원 수로 총 합을 나눔
         Long perPersonAmount = totalAmount/memberPayments.size();
+        log.warn("인당 낼 금액 : " + String.valueOf(perPersonAmount));
 
         // 4. 각 인원의 지출 금액과 1인당 지출 금액을 비교하여 차액을 계산
         for(Map.Entry<Member, Long> entry : memberPayments.entrySet()){
