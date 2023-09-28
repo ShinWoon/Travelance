@@ -36,7 +36,7 @@ public class TravelRoom {
     @JsonManagedReference
     private List<TravelRoomMember> travelRoomMembers = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "travelRoom", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "travelRoom", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Payment> payments = new ArrayList<>();
 
