@@ -49,8 +49,11 @@ public class FirebaseCloudMessageService {
                                 .body(body)
                                 .build())
                         .data(FcmMessage.Data.builder()
+                                .content(targetData)
                                 .build())
-                        .build()).validateOnly(false).build();
+                        .build())
+                .validateOnly(false)
+                .build();
 
         return objectMapper.writeValueAsString(fcmMessage);
     }
