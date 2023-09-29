@@ -114,8 +114,9 @@ public class TravelController {
     //여행 시작
     @Operation(summary = "여행시작", description = "요청 시, 방의 여행이 시작되며, 정산중으로 상태가 바뀝니다. ")
     @PostMapping(value = "/{roomId}/start")
-    public ResponseEntity<ResultDto> startTravel(@PathVariable Long roomId) {
-        ResultDto resultDto = travelService.startTravel(roomId);
+    public ResponseEntity<ResultDto> startTravel(@MemberInfo MemberInfoDto memberInfo, @PathVariable Long roomId) {
+        Member member = memberService.findMemberByEmail(memberInfo.getEmail());
+        ResultDto resultDto = travelService.startTravel(roomId, member);
         return new ResponseEntity<>(resultDto,HttpStatus.OK);
     }
 
