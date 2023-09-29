@@ -188,12 +188,19 @@ public class TravelService {
     }
 
     @Transactional
-    public ResultDto startTravel(Long roomId) {
+    public ResultDto startTravel(Long roomId, Member member) {
         try {
             TravelRoom travelRoom = travelRoomRepository.findById(roomId)
                     .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
+            List<TravelRoom> travelRoomMemberList = travelRoomRepository.findAllByTravelRoomMembersMember(member);
+            for (TravelRoom travelRoomIsDone : travelRoomMemberList) {
+                if (travelRoomIsDone.getIsDone()==RoomType.NOW) {
+                    return new ResultDto("0");
+                }
+            }
+
             travelRoom.setRoomType(RoomType.NOW);
-            return new ResultDto("여행시작 성공");
+            return new ResultDto(roomId.toString());
         }
         catch (Exception e) {
             return new ResultDto("여행방 시작 실패");
