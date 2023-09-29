@@ -7,7 +7,6 @@ fun getScreenTitle(route: String?): String = when(route) {
     NavRouteName.CREATETRAVEL -> NavTitle.CREATETRAVEL
     NavRouteName.SETTING -> NavTitle.SETTING
     NavRouteName.EDITUSER -> NavTitle.EDITUSER
-    NavRouteName.TRAVELDETAIL -> NavTitle.TRAVELDETAIL
     NavRouteName.ANNOUNCEMENT -> NavTitle.ANNOUNCEMENT
     NavRouteName.GAMELIST -> NavTitle.GAMELIST
     NavRouteName.TRAVELMAP -> NavTitle.TRAVELMAP
@@ -20,6 +19,5 @@ fun getScreenTitle(route: String?): String = when(route) {
     NavRouteName.CARDLIST -> NavTitle.CARDLIST
     NavRouteName.NICKNAMEPASSWORD -> NavTitle.NICKNAMEPASSWORD
     NavRouteName.SUBHOME -> NavTitle.SUBHOME
-    NavRouteName.TRAVELDONE -> NavTitle.TRAVELDONE
     else -> ""
 }

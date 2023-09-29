@@ -71,7 +71,6 @@ fun AnnouncementScreen(
                 )
             }
         },
-
     ) {
         Surface(
             modifier = Modifier

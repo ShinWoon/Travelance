@@ -44,7 +44,7 @@ fun TravelInfoView(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(16.dp, 28.dp, 16.dp, 16.dp),
+            .padding(16.dp, 0.dp, 16.dp, 16.dp),
     ) {
         if (type == "detail") {
             Row(
