@@ -111,8 +111,8 @@ public class TravelService {
     @Transactional(readOnly = true)
     public RoomStaticResponseDto findById(Long roomId, Member member) {
 
-        TravelRoom travelRoom = travelRoomRepository.findById(roomId)
-                .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
+        TravelRoom travelRoom = travelRoomRepository.findByIdAndMemberId(roomId, member.getId())
+                .orElseThrow(()-> new IllegalArgumentException("사용자의 여행방이 없습니다. id =" + roomId));
 
         Long budget = travelRoom.getBudget();
         Long UseTotal = travelPaymentService.TotalPriceTravelId(roomId);
@@ -135,7 +135,7 @@ public class TravelService {
     public ResultDto updateRoom(RoomInfoRequestDto roomInfoRequestDto, Long roomId) {
 
         TravelRoom travelRoom = travelRoomRepository.findById(roomId)
-                .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
+                .orElseThrow(()-> new IllegalArgumentException("사용자의 여행방이 없습니다. id =" + roomId));
 
         try {
             travelRoom.update(roomInfoRequestDto);
@@ -150,8 +150,8 @@ public class TravelService {
     @Transactional
     public ResultDto delete(Long roomId, Member member) {
 
-        TravelRoom travelRoom = travelRoomRepository.findById(roomId)
-                .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
+        TravelRoom travelRoom = travelRoomRepository.findByIdAndMemberId(roomId, member.getId())
+                .orElseThrow(()-> new IllegalArgumentException("사용자의 여행방이 없습니다. id =" + roomId));
         TravelRoomMember travelRoomMember = travelRoomMemberRepository.findByTravelRoomAndMember(travelRoom, member);
 
         if (travelRoomMember!=null) {
@@ -167,7 +167,7 @@ public class TravelService {
     @Transactional(readOnly = true)
     public List<RoomUserResponseDto> getUserList(Long roomId) {
         TravelRoom travelRoom = travelRoomRepository.findById(roomId)
-                .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
+                .orElseThrow(()-> new IllegalArgumentException("사용자의 여행방이 없습니다. id =" + roomId));
 
         List<RoomUserResponseDto> travelRoomMemberList = new ArrayList<>();
 
@@ -190,8 +190,9 @@ public class TravelService {
     @Transactional
     public ResultDto startTravel(Long roomId, Member member) {
         try {
-            TravelRoom travelRoom = travelRoomRepository.findById(roomId)
-                    .orElseThrow(()-> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
+            TravelRoom travelRoom = travelRoomRepository.findByIdAndMemberId(roomId, member.getId())
+                    .orElseThrow(()-> new IllegalArgumentException("사용자의 여행방이 없습니다. id =" + roomId));
+            //기존 정산중인 목록이 있으면, 0반환
             List<TravelRoom> travelRoomMemberList = travelRoomRepository.findAllByTravelRoomMembersMember(member);
             for (TravelRoom travelRoomIsDone : travelRoomMemberList) {
                 if (travelRoomIsDone.getIsDone()==RoomType.NOW) {
