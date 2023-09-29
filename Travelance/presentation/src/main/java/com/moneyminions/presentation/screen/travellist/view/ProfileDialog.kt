@@ -13,8 +13,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +26,6 @@ import com.moneyminions.presentation.common.MinionProfile
 import com.moneyminions.presentation.common.TextFieldWithTitle
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.PinkDarkest
-import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.utils.UploadUtils
 import com.moneyminions.presentation.viewmodel.travellist.CreateTravelViewModel
 
@@ -42,20 +39,20 @@ fun ProfileDialog(
     val context = LocalContext.current
     
     // 여행방 생성 (성공시 룸ID 반환 / 실패시 0 반환)
-    val travelListState by createTravelViewModel.createTravelRoomResult.collectAsState()
-    NetworkResultHandler(
-        state = travelListState,
-        errorAction = {
-            Log.d(TAG, "ProfileDialog: 서버 오류")
-        },
-        successAction = {
-            Log.d(TAG, "ProfileDialog : $it ")
-            // 정상적으로 방이 생성되었다면... 다이얼로그 off
-            if(it.result.toInt() != 0) {
-                onDismiss()
-            }
-        }
-    )
+//    val travelListState by createTravelViewModel.createTravelRoomResult.collectAsState()
+//    NetworkResultHandler(
+//        state = travelListState,
+//        errorAction = {
+//            Log.d(TAG, "ProfileDialog: 서버 오류")
+//        },
+//        successAction = {
+//            Log.d(TAG, "ProfileDialog Result : $it ")
+//            // 정상적으로 방이 생성되었다면... 다이얼로그 off
+//            if(it.result.toInt() != 0) {
+//                onDismiss()
+//            }
+//        }
+//    )
     
     Dialog(
       onDismissRequest = onDismiss
@@ -96,7 +93,7 @@ fun ProfileDialog(
                             Log.d(TAG, " -> ProfileDialog url: ${createTravelViewModel.profileImage.value} ")
                             val imageFile = UploadUtils.createMultipartFromUri(context, "file", createTravelViewModel.profileImage.value)
                             Log.d(TAG, " -> ProfileDialog imageFile: $imageFile")
-//                            createTravelViewModel.createTravelRoom(imageFile)
+                            createTravelViewModel.createTravelRoom(imageFile)
                         }
                         onDismiss()
                     }

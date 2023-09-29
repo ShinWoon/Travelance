@@ -16,6 +16,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -32,26 +35,67 @@ import com.moneyminions.presentation.screen.home.view.GraphPage
 import com.moneyminions.presentation.screen.home.view.TopComponent
 import com.moneyminions.presentation.screen.home.view.TravelReadyComponent
 import com.moneyminions.presentation.screen.home.view.UseMoneyPage
+import com.moneyminions.presentation.utils.NetworkResultHandler
+import com.moneyminions.presentation.viewmodel.MainViewModel
 import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 
 private const val TAG = "HomeScreen_D210"
 @Composable
 fun HomeScreen(
     navController: NavHostController,
+    mainViewModel: MainViewModel,
 ) {
-    Home(navController)
+    
+    val homeViewModel: HomeViewModel = hiltViewModel()
+    // todo (정산중인 여행방이 있을때 리턴 값 얘기 해야함) 여행방 시작
+    val startTravelState by homeViewModel.startTravelResult.collectAsState()
+    NetworkResultHandler(
+        state = startTravelState,
+        errorAction = {
+            Log.d(TAG, "HomeScreen: 아직 진행 중인 여행이 있음.")
+        },
+        successAction = {
+            Log.d(TAG, "HomeScreen: $it")
+        }
+    )
+    
+    // 여행방 정보 GET
+    val getTravelRoomInfoState by homeViewModel.getTravelRoomInfoResult.collectAsState()
+    NetworkResultHandler(
+        state = getTravelRoomInfoState,
+        errorAction = {
+            Log.d(TAG, "HomeScreen: 방 정보 얻기 실패")
+        },
+        successAction = {
+            Log.d(TAG, "HomeScreen: $it,\n ${it.everyuse} \n ${it.myuse}")
+            homeViewModel.refreshRoomInfo(it)
+        }
+    )
+    
+    Log.d(TAG, "selectRoomId: ${mainViewModel.selectRoomId.value}")
+    if(mainViewModel.selectRoomId.value == 0) { // 진행 중인 방이 없다면.
+        NoRoomScreen()
+    }
+    else {
+        // 홈 정보 GET
+        LaunchedEffect(Unit) {
+            homeViewModel.getTravelRoomInfo(mainViewModel.selectRoomId.value)
+            Log.d(TAG, "HomeScreen:방 정보 얻기 요청")
+        }
+        Home(navController, homeViewModel)
+    }
 }
 @Composable
 fun Home(
     navController: NavHostController,
-    homeViewModel: HomeViewModel = hiltViewModel(),
+    homeViewModel: HomeViewModel,
 ) {
-    Log.d(TAG, "Home: on")
+//    Log.d(TAG, "Home: on")
     var scrollableState = rememberScrollState()
     
     // Main Card Height
     val cardHeight = 440.dp
-
+    
     Column(
         modifier = Modifier
             .fillMaxWidth()

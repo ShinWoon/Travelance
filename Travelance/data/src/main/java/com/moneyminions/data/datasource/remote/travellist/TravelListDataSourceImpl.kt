@@ -16,8 +16,14 @@ class TravelListDataSourceImpl(
      * 여행 방 생성
      */
     override suspend fun createTravelRoom(createTravelRoomRequest: CreateTravelRoomRequest): CommonResponse {
-        Log.d(TAG, "createTravelRoom 끝단: $createTravelRoomRequest")
-        return businessService.createTravelRoom(
+        Log.d(TAG, "createTravelRoom 끝단: " +
+                "\n ${createTravelRoomRequest.imageFiles?.body} \n ${createTravelRoomRequest.roomUserRequestDto} \n ${createTravelRoomRequest.roomInfoRequestDto} ")
+        
+        if(createTravelRoomRequest.imageFiles == null) {
+            Log.d(TAG, "createTravelRoom: 이미지 파일이 null이여!!!~~~!!!!")
+        }
+        
+        return businessService.createTravelRoom (
             createTravelRoomRequest.imageFiles,
             createTravelRoomRequest.roomUserRequestDto,
             createTravelRoomRequest.roomInfoRequestDto,

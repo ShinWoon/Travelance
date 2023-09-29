@@ -8,7 +8,6 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.viewmodel.MainViewModel
@@ -23,10 +22,12 @@ private const val TAG = "MainScreen_D210"
 @Composable
 fun MainScreen(
     navController: NavHostController,
-    mainViewModel: MainViewModel = hiltViewModel()
+    mainViewModel: MainViewModel,
 ) {
     Log.d(TAG, "MainScreen: ${mainViewModel.getJwtToken()}")
     if(mainViewModel.getJwtToken().role == "MEMBER"){
+//        mainViewModel.putTravelingRoomId(1)
+        mainViewModel.setSelectRoomId(mainViewModel.getTravelingRoomId()) // 진행 중인 여행방을 selectRoom에 저장
         navController.navigate(Screen.Home.route)
     }else{
         navController.navigate(Screen.Login.route)

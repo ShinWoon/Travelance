@@ -49,12 +49,10 @@ private const val TAG = "MainActivity D210"
 
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
-
-
+    
     private val notificationManager: NotificationManager by lazy {
         getSystemService(NOTIFICATION_SERVICE) as NotificationManager
     }
-
 
     @OptIn(ExperimentalAnimationApi::class)
     @RequiresApi(Build.VERSION_CODES.O)

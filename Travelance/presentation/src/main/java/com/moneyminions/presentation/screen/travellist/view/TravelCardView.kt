@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.screen.travellist.view
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,21 +40,37 @@ import com.moneyminions.presentation.theme.DarkerGray
 import com.moneyminions.presentation.theme.GreenMiddle
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.utils.MoneyUtils
+import com.moneyminions.presentation.viewmodel.MainViewModel
 
+private const val TAG = "TravelCardView_D210"
 @Composable
 fun TravelCardView(
     modifier: Modifier,
     travelRoomDto: TravelRoomDto,
     iconId: Int,
     navController: NavController,
+    mainViewModel: MainViewModel,
 ) {
     Card(
         modifier = modifier
             .wrapContentHeight()
             .padding(vertical = 4.dp)
             .clickable {
-                if (travelRoomDto.isDone == "done") {
-                    navController.navigate(Screen.TravelDone.route)
+                mainViewModel.setSelectRoomId(travelRoomDto.roomId)
+                Log.d(TAG, "selectRoomId: ${mainViewModel.selectRoomId.value}")
+                when (travelRoomDto.isDone) {
+                    "BEFORE" -> {
+                        navController.navigate(Screen.SubHome.route)
+                    }
+//                    "BEFORE" -> {navController.navigate("Screen.SubHome.route}/${travelRoomDto.roomId}")}
+                    "NOW" -> {
+                        navController.navigate(Screen.Home.route)
+                    }
+            
+                    "WAIT" -> {}
+                    "DONE" -> {
+                        navController.navigate(Screen.TravelDone.route)
+                    }
                 }
             },
         shape = RoundedCornerShape(16.dp),
@@ -172,7 +189,7 @@ fun SettlementStateView(done: String, modifier: Modifier) {
                     color = DarkGrayMiddle,
                 )
             }
-
+            
             "NOW" -> {
                 RippleLoadingAnimation(modifier = modifier)
                 StateText(
@@ -180,12 +197,12 @@ fun SettlementStateView(done: String, modifier: Modifier) {
                     color = PinkDarkest,
                 )
             }
-
+            
             // todo 정산 대기 구현 해야함
             "WAIT" -> {
-
+            
             }
-
+            
             "DONE" -> {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_circle),
@@ -198,6 +215,7 @@ fun SettlementStateView(done: String, modifier: Modifier) {
                     color = GreenMiddle,
                 )
             }
+            
             else -> {}
         }
     }

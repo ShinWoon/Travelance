@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.viewmodel.travellist
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moneyminions.domain.model.NetworkResult
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val TAG = "TravelListViewModel_D210"
 @HiltViewModel
 class TravelListViewModel @Inject constructor(
     private val getTravelListUseCase: GetTravelListUseCase,
@@ -50,15 +52,16 @@ class TravelListViewModel @Inject constructor(
     private val _deleteTravelRoomResult = MutableStateFlow<NetworkResult<CommonResultDto>>(NetworkResult.Idle)
     val deleteTravelRoomResult = _deleteTravelRoomResult.asStateFlow()
     fun removeItem(currentItem: TravelRoomDto) {
+        Log.d(TAG, "removeItem: ${currentItem.roomId}")
         viewModelScope.launch {
             _deleteTravelRoomResult.emit(deleteTravelRoomUseCase.invoke(roomId = currentItem.roomId))
         }
 
-        _travelList.update {
-            val mutableList = it.toMutableList()
-            mutableList.remove(currentItem)
-            mutableList
-        }
+//        _travelList.update {
+//            val mutableList = it.toMutableList()
+//            mutableList.remove(currentItem)
+//            mutableList
+//        }
     }
 
     

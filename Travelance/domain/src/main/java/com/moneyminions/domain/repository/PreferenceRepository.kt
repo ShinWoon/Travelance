@@ -10,4 +10,7 @@ interface PreferenceRepository {
 //    fun getRole(): String
     fun putFCMToken()
     fun getFCMToken(): String
+    
+    fun putTravelingRoomId(roomId: Int)
+    fun getTravelingRoomId(): Int
 }

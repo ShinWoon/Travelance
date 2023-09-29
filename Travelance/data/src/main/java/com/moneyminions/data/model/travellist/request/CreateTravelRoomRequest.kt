@@ -5,11 +5,11 @@ import okhttp3.MultipartBody
 
 data class CreateTravelRoomRequest(
     @SerializedName("roomUserRequestDto")
-    var roomUserRequestDto: RoomUserRequest,
-
+    var roomUserRequestDto: RoomUserRequestDto,
+    
     @SerializedName("roomInfoRequestDto")
-    var roomInfoRequestDto: RoomInfoRequest,
-
+    var roomInfoRequestDto: RoomInfoRequestDto,
+    
     @SerializedName("imageFiles")
     var imageFiles: MultipartBody.Part?
 )
