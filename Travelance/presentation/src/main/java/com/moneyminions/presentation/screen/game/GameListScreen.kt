@@ -35,56 +35,46 @@ import com.moneyminions.presentation.theme.CardLightGray
 @Composable
 fun GameListScreen(
     navController: NavHostController,
+    modifier: Modifier = Modifier
 ) {
     val scrollableState = rememberScrollState()
-
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopBar(navController = navController, title = "게임")
-        },
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp)
+            .verticalScroll(scrollableState)
     ) {
-        Surface(
-            modifier = Modifier
-                .padding(it)
-                .padding(16.dp)
-                .fillMaxSize()
-                .verticalScroll(scrollableState),
-        ) {
-            Column {
-                GameCard(
-                    title = "카드 뽑기",
-                    gameImg = R.drawable.ic_card_game,
-                    action = {
-                        navController.navigate(Screen.CardGame.route)
-                    },
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                GameCard(
-                    title = "지목하기",
-                    gameImg = R.drawable.ic_bottle,
-                    action = {
-                        navController.navigate(Screen.BottleGame.route)
-                    },
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                GameCard(
-                    title = "팀 정하기",
-                    gameImg = R.drawable.ic_team_building,
-                    action = {
-                        navController.navigate(Screen.TeamBuildingGame.route)
-                    },
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                GameCard(
-                    title = "초성 게임",
-                    gameImg = R.drawable.ic_word_game,
-                    action = {
-                        navController.navigate(Screen.WordGame.route)
-                    },
-                )
-            }
-        }
+        GameCard(
+            title = "카드 뽑기",
+            gameImg = R.drawable.ic_card_game,
+            action = {
+                navController.navigate(Screen.CardGame.route)
+            },
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        GameCard(
+            title = "지목하기",
+            gameImg = R.drawable.ic_bottle,
+            action = {
+                navController.navigate(Screen.BottleGame.route)
+            },
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        GameCard(
+            title = "팀 정하기",
+            gameImg = R.drawable.ic_team_building,
+            action = {
+                navController.navigate(Screen.TeamBuildingGame.route)
+            },
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        GameCard(
+            title = "초성 게임",
+            gameImg = R.drawable.ic_word_game,
+            action = {
+                navController.navigate(Screen.WordGame.route)
+            },
+        )
     }
 }
 
@@ -98,6 +88,7 @@ fun GameCard(
         modifier = Modifier
             .fillMaxWidth()
             .height(180.dp)
+            .padding(vertical = 8.dp)
             .clickable(
                 onClick = action,
             ),
@@ -116,7 +107,9 @@ fun GameCard(
             }
 
             Box(
-                modifier = Modifier.weight(1f).padding(16.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(16.dp),
                 contentAlignment = Alignment.CenterEnd,
             ) {
                 Image(

@@ -45,6 +45,7 @@ import com.moneyminions.presentation.viewmodel.login.AccountAuthenticationViewMo
 import kotlinx.coroutines.launch
 
 private const val TAG = "AccountAuthenticationSc D210"
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AccountAuthenticationScreen(
@@ -90,52 +91,44 @@ fun AccountAuthenticationScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            TopBar(
-                navController = navController,
-                title = "계좌 인증"
-            )
             Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                ) {
-                    Spacer(modifier = Modifier.size(16.dp))
-                    TextFieldWithTitle(
-                        title = "이름",
-                        hint = "이름을 입력하세요",
-                        value = accountAuthenticationViewModel.name.value,
-                        onValueChange = {accountAuthenticationViewModel.setName(it) }
-                    )
-                    Spacer(modifier = Modifier.size(16.dp))
-                    AuthenticAccountListComponent()
-                    Spacer(modifier = Modifier.size(16.dp))
-                    TextFieldWithTitle(
-                        title = "게좌번호",
-                        hint = "계좌 번호를 입력하세요",
-                        value = accountAuthenticationViewModel.accountNumber.value,
-                        onValueChange = {accountAuthenticationViewModel.setAccountNumber(it) },
-                        keyboardType = KeyboardType.Number
-                    )
+                Spacer(modifier = Modifier.size(16.dp))
+                TextFieldWithTitle(
+                    title = "이름",
+                    hint = "이름을 입력하세요",
+                    value = accountAuthenticationViewModel.name.value,
+                    onValueChange = { accountAuthenticationViewModel.setName(it) }
+                )
+                Spacer(modifier = Modifier.size(16.dp))
+                AuthenticAccountListComponent()
+                Spacer(modifier = Modifier.size(16.dp))
+                TextFieldWithTitle(
+                    title = "게좌번호",
+                    hint = "계좌 번호를 입력하세요",
+                    value = accountAuthenticationViewModel.accountNumber.value,
+                    onValueChange = { accountAuthenticationViewModel.setAccountNumber(it) },
+                    keyboardType = KeyboardType.Number
+                )
 
-                }
-                MinionPrimaryButton(
-                    content = "인증",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
-                    if(accountAuthenticationViewModel.validCheck()){
-                        accountAuthenticationViewModel.postAuthenticationAccount()
-                    }else{
-                        coroutineScope.launch {
-                            snackbarHostState.showSnackbar("값을 제대로 입력하시오")
-                        }
+            }
+            MinionPrimaryButton(
+                content = "인증",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                if (accountAuthenticationViewModel.validCheck()) {
+                    accountAuthenticationViewModel.postAuthenticationAccount()
+                } else {
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar("값을 제대로 입력하시오")
                     }
                 }
             }
@@ -146,8 +139,10 @@ fun AccountAuthenticationScreen(
     AuthenticationDialog(
         navController = navController,
         showDialog = isShowDialogState.value,
-        onDismiss = { accountAuthenticationViewModel.setIsShowDialog(false)
-            Log.d(TAG, "취소 클릭 : ${accountAuthenticationViewModel.isShowDialog.value}")},
+        onDismiss = {
+            accountAuthenticationViewModel.setIsShowDialog(false)
+            Log.d(TAG, "취소 클릭 : ${accountAuthenticationViewModel.isShowDialog.value}")
+        },
         type = "account",
         value = accountAuthenticationViewModel.verifyCode.value,
         onValueChange = {
@@ -161,6 +156,6 @@ fun AccountAuthenticationScreen(
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
 @Composable
-fun AccountAuthenticationScreenPreview(){
+fun AccountAuthenticationScreenPreview() {
     AccountAuthenticationScreen(navController = rememberNavController())
 }

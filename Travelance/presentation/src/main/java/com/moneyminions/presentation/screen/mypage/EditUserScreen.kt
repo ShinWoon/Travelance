@@ -71,10 +71,6 @@ fun EditUserScreen(
     Column(
         modifier = Modifier.fillMaxSize(),
     ) {
-        TopBar(
-            navController = navController,
-            title = "회원 정보 수정",
-        )
         Column(
             modifier = Modifier
                 .fillMaxSize()

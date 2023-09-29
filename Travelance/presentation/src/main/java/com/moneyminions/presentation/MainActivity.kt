@@ -13,12 +13,14 @@ import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +34,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.navigation.BottomNavItem
 import com.moneyminions.presentation.navigation.NavGraph
 import com.moneyminions.presentation.navigation.Screen
@@ -56,7 +59,7 @@ class MainActivity : FragmentActivity() {
     }
 
 
-    @OptIn(ExperimentalAnimationApi::class)
+    @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,6 +84,14 @@ class MainActivity : FragmentActivity() {
             val currentRoute = navBackStackEntry?.destination?.route
             MyApplicationTheme {
                 Scaffold(
+                    topBar = {
+                             if(currentRoute != null && !Screen.checkToolBar(currentRoute!!)) {
+                                 TopBar(
+                                     navController = navController,
+                                     currentRoute = currentRoute,
+                                 )
+                             }
+                    },
                     bottomBar = {
                         if (currentRoute == null || isBottomNavItem(currentRoute!!)) {
                             MainBottomNavigationBar(navController = navController)

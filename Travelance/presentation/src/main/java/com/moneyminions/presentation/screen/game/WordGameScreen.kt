@@ -33,60 +33,45 @@ fun WordGameScreen(
     wordGameViewModel: WordGameViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
-
-    Scaffold(
+    Column(
         modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopBar(navController = navController, title = "초성게임")
-        },
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Surface(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize()
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                if (wordGameViewModel.isShowWord.value) {
-                    WordComponent()
-                } else {
-                    if (wordGameViewModel.isStart.value) {
-                        LottieLoader(
-                            modifier = Modifier.size(128.dp),
-                            res = R.raw.lottie_count,
-                            isLoop = false
-                        ) {
-                            wordGameViewModel.setIsShowWord(true)
-                        }
-                    } else {
-                        LottieLoader(
-                            modifier = Modifier.size(256.dp),
-                            res = R.raw.lottie_start_wordgame
-                        ){}
-                    }
-                }
-                Spacer(modifier = Modifier.size(16.dp))
-                MinionPrimaryButton(
-                    content = getButtonContent(),
-                    modifier = Modifier
+        if (wordGameViewModel.isShowWord.value) {
+            WordComponent()
+        } else {
+            if (wordGameViewModel.isStart.value) {
+                LottieLoader(
+                    modifier = Modifier.size(128.dp),
+                    res = R.raw.lottie_count,
+                    isLoop = false
                 ) {
-                    wordGameViewModel.setIsShowWord(false)
-                    wordGameViewModel.setIsStart(true)
+                    wordGameViewModel.setIsShowWord(true)
+                }
+            } else {
+                LottieLoader(
+                    modifier = Modifier.size(256.dp),
+                    res = R.raw.lottie_start_wordgame
+                ) {}
+            }
+        }
+        Spacer(modifier = Modifier.size(16.dp))
+        MinionPrimaryButton(
+            content = getButtonContent(),
+            modifier = Modifier
+        ) {
+            wordGameViewModel.setIsShowWord(false)
+            wordGameViewModel.setIsStart(true)
 //                    scope.launch {
 //                        delay(3000) // 3초 지연
 //                        wordGameViewModel.setIsShowWord(true)
 //                    }
-                    wordGameViewModel.setFirstConsonant()
-                    wordGameViewModel.setSecondConsonant()
-                }
-            }
+            wordGameViewModel.setFirstConsonant()
+            wordGameViewModel.setSecondConsonant()
         }
     }
 }
-
 
 
 @Composable
@@ -102,6 +87,6 @@ fun getButtonContent(
 
 @Preview(showBackground = true)
 @Composable
-fun WordGameScreenPreview(){
+fun WordGameScreenPreview() {
     WordGameScreen(navController = rememberNavController())
 }

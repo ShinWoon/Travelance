@@ -55,9 +55,6 @@ fun AnnouncementScreen(
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopBar(navController = navController, title = "필독")
-        },
         floatingActionButtonPosition = FabPosition.End,
         floatingActionButton = {
             FloatingActionButton(

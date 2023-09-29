@@ -26,10 +26,6 @@ fun SettingScreen(
     Column (
         modifier = Modifier.fillMaxSize()
     ){
-        TopBar(
-            navController = navController,
-            title = "설정"
-        )
         Spacer(modifier = Modifier.size(16.dp))
         SettingItem(icon = painterResource(id = R.drawable.ic_setting), text = "회원 정보 수정") {
             //회원 정보 수정으로 이동

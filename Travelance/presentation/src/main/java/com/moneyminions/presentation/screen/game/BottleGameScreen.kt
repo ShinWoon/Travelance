@@ -45,42 +45,29 @@ fun BottleGameScreen(
     navController: NavHostController,
     bottleGameViewModel: BottleGameViewModel = hiltViewModel(),
 ) {
-    Scaffold(
+    Surface(
         modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopBar(navController = navController, title = "지목하기")
-        },
+        color = Color.White,
     ) {
-        Surface(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize()
-        ) {
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = Color.White,
-            ) {
-                RuleScreen()
-            }
-        }
+        RuleScreen()
     }
 }
 
 @Composable
 fun RuleScreen() {
-    
+
     var isStart by remember {
         mutableStateOf(false)
     }
-    
-    var isRestart by remember{
+
+    var isRestart by remember {
         mutableStateOf(false)
     }
-    
+
     var rotationValue by remember {
         mutableStateOf(0f)
     }
-    
+
     val angle: Float by animateFloatAsState(
         targetValue = rotationValue,
         animationSpec = tween(
@@ -92,12 +79,12 @@ fun RuleScreen() {
         },
         label = ""
     )
-    
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        
+
         Box(
             modifier = Modifier
                 .weight(4f)
@@ -123,15 +110,15 @@ fun RuleScreen() {
                 )
             }
         }
-    
+
         Box(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
                 .padding(0.dp, 0.dp, 0.dp, 40.dp),
             contentAlignment = Alignment.TopCenter
-        ){
-            if(isRestart) {
+        ) {
+            if (isRestart) {
                 Button(
                     modifier = Modifier,
                     onClick = {

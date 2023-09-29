@@ -64,10 +64,6 @@ fun NicknamePasswordScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        TopBar(
-            navController = navController,
-            title = "프로필 설정"
-        )
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween

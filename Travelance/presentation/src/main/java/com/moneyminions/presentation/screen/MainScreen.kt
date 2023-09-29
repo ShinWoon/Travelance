@@ -31,7 +31,6 @@ fun MainScreen(
     }else{
         navController.navigate(Screen.Login.route)
     }
-    
 }
 
 @RequiresApi(Build.VERSION_CODES.O)

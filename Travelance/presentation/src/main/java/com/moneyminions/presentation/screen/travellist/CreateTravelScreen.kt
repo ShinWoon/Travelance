@@ -90,10 +90,6 @@ fun CreateTravelScreen(
                 .fillMaxSize()
                 .padding(it),
         ) {
-            TopBar(
-                navController = navController,
-                title = "여행 생성",
-            )
             Column(
                 modifier = Modifier
                     .fillMaxSize()

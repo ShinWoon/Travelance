@@ -69,10 +69,6 @@ fun CardListScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        TopBar(
-            navController = navController,
-            title = "카드 목록"
-        )
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween
