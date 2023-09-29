@@ -2,6 +2,7 @@ package com.easyone.travelance.domain.travel.dto;
 
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.travel.entity.TravelRoom;
+import com.easyone.travelance.domain.travel.enumclass.RoomType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ public class RoomStaticResponseDto {
     private Long percent; // 예산 대비 사용량 %
     private Long UseTotal;
     private Long rest;
+    private String isDone;
     private List<PaymentResponseDto> everyuse;
     private List<PaymentResponseDto> myuse;
 
@@ -26,6 +28,7 @@ public class RoomStaticResponseDto {
         this.travelName = travelRoom.getTravelName();
         this.roomId = travelRoom.getId();
         this.budget = travelRoom.getBudget(); //예산
+        this.isDone = travelRoom.getIsDone().toString();
         this.percent = percent;
         this.UseTotal = UseTotal;
         this.rest= rest;
