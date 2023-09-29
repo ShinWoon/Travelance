@@ -1,119 +1,143 @@
 package com.moneyminions.presentation.navigation
 
+import android.util.Log
 import com.moneyminions.presentation.R
 
+private const val TAG = "싸피"
 sealed class Screen(val name: String, val route: String, val title: String) {
     object Example : Screen(
         name = "Example",
         route = NavRouteName.EXAMPLE,
         title = NavTitle.EXAMPLE
     )
+
     object Main : Screen(
         name = "Main",
         route = NavRouteName.MAIN,
         title = NavTitle.MAIN
     )
+
     object Home : Screen(
         name = "Home",
         route = NavRouteName.HOME,
         title = NavTitle.HOME
     )
+
     object TravelList : Screen(
         name = "TravelList",
         route = NavRouteName.TRAVELLIST,
         title = NavTitle.TRAVELLIST
     )
+
     object CreateTravel : Screen(
         name = "CreateTravel",
         route = NavRouteName.CREATETRAVEL,
         title = NavTitle.CREATETRAVEL
     )
+
     object MyPage : Screen(
         name = "MyPage",
         route = NavRouteName.MYPAGE,
         title = NavTitle.MYPAGE
     )
+
     object Setting : Screen(
         name = "Setting",
         route = NavRouteName.SETTING,
         title = NavTitle.SETTING
     )
+
     object Announcement : Screen(
         name = "Announcement",
         route = NavRouteName.ANNOUNCEMENT,
         title = NavTitle.ANNOUNCEMENT
     )
+
     object EditUser : Screen(
         name = "EditUser",
         route = NavRouteName.EDITUSER,
         title = NavTitle.EDITUSER
     )
+
     object AccountAuthentication : Screen(
         name = "AccountAuthentication",
         route = NavRouteName.ACCOUNTAUTHENTICATION,
         title = NavTitle.ACCOUNTAUTHENTICATION
     )
+
     object AccountList : Screen(
         name = "AccountList",
         route = NavRouteName.ACCOUNTLIST,
         title = NavTitle.ACCOUNTLIST
     )
+
     object CardList : Screen(
         name = "CardList",
         route = NavRouteName.CARDLIST,
         title = NavTitle.CARDLIST
     )
+
     object TravelMap : Screen(
         name = "TravelMap",
         route = NavRouteName.TRAVELMAP,
         title = NavTitle.TRAVELMAP
     )
+
     object GameList : Screen(
         name = "GameList",
         route = NavRouteName.GAMELIST,
         title = NavTitle.GAMELIST
     )
+
     object CardGame : Screen(
         name = "CardGame",
         route = NavRouteName.CARDGAME,
         title = NavTitle.CARDGAME
     )
+
     object BottleGame : Screen(
         name = "BottleGame",
         route = NavRouteName.BOTTLEGAME,
         title = NavTitle.BOTTLEGAME
     )
+
     object TeamBuildingGame : Screen(
         name = "TeamBuildingGame",
         route = NavRouteName.TEAMBUILDINGGAME,
         title = NavTitle.TEAMBUILDINGGAME
     )
+
     object WordGame : Screen(
         name = "WordGame",
         route = NavRouteName.WORDGAME,
         title = NavTitle.WORDGAME
     )
+
     object Login : Screen(
         name = "Login",
         route = NavRouteName.LOGIN,
         title = NavTitle.LOGIN
     )
-    object SubHome: Screen(
+
+    object SubHome : Screen(
         name = "SubHome",
         route = NavRouteName.SUBHOME,
         title = NavTitle.SUBHOME
     )
+
     object TravelDetail : Screen(
         name = "TravelDetail",
         route = NavRouteName.TRAVELDETAIL,
         title = NavTitle.TRAVELDETAIL
     )
-    object NicknamePassword: Screen(
+
+    object NicknamePassword : Screen(
         name = "NicknamePassword",
         route = NavRouteName.NICKNAMEPASSWORD,
         title = NavTitle.NICKNAMEPASSWORD
     )
-    object TravelDone: Screen(
+
+    object TravelDone : Screen(
         name = "TravelDone",
         route = NavRouteName.TRAVELDONE,
         title = NavTitle.TRAVELDONE
@@ -122,14 +146,14 @@ sealed class Screen(val name: String, val route: String, val title: String) {
 
     companion object {
         fun checkToolBar(route: String): Boolean {
-            return when(route) {
-                Main.route, Example.route, Home.route, TravelList.route, MyPage.route, Login.route-> true
+            return when (if (route.contains("/")) route.split("/")[0] else route) {
+                Main.route, Home.route, TravelList.route, MyPage.route, Login.route, TravelDetail.route, TravelDone.route ->  true
                 else -> false
             }
         }
 
         fun getToolBarIcon(route: String): Int {
-            return when(route) {
+            return when (route) {
                 TravelMap.route -> R.drawable.ic_map_point
                 GameList.route -> R.drawable.ic_game
                 Announcement.route -> R.drawable.ic_speaker
@@ -138,6 +162,7 @@ sealed class Screen(val name: String, val route: String, val title: String) {
         }
     }
 }
+
 object NavRouteName {
     const val EXAMPLE = "example_screen"
     const val MAIN = "main_screen"
@@ -163,6 +188,7 @@ object NavRouteName {
     const val SUBHOME = "sub_home_screen"
     const val TRAVELDONE = "travel_done"
 }
+
 object NavTitle {
     const val EXAMPLE = "예시"
     const val MAIN = "메인"

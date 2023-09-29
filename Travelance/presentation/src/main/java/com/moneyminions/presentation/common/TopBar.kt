@@ -33,7 +33,8 @@ private const val TAG = "싸피"
 @Composable
 fun TopBar(
     navController: NavHostController,
-    currentRoute: String,
+    currentRoute: String = "",
+    topBarTitle: String = "",
     modifier: Modifier = Modifier
 ) {
     Log.d(TAG, "TopBar: ${currentRoute}")
@@ -44,7 +45,7 @@ fun TopBar(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = getScreenTitle(currentRoute),
+                    text = if(topBarTitle == "") getScreenTitle(currentRoute) else topBarTitle,
                     color = DarkerGray,
                     style = pretendardBold20,
                     maxLines = 1,

@@ -47,13 +47,14 @@ fun TravelCardView(
     iconId: Int,
     navController: NavController,
 ) {
+    val travelName = "test"
     Card(
         modifier = modifier
             .wrapContentHeight()
             .padding(vertical = 4.dp)
             .clickable {
                 if (travelRoomDto.isDone == "done") {
-                    navController.navigate(Screen.TravelDone.route)
+                    navController.navigate("${Screen.TravelDone.route}/${travelName}")
                 }
             },
         shape = RoundedCornerShape(16.dp),

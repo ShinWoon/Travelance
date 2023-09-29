@@ -77,12 +77,12 @@ fun TravelListScreen(
     Log.d(TAG, "TravelListScreen: on")
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
-    
+
     // 여행 목록 GET
     LaunchedEffect(Unit) {
         travelListViewModel.getTravelList()
     }
-    
+
     // 여행 목록 GET 호출 부분
     val travelListState by travelListViewModel.networkTravelList.collectAsState()
     NetworkResultHandler(
@@ -97,7 +97,7 @@ fun TravelListScreen(
             travelListViewModel.refresh(it.toMutableList())
         }
     )
-    
+
     // 여행 목록 삭제
     val deleteTravelRoomResult by travelListViewModel.deleteTravelRoomResult.collectAsState()
     NetworkResultHandler(
@@ -111,12 +111,7 @@ fun TravelListScreen(
             Log.d(TAG, "삭제 성공 여부 : $it ")
         }
     )
-    
-    
     Scaffold(
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
-        },
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 text = {
@@ -139,9 +134,13 @@ fun TravelListScreen(
                 },
             )
         },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
     ) {
         LazyColumn(
             modifier = modifier
+
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .padding(16.dp, 24.dp, 16.dp, 0.dp),
@@ -185,11 +184,11 @@ fun TravelRoomItem(
     navController: NavController
 ) {
     val context = LocalContext.current
-    
+
     var isAuthenticated = remember { mutableStateOf(false) }
     val fragmentActivity = LocalContext.current as FragmentActivity
     val con = BiometricUtils.status(LocalContext.current)
-    
+
     var show by remember { mutableStateOf(true) }
     val currentItem by rememberUpdatedState(travelRoomDto)
     val dismissState = rememberDismissState(
@@ -200,7 +199,8 @@ fun TravelRoomItem(
             } else {
                 false
             }
-        }, positionalThreshold = { 150.dp.toPx() },
+        },
+        positionalThreshold = { 150.dp.toPx() },
     )
     AnimatedVisibility(
         show, exit = fadeOut(spring())
@@ -246,7 +246,7 @@ fun DismissBackground(dismissState: DismissState) {
         null -> Color.Transparent
     }
     val direction = dismissState.dismissDirection
-    
+
     Card(
         modifier = Modifier
             .wrapContentHeight()

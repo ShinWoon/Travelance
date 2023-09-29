@@ -62,17 +62,16 @@ fun NavGraph(
 //        popEnterTransition = { EnterTransition.None },
         popExitTransition = { ExitTransition.None },
     ) {
-        Log.d(TAG, "NavGraph: call ${navController}")
         composable(
             route = Screen.Example.route,
         ) {
             ExampleScreen(navController = navController)
         }
-        composable(
-            route = Screen.Main.route
-        ) {
-            MainScreen(navController = navController)
-        }
+//        composable(
+//            route = Screen.Main.route
+//        ) {
+//            MainScreen(navController = navController)
+//        }
         composable(
             route = Screen.Home.route,
         ) {
@@ -164,9 +163,12 @@ fun NavGraph(
             HomeScreen(navController = navController)
         }
         composable(
-            route = Screen.TravelDetail.route,
+            route = "${Screen.TravelDetail.route}/{travelName}",
         ) {
-            DetailScreen(navController = navController)
+            val travelName = it.arguments?.getString("travelName")
+            if (travelName != null) {
+                DetailScreen(navController = navController, travelName = travelName)
+            }
         }
         composable(
             route = Screen.NicknamePassword.route,
@@ -174,9 +176,12 @@ fun NavGraph(
             NicknamePasswordScreen(navController = navController, loginViewModel = loginViewModel)
         }
         composable(
-            route = Screen.TravelDone.route,
+            route = "${Screen.TravelDone.route}/{travelName}",
         ) {
-            TravelDoneScreen(navController = navController)
+            val travelName = it.arguments?.getString("travelName")
+            if (travelName != null) {
+                TravelDoneScreen(navController = navController, travelName = travelName)
+            }
         }
     }
 } // End of setUpNavGraph

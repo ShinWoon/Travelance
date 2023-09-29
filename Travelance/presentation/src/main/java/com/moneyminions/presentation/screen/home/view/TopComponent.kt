@@ -51,10 +51,11 @@ fun TopLeftItem(
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
+    val travelName = "test"
     Card(
         modifier = modifier.clickable(
             onClick = {
-                navController.navigate(Screen.TravelDetail.route)
+                navController.navigate("${Screen.TravelDetail.route}/${travelName}")
             },
         ),
         shape = RoundedCornerShape(16.dp),
