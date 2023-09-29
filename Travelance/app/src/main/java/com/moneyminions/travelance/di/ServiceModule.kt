@@ -22,7 +22,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object  ServiceModule {
+object ServiceModule {
 
 //    @Singleton
 //    @Provides
@@ -48,20 +48,19 @@ object  ServiceModule {
         .build()
 //    }
 
-
     @Singleton
     @Provides
     fun provideRetrofit(
         preferenceDataSource: PreferenceDataSource,
-        @Named("BASE_URL") baseUrl: String
+        @Named("BASE_URL") baseUrl: String,
     ): Retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(
             GsonConverterFactory.create(
                 GsonBuilder()
                     .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                    .create()
-            )
+                    .create(),
+            ),
         )
         .client(provideOkHttpClient(preferenceDataSource))
         .build()
@@ -69,13 +68,12 @@ object  ServiceModule {
     @Singleton
     @Provides
     fun provideExampleService(
-        retrofit: Retrofit
+        retrofit: Retrofit,
     ): ExampleService = retrofit.create(ExampleService::class.java)
 
     @Singleton
     @Provides
     fun provideBusinessService(
-        retrofit: Retrofit
+        retrofit: Retrofit,
     ): BusinessService = retrofit.create(BusinessService::class.java)
-
 }

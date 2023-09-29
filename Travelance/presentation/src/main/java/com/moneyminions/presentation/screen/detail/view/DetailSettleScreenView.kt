@@ -17,12 +17,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,9 +38,13 @@ import com.moneyminions.presentation.theme.DarkerGray
 fun DetailSettleScreenView(
     modifier: Modifier = Modifier,
 ) {
-    val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
+    // Modal Bottom Sheet이 닫힐 때 호출될 콜백
+    if (showBottomSheet) {
+        DetailMyPaymentDetailsView(onDismissSheet = {
+            showBottomSheet = false
+        })
+    }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -56,7 +58,9 @@ fun DetailSettleScreenView(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    showBottomSheet = true
+                },
                 colors = ButtonDefaults.buttonColors(Color.Transparent),
                 contentPadding = PaddingValues(
                     start = 0.dp,

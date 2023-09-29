@@ -22,6 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,6 +35,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.navigation.BottomNavItem
 import com.moneyminions.presentation.navigation.NavGraph
@@ -105,21 +107,19 @@ class MainActivity : FragmentActivity() {
                         navController = navController,
                     )
                 }
-
-
-//                val systemUiController = rememberSystemUiController()
-//                SideEffect {
-//                    systemUiController.setStatusBarColor(
-//                        color = White,
-//                        darkIcons = true,
-//                    )
-//                }
-//                SideEffect {
-//                    systemUiController.setNavigationBarColor(
-//                        color = White,
-//                        darkIcons = true,
-//                    )
-//                }
+                val systemUiController = rememberSystemUiController()
+                SideEffect {
+                    systemUiController.setStatusBarColor(
+                        color = White,
+                        darkIcons = true,
+                    )
+                }
+                SideEffect {
+                    systemUiController.setNavigationBarColor(
+                        color = White,
+                        darkIcons = true,
+                    )
+                }
 //                MainScreen(rememberAnimatedNavController())
 
                 // 카카오
