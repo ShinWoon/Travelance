@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.Iterator;
 import java.util.List;
 
 @RestController
@@ -81,23 +82,25 @@ public class CardController {
         String cardCoName = deleteCardRequestDto.getCardCoName();
         String cardNumber = deleteCardRequestDto.getCardNumber();
         boolean trigger = false;
-        for (int i = 0; i < cardList.size(); i++) {
-            if (cardNumber.equals(cardList.get(i).getCardNumber()) && cardCoName.equals(cardList.get(i).getCardCoName())) {
-                cardList.remove(i);
+
+        Iterator<Card> iterator = cardList.iterator();
+
+        while (iterator.hasNext()) {
+            Card currentCard = iterator.next();
+            if (cardNumber.equals(currentCard.getCardNumber()) && cardCoName.equals(currentCard.getCardCoName())) {
+                iterator.remove(); // 안전하게 삭제
                 trigger = true;
                 break;
             }
         }
-        if (trigger){
+
+        if (trigger) {
             member.setCardList(cardList);
             memberRepository.save(member);
 
             return ResponseEntity.ok(new ResultDto("카드 삭제 성공"));
-        }
-        else{
+        } else {
             return ResponseEntity.ok(new ResultDto("카드 삭제 실패"));
         }
-
-
     }
 }
