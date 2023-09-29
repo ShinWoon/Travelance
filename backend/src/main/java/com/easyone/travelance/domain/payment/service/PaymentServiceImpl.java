@@ -106,7 +106,7 @@ public class PaymentServiceImpl implements PaymentService{
         Payment savedPayment = paymentRepository.save(payment);
         log.info("DB 저장 완료");
 
-        // 5. FCM 알림 전송 (memberId랑 roomNum 같이 전송)
+        // 5. FCM 알림 전송
         Long paymentId = savedPayment.getId();
         String fcmToken = member.get().getFcmToken();
         if (fcmToken.isEmpty()){
@@ -270,7 +270,7 @@ public class PaymentServiceImpl implements PaymentService{
             String body = travelRoom.getTravelName() + "의 정산이 완료되었습니다.";
 
             try {
-                firebaseCloudMessageService.sendMessageTo(fcmToken, title, body, null);
+                firebaseCloudMessageService.sendMessageTo(fcmToken, title, body, String.valueOf(travelRoom.getId()));
             } catch (IOException e) {
                 System.out.println("정산 완료 알림 전송 실패");
                 throw new RuntimeException(e);
