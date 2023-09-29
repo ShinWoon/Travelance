@@ -1,16 +1,20 @@
 package com.easyone.travelance.domain.card.controller;
 
-import com.easyone.travelance.domain.account.dto.SelectedAccountRequestDto;
+import com.easyone.travelance.domain.account.entity.Account;
+import com.easyone.travelance.domain.card.dto.DeleteCardRequestDto;
 import com.easyone.travelance.domain.card.dto.SelectedCardRequestDto;
+import com.easyone.travelance.domain.card.entity.Card;
+import com.easyone.travelance.domain.card.respository.CardRepository;
 import com.easyone.travelance.domain.card.service.CardService;
 import com.easyone.travelance.domain.common.ResultDto;
-import com.easyone.travelance.domain.member.entity.MainAccount;
 import com.easyone.travelance.domain.member.entity.Member;
+import com.easyone.travelance.domain.member.respository.MemberRepository;
 import com.easyone.travelance.domain.member.service.MemberService;
 import com.easyone.travelance.global.memberInfo.MemberInfo;
 import com.easyone.travelance.global.memberInfo.MemberInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +25,13 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/card")
+@Slf4j
 public class CardController {
 
     private final MemberService memberService;
     private final CardService cardService;
+
+    private final MemberRepository memberRepository;
 
     @Operation(summary = "전체카드 조회", description = "나의 모든 카드를 조회하는 메서드 입니다")
     @PostMapping("/allcard")
@@ -60,6 +67,37 @@ public class CardController {
 
         ResultDto resultDto = new ResultDto("저장 성공");
         return ResponseEntity.ok(resultDto);
+
+    }
+
+    @Operation(summary = "카드 삭제",description = "현재 로그인한 유저의 등록된 카드를 삭제하는 메서드입니다.")
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResultDto> deleteCard(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody DeleteCardRequestDto deleteCardRequestDto) {
+        Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
+        List<Card> cardList = member.getCardList();
+
+        log.info("cardList : " + cardList);
+
+        String cardCoName = deleteCardRequestDto.getCardCoName();
+        String cardNumber = deleteCardRequestDto.getCardNumber();
+        boolean trigger = false;
+        for (int i = 0; i < cardList.size(); i++) {
+            if (cardNumber.equals(cardList.get(i).getCardNumber()) && cardCoName.equals(cardList.get(i).getCardCoName())) {
+                cardList.remove(i);
+                trigger = true;
+                break;
+            }
+        }
+        if (trigger){
+            member.setCardList(cardList);
+            memberRepository.save(member);
+
+            return ResponseEntity.ok(new ResultDto("카드 삭제 성공"));
+        }
+        else{
+            return ResponseEntity.ok(new ResultDto("카드 삭제 실패"));
+        }
+
 
     }
 }
