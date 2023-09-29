@@ -62,7 +62,6 @@ fun NavGraph(
 //        popEnterTransition = { EnterTransition.None },
         popExitTransition = { ExitTransition.None },
     ) {
-        Log.d(TAG, "NavGraph: call ${navController}")
         composable(
             route = Screen.Example.route,
         ) {

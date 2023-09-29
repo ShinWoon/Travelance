@@ -26,11 +26,12 @@ fun MainScreen(
     mainViewModel: MainViewModel = hiltViewModel()
 ) {
     Log.d(TAG, "MainScreen: ${mainViewModel.getJwtToken()}")
-    if(mainViewModel.getJwtToken().role == "MEMBER"){
-        navController.navigate(Screen.Home.route)
-    }else{
-        navController.navigate(Screen.Login.route)
-    }
+//    if(mainViewModel.getJwtToken().role == "MEMBER"){
+//        navController.navigate(Screen.Home.route)
+//    }else{
+//        navController.navigate(Screen.Login.route)
+//    }
+    navController.navigate(Screen.Home.route)
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
