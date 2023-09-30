@@ -67,7 +67,8 @@ fun AccountListScreen(
         key1 = Unit,
         block = {
             accountListViewModel.getAccountList()
-        })
+        }
+    )
 
     Column(
         modifier = Modifier.fillMaxSize()

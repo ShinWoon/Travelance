@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.viewmodel.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moneyminions.domain.model.MemberInfo
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val TAG = "CardListViewModel D210"
 @HiltViewModel
 class CardListViewModel @Inject constructor(
     private val getCardListUseCase: GetCardListUseCase,
@@ -46,6 +48,7 @@ class CardListViewModel @Inject constructor(
     private val _cardList = MutableStateFlow<List<CardDto>>(mutableListOf())
     val cardList: StateFlow<List<CardDto>> = _cardList
     suspend fun setCardList(list: List<CardDto>){
+        Log.d(TAG, "setCardList: ${_existingCardList.value}")
         _cardList.emit(
             list.map { card ->
                 val isSelected = _existingCardList.value.any { it.name ==  card.name && it.number== card.number }

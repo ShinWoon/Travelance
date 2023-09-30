@@ -67,7 +67,9 @@ fun CardListScreen(
 
     LaunchedEffect(
         key1 = Unit,
-        block = {cardListViewModel.getCardList()}
+        block = {
+            cardListViewModel.getCardList()
+        }
     )
 
     val addAccountAndCardResultState by cardListViewModel.addAccountAndCardResult.collectAsState()
@@ -77,7 +79,11 @@ fun CardListScreen(
             Log.d(TAG, "마이데이터 추가 실패,,,")
         },
         successAction = {
-            navController.navigate(Screen.EditUser.route)
+            navController.navigate(Screen.EditUser.route) {
+                popUpTo(Screen.EditUser.route){
+                    inclusive = true
+                }
+            }
         }
     )
 
@@ -95,6 +101,7 @@ fun CardListScreen(
             LazyColumn{
                 items(cardListState.value){
                     var isSelectedState by remember { mutableStateOf(it.isSelected) }
+                    val isUpdate = it.isSelected
                     Log.d(TAG, "AccountListScreen: $isSelectedState")
                     CardRowItem(
                         name = it.name,
@@ -102,6 +109,7 @@ fun CardListScreen(
                         idx = it.idx!!,
                         type = "select",
                         isSelected = isSelectedState,
+                        isUpdate = isUpdate,
                         onSelected = {
                             isSelectedState = !isSelectedState!!
                             it.isSelected = !it.isSelected!!
