@@ -57,7 +57,7 @@ public class MapService {
 
     }
 
-
+    @Transactional(readOnly = true)
     public List<MapDetailResponseDto> mapDetail(Long roomId, MapDetailRequestDto mapDetailRequestDto) {
         //dto에서 map의 주소를 가져와서 이 여행방의 이 장소에서 결제된 내역을 모두 가져와서 반환한다.
 

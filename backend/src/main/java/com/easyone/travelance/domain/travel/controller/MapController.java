@@ -2,10 +2,7 @@ package com.easyone.travelance.domain.travel.controller;
 
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.service.MemberService;
-import com.easyone.travelance.domain.travel.dto.MapAllResponseDto;
-import com.easyone.travelance.domain.travel.dto.MapDetailRequestDto;
-import com.easyone.travelance.domain.travel.dto.MapDetailResponseDto;
-import com.easyone.travelance.domain.travel.dto.PaymentResponseDto;
+import com.easyone.travelance.domain.travel.dto.*;
 import com.easyone.travelance.domain.travel.service.MapService;
 import com.easyone.travelance.global.memberInfo.MemberInfo;
 import com.easyone.travelance.global.memberInfo.MemberInfoDto;
