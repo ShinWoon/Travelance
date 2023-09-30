@@ -292,6 +292,7 @@ public class PaymentServiceImpl implements PaymentService{
                 .travelRoom(existTravelRoom.get())
                 .paymentAmount(registerCashRequestDto.getPaymentAmount())
                 .paymentContent(registerCashRequestDto.getPaymentContent())
+                .paymentAt(String.valueOf(LocalDateTime.now()))
                 .build();
 
         paymentRepository.save(payment);
