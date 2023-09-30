@@ -71,18 +71,19 @@ public class CardController {
 
     }
 
-    @Operation(summary = "카드 삭제",description = "현재 로그인한 유저의 등록된 카드를 삭제하는 메서드입니다.")
-    @DeleteMapping("/delete")
-    public ResponseEntity<ResultDto> deleteCard(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody DeleteCardRequestDto deleteCardRequestDto) {
+    @Operation(summary = "카드 삭제", description = "현재 로그인한 유저의 등록된 카드를 삭제하는 메서드입니다.")
+    @DeleteMapping("/delete/{cardCoName}/{cardNumber}")
+    public ResponseEntity<ResultDto> deleteCard(
+            @MemberInfo MemberInfoDto memberInfoDto,
+            @PathVariable String cardCoName,
+            @PathVariable String cardNumber
+    ) {
         Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
         List<Card> cardList = member.getCardList();
 
         log.info("cardList : " + cardList);
 
-        String cardCoName = deleteCardRequestDto.getCardCoName();
-        String cardNumber = deleteCardRequestDto.getCardNumber();
         boolean trigger = false;
-
         Iterator<Card> iterator = cardList.iterator();
 
         while (iterator.hasNext()) {
@@ -97,7 +98,6 @@ public class CardController {
         if (trigger) {
             member.setCardList(cardList);
             memberRepository.save(member);
-
             return ResponseEntity.ok(new ResultDto("카드 삭제 성공"));
         } else {
             return ResponseEntity.ok(new ResultDto("카드 삭제 실패"));

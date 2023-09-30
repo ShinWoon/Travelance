@@ -165,15 +165,16 @@ public class AccountController {
     }
 
     @Operation(summary = "계좌 삭제", description = "현재 로그인한 유저의 등록된 계좌를 삭제하는 메서드입니다.")
-    @DeleteMapping("/delete")
-    public ResponseEntity<ResultDto> deleteAccount(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody DeleteAccountRequestDto deleteAccountRequestDto) {
+    @DeleteMapping("/delete/{accountName}/{account}")
+    public ResponseEntity<ResultDto> deleteAccount(
+            @MemberInfo MemberInfoDto memberInfoDto,
+            @PathVariable String accountName,
+            @PathVariable String account
+    ) {
         Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
         List<Account> accountList = member.getMainAccount().getAccountList();
 
         log.info("accountList : " + accountList);
-
-        String accountName = deleteAccountRequestDto.getAccountName();
-        String account = deleteAccountRequestDto.getAccount();
 
         Iterator<Account> iterator = accountList.iterator();
         boolean trigger = false;
@@ -197,9 +198,6 @@ public class AccountController {
             else{
                 return ResponseEntity.ok(new ResultDto("계좌 삭제 성공"));
             }
-
-
-
         } else {
             return ResponseEntity.ok(new ResultDto("계좌 삭제 실패"));
         }
