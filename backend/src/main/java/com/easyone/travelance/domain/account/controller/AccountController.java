@@ -37,7 +37,6 @@ public class AccountController {
     private final AccountService accountService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private final MainAccountRepository mainAccountRepository;
     private final MemberRepository memberRepository;
 
     @Operation(summary = "1원이체 요청", description = "요청 시 사용자의 계좌로 1원 및 랜덤으로 생성된 4자리 숫자를 보냅니다." +

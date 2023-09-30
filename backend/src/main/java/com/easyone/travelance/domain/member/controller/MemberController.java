@@ -7,6 +7,7 @@ import com.easyone.travelance.domain.account.service.AccountService;
 import com.easyone.travelance.domain.card.dto.SelectedCardRequestDto;
 import com.easyone.travelance.domain.card.service.CardService;
 import com.easyone.travelance.domain.common.ResultDto;
+import com.easyone.travelance.domain.member.dto.request.AddRequestDto;
 import com.easyone.travelance.domain.member.dto.request.AdditionalRequestDto;
 import com.easyone.travelance.domain.member.dto.MyAccountDto;
 import com.easyone.travelance.domain.member.dto.NicknameDto;
@@ -29,6 +30,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -77,30 +79,81 @@ public class MemberController {
 
     }
 
+    // 계좌, 카드 추가 등록
+    @Operation(summary = "계좌, 카드 추가 등록", description = "나의 계좌, 카드를 추가 등록하는 메서드입니다. \\n\\n \" +\"\\n\\n### [ 수행절차 ]\\n\\n\"+\"- login 에서 발급 받은 access-token을 자물쇠에 넣고 Execute 해주세요. (request body는 아래에 예시값의 request값만 사용해주세요.)\\n\\n\"+ \"- Response body의 accessToken 또는 Response headers의 newtoken을 복사하여 새로 자물쇠에 넣어 주세요 \\n\\n\" + \"### [DTO 양식] \\n\\n\" +\n" +
+            "            \"```\\n\\n{\\n\\n\" +\n" +
+            "            \"    \\\"accountList\\\": [\\n\" +\n" +
+            "            \"        {\\n\\n\" +\n" +
+            "            \"        \\\"account\\\": \\\"6666666666666666\\\",\\n\" +\n" +
+            "            \"        \\\"bankName\\\": \\\"대구\\\",\\n\" +\n" +
+            "            \"        \\\"idx\\\": 4\\n\" +\n" +
+            "            \"        },\\n\\n\" +\n" +
+            "            \"        {\\n\\n\" +\n" +
+            "            \"        \\\"account\\\": \\\"7753621811018015\\\",\\n\" +\n" +
+            "            \"        \\\"bankName\\\": \\\"SC제일\\\",\\n\" +\n" +
+            "            \"        \\\"idx\\\": 0\\n\" +\n" +
+            "            \"        }\\n\\n\" +\n" +
+            "            \"    ],\\n\\n\" +\n" +
+            "            \"    \\\"cardList\\\": [\\n\" +\n" +
+            "            \"        {\\n\\n\" +\n" +
+            "            \"        \\\"cardNumber\\\": \\\"4215154824392854\\\",\\n\" +\n" +
+            "            \"        \\\"cardCoName\\\": \\\"KB국민\\\",\\n\" +\n" +
+            "            \"        \\\"idx\\\": 1\\n\" +\n" +
+            "            \"        },\\n\\n\" +\n" +
+            "            \"        {\\n\\n\" +\n" +
+            "            \"        \\\"cardNumber\\\": \\\"3737467972008765\\\",\\n\" +\n" +
+            "            \"        \\\"cardCoName\\\": \\\"KB국민\\\",\\n\" +\n" +
+            "            \"        \\\"idx\\\": 1\\n\" +\n" +
+            "            \"        }\\n\\n\" +\n" +
+            "            \"    ],\\n\\n\" +\n" +
+            "            \"    }\\n\\n```\\n\\n\" + \"이러한 형식입니다\")")
+    @PostMapping("/add")
+    public ResponseEntity<ResultDto> addCardAccount(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody AddRequestDto addRequestDto){
+
+        Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
+
+        // 계좌 등록 로직
+        List<SelectedAccountRequestDto> selectedAccountRequestDtoList = addRequestDto.getAccountList();
+
+        MainAccount mainAccount = member.getMainAccount();
+        for (SelectedAccountRequestDto selectedAccountRequestDto : selectedAccountRequestDtoList) {
+            accountService.SaveAccount(mainAccount, selectedAccountRequestDto);
+        }
+
+        // 카드 등록 로직
+        List<SelectedCardRequestDto> selectedCardRequestDtoList = addRequestDto.getCardList();
+
+        for (SelectedCardRequestDto selectedCardRequestDto : selectedCardRequestDtoList) {
+            cardService.SaveCard(member,selectedCardRequestDto);
+        }
+
+        return new ResponseEntity<>(new ResultDto("추가 성공"), HttpStatus.OK);
+    }
+
     // 추가정보 업데이트 메서드
     @Operation(summary = "추가정보 입력", description = "회원가입후 추가 정보 관련 메서드입니다. \n\n " +"\n\n### [ 수행절차 ]\n\n"+"- login 에서 발급 받은 access-token을 자물쇠에 넣고 Execute 해주세요. (request body는 아래에 예시값의 request값만 사용해주세요.)\n\n"+ "- Response body의 accessToken 또는 Response headers의 newtoken을 복사하여 새로 자물쇠에 넣어 주세요 \n\n" + "### [DTO 양식] \n\n" +
             "```\n\n{\n\n" +
             "    \"accountList\": [\n" +
             "        {\n\n" +
             "        \"account\": \"6666666666666666\",\n" +
-            "        \"bankName\": \"대구은행\",\n" +
+            "        \"bankName\": \"대구\",\n" +
             "        \"idx\": 4\n" +
             "        },\n\n" +
             "        {\n\n" +
             "        \"account\": \"7753621811018015\",\n" +
-            "        \"bankName\": \"SC제일은행\",\n" +
+            "        \"bankName\": \"SC제일\",\n" +
             "        \"idx\": 0\n" +
             "        }\n\n" +
             "    ],\n\n" +
             "    \"cardList\": [\n" +
             "        {\n\n" +
             "        \"cardNumber\": \"4215154824392854\",\n" +
-            "        \"cardCoName\": \"국민카드\",\n" +
+            "        \"cardCoName\": \"KB국민\",\n" +
             "        \"idx\": 1\n" +
             "        },\n\n" +
             "        {\n\n" +
             "        \"cardNumber\": \"3737467972008765\",\n" +
-            "        \"cardCoName\": \"국민카드\",\n" +
+            "        \"cardCoName\": \"KB국민\",\n" +
             "        \"idx\": 1\n" +
             "        }\n\n" +
             "    ],\n\n" +
