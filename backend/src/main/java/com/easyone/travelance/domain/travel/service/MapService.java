@@ -69,7 +69,7 @@ public class MapService {
             TravelRoomMember travelRoomMember = travelRoomMemberRepository.findByTravelRoomAndMember(payment.getTravelRoom(), payment.getMember())
                     .orElseThrow(()-> new IllegalArgumentException("사용자의 여행방이 없습니다. id =" + roomId));
 
-            String nickName = travelRoomMember.getMember().getNickname();
+            String nickName = travelRoomMember.getTravelNickName();
             MapDetailResponseDto mapDetailResponseDto = new MapDetailResponseDto(payment, nickName);
             mapDetailResponseDtoList.add(mapDetailResponseDto);
         }
