@@ -61,7 +61,7 @@ public class MapService {
     public List<MapDetailResponseDto> mapDetail(Long roomId, MapDetailRequestDto mapDetailRequestDto) {
         //dto에서 map의 주소를 가져와서 이 여행방의 이 장소에서 결제된 내역을 모두 가져와서 반환한다.
 
-        List<Payment> paymentList = paymentRepository.findByTravelRoomIdAndPaymentAt(roomId, mapDetailRequestDto.getPaymentAt());
+        List<Payment> paymentList = paymentRepository.findByTravelRoomIdAndStoreAddress(roomId, mapDetailRequestDto.getStoreAddress());
 
         List<MapDetailResponseDto> mapDetailResponseDtoList = new ArrayList<>();
 
