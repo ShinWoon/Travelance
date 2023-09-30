@@ -11,4 +11,5 @@ interface MyPageRepository {
     suspend fun updateNickname(nickname: String): NetworkResult<CommonResultDto>
     suspend fun deleteCard(cardName: String, cardNumber: String): NetworkResult<CommonResultDto>
     suspend fun deleteAccount(bankName: String, accountNumber: String): NetworkResult<CommonResultDto>
+    suspend fun addAccountAndCard(memberInfo: MemberInfo): NetworkResult<CommonResultDto>
 }

@@ -70,6 +70,17 @@ fun CardListScreen(
         block = {cardListViewModel.getCardList()}
     )
 
+    val addAccountAndCardResultState by cardListViewModel.addAccountAndCardResult.collectAsState()
+    NetworkResultHandler(
+        state = addAccountAndCardResultState,
+        errorAction = {
+            Log.d(TAG, "마이데이터 추가 실패,,,")
+        },
+        successAction = {
+            navController.navigate(Screen.EditUser.route)
+        }
+    )
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -105,14 +116,14 @@ fun CardListScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
+                //닉네임, 비밀번호 설정 화면으로 이동
+                loginViewModel.setMemberCardList(cardListState.value.filter { it.isSelected!! })
+                Log.d(TAG, "CardListScreen에서 mainviewmodel의 memberInfo : ${loginViewModel.memberInfo}")
                 if(cardListViewModel.isEmptyExistingCardList()){
-                    //닉네임, 비밀번호 설정 화면으로 이동
-                    loginViewModel.setMemberCardList(cardListState.value.filter { it.isSelected!! })
-                    Log.d(TAG, "CardListScreen에서 mainviewmodel의 memberInfo : ${loginViewModel.memberInfo}")
                     navController.navigate(Screen.NicknamePassword.route)
                 }else{
-                    //새로운 카드목록, 계좌목록 전송
-
+                    //여기서 마이데이터 갱신하는 api 호출
+                    cardListViewModel.addAccountAndCard(loginViewModel.memberInfo)
                 }
             }
         }

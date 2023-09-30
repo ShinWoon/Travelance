@@ -104,8 +104,9 @@ fun AccountListScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
+                //닉네임, 비밀번호 설정 화면으로 이동
                 loginViewModel.setMemberAccountList(accountListState.value.filter { it.isSelected!! })
-                Log.d(TAG, "mainViewModel에 있는 memberInfo : ${loginViewModel.memberInfo}")
+                Log.d(TAG, "AccountList mainviewmodel의 memberInfo : ${loginViewModel.memberInfo}")
                 navController.navigate(Screen.CardList.route)
             }
         }

@@ -1,6 +1,7 @@
 package com.moneyminions.data.repository.mypage
 
 import com.moneyminions.data.datasource.remote.mypage.MyPageDataSource
+import com.moneyminions.data.mapper.toData
 import com.moneyminions.data.mapper.toDomain
 import com.moneyminions.data.service.handleApi
 import com.moneyminions.domain.model.MemberInfo
@@ -27,5 +28,9 @@ class MyPageRepositoryImpl(
 
     override suspend fun deleteAccount(bankName: String, accountNumber: String): NetworkResult<CommonResultDto> {
         return handleApi { myPageDataSource.deleteAccount(bankName, accountNumber).toDomain() }
+    }
+
+    override suspend fun addAccountAndCard(memberInfo: MemberInfo): NetworkResult<CommonResultDto> {
+        return handleApi { myPageDataSource.addAccountAndCard(memberInfo.toData()).toDomain() }
     }
 }

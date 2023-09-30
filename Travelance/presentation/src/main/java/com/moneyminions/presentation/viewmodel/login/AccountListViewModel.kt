@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.common.AccountDto
+import com.moneyminions.domain.model.common.CardDto
 import com.moneyminions.domain.model.common.CommonResultDto
 import com.moneyminions.domain.usecase.login.GetAccountListUseCase
 import com.moneyminions.presentation.viewmodel.MainViewModel
@@ -29,9 +30,18 @@ class AccountListViewModel @Inject constructor(
         }
     }
 
-    private var _existingAccountList: List<AccountDto> = listOf()
+    private var _existingAccountList = MutableStateFlow<List<AccountDto>>(listOf())
+    var existingAccountList: StateFlow<List<AccountDto>> = _existingAccountList
     fun setExistingAccountList(editUserViewModel: EditUserViewModel){
-        _existingAccountList = editUserViewModel.accountList.value
+        viewModelScope.launch {
+            _existingAccountList.emit(editUserViewModel.accountList.value)
+        }
+    }
+
+
+    fun isEmptyExistingAccountList(): Boolean{
+        return if(_existingAccountList.value.isNotEmpty()) false
+        else true
     }
 
     private val _accountList = MutableStateFlow<List<AccountDto>>(mutableListOf())
@@ -39,7 +49,7 @@ class AccountListViewModel @Inject constructor(
     suspend fun setAccountList(list: List<AccountDto>){
         _accountList.emit(
             list.map { account ->
-                val isSelected = _existingAccountList.any { it.bankName == account.bankName && it.accountNumber == account.accountNumber }
+                val isSelected = _existingAccountList.value.any { it.bankName == account.bankName && it.accountNumber == account.accountNumber }
                 account.copy(isSelected = isSelected)
             }
         )

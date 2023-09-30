@@ -96,4 +96,9 @@ interface BusinessService {
      */
     @DELETE("account/delete/{accountName}/{account}")
     suspend fun deleteAccount(@Path("accountName") accountName: String, @Path("account") accountNumber: String): CommonResponse
+    /**
+     * 카드, 계좌 추가 등록
+     */
+    @POST("member/add")
+    suspend fun addAccountAndCard(@Body memberInfoRequest: MemberInfoRequest): CommonResponse
 }

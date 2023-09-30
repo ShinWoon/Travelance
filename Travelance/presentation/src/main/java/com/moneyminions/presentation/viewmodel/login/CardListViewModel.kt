@@ -2,10 +2,13 @@ package com.moneyminions.presentation.viewmodel.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.moneyminions.domain.model.MemberInfo
 import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.common.AccountDto
 import com.moneyminions.domain.model.common.CardDto
+import com.moneyminions.domain.model.common.CommonResultDto
 import com.moneyminions.domain.usecase.login.GetCardListUseCase
+import com.moneyminions.domain.usecase.mypage.AddAccountAndCardUseCase
 import com.moneyminions.presentation.viewmodel.mypage.EditUserViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CardListViewModel @Inject constructor(
-    private val getCardListUseCase: GetCardListUseCase
+    private val getCardListUseCase: GetCardListUseCase,
+    private val addAccountAndCardUseCase: AddAccountAndCardUseCase
 ): ViewModel() {
 
     private val _cardListResult = MutableStateFlow<NetworkResult<List<CardDto>>>(NetworkResult.Idle)
@@ -48,6 +52,14 @@ class CardListViewModel @Inject constructor(
                 card.copy(isSelected = isSelected)
             }
         )
+    }
+
+    private val _addAccountAndCardResult = MutableStateFlow<NetworkResult<CommonResultDto>>(NetworkResult.Idle)
+    val addAccountAndCardResult = _addAccountAndCardResult.asStateFlow()
+    fun addAccountAndCard(memberInfo: MemberInfo){
+        viewModelScope.launch {
+            _addAccountAndCardResult.emit(addAccountAndCardUseCase.invoke(memberInfo))
+        }
     }
 
 }
