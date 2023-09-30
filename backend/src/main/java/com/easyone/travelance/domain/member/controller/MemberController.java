@@ -7,9 +7,7 @@ import com.easyone.travelance.domain.account.service.AccountService;
 import com.easyone.travelance.domain.card.dto.SelectedCardRequestDto;
 import com.easyone.travelance.domain.card.service.CardService;
 import com.easyone.travelance.domain.common.ResultDto;
-import com.easyone.travelance.domain.member.dto.request.AddRequestDto;
 import com.easyone.travelance.domain.member.dto.request.AdditionalRequestDto;
-import com.easyone.travelance.domain.member.dto.MyAccountDto;
 import com.easyone.travelance.domain.member.dto.NicknameDto;
 import com.easyone.travelance.domain.member.dto.OneAccountDto;
 import com.easyone.travelance.domain.member.dto.response.MypageResponseDto;
@@ -105,10 +103,12 @@ public class MemberController {
             "        \"cardCoName\": \"KB국민\",\n" +
             "        \"idx\": 1\n" +
             "        }\n\n" +
-            "    ]\n\n" +
+            "    ],\n\n" +
+            "    \"password\": \"아무거나\",\n\n" +
+            "    \"nickname\": \"아무거나\"\n\n" +
             "    }\n\n```\n\n" + "이러한 형식입니다")
     @PostMapping("/add")
-    public ResponseEntity<ResultDto> addCardAccount(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody AddRequestDto addRequestDto){
+    public ResponseEntity<ResultDto> addCardAccount(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody AdditionalRequestDto addRequestDto){
 
         Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
 
