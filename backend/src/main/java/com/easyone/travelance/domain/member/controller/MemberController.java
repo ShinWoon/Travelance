@@ -80,33 +80,33 @@ public class MemberController {
     }
 
     // 계좌, 카드 추가 등록
-    @Operation(summary = "계좌, 카드 추가 등록", description = "나의 계좌, 카드를 추가 등록하는 메서드입니다. \\n\\n \" +\"\\n\\n### [ 수행절차 ]\\n\\n\"+\"- login 에서 발급 받은 access-token을 자물쇠에 넣고 Execute 해주세요. (request body는 아래에 예시값의 request값만 사용해주세요.)\\n\\n\"+ \"- Response body의 accessToken 또는 Response headers의 newtoken을 복사하여 새로 자물쇠에 넣어 주세요 \\n\\n\" + \"### [DTO 양식] \\n\\n\" +\n" +
-            "            \"```\\n\\n{\\n\\n\" +\n" +
-            "            \"    \\\"accountList\\\": [\\n\" +\n" +
-            "            \"        {\\n\\n\" +\n" +
-            "            \"        \\\"account\\\": \\\"6666666666666666\\\",\\n\" +\n" +
-            "            \"        \\\"bankName\\\": \\\"대구\\\",\\n\" +\n" +
-            "            \"        \\\"idx\\\": 4\\n\" +\n" +
-            "            \"        },\\n\\n\" +\n" +
-            "            \"        {\\n\\n\" +\n" +
-            "            \"        \\\"account\\\": \\\"7753621811018015\\\",\\n\" +\n" +
-            "            \"        \\\"bankName\\\": \\\"SC제일\\\",\\n\" +\n" +
-            "            \"        \\\"idx\\\": 0\\n\" +\n" +
-            "            \"        }\\n\\n\" +\n" +
-            "            \"    ],\\n\\n\" +\n" +
-            "            \"    \\\"cardList\\\": [\\n\" +\n" +
-            "            \"        {\\n\\n\" +\n" +
-            "            \"        \\\"cardNumber\\\": \\\"4215154824392854\\\",\\n\" +\n" +
-            "            \"        \\\"cardCoName\\\": \\\"KB국민\\\",\\n\" +\n" +
-            "            \"        \\\"idx\\\": 1\\n\" +\n" +
-            "            \"        },\\n\\n\" +\n" +
-            "            \"        {\\n\\n\" +\n" +
-            "            \"        \\\"cardNumber\\\": \\\"3737467972008765\\\",\\n\" +\n" +
-            "            \"        \\\"cardCoName\\\": \\\"KB국민\\\",\\n\" +\n" +
-            "            \"        \\\"idx\\\": 1\\n\" +\n" +
-            "            \"        }\\n\\n\" +\n" +
-            "            \"    ],\\n\\n\" +\n" +
-            "            \"    }\\n\\n```\\n\\n\" + \"이러한 형식입니다\")")
+    @Operation(summary = "계좌, 카드 추가 등록", description = "나의 계좌, 카드를 추가 등록하는 메서드입니다. \n\n " +"\n\n### [ 수행절차 ]\n\n"+"- login 에서 발급 받은 access-token을 자물쇠에 넣고 Execute 해주세요. (request body는 아래에 예시값의 request값만 사용해주세요.)\n\n"+ "- Response body의 accessToken 또는 Response headers의 newtoken을 복사하여 새로 자물쇠에 넣어 주세요 \n\n" + "### [DTO 양식] \n\n" +
+            "```\n\n{\n\n" +
+            "    \"accountList\": [\n" +
+            "        {\n\n" +
+            "        \"account\": \"6666666666666666\",\n" +
+            "        \"bankName\": \"대구\",\n" +
+            "        \"idx\": 4\n" +
+            "        },\n\n" +
+            "        {\n\n" +
+            "        \"account\": \"7753621811018015\",\n" +
+            "        \"bankName\": \"SC제일\",\n" +
+            "        \"idx\": 0\n" +
+            "        }\n\n" +
+            "    ],\n\n" +
+            "    \"cardList\": [\n" +
+            "        {\n\n" +
+            "        \"cardNumber\": \"4215154824392854\",\n" +
+            "        \"cardCoName\": \"KB국민\",\n" +
+            "        \"idx\": 1\n" +
+            "        },\n\n" +
+            "        {\n\n" +
+            "        \"cardNumber\": \"3737467972008765\",\n" +
+            "        \"cardCoName\": \"KB국민\",\n" +
+            "        \"idx\": 1\n" +
+            "        }\n\n" +
+            "    ]\n\n" +
+            "    }\n\n```\n\n" + "이러한 형식입니다")
     @PostMapping("/add")
     public ResponseEntity<ResultDto> addCardAccount(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody AddRequestDto addRequestDto){
 
