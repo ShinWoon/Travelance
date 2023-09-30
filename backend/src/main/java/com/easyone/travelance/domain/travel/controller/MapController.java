@@ -25,11 +25,20 @@ public class MapController {
     private final MapService mapService;
 
     // 지금 여행중인 여행방에 대한 결제정보를 전달한다.
-    @Operation(summary = "발자취(map)에 결제장소 표시", description = "요청 시, 현재 여행중인 여행방에 대한 결제내역 주소를 전달합니다. ")
-    @GetMapping(value = "")
-    public ResponseEntity<List<MapAllResponseDto>> getPaymentForMap(@MemberInfo MemberInfoDto memberInfo) {
-        Member member = memberService.findMemberByEmail(memberInfo.getEmail());
-        List<MapAllResponseDto> responseDto = mapService.mapList(member);
+    @Operation(summary = "여행방의 모든 결제장소 조회", description = "요청 시, 현재 여행중인 여행방에 대한 결제내역 주소를 전달합니다. ")
+    @GetMapping(value = "/{roomId}")
+    public ResponseEntity<List<MapAllResponseDto>> getPaymentForMap(@PathVariable Long roomId) {
+        List<MapAllResponseDto> responseDto = mapService.mapList(roomId);
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
+
+//    @Operation(summary = "해당 장소의 결제 정보 조회", description = "해당 장소요청 시, 현재 여행중인 여행방에 대한 결제내역 주소를 전달합니다. ")
+//    @GetMapping(value = "")
+//    public ResponseEntity<List<MapAllResponseDto>> getPaymentForMap(@MemberInfo MemberInfoDto memberInfo) {
+//        Member member = memberService.findMemberByEmail(memberInfo.getEmail());
+//        List<MapAllResponseDto> responseDto = mapService.mapList(member);
+//        return new ResponseEntity<>(responseDto,HttpStatus.OK);
+//    }
+
+
 }

@@ -28,16 +28,17 @@ public class MapService {
     private final PaymentRepository paymentRepository;
 
     @Transactional(readOnly = true)
-    public List<MapAllResponseDto> mapList(Member member) {
+    public List<MapAllResponseDto> mapList(Long roomId) {
 
-            List<TravelRoom> travelRoomMemberList = travelRoomRepository.findAllByTravelRoomMembersMember(member);
-            //맴버의 현재 여행방인 곳 찾기
-            Long roomId=0L;
-            for (TravelRoom travelRoomIsDone : travelRoomMemberList) {
-                if (travelRoomIsDone.getIsDone()== RoomType.NOW) {
-                    roomId=travelRoomIsDone.getId();
-                }
-            }
+        //추후 완료된 여행방에 대한 위치정보도 반환해야하기 때문에 roomId를 받아서 전달!
+
+//            List<TravelRoom> travelRoomMemberList = travelRoomRepository.findAllByTravelRoomMembersMember(member);
+//            //맴버의 현재 여행방인 곳 찾기
+//            for (TravelRoom travelRoomIsDone : travelRoomMemberList) {
+//                if (travelRoomIsDone.getIsDone()== RoomType.NOW) {
+//                    roomId=travelRoomIsDone.getId();
+//                }
+//            }
 
             // 모든 결제내역의 위치장소를 리스트로 반환
             List<Payment> paymentResponseDtoList = paymentRepository.findByTravelRoomId(roomId);
