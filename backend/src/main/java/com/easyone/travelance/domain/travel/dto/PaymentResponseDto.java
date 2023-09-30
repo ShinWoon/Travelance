@@ -16,6 +16,7 @@ public class PaymentResponseDto {
     private String address;
     private Long memberId;
     private String nickName;
+    private String paymentAt;
 
     public PaymentResponseDto(Payment payment, Member member) {
         this.paymentId = payment.getId();
@@ -23,6 +24,7 @@ public class PaymentResponseDto {
         this.address=payment.getStoreAddress();
         this.category = payment.getStoreSector();
         this.content= payment.getPaymentContent();
+        this.paymentAt=payment.getPaymentAt();
         this.memberId = member.getId();
         this.nickName = member.getNickname();
     }
