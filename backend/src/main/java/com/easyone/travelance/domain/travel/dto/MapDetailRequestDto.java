@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class MapDetailRequestDto {
-    private String paymentAt;
+    private String storeAddress;
 
 
 }

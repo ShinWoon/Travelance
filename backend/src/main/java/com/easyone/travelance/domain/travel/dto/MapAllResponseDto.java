@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class MapAllResponseDto {
-    private String paymentAt;
+    private String storeAddress;
     private String storeSector;
 
     public MapAllResponseDto(Payment payment) {
-        paymentAt=payment.getPaymentAt();
+        storeAddress=payment.getStoreAddress();
         storeSector= payment.getStoreSector();
     }
 }
