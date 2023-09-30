@@ -25,11 +25,11 @@ fun MainScreen(
     mainViewModel: MainViewModel,
 ) {
     Log.d(TAG, "MainScreen: ${mainViewModel.getJwtToken()}")
-    if(mainViewModel.getJwtToken().role == "MEMBER"){
-//        mainViewModel.putTravelingRoomId(1)
+    if(mainViewModel.getJwtToken().role == "MEMBER") {
+        Log.d(TAG, "MainScreen 진행 중인 room ID: ${mainViewModel.getTravelingRoomId()} ")
         mainViewModel.setSelectRoomId(mainViewModel.getTravelingRoomId()) // 진행 중인 여행방을 selectRoom에 저장
         navController.navigate(Screen.Home.route)
-    }else{
+    }else {
         navController.navigate(Screen.Login.route)
     }
     

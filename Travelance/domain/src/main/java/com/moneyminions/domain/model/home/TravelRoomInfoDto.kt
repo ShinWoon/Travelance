@@ -4,7 +4,7 @@ data class TravelRoomInfoDto(
     var roomId: Int = 0,
     var travelName: String = "",
     var budget: Int = 0,
-    var percent: Int = 0,
+    var percent: Float = 0.0f,
     var rest: Int = 0,
     var isDone: String = "",
     var everyuse: MutableList<TravelMemberUseDto> = mutableListOf(),

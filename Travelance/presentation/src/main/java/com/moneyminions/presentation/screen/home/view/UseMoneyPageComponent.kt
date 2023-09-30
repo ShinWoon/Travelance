@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.screen.home.view
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,23 +22,29 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
+import com.moneyminions.domain.model.home.TravelMemberUseDto
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.common.MinionProfile
 import com.moneyminions.presentation.screen.home.DotsIndicator
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.theme.PinkLightest
+import com.moneyminions.presentation.utils.DateUtils
 import com.moneyminions.presentation.utils.MoneyUtils.makeCommaWon
+import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun UseMoneyPage(
     pagerState: PagerState,
     cardHeight: Dp,
     title: String,
-    money: Int,
-    totalDot: Int
+    totalDot: Int,
+    homeViewModel: HomeViewModel,
 ) {
+    val travelInfo = homeViewModel.travelRoomInfo.value
+    
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -57,7 +64,6 @@ fun UseMoneyPage(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(text = title, style = CustomTextStyle.pretendardBold16)
-                Text(text = "전체 보기", style = CustomTextStyle.pretendardSemiBold12)
             }
 
             LazyColumn(
@@ -66,8 +72,17 @@ fun UseMoneyPage(
                     .padding(horizontal = 32.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                items(20) {
-                    UseMoneyItem(money)
+                when(title) {
+                    "전체 내역" -> {
+                        items(travelInfo.everyuse.size) {
+                            UseMoneyItem(travelInfo.everyuse[it])
+                        }
+                    }
+                    "나의 전체 내역" -> {
+                        items(travelInfo.myuse.size) {
+                            UseMoneyItem(travelInfo.myuse[it])
+                        }
+                    }
                 }
             }
             
@@ -89,7 +104,7 @@ fun UseMoneyPage(
 
 @Composable
 fun UseMoneyItem(
-    money: Int
+    travelMemberUseDto: TravelMemberUseDto
 ) {
     Row(
         modifier = Modifier
@@ -110,12 +125,12 @@ fun UseMoneyItem(
                 verticalArrangement = Arrangement.Center,
             ) {
                 Text(
-                    text = "지출 내역!!",
+                    text = "${travelMemberUseDto.content}",
                     style = CustomTextStyle.pretendardBold16,
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text = "10 Oct 21",
+                    text = "${DateUtils.makeDate(travelMemberUseDto.paymentAt)}",
                     style = CustomTextStyle.pretendardLight12,
                 )
             }
@@ -127,7 +142,7 @@ fun UseMoneyItem(
             contentAlignment = Alignment.CenterStart,
         ) {
             Text(
-                text = makeCommaWon(money) ,
+                text = makeCommaWon(travelMemberUseDto.price) ,
                 style = CustomTextStyle.pretendardBold16,
             )
         }

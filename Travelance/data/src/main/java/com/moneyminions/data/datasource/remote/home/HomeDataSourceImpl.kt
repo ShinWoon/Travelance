@@ -1,6 +1,7 @@
 package com.moneyminions.data.datasource.remote.home
 
 import com.moneyminions.data.model.common.response.CommonResponse
+import com.moneyminions.data.model.home.request.UseCashRequest
 import com.moneyminions.data.model.home.response.TravelRoomInfoResponse
 import com.moneyminions.data.service.BusinessService
 
@@ -20,5 +21,9 @@ class HomeDataSourceImpl (
      */
     override suspend fun getSelectTravelRoom(roomId: Int) : TravelRoomInfoResponse{
         return businessService.getTravelRoomInfo(roomId = roomId)
+    }
+    
+    override suspend fun requestUseCash(useCashRequest: UseCashRequest): CommonResponse {
+        return businessService.requestUseCash(useCashRequest = useCashRequest)
     }
 }

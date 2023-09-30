@@ -1,7 +1,9 @@
 package com.moneyminions.data.mapper
 
+import com.moneyminions.data.model.home.request.UseCashRequest
 import com.moneyminions.data.model.home.response.TravelRoomInfoResponse
 import com.moneyminions.data.model.home.response.TravelRoomMemberUseResponse
+import com.moneyminions.domain.model.home.CashDto
 import com.moneyminions.domain.model.home.TravelMemberUseDto
 import com.moneyminions.domain.model.home.TravelRoomInfoDto
 
@@ -28,6 +30,15 @@ fun TravelRoomMemberUseResponse.toDomain(): TravelMemberUseDto {
         address = address,
         memberId = memberId,
         nickName = nickName,
+        paymentAt = paymentAt,
+    )
+}
+
+fun CashDto.toData(): UseCashRequest {
+    return UseCashRequest(
+        roomNumber = roomNumber,
+        paymentContent = paymentContent,
+        paymentAmount = paymentAmount,
     )
 }
 

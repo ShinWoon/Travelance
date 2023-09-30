@@ -1,7 +1,9 @@
 package com.moneyminions.presentation.screen.home.view
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -18,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold20
@@ -26,16 +29,33 @@ import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun TopComponent(
-    homeViewModel: HomeViewModel = hiltViewModel(),
+    homeViewModel: HomeViewModel,
     navController: NavController
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp),
+        horizontalArrangement = Arrangement.Center
     ) {
+        if(homeViewModel.travelRoomInfo.value.isDone == "BEFORE") {
+            Box (
+                modifier = Modifier.fillMaxHeight().padding(horizontal = 16.dp),
+                contentAlignment = Alignment.Center
+            ){
+                Icon(
+                    imageVector = Icons.Rounded.ArrowBack,
+                    contentDescription = "backButton",
+                    modifier = Modifier.clickable {
+                        navController.popBackStack()
+                    },
+                )
+            }
+        }
+        
         TopLeftItem(
             homeViewModel,
             modifier = Modifier
@@ -45,6 +65,7 @@ fun TopComponent(
     }
 }
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun TopLeftItem(
     homeViewModel: HomeViewModel,
@@ -68,7 +89,7 @@ fun TopLeftItem(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "여행 이름",
+                text = homeViewModel.travelRoomInfo.value.travelName,
                 style = pretendardBold20,
             )
             if(homeViewModel.isTravelStart.value) {

@@ -88,7 +88,7 @@ fun NavGraph(
         composable(
             route = Screen.CreateTravel.route,
         ) {
-            CreateTravelScreen(navController = navController)
+            CreateTravelScreen(navController = navController, mainViewModel = mainViewModel)
         }
         composable(
             route = Screen.MyPage.route,

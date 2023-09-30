@@ -22,12 +22,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.moneyminions.presentation.common.MinionPrimaryButton
 import com.moneyminions.presentation.common.TextFieldWithTitle
 import com.moneyminions.presentation.common.TopBar
@@ -36,6 +34,7 @@ import com.moneyminions.presentation.screen.travellist.view.Calendar
 import com.moneyminions.presentation.screen.travellist.view.DateTextComponent
 import com.moneyminions.presentation.screen.travellist.view.ProfileDialog
 import com.moneyminions.presentation.utils.NetworkResultHandler
+import com.moneyminions.presentation.viewmodel.MainViewModel
 import com.moneyminions.presentation.viewmodel.travellist.CreateTravelViewModel
 import kotlinx.coroutines.launch
 
@@ -46,6 +45,7 @@ private const val TAG = "CreateTravelScreen_D210"
 fun CreateTravelScreen(
     createTravelViewModel: CreateTravelViewModel = hiltViewModel(),
     navController: NavHostController,
+    mainViewModel: MainViewModel,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
@@ -61,6 +61,7 @@ fun CreateTravelScreen(
         successAction = {
             // homeScreen으로 이동 (방 생성 stack pop)
             Log.d(TAG, "CreateTravelScreen: $it")
+            mainViewModel.setSelectRoomId(it.result.toInt())
             navController.navigate(Screen.SubHome.route) {
                 popUpTo(Screen.TravelList.route)
             }
@@ -159,9 +160,9 @@ fun CreateTravelScreen(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview(showBackground = true, backgroundColor = 0xFFFFFF)
-@Composable
-fun CreateTravelScreenPreview() {
-    CreateTravelScreen(navController = rememberNavController())
-}
+//@RequiresApi(Build.VERSION_CODES.O)
+//@Preview(showBackground = true, backgroundColor = 0xFFFFFF)
+//@Composable
+//fun CreateTravelScreenPreview() {
+//    CreateTravelScreen(navController = rememberNavController())
+//}

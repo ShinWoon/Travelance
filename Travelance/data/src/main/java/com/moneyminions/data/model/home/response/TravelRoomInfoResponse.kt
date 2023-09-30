@@ -11,7 +11,7 @@ data class TravelRoomInfoResponse(
     @SerializedName("budget")
     var budget: Int,
     @SerializedName("percent")
-    var percent: Int,
+    var percent: Float,
     @SerializedName("rest")
     var rest: Int,
     @SerializedName("isDone")

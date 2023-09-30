@@ -1,6 +1,7 @@
 package com.moneyminions.data.service
 
 import com.moneyminions.data.model.common.response.CommonResponse
+import com.moneyminions.data.model.home.request.UseCashRequest
 import com.moneyminions.data.model.home.response.TravelRoomInfoResponse
 import com.moneyminions.data.model.login.request.AuthenticationAccountRequest
 import com.moneyminions.data.model.login.request.LoginRequest
@@ -107,7 +108,7 @@ interface BusinessService {
     /**
      * 여행방 생성 API
      */
-    @DELETE("travel/room/{roomId}")
+    @POST("travel/room/{roomId}/start")
     suspend fun startTravel(@Path(value = "roomId") roomId: Int): CommonResponse
     
     /**
@@ -115,4 +116,10 @@ interface BusinessService {
      */
     @GET("travel/room/{roomId}")
     suspend fun getTravelRoomInfo(@Path(value = "roomId") roomId: Int): TravelRoomInfoResponse
+    
+    /**
+     * 현급 입력 API
+     */
+    @POST("payment/cash")
+    suspend fun requestUseCash(@Body useCashRequest: UseCashRequest): CommonResponse
 }

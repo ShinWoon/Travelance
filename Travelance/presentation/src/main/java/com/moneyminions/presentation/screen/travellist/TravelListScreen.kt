@@ -152,6 +152,9 @@ fun TravelListScreen(
                         item.hashCode()
                     }
                 ) { _, item: TravelRoomDto ->
+                    if(item.isDone == "NOW") {
+                        mainViewModel.putTravelingRoomId(item.roomId)
+                    }
                     TravelRoomItem(
                         modifier = Modifier,
                         travelRoomDto = item,

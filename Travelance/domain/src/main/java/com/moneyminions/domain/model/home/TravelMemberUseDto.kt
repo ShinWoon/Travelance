@@ -8,4 +8,5 @@ data class TravelMemberUseDto(
     var address: String = "",
     var memberId: Int = 0,
     var nickName: String = "",
+    var paymentAt: String = "",
 )
