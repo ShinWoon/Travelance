@@ -31,7 +31,7 @@ public class MapController {
     }
 
     @Operation(summary = "해당 장소의 결제 정보 조회", description = "해당 장소 요청 시, 현재 여행중인 여행방에 대한 결제상세정보를 리스트로 전달합니다. ")
-    @GetMapping(value = "/{roomId}/detail")
+    @PostMapping(value = "/{roomId}/detail")
     public ResponseEntity<List<MapDetailResponseDto>> PaymentByLocation(@PathVariable Long roomId, @RequestBody MapDetailRequestDto mapDetailRequestDto) {
         List<MapDetailResponseDto> responseDto = mapService.mapDetail(roomId, mapDetailRequestDto);
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
