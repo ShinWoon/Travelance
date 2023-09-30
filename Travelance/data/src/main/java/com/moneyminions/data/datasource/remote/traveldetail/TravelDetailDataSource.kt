@@ -4,7 +4,7 @@ import com.moneyminions.data.model.traveldetail.response.TravelDetailInfoRespons
 import com.moneyminions.data.model.traveldetail.response.TravelDetailMyPaymentResponse
 
 interface TravelDetailDataSource {
-    suspend fun getMyPaymentList(email: String): List<TravelDetailMyPaymentResponse>
+    suspend fun getMyPaymentList(): List<TravelDetailMyPaymentResponse>
 
-    suspend fun getTravelDetailInfo(email: String): TravelDetailInfoResponse
+    suspend fun getTravelDetailInfo(): TravelDetailInfoResponse
 }

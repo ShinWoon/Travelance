@@ -89,7 +89,7 @@ class MainActivity : FragmentActivity() {
                     val startDestination =
                         if (mainViewModel.getJwtToken().role == "MEMBER") Screen.Home.route
                         else Screen.Login.route
-                    Log.d(TAG, "JWTTOKEN: ${mainViewModel.getJwtToken().role}")
+                    Log.d(TAG, "JWTTOKEN: ${mainViewModel.getJwtToken().accessToken}")
                     Log.d(TAG, "startDestination: $startDestination")
                     MainScreen(startDestination = startDestination, mainViewModel = mainViewModel)
                 }

@@ -143,6 +143,11 @@ sealed class Screen(val name: String, val route: String, val title: String) {
         title = NavTitle.TRAVELDONE
     )
 
+    object TravelEdit: Screen(
+        name = "TravelEdit",
+        route = NavRouteName.EDITTRAVEL,
+        title = NavTitle.EDITTRAVEL
+    )
 
     companion object {
         fun checkToolBar(route: String): Boolean {
@@ -187,6 +192,7 @@ object NavRouteName {
     const val NICKNAMEPASSWORD = "nickname_password"
     const val SUBHOME = "sub_home_screen"
     const val TRAVELDONE = "travel_done"
+    const val EDITTRAVEL = "edit_travel_screen"
 }
 
 object NavTitle {
@@ -213,4 +219,5 @@ object NavTitle {
     const val NICKNAMEPASSWORD = "프로필 설정"
     const val SUBHOME = "사전정산"
     const val TRAVELDONE = "여행 완료"
+    const val EDITTRAVEL = "여행 수정"
 }

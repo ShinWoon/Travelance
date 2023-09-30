@@ -7,12 +7,13 @@ import com.moneyminions.data.model.traveldetail.response.TravelPaymentResponse
 import com.moneyminions.data.model.traveldetail.response.TravelRoomInfoResponse
 import com.moneyminions.domain.model.traveldetail.FriendPaymentDto
 import com.moneyminions.domain.model.traveldetail.TravelDetailInfoDto
-import com.moneyminions.domain.model.traveldetail.TravelDetailMyPaymentDto
 import com.moneyminions.domain.model.traveldetail.TravelPaymentDto
 import com.moneyminions.domain.model.traveldetail.TravelRoomInfoDto
 
-fun TravelDetailMyPaymentResponse.toDomain(): TravelDetailMyPaymentDto {
-    return TravelDetailMyPaymentDto(
+fun TravelDetailMyPaymentResponse.toDomain(): TravelPaymentDto {
+    return TravelPaymentDto(
+        isWithPaid = isWithPaid,
+        paymentContent = paymentContent,
         paymentAmount = paymentAmount,
         paymentAt = paymentAt,
         paymentId = paymentId,
@@ -22,7 +23,7 @@ fun TravelDetailMyPaymentResponse.toDomain(): TravelDetailMyPaymentDto {
 fun TravelDetailInfoResponse.toDomain(): TravelDetailInfoDto {
     return TravelDetailInfoDto(
         friendPayments = friendPayments.map { it.toDomain() },
-        travelPaymentResponseDto = travelPaymentResponseDto.map { it.toDomain() },
+        travelPayment = travelPaymentResponseDto.map { it.toDomain() },
         travelRoomInfo = travelRoomInfo.map { it.toDomain() },
     )
 }
@@ -39,6 +40,7 @@ fun FriendPaymentResponse.toDomain(): FriendPaymentDto {
 fun TravelPaymentResponse.toDomain(): TravelPaymentDto {
     return TravelPaymentDto(
         isWithPaid = isWithPaid,
+        paymentContent = paymentContent,
         paymentAmount = paymentAmount,
         paymentAt = paymentAt,
         paymentId = paymentId,

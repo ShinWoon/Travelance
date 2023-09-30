@@ -17,7 +17,7 @@ import com.naver.maps.map.compose.NaverMap
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalNaverMapApi::class)
 @Composable
-fun travelMapScreen(
+fun TravelMapScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier,
 ) {

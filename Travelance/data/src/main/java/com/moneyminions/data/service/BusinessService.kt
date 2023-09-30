@@ -110,11 +110,11 @@ interface BusinessService {
      * 개인 결제 금액 요청
      */
     @GET("travel/payment/alone")
-    suspend fun getMyPaymentList(@Query("email") email: String): List<TravelDetailMyPaymentResponse>
+    suspend fun getMyPaymentList(): List<TravelDetailMyPaymentResponse>
 
     /**
      * 여행 상세 요청
      */
     @GET("travel/payment/with")
-    suspend fun getTravelDetailInfo(@Query("email") email: String): TravelDetailInfoResponse
+    suspend fun getTravelDetailInfo(): TravelDetailInfoResponse
 }

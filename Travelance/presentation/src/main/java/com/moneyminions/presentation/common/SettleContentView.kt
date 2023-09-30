@@ -35,8 +35,10 @@ private const val TAG = "싸피"
 
 @Composable
 fun SettleContentView(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
+    payContent: String,
     payDate: String,
+    payAmount: Int,
 ) {
     Column(
         modifier = modifier
@@ -49,8 +51,8 @@ fun SettleContentView(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            DetailCommonText(text = "사용내역")
-            DetailCommonText(text = MoneyUtils.makeComma(189000))
+            DetailCommonText(text = payContent)
+            DetailCommonText(text = MoneyUtils.makeComma(payAmount))
         }
         Text(
             text = payDate,

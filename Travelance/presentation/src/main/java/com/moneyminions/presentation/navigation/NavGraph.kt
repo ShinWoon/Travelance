@@ -1,7 +1,6 @@
 package com.moneyminions.presentation.navigation
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -15,7 +14,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
-import com.moneyminions.presentation.screen.MainScreen
 import com.moneyminions.presentation.screen.announcement.AnnouncementScreen
 import com.moneyminions.presentation.screen.detail.DetailScreen
 import com.moneyminions.presentation.screen.example.ExampleScreen
@@ -36,7 +34,7 @@ import com.moneyminions.presentation.screen.mypage.SettingScreen
 import com.moneyminions.presentation.screen.traveldone.TravelDoneScreen
 import com.moneyminions.presentation.screen.travellist.CreateTravelScreen
 import com.moneyminions.presentation.screen.travellist.TravelListScreen
-import com.moneyminions.presentation.screen.travelmap.travelMapScreen
+import com.moneyminions.presentation.screen.travelmap.TravelMapScreen
 import com.moneyminions.presentation.viewmodel.login.LoginViewModel
 
 private const val TAG = "NavGraph_D210"
@@ -125,7 +123,7 @@ fun NavGraph(
         composable(
             route = Screen.TravelMap.route,
         ) {
-            travelMapScreen(navController = navController)
+            TravelMapScreen(navController = navController)
         }
         composable(
             route = Screen.GameList.route,
@@ -182,6 +180,11 @@ fun NavGraph(
             if (travelName != null) {
                 TravelDoneScreen(navController = navController, travelName = travelName)
             }
+        }
+        composable(
+            route = Screen.TravelEdit.route,
+        ) {
+            CreateTravelScreen(navController = navController)
         }
     }
 } // End of setUpNavGraph

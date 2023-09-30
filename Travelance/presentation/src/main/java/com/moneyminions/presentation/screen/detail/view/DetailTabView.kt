@@ -39,6 +39,7 @@ import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold16
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardSemiBold16
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.theme.White
+import com.moneyminions.presentation.viewmodel.travel.TravelDetailViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -48,6 +49,7 @@ fun DetailTabView(
     tabs: List<String>,
     selectedTabIndex: PagerState,
     tabWidths: MutableList<Dp>,
+    travelDetailViewModel: TravelDetailViewModel
 ) {
     val density = LocalDensity.current
     val coroutineScope = rememberCoroutineScope()
@@ -104,18 +106,6 @@ fun DetailTabView(
                     )
                 },
             )
-        }
-    }
-    HorizontalPager(
-        state = selectedTabIndex,
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = White)
-            .padding(0.dp),
-    ) { page ->
-        when (page) {
-            0 -> DetailSettleScreenView()
-            1 -> DetailMemberScreenView()
         }
     }
 }

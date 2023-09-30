@@ -30,7 +30,7 @@ fun SettleResultTransferView(modifier: Modifier, result: String) {
             modifier = modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            MemberView(modifier = modifier)
+//            MemberView(modifier = modifier)
             MemberTotalUsedMoney(modifier = modifier, result = result)
             Text(
                 text = (if (result == "big") "+" else "-") + MoneyUtils.makeComma(50000),

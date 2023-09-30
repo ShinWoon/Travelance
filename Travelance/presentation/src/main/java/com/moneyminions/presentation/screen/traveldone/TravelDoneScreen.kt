@@ -42,14 +42,14 @@ fun TravelDoneScreen(
         Column(
             modifier = Modifier.padding(it)
         ) {
-            TravelInfoView(
-                startDate = "2023/09/05",
-                endDate = "2023/09/07",
-                budget = 30000,
-                type = "done",
-                modifier = Modifier,
-                navController = rememberNavController(),
-            )
+//            TravelInfoView(
+//                startDate = "2023/09/05",
+//                endDate = "2023/09/07",
+//                budget = 30000,
+//                type = "done",
+//                modifier = Modifier,
+//                navController = rememberNavController(),
+//            )
             DoneTabView(
                 tabs = tabs,
                 selectedTabIndex = selectedTabIndex,

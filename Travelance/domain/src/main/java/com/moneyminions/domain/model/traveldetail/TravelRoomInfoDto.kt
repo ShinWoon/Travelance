@@ -1,7 +1,7 @@
 package com.moneyminions.domain.model.traveldetail
 
 data class TravelRoomInfoDto(
-    val budget: Int,
-    val endDate: String,
-    val startDate: String,
+    val budget: Int = 0,
+    val endDate: String = "",
+    val startDate: String = "",
 )

@@ -10,5 +10,5 @@ data class FriendPaymentResponse(
     @SerializedName("paymentAmount")
     val paymentAmount: Int,
     @SerializedName("profileUrl")
-    val profileUrl: String,
+    val profileUrl: String?,
 )

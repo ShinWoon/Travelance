@@ -33,6 +33,7 @@ val BlueLighter = Color(0xFF4263A3)
 val BlueLightest = Color(0xFF8596B8)
 
 val GreenMiddle = Color(0xFF00B672)
+val GreenDark = Color(0xFF006F33)
 val KakaoYellow = Color(0xFFFEE500)
 val KakaoLabelColor = Color(0xFF191919)
 

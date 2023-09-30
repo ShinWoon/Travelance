@@ -21,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold12
-import com.moneyminions.presentation.common.SettleCardView
 import com.moneyminions.presentation.theme.DarkerGray
 import com.moneyminions.presentation.theme.Gray
 import com.moneyminions.presentation.theme.LightGray
@@ -65,6 +64,6 @@ fun DonePublicMoneyView(
             )
         }
         Spacer(modifier = modifier.height(8.dp))
-        SettleCardView()
+//        SettleCardView()
     }
 }

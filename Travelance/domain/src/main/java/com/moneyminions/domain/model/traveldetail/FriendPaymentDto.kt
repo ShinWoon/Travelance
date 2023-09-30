@@ -1,8 +1,8 @@
 package com.moneyminions.domain.model.traveldetail
 
 data class FriendPaymentDto(
-    val done: Boolean,
-    val nickName: String,
-    val paymentAmount: Int,
-    val profileUrl: String,
+    val done: Boolean= false,
+    val nickName: String = "",
+    val paymentAmount: Int = 0,
+    val profileUrl: String? = "",
 )

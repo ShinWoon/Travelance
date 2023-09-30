@@ -56,7 +56,7 @@ fun NicknamePasswordScreen(
                 loginViewModel.updateJwtToken(it.accessToken, null, it.role)
                 Log.d(TAG, "최종 로그인 결과 : ${loginViewModel.memberInfo}")
 //                Log.d(TAG, "preference : ${loginViewModel.getJwtToken()} ${loginViewModel.getRole()}")
-                navController.navigate(Screen.Main.route)
+                navController.navigate(Screen.Home.route)
             }
         }
     )

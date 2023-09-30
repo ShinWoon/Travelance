@@ -1,4 +1,4 @@
-package com.moneyminions.presentation.common
+package com.moneyminions.presentation.screen.detail.view
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -8,11 +8,14 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.moneyminions.domain.model.traveldetail.TravelPaymentDto
+import com.moneyminions.presentation.common.SettleContentView
 import com.moneyminions.presentation.theme.CardLightGray
 
 @Composable
-fun SettleCardView(
+fun DetailPublicMoneySettleCardView(
     modifier: Modifier = Modifier,
+    publicMoneyList: List<TravelPaymentDto>,
 ) {
     Card(
         modifier = modifier
@@ -22,10 +25,12 @@ fun SettleCardView(
         LazyColumn(
             modifier = modifier.padding(horizontal = 16.dp, vertical = 12.dp),
         ) {
-            items(10) {
+            items(publicMoneyList.size) {
                 SettleContentView(
                     modifier = modifier,
-                    payDate = "2023-09-23 12:51",
+                    payContent = publicMoneyList[it].paymentContent,
+                    payDate = publicMoneyList[it].paymentAt,
+                    payAmount = publicMoneyList[it].paymentAmount,
                 )
             }
         }

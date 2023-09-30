@@ -19,5 +19,6 @@ fun getScreenTitle(route: String?): String = when(route) {
     NavRouteName.CARDLIST -> NavTitle.CARDLIST
     NavRouteName.NICKNAMEPASSWORD -> NavTitle.NICKNAMEPASSWORD
     NavRouteName.SUBHOME -> NavTitle.SUBHOME
+    NavRouteName.EDITTRAVEL -> NavTitle.EDITTRAVEL
     else -> ""
 }

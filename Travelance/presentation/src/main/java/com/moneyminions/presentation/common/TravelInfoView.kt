@@ -17,25 +17,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.moneyminions.domain.model.traveldetail.TravelRoomInfoDto
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold14
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold18
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.DarkerGray
+import com.moneyminions.presentation.utils.DateUtils
 import com.moneyminions.presentation.utils.MoneyUtils.makeComma
+import com.moneyminions.presentation.viewmodel.travel.TravelDetailViewModel
 
 private const val TAG = "싸피"
 
 @Composable
 fun TravelInfoView(
-    startDate: String,
-    endDate: String,
-    budget: Int,
+    travelRoomInfo: TravelRoomInfoDto,
     type: String,
     modifier: Modifier = Modifier,
     navController: NavController,
@@ -55,7 +54,7 @@ fun TravelInfoView(
                     modifier = modifier
                         .size(24.dp)
                         .clickable {
-                            navController.navigate(Screen.CreateTravel.route)
+                            navController.navigate(Screen.TravelEdit.route)
                         },
                     painter = painterResource(id = R.drawable.ic_edit),
                     tint = DarkerGray,
@@ -74,8 +73,8 @@ fun TravelInfoView(
                 contentDescription = "detail calender icon",
                 modifier = modifier.size(40.dp),
             )
-            DetailDateView(startDate = startDate, endDate = endDate, modifier = modifier)
-            BudgetText(budget = budget, modifier = modifier)
+            DetailDateView(startDate = travelRoomInfo.startDate, endDate = travelRoomInfo.endDate, modifier = modifier)
+            BudgetText(budget = travelRoomInfo.budget, modifier = modifier)
         }
     }
 }
@@ -87,9 +86,9 @@ fun DetailDateView(
     modifier: Modifier,
 ) {
     Column(modifier = modifier.padding(4.dp, 0.dp, 0.dp, 0.dp)) {
-        DateText(text = "시작", date = startDate)
+        DateText(text = "시작", date = DateUtils.DashToSlash(startDate))
         Spacer(modifier = modifier.height(2.dp))
-        DateText(text = "종료", date = endDate)
+        DateText(text = "종료", date = DateUtils.DashToSlash(endDate))
     }
 }
 
@@ -116,18 +115,5 @@ fun BudgetText(
         style = pretendardBold18,
         modifier = modifier.fillMaxWidth(),
         textAlign = TextAlign.End,
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DetailPreview() {
-    TravelInfoView(
-        startDate = "2023/09/05",
-        endDate = "2023/09/07",
-        budget = 30000,
-        type = "detail",
-        modifier = Modifier,
-        navController = rememberNavController(),
     )
 }

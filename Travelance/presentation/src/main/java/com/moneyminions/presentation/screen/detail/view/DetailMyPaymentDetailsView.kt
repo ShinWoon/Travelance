@@ -18,8 +18,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.moneyminions.domain.model.traveldetail.TravelPaymentDto
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardRegular12
 import com.moneyminions.presentation.common.MinionPrimaryButton
+import com.moneyminions.presentation.common.SettleContentView
 import com.moneyminions.presentation.theme.DarkerGray
 import com.moneyminions.presentation.theme.FloatingButtonColor
 import com.moneyminions.presentation.utils.MoneyUtils
@@ -29,6 +31,7 @@ import com.moneyminions.presentation.utils.MoneyUtils
 fun DetailMyPaymentDetailsView(
     onDismissSheet: () -> Unit, // Optional callback for dismissing the sheet
     modifier: Modifier = Modifier,
+    myPaymentList: List<TravelPaymentDto>,
 ) {
     val scope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState()
@@ -44,7 +47,7 @@ fun DetailMyPaymentDetailsView(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp),
         ) {
-            MyPaymentDetails()
+            MyPaymentDetails(myPaymentList = myPaymentList)
             Spacer(modifier = modifier.height(8.dp))
             MinionPrimaryButton(content = "확인") {
             }
@@ -55,12 +58,16 @@ fun DetailMyPaymentDetailsView(
 @Composable
 fun MyPaymentDetails(
     modifier: Modifier = Modifier,
+    myPaymentList: List<TravelPaymentDto>,
 ) {
     LazyColumn(
         modifier = modifier.fillMaxWidth(),
     ) {
-        items(10) {
-            PaymentDetailContents(paymentTitle = "test", amount = 11111111)
+        items(myPaymentList.size) {
+            SettleContentView(
+                payContent = myPaymentList[it].paymentContent,
+                payDate = myPaymentList[it].paymentAt,
+                payAmount = myPaymentList[it].paymentAmount)
         }
     }
 }
