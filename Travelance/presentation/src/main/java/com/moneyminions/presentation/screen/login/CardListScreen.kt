@@ -88,7 +88,7 @@ fun CardListScreen(
                     CardRowItem(
                         name = it.name,
                         number = it.number,
-                        idx = it.idx,
+                        idx = it.idx!!,
                         type = "select",
                         isSelected = isSelectedState,
                         onSelected = {

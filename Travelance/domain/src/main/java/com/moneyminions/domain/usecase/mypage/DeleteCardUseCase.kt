@@ -9,7 +9,7 @@ import javax.inject.Inject
 class DeleteCardUseCase @Inject constructor(
     private val myPageRepository: MyPageRepository
 ) {
-    suspend operator fun invoke(deleteCard: CardDto): NetworkResult<CommonResultDto>{
-        return myPageRepository.deleteCard(deleteCard)
+    suspend operator fun invoke(cardName: String, cardNumber: String): NetworkResult<CommonResultDto>{
+        return myPageRepository.deleteCard(cardName, cardNumber)
     }
 }

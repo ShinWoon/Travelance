@@ -9,7 +9,7 @@ import javax.inject.Inject
 class DeleteAccountUseCase @Inject constructor(
     private val myPageRepository: MyPageRepository
 ) {
-    suspend operator fun invoke(deleteAccount: AccountDto): NetworkResult<CommonResultDto>{
-        return myPageRepository.deleteAccount(deleteAccount)
+    suspend operator fun invoke(bankName: String, accountNumber: String): NetworkResult<CommonResultDto>{
+        return myPageRepository.deleteAccount(bankName, accountNumber)
     }
 }

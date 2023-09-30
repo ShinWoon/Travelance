@@ -11,8 +11,6 @@ import com.moneyminions.data.model.login.response.JoinResponse
 import com.moneyminions.data.model.login.response.LoginResponse
 import com.moneyminions.data.model.login.response.MemberInfoResponse
 import com.moneyminions.data.model.login.response.ReAccessTokenResponse
-import com.moneyminions.data.model.mypage.request.DeleteAccountRequest
-import com.moneyminions.data.model.mypage.request.DeleteCardRequest
 import retrofit2.http.Body
 import retrofit2.http.PATCH
 import com.moneyminions.data.model.travellist.request.CreateTravelRoomRequest
@@ -22,6 +20,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface BusinessService {
@@ -90,11 +89,11 @@ interface BusinessService {
     /**
      * 카드 삭제
      */
-    @DELETE("card/delete")
-    suspend fun deleteCard(@Body deleteCardRequest: DeleteCardRequest): CommonResponse
+    @DELETE("card/delete/{cardCoName}/{cardNumber}")
+    suspend fun deleteCard(@Path("cardCoName")cardName: String, @Path("cardNumber") cardNumber: String): CommonResponse
     /**
      * 계좌 삭제
      */
-    @DELETE("account/delete")
-    suspend fun deleteAccount(@Body deleteAccountRequest: DeleteAccountRequest): CommonResponse
+    @DELETE("account/delete/{accountName}/{account}")
+    suspend fun deleteAccount(@Path("accountName") accountName: String, @Path("account") accountNumber: String): CommonResponse
 }

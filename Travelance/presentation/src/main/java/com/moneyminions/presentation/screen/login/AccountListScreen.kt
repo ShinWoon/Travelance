@@ -85,7 +85,7 @@ fun AccountListScreen(
                     var isSelectedState by remember { mutableStateOf(it.isSelected) }
                     Log.d(TAG, "AccountListScreen: $isSelectedState")
                     AccountRowItem(
-                        logo = Constants.ACCOUNT_LOGO_LIST[it.idx],
+                        logo = Constants.ACCOUNT_LOGO_LIST[it.idx!!],
                         name = it.bankName,
                         number = it.accountNumber!!,
                         type = "select",

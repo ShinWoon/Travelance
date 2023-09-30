@@ -22,7 +22,7 @@ import com.moneyminions.presentation.theme.GraphGray
 @Composable
 fun CardListComponent(
     cardList: List<CardDto>,
-    onDelete: () -> Unit,
+    onDelete: (String, String) -> Unit,
     onPlus: () -> Unit
 ){
     Text(
@@ -41,11 +41,11 @@ fun CardListComponent(
             CardRowItem(
                 name = it.name,
                 number = it.number,
-                idx = it.idx,
+                idx = it.idx!!,
                 type = "delete",
                 onDeleted = {
                     //삭제 로직
-                    onDelete()
+                    onDelete(it.name, it.number)
                 }
             )
         }

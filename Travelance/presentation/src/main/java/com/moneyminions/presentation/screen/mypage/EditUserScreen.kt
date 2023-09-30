@@ -17,6 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.moneyminions.domain.model.common.AccountDto
+import com.moneyminions.domain.model.common.CardDto
 import com.moneyminions.presentation.common.MinionPrimaryButton
 import com.moneyminions.presentation.common.SimpleDeleteDialog
 import com.moneyminions.presentation.common.TopBar
@@ -71,6 +73,28 @@ fun EditUserScreen(
     val isAccountDeleteDialogShowState = editUserViewModel.isAccountDeleteDialogShow.collectAsState()
     val isCardDeleteDialogShowState = editUserViewModel.isCardDeleteDialogShow.collectAsState()
 
+    val deleteCardResultState by editUserViewModel.deleteCardResult.collectAsState()
+    NetworkResultHandler(
+        state = deleteCardResultState,
+        errorAction = {
+            Log.d(TAG, "delete Card error... ")
+        },
+        successAction = {
+            editUserViewModel.getMemberInfo()
+        }
+    )
+
+    val deleteAccountResultState by editUserViewModel.deleteAccountResult.collectAsState()
+    NetworkResultHandler(
+        state = deleteAccountResultState,
+        errorAction = {
+            Log.d(TAG, "delete Account error....")
+        },
+        successAction = {
+            editUserViewModel.getMemberInfo()
+        }
+    )
+
     Column(
         modifier = Modifier.fillMaxSize(),
     ) {
@@ -95,7 +119,8 @@ fun EditUserScreen(
             Spacer(modifier = Modifier.size(16.dp))
             AccountListComponent(
                 accountList = accountListState.value,
-                onDelete = {
+                onDelete = { bankName, accountNumber ->
+                    editUserViewModel.setDeleteAccountInfo(bankName, accountNumber)
                     editUserViewModel.setIsAccountDeleteDialogShow(true)
                 },
                 onPlus = {
@@ -105,7 +130,8 @@ fun EditUserScreen(
             Spacer(modifier = Modifier.size(16.dp))
             CardListComponent(
                 cardList = cardListState.value,
-                onDelete = {
+                onDelete = { cardName, cardNumber ->
+                    editUserViewModel.setDeleteCardInfo(cardName, cardNumber)
                     editUserViewModel.setIsCardDeleteDialogShow(true)
                 },
                 onPlus = {
@@ -127,6 +153,8 @@ fun EditUserScreen(
                 },
                 onConfirm = {
                     //계좌 삭제 api 호출
+                    editUserViewModel.deleteAccount()
+                    editUserViewModel.setIsAccountDeleteDialogShow(false)
                 }
             )
 
@@ -137,7 +165,8 @@ fun EditUserScreen(
                     editUserViewModel.setIsCardDeleteDialogShow(false)
                 },
                 onConfirm = {
-                    //계좌 삭제 api 호출
+                    editUserViewModel.deleteCard()
+                    editUserViewModel.setIsCardDeleteDialogShow(false)
                 }
             )
 

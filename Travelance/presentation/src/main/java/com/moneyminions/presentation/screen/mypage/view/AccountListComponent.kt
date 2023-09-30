@@ -25,7 +25,7 @@ val accountList = listOf<AccountDto>(
 @Composable
 fun AccountListComponent(
     accountList: List<AccountDto>,
-    onDelete: () -> Unit,
+    onDelete: (String, String) -> Unit,
     onPlus: () -> Unit
 ){
     Text(
@@ -42,11 +42,11 @@ fun AccountListComponent(
     LazyColumn{
         items(accountList){
             AccountRowItem(
-                logo = Constants.ACCOUNT_LOGO_LIST[it.idx],
+                logo = Constants.ACCOUNT_LOGO_LIST[it.idx!!],
                 name = it.bankName,
                 number = it.accountNumber!!,
                 type = "delete",
-                onDeleted = onDelete
+                onDeleted = {onDelete(it.bankName, it.accountNumber!!)}
             )
         }
     }

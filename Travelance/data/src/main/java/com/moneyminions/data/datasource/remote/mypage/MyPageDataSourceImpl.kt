@@ -2,8 +2,6 @@ package com.moneyminions.data.datasource.remote.mypage
 
 import com.moneyminions.data.model.common.response.CommonResponse
 import com.moneyminions.data.model.login.response.MemberInfoResponse
-import com.moneyminions.data.model.mypage.request.DeleteAccountRequest
-import com.moneyminions.data.model.mypage.request.DeleteCardRequest
 import com.moneyminions.data.service.BusinessService
 
 class MyPageDataSourceImpl(
@@ -17,11 +15,11 @@ class MyPageDataSourceImpl(
         return businessService.updateNickname(nickname)
     }
 
-    override suspend fun deleteCard(deleteCardRequest: DeleteCardRequest): CommonResponse {
-        return businessService.deleteCard(deleteCardRequest)
+    override suspend fun deleteCard(cardName: String, cardNumber: String): CommonResponse {
+        return businessService.deleteCard(cardName, cardNumber)
     }
 
-    override suspend fun deleteAccount(deleteAccountRequest: DeleteAccountRequest): CommonResponse {
-        return businessService.deleteAccount(deleteAccountRequest)
+    override suspend fun deleteAccount(bankName: String, accountNumber: String): CommonResponse {
+        return businessService.deleteAccount(bankName, accountNumber)
     }
 }
