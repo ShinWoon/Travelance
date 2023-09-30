@@ -32,6 +32,8 @@ public class FcmMessage {
     @AllArgsConstructor
     @Getter
     public static class Data {
+        private Long paymentId;
+        private Long paymentAmount;
         private String content;
     }
 }

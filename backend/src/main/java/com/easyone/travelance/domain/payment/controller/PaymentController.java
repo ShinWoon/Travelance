@@ -33,8 +33,10 @@ public class PaymentController {
 
     @PostMapping("/cash")
     @Operation(summary = "현금 사용내역 등록")
-    public ResponseEntity<ResultDto> registerCash(@RequestBody RegisterCashRequestDto registerCashRequestDto) {
-        String response = paymentService.registerCash(registerCashRequestDto);
+    public ResponseEntity<ResultDto> registerCash(@MemberInfo MemberInfoDto memberInfoDto,
+                                                  @RequestBody RegisterCashRequestDto registerCashRequestDto) {
+        Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
+        String response = paymentService.registerCash(member, registerCashRequestDto);
         ResultDto resultDto = new ResultDto(response);
         return new ResponseEntity<>(resultDto, HttpStatus.OK);
     }

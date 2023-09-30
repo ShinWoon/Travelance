@@ -270,7 +270,7 @@ public class PaymentServiceImpl implements PaymentService{
             String body = travelRoom.getTravelName() + "의 정산이 완료되었습니다.";
 
             try {
-                firebaseCloudMessageService.sendMessageTo(fcmToken, title, body, String.valueOf(travelRoom.getId()));
+                firebaseCloudMessageService.sendMessageTo(fcmToken, title, body, null);
             } catch (IOException e) {
                 System.out.println("정산 완료 알림 전송 실패");
                 throw new RuntimeException(e);
@@ -279,8 +279,8 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     @Override
-    public String registerCash(RegisterCashRequestDto registerCashRequestDto){
-        Optional<Member> existMember = memberRepository.findByEmail(registerCashRequestDto.getEmail());
+    public String registerCash(Member member, RegisterCashRequestDto registerCashRequestDto){
+        Optional<Member> existMember = memberRepository.findByEmail(member.getEmail());
         Optional<TravelRoom> existTravelRoom = travelRoomRepository.findById(registerCashRequestDto.getRoomNumber());
 
         if (existMember.isEmpty() || existTravelRoom.isEmpty()) {

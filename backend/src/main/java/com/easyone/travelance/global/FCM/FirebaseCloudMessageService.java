@@ -1,5 +1,6 @@
 package com.easyone.travelance.global.FCM;
 
+import com.easyone.travelance.domain.payment.entity.Payment;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,24 +39,35 @@ public class FirebaseCloudMessageService {
         System.out.println(response.body().string());
     }
 
-    private String makeMessage(String targetToken, String title, String body, String targetData) throws JsonParseException, JsonProcessingException {
+    private String makeMessage(String targetToken, String title, String body, String targetData) throws JsonProcessingException {
         System.out.println("FCM makeMessageTo");
 
+        Payment payment = objectMapper.readValue(targetData, Payment.class);
+
+        FcmMessage.Notification notification = FcmMessage.Notification.builder()
+                .title(title)
+                .body(body)
+                .build();
+
+        FcmMessage.Data data = FcmMessage.Data.builder()
+                .paymentId(payment.getId())
+                .paymentAmount(payment.getPaymentAmount())
+                .content(payment.getPaymentContent())
+                .build();
+
+        FcmMessage.Message message = FcmMessage.Message.builder()
+                .notification(notification)
+                .data(data)
+                .token(targetToken)
+                .build();
+
         FcmMessage fcmMessage = FcmMessage.builder()
-                .message(FcmMessage.Message.builder()
-                        .token(targetToken)
-                        .notification(FcmMessage.Notification.builder()
-                                .title(title)
-                                .body(body)
-                                .build())
-                        .data(FcmMessage.Data.builder()
-                                .content(targetData)
-                                .build())
-                        .build())
                 .validateOnly(false)
+                .message(message)
                 .build();
 
         return objectMapper.writeValueAsString(fcmMessage);
+
     }
 
     private String getAccessToken() throws IOException {
