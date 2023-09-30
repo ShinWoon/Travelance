@@ -152,7 +152,8 @@ public class TravelService {
 
         TravelRoom travelRoom = travelRoomRepository.findByIdAndMemberId(roomId, member.getId())
                 .orElseThrow(()-> new IllegalArgumentException("사용자의 여행방이 없습니다. id =" + roomId));
-        TravelRoomMember travelRoomMember = travelRoomMemberRepository.findByTravelRoomAndMember(travelRoom, member);
+        TravelRoomMember travelRoomMember = travelRoomMemberRepository.findByTravelRoomAndMember(travelRoom, member)
+                .orElseThrow(() -> new IllegalArgumentException("해당 여행방에 맴버가 없습니다. Roomid =" + roomId + "memberId"+member.getId()));;
 
         if (travelRoomMember!=null) {
             travelRoomMemberRepository.delete(travelRoomMember);

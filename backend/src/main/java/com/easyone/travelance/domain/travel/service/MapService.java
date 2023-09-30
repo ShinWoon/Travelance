@@ -1,13 +1,13 @@
 package com.easyone.travelance.domain.travel.service;
 
-import com.easyone.travelance.domain.common.ResultDto;
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.payment.entity.Payment;
 import com.easyone.travelance.domain.payment.repository.PaymentRepository;
 import com.easyone.travelance.domain.travel.dto.MapAllResponseDto;
-import com.easyone.travelance.domain.travel.dto.PaymentResponseDto;
-import com.easyone.travelance.domain.travel.entity.TravelRoom;
-import com.easyone.travelance.domain.travel.enumclass.RoomType;
+import com.easyone.travelance.domain.travel.dto.MapDetailRequestDto;
+import com.easyone.travelance.domain.travel.dto.MapDetailResponseDto;
+import com.easyone.travelance.domain.travel.entity.TravelRoomMember;
+import com.easyone.travelance.domain.travel.repository.TravelRoomMemberRepository;
 import com.easyone.travelance.domain.travel.repository.TravelRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class MapService {
-    private final TravelRoomRepository travelRoomRepository;
+    private final TravelRoomMemberRepository travelRoomMemberRepository;
     private final PaymentRepository paymentRepository;
 
     @Transactional(readOnly = true)
@@ -58,4 +58,22 @@ public class MapService {
     }
 
 
+    public List<MapDetailResponseDto> mapDetail(Long roomId, MapDetailRequestDto mapDetailRequestDto) {
+        //dto에서 map의 주소를 가져와서 이 여행방의 이 장소에서 결제된 내역을 모두 가져와서 반환한다.
+
+        List<Payment> paymentList = paymentRepository.findByTravelRoomIdAndPaymentAt(roomId, mapDetailRequestDto.getPaymentAt());
+
+        List<MapDetailResponseDto> mapDetailResponseDtoList = new ArrayList<>();
+
+        for (Payment payment : paymentList) {
+            TravelRoomMember travelRoomMember = travelRoomMemberRepository.findByTravelRoomAndMember(payment.getTravelRoom(), payment.getMember())
+                    .orElseThrow(()-> new IllegalArgumentException("사용자의 여행방이 없습니다. id =" + roomId));
+
+            MapDetailResponseDto mapDetailResponseDto = new MapDetailResponseDto(payment);
+            mapDetailResponseDtoList.add(mapDetailResponseDto);
+        }
+
+        return mapDetailResponseDtoList;
+
+    }
 }
