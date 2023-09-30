@@ -118,7 +118,7 @@ public class TravelService {
         Long UseTotal = travelPaymentService.TotalPriceTravelId(roomId);
 
         //예산 대비 사용 비율
-        double budgetPer = Math.round((UseTotal / budget)*10/10.0);
+        double budgetPer = Math.round(((double) UseTotal / budget)*10/10.0);
         // 남는 금액
         Long rest = budget-UseTotal;
 
