@@ -15,7 +15,7 @@ public class RoomStaticResponseDto {
     private Long roomId;
     private String travelName;
     private Long budget;
-    private Long percent; // 예산 대비 사용량 %
+    private double percent; // 예산 대비 사용량 %
     private Long UseTotal;
     private Long rest;
     private String isDone;
@@ -24,7 +24,7 @@ public class RoomStaticResponseDto {
 
 
     @Builder
-    public RoomStaticResponseDto(TravelRoom travelRoom, Long percent, Long UseTotal, Long rest, List<PaymentResponseDto> everyuse,  List<PaymentResponseDto> myuse) {
+    public RoomStaticResponseDto(TravelRoom travelRoom, double percent, Long UseTotal, Long rest, List<PaymentResponseDto> everyuse,  List<PaymentResponseDto> myuse) {
         this.travelName = travelRoom.getTravelName();
         this.roomId = travelRoom.getId();
         this.budget = travelRoom.getBudget(); //예산
