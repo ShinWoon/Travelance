@@ -288,6 +288,8 @@ public class PaymentServiceImpl implements PaymentService{
         }
 
         Payment payment = Payment.builder()
+                .member(existMember.get())
+                .travelRoom(existTravelRoom.get())
                 .paymentAmount(registerCashRequestDto.getPaymentAmount())
                 .paymentContent(registerCashRequestDto.getPaymentContent())
                 .build();
