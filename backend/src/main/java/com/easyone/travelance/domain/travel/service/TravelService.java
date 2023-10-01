@@ -40,7 +40,7 @@ public class TravelService {
             TravelRoom travelRoom = roomInfoRequestDto.toEntity(roomType);
             travelRoomRepository.save(travelRoom);
 
-//            travelProfileService.saveImage(travelRoom, profileUrl, member);
+            travelProfileService.saveImage(travelRoom, "https://i.ibb.co/9WLnW7t/20221014514371.jpg", member);
 
 //
             TravelRoomMember travelRoomMember = TravelRoomMember.builder()
@@ -64,16 +64,16 @@ public class TravelService {
     //유저가 방에 추가되어 닉네임과 사진을 설정하고, 친구 목록을 반환
     //Profileurl도 같이 반환
     @Transactional
-    public ResultDto adduser(Long roomId, Member member, RoomUserRequestDto roomUserRequestDto, MultipartFile profileUrl) {
+    public ResultDto adduser(Long roomId, Member member, RoomUserRequestDto roomUserRequestDto) {
 
         try {
             TravelRoom travelRoom = travelRoomRepository.findById(roomId)
                     .orElseThrow(() -> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
 
             //프로필 사진이 있으면, 프로필 사진 저장
-            if (profileUrl != null) {
-                travelProfileService.saveImage(travelRoom, profileUrl, member);
-            }
+//            if (profileUrl != null) {
+                travelProfileService.saveImage(travelRoom, "https://i.ibb.co/9WLnW7t/20221014514371.jpg", member);
+//            }
 
             TravelRoomMember travelRoomMember = TravelRoomMember.builder()
                     .travelRoom(travelRoom)

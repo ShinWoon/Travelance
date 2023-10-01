@@ -22,10 +22,10 @@ public class TravelProfileService {
 
 
     // 게시글 이미지 저장
-    public void saveImage(TravelRoom travelRoom, MultipartFile imageFile, Member member) throws Exception {
-        String imageUrl = awsS3Service.uploadFile(imageFile, "profile").toString();
+    public void saveImage(TravelRoom travelRoom, String imageUrl, Member member) throws Exception {
+//        String imageUrl = awsS3Service.uploadFile(imageFile, "profile").toString();
         UserProfileRequestDto requestDto = UserProfileRequestDto.builder()
-                .imageName(imageFile.getOriginalFilename())
+                .imageName("쿼카")
                 .imageUrl(imageUrl)
                 .build();
 
