@@ -78,6 +78,7 @@ public class TravelPaymentWithService {
         roomInfo.setStartDate(travelRoom.getStartDate());
         roomInfo.setEndDate(travelRoom.getEndDate());
         roomInfo.setBudget(travelRoom.getBudget());
+        roomInfo.setTravelName(travelRoom.getTravelName());
 
         List<TravelPaymentPlusDto.TravelRoomInfo> travelRoomInfos = Collections.singletonList(roomInfo);
 
