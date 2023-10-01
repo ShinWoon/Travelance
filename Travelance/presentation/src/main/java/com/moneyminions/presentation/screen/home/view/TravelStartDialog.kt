@@ -47,6 +47,7 @@ fun TravelStartDialog(
                     contentLeft = "시작",
                     onClickLeft = {
                         // 여행 시작 로직 처리
+                        homeViewModel.startTravel(homeViewModel.travelRoomInfo.value.roomId)
                         homeViewModel.setTravelStart(true)
                     },
                     contentRight = "취소",

@@ -67,6 +67,7 @@ fun MainScreen(
             innerPaddings = it,
             startDestination = startDestination,
             navController = navController,
+            mainViewModel = mainViewModel,
         )
     }
 }
@@ -132,6 +133,8 @@ fun MainBottomNavigationBar(navController: NavHostController) {
         }
     }
 }
+
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable

@@ -12,6 +12,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -23,6 +25,7 @@ import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold20
 import com.moneyminions.presentation.common.MinionButtonSet
 import com.moneyminions.presentation.common.TextFieldWithTitle
+import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.handwriting.HandWritingViewModel
 
 
@@ -31,8 +34,22 @@ private const val TAG = "HandWritingDialog_D210"
 fun HandWritingDialog(
     handWritingViewModel: HandWritingViewModel = hiltViewModel(),
     onDismiss: () -> Unit,
+    roomId: Int,
 ) {
     Log.d(TAG, "HandWritingDialog: on")
+    
+    val requestCashState by handWritingViewModel.cashResult.collectAsState()
+    NetworkResultHandler(
+        state = requestCashState,
+        errorAction = {
+            Log.d(TAG, "HandWritingDialog: 등록 실패")
+        },
+        successAction = {
+            Log.d(TAG, "HandWritingDialog: ${it.result}")
+            onDismiss()
+        }
+    )
+    
     Dialog(
         onDismissRequest = onDismiss
     ) {
@@ -91,6 +108,11 @@ fun HandWritingDialog(
                          * 입력시 viewModel -> usecase -> api 로 통신 -> 실패시 알려주기
                          * 홈 화면 로딩 -> 변경된 데이터 화면에 보이기
                          */
+                        if(handWritingViewModel.checkInput()){
+                            handWritingViewModel.requestCash(roomId)
+                        } else {
+                        
+                        }
                     },
                     contentRight = "취소",
                     onClickRight = onDismiss

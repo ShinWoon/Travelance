@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.common
 
+import android.util.Log
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
@@ -15,6 +16,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.moneyminions.presentation.R
 
+private const val TAG = "Profile_D210"
 /**
  * todo domain DTO 생성 후 파라미터 처리 해야함
  */
@@ -23,6 +25,7 @@ fun MinionProfile(
     size: Dp,
     img: String? = "",
 ) {
+    Log.d(TAG, "프로필 선택 이미지: $img")
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(img)

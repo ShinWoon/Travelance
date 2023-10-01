@@ -47,7 +47,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.moneyminions.domain.model.travellist.TravelRoomDto
@@ -59,8 +58,8 @@ import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.DarkGray
 import com.moneyminions.presentation.theme.FloatingButtonColor
 import com.moneyminions.presentation.theme.PinkDarkest
-import com.moneyminions.presentation.utils.BiometricUtils
 import com.moneyminions.presentation.utils.NetworkResultHandler
+import com.moneyminions.presentation.viewmodel.MainViewModel
 import com.moneyminions.presentation.viewmodel.travellist.TravelListViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -73,6 +72,7 @@ fun TravelListScreen(
     travelListViewModel: TravelListViewModel = hiltViewModel(),
     navController: NavController,
     modifier: Modifier = Modifier,
+    mainViewModel: MainViewModel
 ) {
     Log.d(TAG, "TravelListScreen: on")
     val snackbarHostState = remember { SnackbarHostState() }
@@ -104,7 +104,7 @@ fun TravelListScreen(
         state = deleteTravelRoomResult,
         errorAction = {
             coroutineScope.launch {
-                snackbarHostState.showSnackbar("서버 오류")
+                snackbarHostState.showSnackbar("(삭제) 서버 오류")
             }
         },
         successAction = {
@@ -151,11 +151,15 @@ fun TravelListScreen(
                         item.hashCode()
                     }
                 ) { _, item: TravelRoomDto ->
+                    if(item.isDone == "NOW") {
+                        mainViewModel.putTravelingRoomId(item.roomId)
+                    }
                     TravelRoomItem(
                         modifier = Modifier,
                         travelRoomDto = item,
                         onRemove = travelListViewModel::removeItem,
                         navController = navController,
+                        mainViewModel = mainViewModel
                     )
                 }
             },
@@ -181,14 +185,15 @@ fun TravelRoomItem(
     modifier: Modifier,
     travelRoomDto: TravelRoomDto,
     onRemove: (TravelRoomDto) -> Unit,
-    navController: NavController
+    navController: NavController,
+    mainViewModel: MainViewModel
 ) {
     val context = LocalContext.current
-
-    var isAuthenticated = remember { mutableStateOf(false) }
-    val fragmentActivity = LocalContext.current as FragmentActivity
-    val con = BiometricUtils.status(LocalContext.current)
-
+    
+//    var isAuthenticated = remember { mutableStateOf(false) }
+//    val fragmentActivity = LocalContext.current as FragmentActivity
+//    val con = BiometricUtils.status(LocalContext.current)
+    
     var show by remember { mutableStateOf(true) }
     val currentItem by rememberUpdatedState(travelRoomDto)
     val dismissState = rememberDismissState(
@@ -202,6 +207,7 @@ fun TravelRoomItem(
         },
         positionalThreshold = { 150.dp.toPx() },
     )
+    
     AnimatedVisibility(
         show, exit = fadeOut(spring())
     ) {
@@ -217,6 +223,7 @@ fun TravelRoomItem(
                     travelRoomDto = travelRoomDto,
                     iconId = getResourceId("ic_travel_2", R.drawable::class.java),
                     navController = navController,
+                    mainViewModel = mainViewModel
                 )
             },
         )
@@ -224,15 +231,17 @@ fun TravelRoomItem(
     // 삭제 되는 순간 실행
     LaunchedEffect(show) {
         if (!show) {
+            Log.d(TAG, "TravelRoomItem: ${currentItem}, $onRemove")
+            onRemove(currentItem) // 삭제 API 요청 -> viewModel에 구현
+            Toast.makeText(context, "Item removed ${currentItem.roomId}", Toast.LENGTH_SHORT).show()
             delay(800)
+            
 //            bioAuth(
 //                isAuthenticated = isAuthenticated,
 //                fragmentActivity = fragmentActivity,
 //                con = con,
 //                currentItem = currentItem,
 //            )
-            onRemove(currentItem) // 삭제 API 요청 -> viewModel에 구현
-            Toast.makeText(context, "Item removed", Toast.LENGTH_SHORT).show()
         }
     }
 }

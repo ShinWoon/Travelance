@@ -15,38 +15,18 @@ import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.kakao.sdk.common.util.Utility
-import com.moneyminions.presentation.common.TopBar
-import com.moneyminions.presentation.navigation.BottomNavItem
-import com.moneyminions.presentation.navigation.NavGraph
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.MainScreen
 import com.moneyminions.presentation.theme.MyApplicationTheme
-import com.moneyminions.presentation.theme.PinkDarkest
-import com.moneyminions.presentation.theme.TextGray
 import com.moneyminions.presentation.theme.White
 import com.moneyminions.presentation.utils.Constants.CHANNEL_ID
 import com.moneyminions.presentation.utils.Constants.CHANNEL_NAME
@@ -59,10 +39,12 @@ private const val TAG = "MainActivity D210"
 
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
+
     private val notificationManager: NotificationManager by lazy {
         getSystemService(NOTIFICATION_SERVICE) as NotificationManager
     }
     @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
+
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,7 +69,11 @@ class MainActivity : FragmentActivity() {
                     color = White
                 ) {
                     val startDestination =
-                        if (mainViewModel.getJwtToken().role == "MEMBER") Screen.Home.route
+                        if (mainViewModel.getJwtToken().role == "MEMBER") {
+                            Log.d(TAG, "MainScreen 진행 중인 room ID: ${mainViewModel.getTravelingRoomId()} ")
+                            mainViewModel.setSelectRoomId(mainViewModel.getTravelingRoomId()) // 진행 중인 여행방을 selectRoom에 저장
+                            Screen.Home.route
+                        }
                         else Screen.Login.route
                     Log.d(TAG, "JWTTOKEN: ${mainViewModel.getJwtToken().accessToken}")
                     Log.d(TAG, "startDestination: $startDestination")

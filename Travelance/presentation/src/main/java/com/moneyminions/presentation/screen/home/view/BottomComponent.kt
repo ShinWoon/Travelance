@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.screen.home.view
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
@@ -39,11 +40,14 @@ import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.handwriting.HandWritingDialog
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.CardLightGray
+import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 
 private const val TAG = "BottomComponent"
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun BottomCardContainer(
-    navController: NavHostController
+    navController: NavHostController,
+    homeViewModel: HomeViewModel
 ) {
     
     // 수기 입력 State
@@ -108,7 +112,11 @@ fun BottomCardContainer(
     
         // 수기 입력
         if(openHandWritingDialog) {
-            HandWritingDialog(onDismiss = {openHandWritingDialog = false})
+            HandWritingDialog(
+                onDismiss = {openHandWritingDialog = false},
+                roomId = homeViewModel.travelRoomInfo.value.roomId
+            )
+            
         }
     }
 }
@@ -119,7 +127,7 @@ fun BottomItem(
     title: String,
     context: String,
     icon: Painter,
-    action : () -> Unit
+    action : () -> Unit,
 ) {
     Box(
         modifier = modifier

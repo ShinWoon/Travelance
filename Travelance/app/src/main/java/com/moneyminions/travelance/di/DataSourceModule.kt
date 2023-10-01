@@ -2,6 +2,8 @@ package com.moneyminions.travelance.di
 
 import com.moneyminions.data.datasource.remote.example.ExampleDataSource
 import com.moneyminions.data.datasource.remote.example.ExampleDataSourceImpl
+import com.moneyminions.data.datasource.remote.home.HomeDataSource
+import com.moneyminions.data.datasource.remote.home.HomeDataSourceImpl
 import com.moneyminions.data.datasource.remote.login.LoginDataSource
 import com.moneyminions.data.datasource.remote.login.LoginDataSourceImpl
 import com.moneyminions.data.datasource.remote.mypage.MyPageDataSource
@@ -50,4 +52,11 @@ object DataSourceModule {
     fun provideTravelDetailDataSource(businessService: BusinessService): TravelDetailDataSource {
         return TravelDetailDataSourceImpl(businessService)
     }
-}
+    
+    @Singleton
+    @Provides
+    fun provideHomeDataSource(businessService: BusinessService): HomeDataSource {
+        return HomeDataSourceImpl(businessService)
+    }
+ }
+

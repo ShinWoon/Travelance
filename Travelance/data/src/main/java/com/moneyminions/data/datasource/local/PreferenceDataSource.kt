@@ -8,7 +8,6 @@ import com.google.gson.Gson
 import com.moneyminions.domain.model.login.JwtTokenDto
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-import javax.inject.Singleton
 
 private const val TAG = "PreferenceDataSource D210"
 
@@ -21,6 +20,7 @@ class PreferenceDataSource @Inject constructor(
         private const val X_REFRESH_TOKEN = "refresh_token"
         private const val X_ROLE = "role"
         private const val FCM_TOKEN = "fcm_token"
+        private const val ROOM_ID = "room_id"
     }
 
     private fun getPreference(context: Context): SharedPreferences{
@@ -37,6 +37,14 @@ class PreferenceDataSource @Inject constructor(
 
     private fun getString(key: String, defValue: String? = null): String? {
         return prefs.getString(key, defValue)
+    }
+    
+    private fun putInt(key: String, data: Int) {
+        editor.putInt(key, data)
+        editor.apply()
+    }
+    private fun getInt(key: String): Int {
+        return prefs.getInt(key, 0)
     }
 
 
@@ -76,6 +84,14 @@ class PreferenceDataSource @Inject constructor(
 
     fun getFCMToken(): String{
         return getString(FCM_TOKEN)?: ""
+    }
+    
+    fun putTravelingRoomId(roomId: Int) {
+        putInt(ROOM_ID, roomId)
+    }
+    
+    fun getTravelingRoomId(): Int {
+        return getInt(ROOM_ID)
     }
 
 }

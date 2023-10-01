@@ -22,4 +22,5 @@ interface TravelListRepository {
      * 여행방 삭제
      */
     suspend fun deleteTravelRoom(roomId: Int): NetworkResult<CommonResultDto>
+    
 }

@@ -35,6 +35,7 @@ import com.moneyminions.presentation.screen.traveldone.TravelDoneScreen
 import com.moneyminions.presentation.screen.travellist.CreateTravelScreen
 import com.moneyminions.presentation.screen.travellist.TravelListScreen
 import com.moneyminions.presentation.screen.travelmap.TravelMapScreen
+import com.moneyminions.presentation.viewmodel.MainViewModel
 import com.moneyminions.presentation.viewmodel.login.LoginViewModel
 
 private const val TAG = "NavGraph_D210"
@@ -45,7 +46,8 @@ fun NavGraph(
     innerPaddings: PaddingValues,
     navController: NavHostController,
     startDestination: String,
-    loginViewModel: LoginViewModel = hiltViewModel()
+    loginViewModel: LoginViewModel = hiltViewModel() ,
+    mainViewModel: MainViewModel,
 ) {
     AnimatedNavHost(
         modifier = Modifier.padding(innerPaddings),
@@ -68,22 +70,22 @@ fun NavGraph(
 //        composable(
 //            route = Screen.Main.route
 //        ) {
-//            MainScreen(navController = navController)
+//            MainScreen(navController = navController, mainViewModel = mainViewModel)
 //        }
         composable(
             route = Screen.Home.route,
         ) {
-            HomeScreen(navController = navController)
+            HomeScreen(navController = navController, mainViewModel = mainViewModel)
         }
         composable(
             route = Screen.TravelList.route,
         ) {
-            TravelListScreen(navController = navController)
+            TravelListScreen(navController = navController, mainViewModel = mainViewModel)
         }
         composable(
             route = Screen.CreateTravel.route,
         ) {
-            CreateTravelScreen(navController = navController)
+            CreateTravelScreen(navController = navController, mainViewModel = mainViewModel)
         }
         composable(
             route = Screen.MyPage.route,
@@ -158,8 +160,17 @@ fun NavGraph(
         composable(
             route = Screen.SubHome.route,
         ) {
-            HomeScreen(navController = navController)
+            HomeScreen(navController = navController, mainViewModel = mainViewModel)
         }
+//        composable(
+//            route = "Screen.SubHome.route/{roomId}",
+//            arguments = listOf(navArgument("roomId") { type = NavType.IntType })
+//        ) {backStackEntry ->
+//            val roomId = backStackEntry.arguments?.getInt("roomId")
+//            if (roomId != null) {
+//                HomeScreen(navController = navController, roomId = roomId)
+//            }
+//        }
         composable(
             route = "${Screen.TravelDetail.route}/{travelId}",
         ) {
@@ -184,7 +195,7 @@ fun NavGraph(
         composable(
             route = Screen.TravelEdit.route,
         ) {
-            CreateTravelScreen(navController = navController)
+            CreateTravelScreen(navController = navController, mainViewModel = mainViewModel)
         }
     }
 } // End of setUpNavGraph

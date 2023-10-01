@@ -1,8 +1,8 @@
 package com.moneyminions.data.mapper
 
 import com.moneyminions.data.model.travellist.request.CreateTravelRoomRequest
-import com.moneyminions.data.model.travellist.request.RoomInfoRequest
-import com.moneyminions.data.model.travellist.request.RoomUserRequest
+import com.moneyminions.data.model.travellist.request.RoomInfoRequestDto
+import com.moneyminions.data.model.travellist.request.RoomUserRequestDto
 import com.moneyminions.data.model.travellist.response.TravelRoomResponse
 import com.moneyminions.domain.model.travellist.CreateTravelRoomDto
 import com.moneyminions.domain.model.travellist.TravelRoomDto
@@ -16,14 +16,14 @@ fun CreateTravelRoomDto.toData(): CreateTravelRoomRequest {
     )
 }
 
-fun TravelUserDto.toData(): RoomUserRequest {
-    return RoomUserRequest (
+fun TravelUserDto.toData(): RoomUserRequestDto {
+    return RoomUserRequestDto (
         nickName = nickName,
     )
 }
 
-fun TravelRoomDto.toData(): RoomInfoRequest {
-    return RoomInfoRequest(
+fun TravelRoomDto.toData(): RoomInfoRequestDto {
+    return RoomInfoRequestDto(
         budget = budget,
         endDate = endDate,
         startDate = startDate,

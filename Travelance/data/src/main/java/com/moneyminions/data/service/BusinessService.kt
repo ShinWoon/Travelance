@@ -1,6 +1,8 @@
 package com.moneyminions.data.service
 
 import com.moneyminions.data.model.common.response.CommonResponse
+import com.moneyminions.data.model.home.request.UseCashRequest
+import com.moneyminions.data.model.home.response.TravelRoomInfoResponse
 import com.moneyminions.data.model.login.request.AuthenticationAccountRequest
 import com.moneyminions.data.model.login.request.LoginRequest
 import com.moneyminions.data.model.login.request.MemberInfoRequest
@@ -15,8 +17,8 @@ import com.moneyminions.data.model.traveldetail.request.PaymentCompleteRequest
 import com.moneyminions.data.model.traveldetail.request.TravelPaymentChangeInfoRequest
 import com.moneyminions.data.model.traveldetail.response.TravelDetailInfoResponse
 import com.moneyminions.data.model.traveldetail.response.TravelDetailMyPaymentResponse
-import com.moneyminions.data.model.travellist.request.RoomInfoRequest
-import com.moneyminions.data.model.travellist.request.RoomUserRequest
+import com.moneyminions.data.model.travellist.request.RoomInfoRequestDto
+import com.moneyminions.data.model.travellist.request.RoomUserRequestDto
 import com.moneyminions.data.model.travellist.response.TravelRoomResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -28,6 +30,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 
@@ -73,13 +76,13 @@ interface BusinessService {
      * 여행방 만들기 API
      */
     @Multipart
-    @POST("travel/room")
+    @POST("/travel/room")
     suspend fun createTravelRoom(
-        @Part("imageFiles") imageFiles: MultipartBody.Part?,
-        @Part("roomUserRequestDto") roomUserRequest: RoomUserRequest,
-        @Part("roomInfoRequestDto") roomInfoRequest: RoomInfoRequest,
+        @Part imageFiles: MultipartBody.Part?,
+        @Part("roomUserRequestDto") roomUserRequestDto: RoomUserRequestDto,
+        @Part("roomInfoRequestDto") roomInfoRequestDto: RoomInfoRequestDto,
     ): CommonResponse
-
+    
     /**
      * 여행 목록 요청 API
      */
@@ -105,7 +108,7 @@ interface BusinessService {
      * 여행방 삭제 API
      */
     @DELETE("travel/room/{roomId}")
-    suspend fun deleteTravelRoom(roomId: Int): CommonResponse
+    suspend fun deleteTravelRoom(@Path(value = "roomId") roomId: Int): CommonResponse
 
 
     /**
@@ -131,4 +134,22 @@ interface BusinessService {
      */
     @POST("payment/complete")
     suspend fun setSettleState(@Body paymentCompleteRequest: PaymentCompleteRequest): CommonResponse
+    
+    /**
+     * 여행방 생성 API
+     */
+    @POST("travel/room/{roomId}/start")
+    suspend fun startTravel(@Path(value = "roomId") roomId: Int): CommonResponse
+    
+    /**
+     * 특정 여행방 조회 API
+     */
+    @GET("travel/room/{roomId}")
+    suspend fun getTravelRoomInfo(@Path(value = "roomId") roomId: Int): TravelRoomInfoResponse
+    
+    /**
+     * 현급 입력 API
+     */
+    @POST("payment/cash")
+    suspend fun requestUseCash(@Body useCashRequest: UseCashRequest): CommonResponse
 }

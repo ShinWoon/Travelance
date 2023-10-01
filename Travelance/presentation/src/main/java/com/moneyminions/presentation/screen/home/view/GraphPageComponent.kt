@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.screen.home.view
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable
@@ -49,6 +50,7 @@ import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.GraphGray
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.theme.PinkLightest
+import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalPagerApi::class)
@@ -56,8 +58,10 @@ import kotlinx.coroutines.delay
 fun GraphPage(
     pagerState: PagerState,
     cardHeight: Dp,
-    totalDot: Int
+    totalDot: Int,
+    homeViewModel: HomeViewModel,
 ) {
+    val travelInfo = homeViewModel.travelRoomInfo.value
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -77,14 +81,14 @@ fun GraphPage(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(text = "사용 현황", style = pretendardBold16)
-                Text(text = "300,000원", style = pretendardBold16)
+                Text(text = "${travelInfo.budget}원", style = pretendardBold16)
             }
             
             Card(
                 modifier = Modifier.weight(8f),
                 colors = CardDefaults.cardColors(CardLightGray),
             ) {
-                DonutGraph()
+                DonutGraph(homeViewModel = homeViewModel)
             }
             
             Row(
@@ -94,8 +98,8 @@ fun GraphPage(
                     .weight(3f),
                 horizontalArrangement = Arrangement.SpaceAround,
             ) {
-                MoneyAmountComponent(title = "사용 금액", money = "180,000원")
-                MoneyAmountComponent(title = "남은 금액", money = "120,000원")
+                MoneyAmountComponent(title = "사용 금액", money = "${travelInfo.budget+travelInfo.rest}원")
+                MoneyAmountComponent(title = "남은 금액", money = "${-travelInfo.rest}원")
             }
             
             Box(
@@ -113,8 +117,11 @@ fun GraphPage(
     }
 }
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun DonutGraph() {
+fun DonutGraph(
+    homeViewModel: HomeViewModel,
+) {
     
     val brush = Brush.horizontalGradient(listOf(Color.Red, Color.Blue))
     
@@ -130,10 +137,11 @@ fun DonutGraph() {
     
     val graphSize: Dp = 160.dp
     
+    val progressValue = homeViewModel.travelRoomInfo.value.percent.toFloat()
     LaunchedEffect(key1 = true) {
         while (true) {
             animationProgress += 1f
-            if (animationProgress >= 70f) { // xx%까지만 그린 후 애니메이션 중지
+            if (animationProgress >= progressValue) { // xx%까지만 그린 후 애니메이션 중지
                 break
             }
             delay(30)

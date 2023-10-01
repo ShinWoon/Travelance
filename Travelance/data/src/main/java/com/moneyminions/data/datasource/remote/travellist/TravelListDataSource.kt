@@ -19,4 +19,6 @@ interface TravelListDataSource {
      * 여행방 삭제
      */
     suspend fun deleteTravelRoom(roomId: Int): CommonResponse
+    
+
 }

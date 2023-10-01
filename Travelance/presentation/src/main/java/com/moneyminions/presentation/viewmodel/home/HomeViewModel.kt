@@ -10,6 +10,7 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.kakao.sdk.common.util.KakaoCustomTabsClient
 import com.kakao.sdk.share.ShareClient
 import com.kakao.sdk.share.WebSharerClient
@@ -18,11 +19,25 @@ import com.kakao.sdk.template.model.Content
 import com.kakao.sdk.template.model.FeedTemplate
 import com.kakao.sdk.template.model.ItemContent
 import com.kakao.sdk.template.model.Link
+import com.moneyminions.domain.model.NetworkResult
+import com.moneyminions.domain.model.common.CommonResultDto
+import com.moneyminions.domain.model.home.TravelRoomInfoDto
+import com.moneyminions.domain.usecase.home.GetTravelRoomInfoUseCase
+import com.moneyminions.domain.usecase.home.StartTravelUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val TAG = "HomeViewModel"
-class HomeViewModel @Inject constructor(
 
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val startTravelUseCase: StartTravelUseCase,
+    private val getTravelRoomInfoUseCase: GetTravelRoomInfoUseCase
 ): ViewModel(){
     // Home scroll state
     private val _isScrollState = mutableStateOf(ScrollState(0))
@@ -45,6 +60,35 @@ class HomeViewModel @Inject constructor(
         _isTravelStart.value = check
     }
     
+    /**
+     * 여행 시작 API
+     */
+    private val _startTravelResult = MutableStateFlow<NetworkResult<CommonResultDto>>(NetworkResult.Idle)
+    val startTravelResult = _startTravelResult.asStateFlow()
+    fun startTravel(roomId: Int) {
+        Log.d(TAG, "startTravel: roomId")
+        viewModelScope.launch {
+            _startTravelResult.emit(startTravelUseCase.invoke(roomId = roomId))
+        }
+    }
+    
+    /**
+     * 특정 여행방 조회 API
+     */
+    private val _getTravelRoomInfoResult = MutableStateFlow<NetworkResult<TravelRoomInfoDto>>(NetworkResult.Idle)
+    val getTravelRoomInfoResult = _getTravelRoomInfoResult.asStateFlow()
+    fun getTravelRoomInfo(roomId: Int) {
+        Log.d(TAG, "getTravelRoomInfo roomId: $roomId")
+        viewModelScope.launch {
+            _getTravelRoomInfoResult.emit(getTravelRoomInfoUseCase.invoke(roomId = roomId))
+        }
+    }
+    
+    private val _travelRoomInfo = MutableStateFlow(TravelRoomInfoDto())
+    val travelRoomInfo: StateFlow<TravelRoomInfoDto> = _travelRoomInfo.asStateFlow()
+    fun refreshRoomInfo(roomInfo: TravelRoomInfoDto) {
+        _travelRoomInfo.update { roomInfo }
+    }
     
     /**
      *  카카오 링크 초대
