@@ -29,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.moneyminions.domain.model.traveldetail.TravelPaymentDto
 import com.moneyminions.presentation.R
+import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold14
 import com.moneyminions.presentation.common.MinionPrimaryButton
 import com.moneyminions.presentation.screen.travellist.util.clickable
@@ -85,17 +86,28 @@ fun DetailSettleScreenView(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Icon(
-                    painter = painterResource(
-                        id = R.drawable.ic_help
-                    ),
-                    tint = DarkGray,
-                    contentDescription = "help icon",
-                    modifier = modifier
-                        .size(24.dp)
-                        .clickable {
-                            helpDialog = true
-                        })
+                Row(
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        painter = painterResource(
+                            id = R.drawable.ic_help
+                        ),
+                        tint = DarkGray,
+                        contentDescription = "help icon",
+                        modifier = modifier
+                            .size(24.dp)
+                            .clickable {
+                                helpDialog = true
+                            })
+                    Spacer(modifier = modifier.width(8.dp))
+                    Text(
+                        text = "도움",
+                        color = DarkGray,
+                        style = CustomTextStyle.pretendardSemiBold14
+                    )
+                }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
