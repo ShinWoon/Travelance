@@ -51,6 +51,7 @@ fun DetailSettleScreenView(
     myPaymentAccept: () -> Unit,
     getMyPayment: () -> Unit,
     setSettle: () -> Unit,
+    resetIdx: () -> Unit,
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }
     // Modal Bottom Sheet이 닫힐 때 호출될 콜백
@@ -58,11 +59,13 @@ fun DetailSettleScreenView(
         DetailMyPaymentDetailsView(
             myPaymentList = myPaymentList,
             onDismissSheet = {
+                resetIdx()
                 showBottomSheet = false
             },
             selectedIdx = selectedIdx,
             myPaymentRowSelect = myPaymentRowSelect,
             myPaymentAccept = myPaymentAccept,
+            resetIdx = resetIdx,
             )
     }
     var helpDialog by remember { mutableStateOf(false) }

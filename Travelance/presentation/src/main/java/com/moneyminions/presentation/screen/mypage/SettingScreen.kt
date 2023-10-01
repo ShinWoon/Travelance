@@ -17,6 +17,8 @@ import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.mypage.view.SettingItem
+import com.moneyminions.presentation.theme.DarkerGray
+import com.moneyminions.presentation.theme.WithDrawRed
 
 private const val TAG = "SettingScreen D210"
 @Composable
@@ -27,16 +29,16 @@ fun SettingScreen(
         modifier = Modifier.fillMaxSize()
     ){
         Spacer(modifier = Modifier.size(16.dp))
-        SettingItem(icon = painterResource(id = R.drawable.ic_setting), text = "회원 정보 수정") {
+        SettingItem(icon = painterResource(id = R.drawable.ic_edit), color = DarkerGray, text = "회원 정보 수정") {
             //회원 정보 수정으로 이동
             Log.d(TAG, "회원 정보 수정 클릭...")
             navController.navigate(Screen.EditUser.route)
         }
-        SettingItem(icon = painterResource(id = R.drawable.ic_setting), text = "로그아웃") {
+        SettingItem(icon = painterResource(id = R.drawable.ic_logout), color = DarkerGray, text = "로그아웃") {
             //로그 아웃 로직
             navController.navigate(Screen.AccountAuthentication.route)
         }
-        SettingItem(icon = painterResource(id = R.drawable.ic_setting), text = "회원탈퇴") {
+        SettingItem(icon = painterResource(id = R.drawable.ic_withdraw), color = WithDrawRed, text = "회원탈퇴") {
             //회원 가입 로직
         }
 

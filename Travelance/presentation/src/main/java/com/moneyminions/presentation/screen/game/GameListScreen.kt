@@ -35,7 +35,8 @@ import com.moneyminions.presentation.theme.CardLightGray
 @Composable
 fun GameListScreen(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    travelId: Int,
 ) {
     val scrollableState = rememberScrollState()
     Column(

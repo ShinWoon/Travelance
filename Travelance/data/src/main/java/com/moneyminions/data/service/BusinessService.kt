@@ -28,6 +28,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 
@@ -131,4 +132,10 @@ interface BusinessService {
      */
     @POST("payment/complete")
     suspend fun setSettleState(@Body paymentCompleteRequest: PaymentCompleteRequest): CommonResponse
+
+    /**
+     * 여행방 친구 조회
+     */
+//    @GET("travel/room/{roomId}/UserList")
+//    suspend fun getTravelFriends(@Path("roomId") roomId: Int):
 }

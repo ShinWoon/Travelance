@@ -41,6 +41,7 @@ val White = Color(0xFFFFFFFF)
 val Black = Color(0xFF000000)
 
 val Coke = Color(0xDFD00000)
+val WithDrawRed = Color(0xFFFF4343)
 
 val CategoryDining = Color(0xFFF48337)
 val CategoryCoffee = Color(0xFF6692DD)

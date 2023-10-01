@@ -126,14 +126,20 @@ fun NavGraph(
             TravelMapScreen(navController = navController)
         }
         composable(
-            route = Screen.GameList.route,
+            route = "${Screen.GameList.route}/{travelId}",
         ) {
-            GameListScreen(navController = navController)
+            val travelId = it.arguments?.getInt("travelId")
+            if (travelId != null) {
+                GameListScreen(navController = navController, travelId = travelId)
+            }
         }
         composable(
-            route = Screen.CardGame.route,
+            route = "${Screen.CardGame.route}/{travelId}",
         ) {
-            CardGameScreen(navController = navController)
+            val travelId = it.arguments?.getInt("travelId")
+            if (travelId != null) {
+                CardGameScreen(navController = navController, travelId = travelId)
+            }
         }
         composable(
             route = Screen.BottleGame.route,
@@ -141,9 +147,12 @@ fun NavGraph(
             BottleGameScreen(navController = navController)
         }
         composable(
-            route = Screen.TeamBuildingGame.route,
+            route = "${Screen.TeamBuildingGame.route}/{travelId}",
         ) {
-            TeamBuildingGameScreen(navController = navController)
+            val travelId = it.arguments?.getInt("travelId")
+            if (travelId != null) {
+                TeamBuildingGameScreen(navController = navController, travelId = travelId)
+            }
         }
         composable(
             route = Screen.WordGame.route,

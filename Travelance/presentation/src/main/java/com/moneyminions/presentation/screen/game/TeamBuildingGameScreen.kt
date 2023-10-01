@@ -10,6 +10,7 @@ import com.moneyminions.presentation.viewmodel.game.ChooseTeamGameViewModel
 @Composable
 fun TeamBuildingGameScreen(
     navController: NavHostController,
+    travelId: Int,
     teamChooseTeamGameViewModel: ChooseTeamGameViewModel = hiltViewModel(),
 ) {
     TeamChooseStartView(teamChooseTeamGameViewModel = teamChooseTeamGameViewModel)
