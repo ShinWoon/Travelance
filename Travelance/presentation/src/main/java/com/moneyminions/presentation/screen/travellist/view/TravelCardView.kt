@@ -38,6 +38,7 @@ import com.moneyminions.presentation.theme.DarkGrayMiddle
 import com.moneyminions.presentation.theme.DarkerGray
 import com.moneyminions.presentation.theme.GreenMiddle
 import com.moneyminions.presentation.theme.PinkDarkest
+import com.moneyminions.presentation.utils.DateUtils
 import com.moneyminions.presentation.utils.MoneyUtils
 
 @Composable
@@ -148,7 +149,7 @@ fun TravelDateView(travelStart: String, travelEnd: String, modifier: Modifier) {
 @Composable
 fun DateText(txt: String) {
     Text(
-        text = txt,
+        text = DateUtils.DashToDot(txt),
         style = pretendardSemiBold12,
         color = DarkGray,
     )

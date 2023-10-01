@@ -1,5 +1,7 @@
 package com.moneyminions.data.datasource.remote.traveldetail
 
+import com.moneyminions.data.model.common.response.CommonResponse
+import com.moneyminions.data.model.traveldetail.request.TravelPaymentChangeInfoRequest
 import com.moneyminions.data.model.traveldetail.response.TravelDetailInfoResponse
 import com.moneyminions.data.model.traveldetail.response.TravelDetailMyPaymentResponse
 import com.moneyminions.data.service.BusinessService
@@ -13,5 +15,9 @@ class TravelDetailDataSourceImpl(
 
     override suspend fun getTravelDetailInfo(): TravelDetailInfoResponse {
         return businessService.getTravelDetailInfo()
+    }
+
+    override suspend fun updatePaymentInfo(travelPaymentChangeInfoRequest: TravelPaymentChangeInfoRequest): CommonResponse {
+        return businessService.updatePaymentInfo(travelPaymentChangeInfoRequest = travelPaymentChangeInfoRequest)
     }
 }

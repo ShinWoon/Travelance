@@ -25,6 +25,7 @@ import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold14
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardSemiBold14
 import com.moneyminions.presentation.theme.CardLightGray
+import com.moneyminions.presentation.theme.DarkGray
 import com.moneyminions.presentation.theme.DarkerGray
 import com.moneyminions.presentation.theme.Gray
 import com.moneyminions.presentation.theme.PinkMiddle
@@ -33,6 +34,7 @@ import com.moneyminions.presentation.theme.PinkMiddle
 @Composable
 fun DetailHelpDialog(
     modifier: Modifier = Modifier,
+    content: String,
     onDismiss: () -> Unit,
 ) {
     AlertDialog(
@@ -50,12 +52,12 @@ fun DetailHelpDialog(
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_help),
-                        tint = Gray,
+                        tint = DarkGray,
                         contentDescription = "help icon",
                         modifier = modifier.size(24.dp),
                         )
                     Text(
-                        text = "결제 내역을 길게 눌러 삭제하세요",
+                        text = content,
                         color = DarkerGray,
                         style = pretendardSemiBold14,
                         textAlign = TextAlign.Center,

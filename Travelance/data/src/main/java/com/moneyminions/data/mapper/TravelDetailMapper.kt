@@ -1,5 +1,6 @@
 package com.moneyminions.data.mapper
 
+import com.moneyminions.data.model.traveldetail.request.TravelPaymentChangeInfoRequest
 import com.moneyminions.data.model.traveldetail.response.FriendPaymentResponse
 import com.moneyminions.data.model.traveldetail.response.TravelDetailInfoResponse
 import com.moneyminions.data.model.traveldetail.response.TravelDetailMyPaymentResponse
@@ -7,6 +8,7 @@ import com.moneyminions.data.model.traveldetail.response.TravelPaymentResponse
 import com.moneyminions.data.model.traveldetail.response.TravelRoomInfoResponse
 import com.moneyminions.domain.model.traveldetail.FriendPaymentDto
 import com.moneyminions.domain.model.traveldetail.TravelDetailInfoDto
+import com.moneyminions.domain.model.traveldetail.TravelPaymentChangeInfoDto
 import com.moneyminions.domain.model.traveldetail.TravelPaymentDto
 import com.moneyminions.domain.model.traveldetail.TravelRoomInfoDto
 
@@ -52,5 +54,12 @@ fun TravelRoomInfoResponse.toDomain(): TravelRoomInfoDto {
         budget = budget,
         endDate = endDate,
         startDate = startDate,
+    )
+}
+
+fun TravelPaymentChangeInfoDto.toData(): TravelPaymentChangeInfoRequest {
+    return TravelPaymentChangeInfoRequest(
+        paymentId = paymentId,
+        withPaid = withPaid,
     )
 }

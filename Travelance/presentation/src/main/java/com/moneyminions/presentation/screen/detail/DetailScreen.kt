@@ -23,17 +23,20 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.moneyminions.domain.model.traveldetail.TravelDetailInfoDto
+import com.moneyminions.domain.model.traveldetail.TravelPaymentChangeInfoDto
 import com.moneyminions.domain.model.traveldetail.TravelPaymentDto
 import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.common.TravelInfoView
 import com.moneyminions.presentation.screen.detail.view.DetailMemberScreenView
 import com.moneyminions.presentation.screen.detail.view.DetailSettleScreenView
 import com.moneyminions.presentation.screen.detail.view.DetailTabView
+import com.moneyminions.presentation.screen.detail.view.PublicMoneyDeleteDialog
 import com.moneyminions.presentation.theme.White
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.travel.TravelDetailViewModel
 
 private const val TAG = "싸피"
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DetailScreen(
@@ -51,6 +54,14 @@ fun DetailScreen(
         mutableStateOf(TravelDetailInfoDto())
     }
 
+    var selectedTravelInfo by remember {
+        mutableStateOf(TravelPaymentDto())
+    }
+
+    val updateTravelPaymentState by travelDetailViewModel.updateTravelPaymentInfoState.collectAsState()
+
+    var selectedIdx by remember { mutableStateOf(-1) }
+
     LaunchedEffect(Unit) {
         travelDetailViewModel.getMyPaymentList()
         travelDetailViewModel.getTravelDetailInfo()
@@ -60,9 +71,19 @@ fun DetailScreen(
         myPaymentList = it
         Log.d(TAG, "DetailScreen: $myPaymentList")
     })
-    NetworkResultHandler(state = travelDetailInfoState, errorAction = { /*TODO*/ }, successAction = {
-        travelDetailInfo = it
-    })
+    NetworkResultHandler(
+        state = travelDetailInfoState,
+        errorAction = { /*TODO*/ },
+        successAction = {
+            travelDetailInfo = it
+        })
+
+    NetworkResultHandler(
+        state = updateTravelPaymentState,
+        errorAction = { /*TODO*/ },
+        successAction = {
+            travelDetailViewModel.getTravelDetailInfo()
+        })
 
     val tabs = listOf("공금내역", "멤버내역")
     var selectedTabIndex = rememberPagerState(pageCount = { tabs.size })
@@ -72,6 +93,23 @@ fun DetailScreen(
             tabWidthStateList.add(0.dp)
         }
         tabWidthStateList
+    }
+
+    var deleteDialog by remember { mutableStateOf(false) }
+    if (deleteDialog) {
+        PublicMoneyDeleteDialog(
+            onDismissRequest = { deleteDialog = false },
+            acceptRequest = {
+                Log.d(TAG, "DetailSettleScreenView: accept")
+                travelDetailViewModel.updateTravelPaymentInfo(
+                    TravelPaymentChangeInfoDto(
+                        paymentId = selectedTravelInfo.paymentId,
+                        withPaid = selectedTravelInfo.isWithPaid
+                    )
+                )
+                deleteDialog = false
+            }
+        )
     }
     Scaffold(
         topBar = {
@@ -102,7 +140,38 @@ fun DetailScreen(
                     .padding(0.dp),
             ) { page ->
                 when (page) {
-                    0 -> DetailSettleScreenView(publicMoneyList = travelDetailInfo.travelPayment ,myPaymentList = myPaymentList)
+                    0 -> DetailSettleScreenView(
+                        publicMoneyList = travelDetailInfo.travelPayment,
+                        myPaymentList = myPaymentList,
+                        changeValue = {
+                            Log.d(
+                                TAG,
+                                "DetailScreen: $it"
+                            )
+                            selectedTravelInfo = it
+                        },
+                        deleteDialog = { deleteDialog = true },
+                        selectedIdx = selectedIdx,
+                        myPaymentRowSelect = {
+                            selectedIdx = it["index"] as Int
+                            selectedTravelInfo = TravelPaymentDto(
+                                isWithPaid = it["isWithPaid"] as Boolean,
+                                paymentId = it["paymentId"] as Int
+                            )
+                        },
+                        myPaymentAccept = {
+                            travelDetailViewModel.updateTravelPaymentInfo(
+                                TravelPaymentChangeInfoDto(
+                                    paymentId = selectedTravelInfo.paymentId,
+                                    withPaid = selectedTravelInfo.isWithPaid
+                                )
+                            )
+                            selectedIdx = -1
+                        },
+                        getMyPayment = {
+                            travelDetailViewModel.getMyPaymentList()
+                        }
+                    )
                     1 -> DetailMemberScreenView(friendPaymentList = travelDetailInfo.friendPayments)
                 }
             }

@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.screen.detail.view
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -31,15 +32,23 @@ import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold14
 import com.moneyminions.presentation.common.MinionPrimaryButton
 import com.moneyminions.presentation.screen.travellist.util.clickable
+import com.moneyminions.presentation.theme.DarkGray
 import com.moneyminions.presentation.theme.DarkerGray
 import com.moneyminions.presentation.theme.Gray
 
+private const val TAG = "싸피"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailSettleScreenView(
     modifier: Modifier = Modifier,
     publicMoneyList: List<TravelPaymentDto>,
-    myPaymentList: List<TravelPaymentDto>
+    myPaymentList: List<TravelPaymentDto>,
+    changeValue: (TravelPaymentDto) -> Unit,
+    deleteDialog: () -> Unit,
+    selectedIdx: Int,
+    myPaymentRowSelect: (MutableMap<String, Any>) -> Unit,
+    myPaymentAccept: () -> Unit,
+    getMyPayment: () -> Unit,
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }
     // Modal Bottom Sheet이 닫힐 때 호출될 콜백
@@ -48,11 +57,16 @@ fun DetailSettleScreenView(
             myPaymentList = myPaymentList,
             onDismissSheet = {
                 showBottomSheet = false
-            })
+            },
+            selectedIdx = selectedIdx,
+            myPaymentRowSelect = myPaymentRowSelect,
+            myPaymentAccept = myPaymentAccept,
+            )
     }
     var helpDialog by remember { mutableStateOf(false) }
     if (helpDialog) {
         DetailHelpDialog(
+            content = "공금 내역을 길게 눌러 삭제하세요",
             onDismiss = {
                 helpDialog = false
             }
@@ -75,7 +89,7 @@ fun DetailSettleScreenView(
                     painter = painterResource(
                         id = R.drawable.ic_help
                     ),
-                    tint = Gray,
+                    tint = DarkGray,
                     contentDescription = "help icon",
                     modifier = modifier
                         .size(24.dp)
@@ -88,6 +102,7 @@ fun DetailSettleScreenView(
                     Button(
                         onClick = {
                             showBottomSheet = true
+                            getMyPayment()
                         },
                         colors = ButtonDefaults.buttonColors(Color.Transparent),
                         contentPadding = PaddingValues(
@@ -113,7 +128,7 @@ fun DetailSettleScreenView(
                     }
                 }
             }
-            DetailPublicMoneySettleCardView(publicMoneyList = publicMoneyList)
+            DetailPublicMoneySettleCardView(publicMoneyList = publicMoneyList, changeValue = changeValue, deleteDialog = deleteDialog)
         }
         MinionPrimaryButton(
             content = "정산요청",

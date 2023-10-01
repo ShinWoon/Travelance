@@ -1,7 +1,10 @@
-package com.moneyminions.presentation.common
+package com.moneyminions.presentation.screen.detail.view
 
 import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DividerDefaults
@@ -20,74 +24,66 @@ import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.moneyminions.domain.model.traveldetail.TravelPaymentDto
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardSemiBold12
-import com.moneyminions.presentation.screen.detail.view.DetailCommonText
+import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.TextGray
 import com.moneyminions.presentation.utils.MoneyUtils
 
 private const val TAG = "싸피"
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SettleContentView(
+fun DetailPublicMoneySettleContentView(
     modifier: Modifier = Modifier,
-    payContent: String,
-    payDate: String,
-    payAmount: Int,
+    publicMoneyPayment: TravelPaymentDto,
+    changeValue: (TravelPaymentDto) -> Unit,
+    deleteDialog: () -> Unit,
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp),
     ) {
-        Row(
+        Column(
             modifier = modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
+                .wrapContentHeight()
+                .combinedClickable(
+                    onClick = {},
+                    onLongClick = {
+                        Log.d(TAG, "DetailPublicMoneySettleContentView: long clicked")
+                        changeValue(TravelPaymentDto(isWithPaid = !publicMoneyPayment.isWithPaid, paymentId = publicMoneyPayment.paymentId))
+                        deleteDialog()
+                    }
+                )
         ) {
-            DetailCommonText(text = payContent)
-            DetailCommonText(text = MoneyUtils.makeComma(payAmount))
+            Row(
+                modifier = modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                DetailCommonText(text = publicMoneyPayment.paymentContent)
+                DetailCommonText(text = MoneyUtils.makeComma(publicMoneyPayment.paymentAmount))
+            }
+            Text(
+                text = publicMoneyPayment.paymentAt,
+                color = TextGray,
+                style = pretendardSemiBold12,
+            )
         }
-        Text(
-            text = payDate,
-            color = TextGray,
-            style = pretendardSemiBold12,
-        )
         Spacer(modifier = modifier.height(16.dp))
         Divider(
             color = DividerDefaults.color,
             thickness = (0.5).dp,
         )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SettleEditButton(
-    icon: Int,
-    iconColor: Color,
-    modifier: Modifier = Modifier,
-) {
-    CompositionLocalProvider(
-        LocalMinimumInteractiveComponentEnforcement provides false,
-    ) {
-        IconButton(
-            onClick = { Log.d(TAG, "SettleEditButton: clicked") },
-            modifier = modifier.wrapContentSize()
-                .background(color = Color.Transparent, shape = RectangleShape),
-        ) {
-            Icon(
-                painter = painterResource(id = icon),
-                tint = iconColor,
-                modifier = modifier.size(20.dp),
-                contentDescription = null,
-            )
-        }
     }
 }
