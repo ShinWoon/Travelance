@@ -11,6 +11,7 @@ import com.moneyminions.data.model.login.response.JoinResponse
 import com.moneyminions.data.model.login.response.LoginResponse
 import com.moneyminions.data.model.login.response.MemberInfoResponse
 import com.moneyminions.data.model.login.response.ReAccessTokenResponse
+import com.moneyminions.data.model.traveldetail.request.PaymentCompleteRequest
 import com.moneyminions.data.model.traveldetail.request.TravelPaymentChangeInfoRequest
 import com.moneyminions.data.model.traveldetail.response.TravelDetailInfoResponse
 import com.moneyminions.data.model.traveldetail.response.TravelDetailMyPaymentResponse
@@ -124,4 +125,10 @@ interface BusinessService {
      */
     @POST("payment/push/alert")
     suspend fun updatePaymentInfo(@Body travelPaymentChangeInfoRequest: TravelPaymentChangeInfoRequest): CommonResponse
+
+    /**
+     * 여행 정산 요청
+     */
+    @POST("payment/complete")
+    suspend fun setSettleState(@Body paymentCompleteRequest: PaymentCompleteRequest): CommonResponse
 }

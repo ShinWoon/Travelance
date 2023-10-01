@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.common.CommonResultDto
+import com.moneyminions.domain.model.traveldetail.PaymentCompleteDto
 import com.moneyminions.domain.model.traveldetail.TravelDetailInfoDto
 import com.moneyminions.domain.model.traveldetail.TravelPaymentChangeInfoDto
 import com.moneyminions.domain.model.traveldetail.TravelPaymentDto
 import com.moneyminions.domain.usecase.traveldetail.GetMyPaymentUseCase
 import com.moneyminions.domain.usecase.traveldetail.GetTravelDetailInfoUseCase
+import com.moneyminions.domain.usecase.traveldetail.SetSettleStateUseCase
 import com.moneyminions.domain.usecase.traveldetail.UpdateTravelPaymentInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +25,7 @@ class TravelDetailViewModel @Inject constructor(
     private val getMyPaymentUseCase: GetMyPaymentUseCase,
     private val getTravelDetailInfoUseCase: GetTravelDetailInfoUseCase,
     private val updateTravelPaymentInfoUseCase: UpdateTravelPaymentInfoUseCase,
+    private val setSettleStateUseCase: SetSettleStateUseCase,
 ): ViewModel() {
     private val _myPaymentListState = MutableStateFlow<NetworkResult<List<TravelPaymentDto>>>(NetworkResult.Idle)
     val myPaymentListState = _myPaymentListState.asStateFlow()
@@ -32,6 +35,9 @@ class TravelDetailViewModel @Inject constructor(
 
     private val _updateTravelPaymentInfoState = MutableStateFlow<NetworkResult<CommonResultDto>>(NetworkResult.Idle)
     val updateTravelPaymentInfoState = _updateTravelPaymentInfoState.asStateFlow()
+
+    private val _setSettleStateState = MutableStateFlow<NetworkResult<CommonResultDto>>(NetworkResult.Idle)
+    val setSettleStateState = _setSettleStateState.asStateFlow()
 
     fun getMyPaymentList() = viewModelScope.launch {
         _myPaymentListState.value = NetworkResult.Loading
@@ -49,5 +55,10 @@ class TravelDetailViewModel @Inject constructor(
         Log.d(TAG, "updateTravelPaymentInfo: $travelPaymentChangeInfo")
         _updateTravelPaymentInfoState.value = NetworkResult.Loading
         _updateTravelPaymentInfoState.emit(updateTravelPaymentInfoUseCase.invoke(travelPaymentChangeInfo))
+    }
+
+    fun setSettleState(paymentCompleteDto: PaymentCompleteDto) = viewModelScope.launch {
+        _setSettleStateState.value = NetworkResult.Loading
+        _setSettleStateState.emit(setSettleStateUseCase.invoke(paymentCompleteDto))
     }
 }

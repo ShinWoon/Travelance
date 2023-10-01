@@ -50,6 +50,7 @@ fun DetailSettleScreenView(
     myPaymentRowSelect: (MutableMap<String, Any>) -> Unit,
     myPaymentAccept: () -> Unit,
     getMyPayment: () -> Unit,
+    setSettle: () -> Unit,
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }
     // Modal Bottom Sheet이 닫힐 때 호출될 콜백
@@ -146,7 +147,7 @@ fun DetailSettleScreenView(
             content = "정산요청",
             modifier = modifier.fillMaxWidth(),
         ) {
-            // todo: 정산 요청 버튼
+            setSettle()
         }
     }
 }

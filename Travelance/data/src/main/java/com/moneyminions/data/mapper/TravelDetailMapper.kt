@@ -1,5 +1,7 @@
 package com.moneyminions.data.mapper
 
+import com.moneyminions.data.model.traveldetail.request.PaymentCompleteRequest
+import com.moneyminions.data.model.traveldetail.request.PaymentWithRequest
 import com.moneyminions.data.model.traveldetail.request.TravelPaymentChangeInfoRequest
 import com.moneyminions.data.model.traveldetail.response.FriendPaymentResponse
 import com.moneyminions.data.model.traveldetail.response.TravelDetailInfoResponse
@@ -7,6 +9,7 @@ import com.moneyminions.data.model.traveldetail.response.TravelDetailMyPaymentRe
 import com.moneyminions.data.model.traveldetail.response.TravelPaymentResponse
 import com.moneyminions.data.model.traveldetail.response.TravelRoomInfoResponse
 import com.moneyminions.domain.model.traveldetail.FriendPaymentDto
+import com.moneyminions.domain.model.traveldetail.PaymentCompleteDto
 import com.moneyminions.domain.model.traveldetail.TravelDetailInfoDto
 import com.moneyminions.domain.model.traveldetail.TravelPaymentChangeInfoDto
 import com.moneyminions.domain.model.traveldetail.TravelPaymentDto
@@ -61,5 +64,25 @@ fun TravelPaymentChangeInfoDto.toData(): TravelPaymentChangeInfoRequest {
     return TravelPaymentChangeInfoRequest(
         paymentId = paymentId,
         withPaid = withPaid,
+    )
+}
+
+fun PaymentCompleteDto.toData(): PaymentCompleteRequest {
+    return PaymentCompleteRequest(
+        email = email,
+        paymentWithList = paymentWithList.map { it.toData() },
+        roomNumber = roomNumber,
+    )
+}
+
+fun TravelPaymentDto.toData(): PaymentWithRequest {
+    return PaymentWithRequest(
+        isWithPaid = isWithPaid,
+        paymentAmount = paymentAmount,
+        paymentAt = paymentAt,
+        paymentContent = paymentContent,
+        paymentId = paymentId,
+        storeAddress = storeAddress,
+        storeSector = storeSector,
     )
 }

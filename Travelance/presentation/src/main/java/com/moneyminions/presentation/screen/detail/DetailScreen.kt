@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.moneyminions.domain.model.traveldetail.PaymentCompleteDto
 import com.moneyminions.domain.model.traveldetail.TravelDetailInfoDto
 import com.moneyminions.domain.model.traveldetail.TravelPaymentChangeInfoDto
 import com.moneyminions.domain.model.traveldetail.TravelPaymentDto
@@ -41,7 +42,7 @@ private const val TAG = "싸피"
 @Composable
 fun DetailScreen(
     navController: NavHostController,
-    travelName: String,
+    travelId: Int,
     modifier: Modifier = Modifier,
     travelDetailViewModel: TravelDetailViewModel = hiltViewModel(),
 ) {
@@ -59,6 +60,7 @@ fun DetailScreen(
     }
 
     val updateTravelPaymentState by travelDetailViewModel.updateTravelPaymentInfoState.collectAsState()
+    val setSettleStateState by travelDetailViewModel.setSettleStateState.collectAsState()
 
     var selectedIdx by remember { mutableStateOf(-1) }
 
@@ -84,6 +86,8 @@ fun DetailScreen(
         successAction = {
             travelDetailViewModel.getTravelDetailInfo()
         })
+
+    NetworkResultHandler(state = setSettleStateState, errorAction = { /*TODO*/ }, successAction = {})
 
     val tabs = listOf("공금내역", "멤버내역")
     var selectedTabIndex = rememberPagerState(pageCount = { tabs.size })
@@ -112,8 +116,9 @@ fun DetailScreen(
         )
     }
     Scaffold(
+        // TODO: title 바꾸기
         topBar = {
-            TopBar(navController = navController, topBarTitle = travelName)
+            TopBar(navController = navController, topBarTitle = "test")
         }
     ) {
         Column(
@@ -143,20 +148,20 @@ fun DetailScreen(
                     0 -> DetailSettleScreenView(
                         publicMoneyList = travelDetailInfo.travelPayment,
                         myPaymentList = myPaymentList,
-                        changeValue = {
+                        changeValue = {travelPaymentDto ->
                             Log.d(
                                 TAG,
-                                "DetailScreen: $it"
+                                "DetailScreen: $travelPaymentDto"
                             )
-                            selectedTravelInfo = it
+                            selectedTravelInfo = travelPaymentDto
                         },
                         deleteDialog = { deleteDialog = true },
                         selectedIdx = selectedIdx,
-                        myPaymentRowSelect = {
-                            selectedIdx = it["index"] as Int
+                        myPaymentRowSelect = {paymentMap ->
+                            selectedIdx = paymentMap["index"] as Int
                             selectedTravelInfo = TravelPaymentDto(
-                                isWithPaid = it["isWithPaid"] as Boolean,
-                                paymentId = it["paymentId"] as Int
+                                isWithPaid = paymentMap["isWithPaid"] as Boolean,
+                                paymentId = paymentMap["paymentId"] as Int
                             )
                         },
                         myPaymentAccept = {
@@ -170,7 +175,10 @@ fun DetailScreen(
                         },
                         getMyPayment = {
                             travelDetailViewModel.getMyPaymentList()
-                        }
+                        },
+                        setSettle = {
+                            travelDetailViewModel.setSettleState(PaymentCompleteDto(paymentWithList = travelDetailInfo.travelPayment, roomNumber = travelId))
+                        },
                     )
                     1 -> DetailMemberScreenView(friendPaymentList = travelDetailInfo.friendPayments)
                 }
