@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.moneyminions.presentation.common.CustomTextStyle.pretendardSemiBold10
 import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.navigation.BottomNavItem
 import com.moneyminions.presentation.navigation.NavGraph
@@ -30,6 +31,7 @@ import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.theme.TextGray
 import com.moneyminions.presentation.theme.White
+import com.moneyminions.presentation.theme.pretendard
 import com.moneyminions.presentation.viewmodel.MainViewModel
 
 private const val TAG = "MainScreen_D210"
@@ -113,7 +115,7 @@ fun MainBottomNavigationBar(navController: NavHostController) {
                 label = {
                     Text(
                         text = item.name,
-                        fontWeight = FontWeight.SemiBold,
+                        style = pretendardSemiBold10,
                     )
                 },
                 icon = {

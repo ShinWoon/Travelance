@@ -152,4 +152,10 @@ interface BusinessService {
      */
     @POST("payment/cash")
     suspend fun requestUseCash(@Body useCashRequest: UseCashRequest): CommonResponse
+
+    /**
+     * 여행방 친구 조회
+     */
+//    @GET("travel/room/{roomId}/UserList")
+//    suspend fun getTravelFriends(@Path("roomId") roomId: Int):
 }

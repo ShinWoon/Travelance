@@ -19,6 +19,7 @@ private const val TAG = "CardGameScreen"
 fun CardGameScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier,
+    travelId: Int,
 ) {
     val context = LocalContext.current
     val cardSliderComplete = remember { mutableStateOf(false) }
@@ -54,5 +55,5 @@ fun CardGameScreen(
 @Preview(showBackground = true)
 @Composable
 fun CardGamePreview() {
-    CardGameScreen(navController = rememberNavController())
+//    CardGameScreen(navController = rememberNavController())
 }

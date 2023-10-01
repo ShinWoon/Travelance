@@ -48,6 +48,7 @@ fun DetailMyPaymentDetailsView(
     selectedIdx: Int,
     myPaymentRowSelect: (MutableMap<String, Any>) -> Unit,
     myPaymentAccept: () -> Unit,
+    resetIdx: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState()
@@ -57,6 +58,7 @@ fun DetailMyPaymentDetailsView(
             content = "결제 내역을 눌러 공금에 추가하세요",
             onDismiss = {
                 bottomSheetHelpDialog = false
+                resetIdx()
             }
         )
     }
@@ -100,6 +102,7 @@ fun DetailMyPaymentDetailsView(
                 TextButton(
                     onClick = {
                         myPaymentAccept()
+                        resetIdx()
                         onDismissSheet()
                     },
                     contentPadding = PaddingValues(0.dp),

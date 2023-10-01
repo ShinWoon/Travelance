@@ -1,36 +1,34 @@
 package com.moneyminions.presentation.screen.mypage.view
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
-import coil.compose.AsyncImagePainter.State.Empty.painter
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.screen.travellist.util.clickable
-import com.moneyminions.presentation.theme.DarkGray
 import com.moneyminions.presentation.theme.GraphGray
 
 @Composable
 fun SettingItem(
     icon: Painter,
+    color: Color,
     text: String,
     onClick: () -> Unit
 ){
@@ -63,22 +61,25 @@ fun SettingItem(
             constraintSet,
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Image(
+            Icon(
                 painter = icon,
+                tint = color,
                 contentDescription = null,
                 modifier = Modifier
-                    .size(30.dp)
+                    .size(24.dp)
                     .layoutId("icon")
             )
             Text(
                 text = text,
-                style = CustomTextStyle.pretendardMedium20,
+                style = CustomTextStyle.pretendardSemiBold18,
+                color = color,
                 modifier = Modifier.layoutId("text")
             )
-            Image(
+            Icon(
                 painter = painterResource(id = R.drawable.ic_right_arrow),
                 contentDescription = null,
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier
+                    .size(24.dp)
                     .layoutId("moveIcon")
                     .clickable {
                         onClick()
@@ -87,7 +88,8 @@ fun SettingItem(
 
         }
         Spacer(modifier = Modifier.size(16.dp))
-        Divider(modifier = Modifier.fillMaxWidth()
+        Divider(modifier = Modifier
+            .fillMaxWidth()
             .height(1.dp)
             .background(GraphGray)
             .padding(horizontal = 16.dp)
@@ -99,7 +101,7 @@ fun SettingItem(
 @Preview(showBackground = true, backgroundColor = 0xFFFFF)
 @Composable
 fun SettingItemPreview(){
-    SettingItem(icon = painterResource(id = R.drawable.ic_setting), text = "텍스트") {
-
-    }
+//    SettingItem(icon = painterResource(id = R.drawable.ic_setting), text = "텍스트") {
+//
+//    }
 }

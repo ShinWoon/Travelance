@@ -171,7 +171,6 @@ fun DetailScreen(
                                     withPaid = selectedTravelInfo.isWithPaid
                                 )
                             )
-                            selectedIdx = -1
                         },
                         getMyPayment = {
                             travelDetailViewModel.getMyPaymentList()
@@ -179,6 +178,9 @@ fun DetailScreen(
                         setSettle = {
                             travelDetailViewModel.setSettleState(PaymentCompleteDto(paymentWithList = travelDetailInfo.travelPayment, roomNumber = travelId))
                         },
+                        resetIdx = {
+                            selectedIdx = -1
+                        }
                     )
                     1 -> DetailMemberScreenView(friendPaymentList = travelDetailInfo.friendPayments)
                 }
