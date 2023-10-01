@@ -36,6 +36,7 @@ public class TravelPaymentPlusDto {
         private String startDate;
         private String endDate;
         private Long budget;
+        private String travelName;
     }
 
 }
