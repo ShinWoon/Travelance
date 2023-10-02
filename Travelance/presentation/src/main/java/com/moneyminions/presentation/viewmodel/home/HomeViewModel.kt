@@ -67,6 +67,7 @@ class HomeViewModel @Inject constructor(
     val startTravelResult = _startTravelResult.asStateFlow()
     fun startTravel(roomId: Int) {
         Log.d(TAG, "startTravel: roomId")
+        _startTravelResult.value = NetworkResult.Loading
         viewModelScope.launch {
             _startTravelResult.emit(startTravelUseCase.invoke(roomId = roomId))
         }

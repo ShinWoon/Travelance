@@ -51,7 +51,6 @@ import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.GraphGray
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.theme.PinkLightest
-import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalPagerApi::class)
@@ -60,7 +59,6 @@ fun GraphPage(
     pagerState: PagerState,
     cardHeight: Dp,
     totalDot: Int,
-    homeViewModel: HomeViewModel,
     travelInfo: TravelRoomInfoDto,
 ) {
     Card(
@@ -89,7 +87,7 @@ fun GraphPage(
                 modifier = Modifier.weight(8f),
                 colors = CardDefaults.cardColors(CardLightGray),
             ) {
-                DonutGraph(homeViewModel = homeViewModel)
+                DonutGraph(travelInfo = travelInfo)
             }
             
             Row(
@@ -121,7 +119,7 @@ fun GraphPage(
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun DonutGraph(
-    homeViewModel: HomeViewModel,
+    travelInfo: TravelRoomInfoDto,
 ) {
     
     val brush = Brush.horizontalGradient(listOf(Color.Red, Color.Blue))
@@ -138,7 +136,7 @@ fun DonutGraph(
     
     val graphSize: Dp = 160.dp
     
-    val progressValue = homeViewModel.travelRoomInfo.value.percent
+    val progressValue = travelInfo.percent * 100
     LaunchedEffect(key1 = true) {
         while (true) {
             if (animationProgress >= progressValue) { // xx%까지만 그린 후 애니메이션 중지
