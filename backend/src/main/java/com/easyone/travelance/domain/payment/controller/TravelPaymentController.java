@@ -2,9 +2,11 @@ package com.easyone.travelance.domain.payment.controller;
 
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.service.MemberService;
+import com.easyone.travelance.domain.payment.dto.TravelDoneResponseDto;
 import com.easyone.travelance.domain.payment.dto.TravelPaymentPlusDto;
 import com.easyone.travelance.domain.payment.dto.TravelPaymentResponseDto;
 import com.easyone.travelance.domain.payment.service.TravelPaymentWithService;
+import com.easyone.travelance.domain.travel.dto.RoomUserResponseDto;
 import com.easyone.travelance.global.memberInfo.MemberInfo;
 import com.easyone.travelance.global.memberInfo.MemberInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,6 +45,17 @@ public class TravelPaymentController {
 
         return new ResponseEntity<>(travelPaymentResponseDtoList, HttpStatus.OK);
     }
+
+    @Operation(summary = "여행종료 후 여행정보 조회", description = "여행 종료 후, 여행방 관련 정보를 조회합니다")
+    @PostMapping(value = "/{roomId}/travelDone")
+    public ResponseEntity<TravelDoneResponseDto> TravelDoneInfo(@MemberInfo MemberInfoDto memberInfoDto, @PathVariable Long roomId) {
+        Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
+        TravelDoneResponseDto travelDoneResponseDto = travelPaymentWithService.TravelDoneInfo(member, roomId);
+        return new ResponseEntity<>(travelDoneResponseDto, HttpStatus.OK);
+    }
+
+
+
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(EntityNotFoundException e){

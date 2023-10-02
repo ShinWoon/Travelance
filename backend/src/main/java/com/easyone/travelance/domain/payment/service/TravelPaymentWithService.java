@@ -3,14 +3,19 @@ package com.easyone.travelance.domain.payment.service;
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.entity.Profile;
 import com.easyone.travelance.domain.member.respository.ProfileRepository;
-import com.easyone.travelance.domain.payment.dto.TravelPaymentPlusDto;
-import com.easyone.travelance.domain.payment.dto.TravelPaymentResponseDto;
+import com.easyone.travelance.domain.payment.dto.*;
 import com.easyone.travelance.domain.payment.entity.Payment;
 import com.easyone.travelance.domain.payment.repository.PaymentRepository;
+import com.easyone.travelance.domain.travel.dto.NoticeAllResponseDto;
+import com.easyone.travelance.domain.travel.dto.RoomUserResponseDto;
 import com.easyone.travelance.domain.travel.entity.TravelRoom;
 import com.easyone.travelance.domain.travel.entity.TravelRoomMember;
 import com.easyone.travelance.domain.travel.enumclass.RoomType;
 import com.easyone.travelance.domain.travel.repository.TravelRoomRepository;
+import com.easyone.travelance.domain.travel.service.NoticeService;
+import com.easyone.travelance.domain.travel.service.TravelPaymentService;
+import com.easyone.travelance.domain.travel.service.TravelService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class TravelPaymentWithService {
     @Autowired
     private TravelRoomRepository travelRoomRepository;
@@ -30,6 +36,12 @@ public class TravelPaymentWithService {
 
     @Autowired
     private ProfileRepository profileRepository;
+
+    private final TravelPaymentService travelPaymentService;
+    private final NoticeService noticeService;
+    private final TravelService travelService;
+
+
 
     public TravelPaymentPlusDto getPaymentWith(Member member) {
         // 1. 현재 회원이 속한 여행방 중에서 RoomType이 NOW인 것을 조회
@@ -108,5 +120,57 @@ public class TravelPaymentWithService {
         List<Payment> paymentsList = paymentRepository.findAllByTravelRoom_IdAndMemberAndIsWithPaidFalse(roomId, member);
 
         return paymentsList.stream().map(TravelPaymentResponseDto::new).collect(Collectors.toList());
+    }
+
+    public TravelDoneResponseDto TravelDoneInfo(Member member, Long roomId) {
+        TravelRoom travelRoom = travelRoomRepository.findByIdAndMemberId(roomId, member.getId())
+                .orElseThrow(()-> new IllegalArgumentException("사용자의 여행방이 없습니다. id =" + roomId));
+
+        //사용한 총 금액
+        Long UseTotal = travelPaymentService.TotalPriceTravelId(roomId);
+
+        //1. 여행 이름, 여행 시작 날짜, 여행 끝난 날짜, 여행에서 사용한 총 금액,
+        TravelDoneInfoResponseDto travelDoneInfoResponseDto = new TravelDoneInfoResponseDto(travelRoom, UseTotal);
+
+        //2. 해당 여행에서의 전체 공지글들
+        List<NoticeAllResponseDto> noticeAllResponseDtoList = noticeService.getAllNotice(roomId);
+
+        //3. 공금 전체 내역
+        List<Payment> payments = paymentRepository.findByIsWithPaidAndTravelRoomId(true, roomId);
+        List<TravelPaymentResponseDto> AllTravelPaymentResponseDto = payments.stream()
+                .map(TravelPaymentResponseDto::new)
+                .collect(Collectors.toList());
+
+        //4. 여행 공금을 기준으로 카테고리별로 몇 퍼센트 사용했는지
+        List<CategoryExpenseDto> categoryExpenseDtoList = new ArrayList<>();
+
+        long totalPayment = payments.stream()
+                .mapToLong(Payment::getPaymentAmount)
+                .sum();
+
+        for (Payment payment: payments) {
+            String category = payment.getStoreSector();
+            Long amount = payment.getPaymentAmount();
+
+            double percent = (amount.doubleValue() / totalPayment) * 100.0;
+
+            CategoryExpenseDto categoryExpenseDto = new CategoryExpenseDto(category, percent);
+
+            categoryExpenseDtoList.add(categoryExpenseDto);
+
+        }
+
+        //5. 나의 공금 전체 내역
+        List<Payment> paymentsList = paymentRepository.findAllByTravelRoom_IdAndMemberAndIsWithPaidTrue(roomId, member);
+        List<TravelPaymentResponseDto> MyTravelPaymentResponseDto = paymentsList.stream()
+                .map(TravelPaymentResponseDto::new)
+                .collect(Collectors.toList());
+
+        //6. 여행 친구들 조회(RoomUserResponseDto)
+        List<RoomUserResponseDto> roomUserResponseDto = travelService.getUserList(roomId);
+
+        return new TravelDoneResponseDto(travelDoneInfoResponseDto,noticeAllResponseDtoList,
+                AllTravelPaymentResponseDto, categoryExpenseDtoList, MyTravelPaymentResponseDto, roomUserResponseDto);
+
     }
 }
