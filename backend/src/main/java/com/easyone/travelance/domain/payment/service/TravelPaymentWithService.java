@@ -165,7 +165,7 @@ public class TravelPaymentWithService {
             String category = entry.getKey();
             long amount = entry.getValue();
 
-            double percent = Math.floor(((double) amount / totalPayment) * 10.0)/10.0;
+            double percent = Math.floor(((double) amount / totalPayment) * 1000.0)/1000.0;
             CategoryExpenseDto categoryExpenseDto = new CategoryExpenseDto(category, percent);
 
             categoryExpenseDtoList.add(categoryExpenseDto);
