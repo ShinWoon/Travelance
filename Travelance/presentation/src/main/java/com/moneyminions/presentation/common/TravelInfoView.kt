@@ -38,6 +38,8 @@ fun TravelInfoView(
     type: String,
     modifier: Modifier = Modifier,
     navController: NavController,
+    roomId: Int = -1,
+    setTravelRoomInfo: (TravelRoomInfoDto) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -54,7 +56,8 @@ fun TravelInfoView(
                     modifier = modifier
                         .size(24.dp)
                         .clickable {
-                            navController.navigate(Screen.TravelEdit.route)
+                            navController.navigate("${Screen.TravelEdit.route}/$roomId")
+                            setTravelRoomInfo(travelRoomInfo)
                         },
                     painter = painterResource(id = R.drawable.ic_edit),
                     tint = DarkerGray,

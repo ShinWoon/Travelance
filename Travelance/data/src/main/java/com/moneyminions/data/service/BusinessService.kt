@@ -18,6 +18,7 @@ import com.moneyminions.data.model.traveldetail.request.PaymentCompleteRequest
 import com.moneyminions.data.model.traveldetail.request.TravelPaymentChangeInfoRequest
 import com.moneyminions.data.model.traveldetail.response.TravelDetailInfoResponse
 import com.moneyminions.data.model.traveldetail.response.TravelDetailMyPaymentResponse
+import com.moneyminions.data.model.traveledit.request.TravelRoomEditRequest
 import com.moneyminions.data.model.travellist.request.RoomInfoRequestDto
 import com.moneyminions.data.model.travellist.request.RoomUserRequestDto
 import com.moneyminions.data.model.travellist.response.TravelRoomResponse
@@ -83,22 +84,25 @@ interface BusinessService {
         @Part("roomUserRequestDto") roomUserRequestDto: RoomUserRequestDto,
         @Part("roomInfoRequestDto") roomInfoRequestDto: RoomInfoRequestDto,
     ): CommonResponse
-    
+
     /**
      * 여행 목록 요청 API
      */
     @GET("travel/room")
     suspend fun travelList(): MutableList<TravelRoomResponse>
+
     /**
      * 마이페이지 조회
      */
     @POST("member/mypage")
     suspend fun getMemberInfo(): MemberInfoResponse
+
     /**
      * 닉네임 수정
      */
     @PATCH("member/update/nickname")
     suspend fun updateNickname(@Query("nickname") nickname: String): CommonResponse
+
     /**
      * ACCESS 토큰 재발급
      */
@@ -135,19 +139,19 @@ interface BusinessService {
      */
     @POST("payment/complete")
     suspend fun setSettleState(@Body paymentCompleteRequest: PaymentCompleteRequest): CommonResponse
-    
+
     /**
      * 여행방 생성 API
      */
     @POST("travel/room/{roomId}/start")
     suspend fun startTravel(@Path(value = "roomId") roomId: Int): CommonResponse
-    
+
     /**
      * 특정 여행방 조회 API
      */
     @GET("travel/room/{roomId}")
     suspend fun getTravelRoomInfo(@Path(value = "roomId") roomId: Int): TravelRoomInfoResponse
-    
+
     /**
      * 현급 입력 API
      */
@@ -159,4 +163,13 @@ interface BusinessService {
      */
     @GET("travel/room/{roomId}/UserList")
     suspend fun getTravelRoomFriends(@Path("roomId") roomId: Int): List<TravelRoomFriendsResponse>
+
+    /**
+     * 여행방 수정
+     */
+    @PATCH("travel/room/{roomId}")
+    suspend fun editTravelRoom(
+        @Path("roomId") roomId: Int,
+        @Body travelRoomEditRequest: TravelRoomEditRequest
+    ): CommonResponse
 }

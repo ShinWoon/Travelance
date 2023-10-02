@@ -10,6 +10,8 @@ import com.moneyminions.data.datasource.remote.mypage.MyPageDataSource
 import com.moneyminions.data.datasource.remote.mypage.MyPageDataSourceImpl
 import com.moneyminions.data.datasource.remote.traveldetail.TravelDetailDataSource
 import com.moneyminions.data.datasource.remote.traveldetail.TravelDetailDataSourceImpl
+import com.moneyminions.data.datasource.remote.traveledit.TravelEditDataSource
+import com.moneyminions.data.datasource.remote.traveledit.TravelEditDataSourceImpl
 import com.moneyminions.data.datasource.remote.travellist.TravelListDataSource
 import com.moneyminions.data.datasource.remote.travellist.TravelListDataSourceImpl
 import com.moneyminions.data.service.BusinessService
@@ -57,6 +59,12 @@ object DataSourceModule {
     @Provides
     fun provideHomeDataSource(businessService: BusinessService): HomeDataSource {
         return HomeDataSourceImpl(businessService)
+    }
+
+    @Singleton
+    @Provides
+    fun provideTravelEditDataSource(businessService: BusinessService): TravelEditDataSource {
+        return TravelEditDataSourceImpl(businessService)
     }
  }
 

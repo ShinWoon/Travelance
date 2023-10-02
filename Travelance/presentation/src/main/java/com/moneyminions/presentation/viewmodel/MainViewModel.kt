@@ -1,9 +1,12 @@
 package com.moneyminions.presentation.viewmodel
 
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import com.moneyminions.domain.model.login.JwtTokenDto
+import com.moneyminions.domain.model.traveldetail.TravelRoomInfoDto
 import com.moneyminions.domain.usecase.preference.GetJwtTokenUseCase
 import com.moneyminions.domain.usecase.preference.GetRoleUseCase
 import com.moneyminions.domain.usecase.preference.GetTravelingRoomIdUseCase
@@ -40,5 +43,12 @@ class MainViewModel @Inject constructor(
     val selectRoomId: State<Int> = _selectRoomId
     fun setSelectRoomId(roomId: Int) {
         _selectRoomId.value = roomId
+    }
+
+    private var _travelRoomInfo = mutableStateOf(TravelRoomInfoDto())
+    val travelRoomInfo = _travelRoomInfo.value
+
+    fun putTravelRoomInfo(travelRoomInfoDto: TravelRoomInfoDto) {
+        _travelRoomInfo.value = travelRoomInfoDto
     }
 }

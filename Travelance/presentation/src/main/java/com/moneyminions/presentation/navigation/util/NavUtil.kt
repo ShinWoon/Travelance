@@ -3,7 +3,7 @@ package com.moneyminions.presentation.navigation.util
 import com.moneyminions.presentation.navigation.NavRouteName
 import com.moneyminions.presentation.navigation.NavTitle
 
-fun getScreenTitle(route: String?): String = when(route) {
+fun getScreenTitle(route: String): String = when(if (route.contains("/")) route.split("/")[0] else route) {
     NavRouteName.CREATETRAVEL -> NavTitle.CREATETRAVEL
     NavRouteName.SETTING -> NavTitle.SETTING
     NavRouteName.EDITUSER -> NavTitle.EDITUSER
