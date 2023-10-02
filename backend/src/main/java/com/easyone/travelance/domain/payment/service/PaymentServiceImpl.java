@@ -15,7 +15,6 @@ import com.easyone.travelance.domain.travel.enumclass.RoomType;
 import com.easyone.travelance.domain.travel.repository.TravelRoomMemberRepository;
 import com.easyone.travelance.domain.travel.repository.TravelRoomRepository;
 import com.easyone.travelance.global.FCM.FirebaseCloudMessageService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
@@ -287,12 +287,15 @@ public class PaymentServiceImpl implements PaymentService{
             throw new EntityNotFoundException("사용자 or 여행방이 존재하지 않습니다.");
         }
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = LocalDateTime.now().format(formatter);
+
         Payment payment = Payment.builder()
                 .member(existMember.get())
                 .travelRoom(existTravelRoom.get())
                 .paymentAmount(registerCashRequestDto.getPaymentAmount())
                 .paymentContent(registerCashRequestDto.getPaymentContent())
-                .paymentAt(String.valueOf(LocalDateTime.now()))
+                .paymentAt(formattedDate)
                 .build();
 
         paymentRepository.save(payment);
