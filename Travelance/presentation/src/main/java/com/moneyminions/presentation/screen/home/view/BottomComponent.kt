@@ -41,14 +41,13 @@ import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.handwriting.HandWritingDialog
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.CardLightGray
-import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 
-private const val TAG = "BottomComponent"
+private const val TAG = "BottomComponent_D210"
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun BottomCardContainer(
     navController: NavHostController,
-    homeViewModel: HomeViewModel,
+//    homeViewModel: HomeViewModel,
     travelInfo: TravelRoomInfoDto,
 ) {
     
@@ -80,7 +79,8 @@ fun BottomCardContainer(
                 context = "친구들에게 알리고 싶은 내용을 입력하고 확인해 봐요.",
                 icon = painterResource(id = R.drawable.ic_speaker),
                 action = {
-                    navController.navigate(Screen.Announcement.route)
+                    Log.d(TAG, "BottomCardContainer: 필독 ${travelInfo.roomId}")
+                    navController.navigate("${Screen.Announcement.route}/${travelInfo.roomId}")
                 }
             )
         }
@@ -107,8 +107,8 @@ fun BottomCardContainer(
                 context = "친구들과 함께 게임을 즐겨봐요.",
                 icon = painterResource(id = R.drawable.ic_game),
                 action = {
-                    Log.d(TAG, "BottomCardContainer: ${homeViewModel.travelRoomInfo.value.roomId}")
-                    navController.navigate("${Screen.GameList.route}/${homeViewModel.travelRoomInfo.value.roomId}")
+                    Log.d(TAG, "BottomCardContainer: ${travelInfo.roomId}")
+                    navController.navigate("${Screen.GameList.route}/${travelInfo.roomId}")
                 }
             )
         }

@@ -39,19 +39,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.FloatingButtonColor
+import com.moneyminions.presentation.viewmodel.announcement.AnnouncementViewModel
 
 private const val TAG = "AnnouncementScreen_D210"
 @Composable
 fun AnnouncementScreen(
     navController: NavHostController,
+    roomId: Int,
+    announcementViewModel: AnnouncementViewModel = hiltViewModel(),
 ) {
-    Log.d(TAG, "AnnouncementScreen: on")
+    
+    Log.d(TAG, "AnnouncementScreen: $roomId")
     var openAnnouncementWritingDialog by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -97,7 +102,11 @@ fun AnnouncementScreen(
         }
 
         if (openAnnouncementWritingDialog) {
-            AnnouncementWritingDialog(onDismiss = { openAnnouncementWritingDialog = false })
+            AnnouncementWritingDialog(
+                onDismiss = { openAnnouncementWritingDialog = false },
+                roomId = roomId,
+//                announcementViewModel = announcementViewModel,
+            )
         }
     }
 }

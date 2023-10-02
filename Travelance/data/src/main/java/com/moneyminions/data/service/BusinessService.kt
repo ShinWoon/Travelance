@@ -3,8 +3,8 @@ package com.moneyminions.data.service
 import com.moneyminions.data.model.common.response.CommonResponse
 import com.moneyminions.data.model.home.request.AnnouncementRequest
 import com.moneyminions.data.model.home.request.UseCashRequest
-import com.moneyminions.data.model.home.response.TravelRoomFriendsResponse
 import com.moneyminions.data.model.home.response.AnnouncementResponse
+import com.moneyminions.data.model.home.response.TravelRoomFriendsResponse
 import com.moneyminions.data.model.home.response.TravelRoomInfoResponse
 import com.moneyminions.data.model.login.request.AuthenticationAccountRequest
 import com.moneyminions.data.model.login.request.LoginRequest
@@ -156,13 +156,11 @@ interface BusinessService {
     @POST("payment/cash")
     suspend fun requestUseCash(@Body useCashRequest: UseCashRequest): CommonResponse
 
-
     /**
      * 여행방 친구 조회
      */
     @GET("travel/room/{roomId}/UserList")
     suspend fun getTravelRoomFriends(@Path("roomId") roomId: Int): List<TravelRoomFriendsResponse>
-
     
     /**
      * 공지사항 등록
@@ -180,7 +178,10 @@ interface BusinessService {
      * 공지사항 삭제
      */
     @DELETE("notice/{roomId}")
-    suspend fun deleteAnnouncement(@Path(value = "roomId") roomId: Int): CommonResponse
+    suspend fun deleteAnnouncement(
+        @Path(value = "roomId") roomId: Int,
+        @Path(value = "noticeId") noticeId: Int,
+    ): CommonResponse
     
     /**
      * 공지사항 수정

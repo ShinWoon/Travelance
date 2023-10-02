@@ -1,6 +1,7 @@
 package com.moneyminions.presentation.navigation
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -75,6 +76,8 @@ fun NavGraph(
         composable(
             route = Screen.Home.route,
         ) {
+            // 현재 정산 중인 방을 선택된 방으로 저장
+            mainViewModel.setSelectRoomId(mainViewModel.getTravelingRoomId())
             HomeScreen(navController = navController, mainViewModel = mainViewModel)
         }
         composable(
@@ -98,9 +101,13 @@ fun NavGraph(
             SettingScreen(navController = navController)
         }
         composable(
-            route = Screen.Announcement.route,
+            route = "${Screen.Announcement.route}/{roomId}",
         ) {
-            AnnouncementScreen(navController = navController)
+            val roomId = it.arguments?.getInt("roomId")
+            Log.d(TAG, "NavGraph:roomId $roomId ")
+            if (roomId != null) {
+                AnnouncementScreen(navController = navController, roomId = roomId)
+            }
         }
         composable(
             route = Screen.EditUser.route,
