@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
+import com.moneyminions.domain.model.home.TravelRoomInfoDto
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold16
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold20
@@ -60,8 +61,8 @@ fun GraphPage(
     cardHeight: Dp,
     totalDot: Int,
     homeViewModel: HomeViewModel,
+    travelInfo: TravelRoomInfoDto,
 ) {
-    val travelInfo = homeViewModel.travelRoomInfo.value
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -98,8 +99,8 @@ fun GraphPage(
                     .weight(3f),
                 horizontalArrangement = Arrangement.SpaceAround,
             ) {
-                MoneyAmountComponent(title = "사용 금액", money = "${travelInfo.budget+travelInfo.rest}원")
-                MoneyAmountComponent(title = "남은 금액", money = "${-travelInfo.rest}원")
+                MoneyAmountComponent(title = "사용 금액", money = "${travelInfo.budget-travelInfo.rest}원")
+                MoneyAmountComponent(title = "남은 금액", money = "${travelInfo.rest}원")
             }
             
             Box(
@@ -137,13 +138,13 @@ fun DonutGraph(
     
     val graphSize: Dp = 160.dp
     
-    val progressValue = homeViewModel.travelRoomInfo.value.percent.toFloat()
+    val progressValue = homeViewModel.travelRoomInfo.value.percent
     LaunchedEffect(key1 = true) {
         while (true) {
-            animationProgress += 1f
             if (animationProgress >= progressValue) { // xx%까지만 그린 후 애니메이션 중지
                 break
             }
+            animationProgress += 1f
             delay(30)
         }
     }

@@ -1,7 +1,9 @@
 package com.moneyminions.data.service
 
 import com.moneyminions.data.model.common.response.CommonResponse
+import com.moneyminions.data.model.home.request.AnnouncementRequest
 import com.moneyminions.data.model.home.request.UseCashRequest
+import com.moneyminions.data.model.home.response.AnnouncementResponse
 import com.moneyminions.data.model.home.response.TravelRoomInfoResponse
 import com.moneyminions.data.model.login.request.AuthenticationAccountRequest
 import com.moneyminions.data.model.login.request.LoginRequest
@@ -152,4 +154,33 @@ interface BusinessService {
      */
     @POST("payment/cash")
     suspend fun requestUseCash(@Body useCashRequest: UseCashRequest): CommonResponse
+    
+    /**
+     * 공지사항 등록
+     */
+    @POST("notice/save")
+    suspend fun saveAnnouncement(@Body announcementRequest: AnnouncementRequest): CommonResponse
+    
+    /**
+     * 공지사항 전체 조회
+     */
+    @GET("notice/{roomId}")
+    suspend fun requestAnnouncementList(@Path(value = "roomId") roomId: Int): List<AnnouncementResponse>
+    
+    /**
+     * 공지사항 삭제
+     */
+    @DELETE("notice/{roomId}")
+    suspend fun deleteAnnouncement(@Path(value = "roomId") roomId: Int): CommonResponse
+    
+    /**
+     * 공지사항 수정
+     */
+    @PATCH("notice/{roomId}")
+    suspend fun editAnnouncement(
+        @Path(value = "roomId") roomId: Int,
+        @Body announcementRequest: AnnouncementRequest
+    ): CommonResponse
+    
+    
 }

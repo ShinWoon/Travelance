@@ -11,9 +11,9 @@ data class TravelRoomMemberUseResponse(
     @SerializedName("content")
     var content: String,
     @SerializedName("category")
-    var category: String,
+    var category: String?,
     @SerializedName("address")
-    var address: String,
+    var address: String?,
     @SerializedName("memberId")
     var memberId: Int,
     @SerializedName("nickName")

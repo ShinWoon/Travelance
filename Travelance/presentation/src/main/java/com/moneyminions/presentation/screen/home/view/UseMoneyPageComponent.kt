@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.moneyminions.domain.model.home.TravelMemberUseDto
+import com.moneyminions.domain.model.home.TravelRoomInfoDto
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.common.MinionProfile
 import com.moneyminions.presentation.screen.home.DotsIndicator
@@ -42,9 +43,8 @@ fun UseMoneyPage(
     title: String,
     totalDot: Int,
     homeViewModel: HomeViewModel,
+    travelInfo: TravelRoomInfoDto,
 ) {
-    val travelInfo = homeViewModel.travelRoomInfo.value
-    
     Card(
         modifier = Modifier
             .fillMaxWidth()
