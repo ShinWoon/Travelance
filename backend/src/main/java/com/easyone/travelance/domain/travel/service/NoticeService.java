@@ -76,12 +76,12 @@ public class NoticeService {
     }
 
 
-    public String deleteNotice(Long roomId, NoticeUpdateRequestDto noticeUpdateRequestDto){
+    public String deleteNotice(Long roomId, Long noticeId){
         Optional<TravelRoom> optionalTravelRoom = travelRoomRepository.findById(roomId);
         if (optionalTravelRoom.isEmpty()){
             throw new EntityNotFoundException("여행방이 존재하지 않습니다.");
         }
-        Optional<Notice> optionalNotice = noticeRepository.findById(noticeUpdateRequestDto.getNoticeId());
+        Optional<Notice> optionalNotice = noticeRepository.findById(noticeId);
 
         if (optionalNotice.isEmpty()){
             throw new EntityNotFoundException("공지사항이 존재하지 않습니다.");

@@ -50,11 +50,11 @@ public class NoticeController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{roomId}")
+    @DeleteMapping("/{roomId}/{noticeId}")
     @Operation(summary = "공지사항 삭제")
     public ResponseEntity<String> deleteNotice(@PathVariable Long roomId,
-                                               @RequestBody NoticeUpdateRequestDto noticeUpdateRequestDto){
-        String response = noticeService.deleteNotice(roomId, noticeUpdateRequestDto);
+                                               @PathVariable Long noticeId){
+        String response = noticeService.deleteNotice(roomId, noticeId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
