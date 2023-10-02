@@ -1,6 +1,7 @@
 package com.moneyminions.presentation.navigation
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -130,7 +131,7 @@ fun NavGraph(
         composable(
             route = "${Screen.GameList.route}/{travelId}",
         ) {
-            val travelId = it.arguments?.getInt("travelId")
+            val travelId = it.arguments?.getString("travelId")?.toInt()
             if (travelId != null) {
                 GameListScreen(navController = navController, travelId = travelId)
             }
@@ -138,7 +139,7 @@ fun NavGraph(
         composable(
             route = "${Screen.CardGame.route}/{travelId}",
         ) {
-            val travelId = it.arguments?.getInt("travelId")
+            val travelId = it.arguments?.getString("travelId")?.toInt()
             if (travelId != null) {
                 CardGameScreen(navController = navController, travelId = travelId)
             }
@@ -151,7 +152,7 @@ fun NavGraph(
         composable(
             route = "${Screen.TeamBuildingGame.route}/{travelId}",
         ) {
-            val travelId = it.arguments?.getInt("travelId")
+            val travelId = it.arguments?.getString("travelId")?.toInt()
             if (travelId != null) {
                 TeamBuildingGameScreen(navController = navController, travelId = travelId)
             }
@@ -183,7 +184,8 @@ fun NavGraph(
         composable(
             route = "${Screen.TravelDetail.route}/{travelId}",
         ) {
-            val travelId = it.arguments?.getInt("travelId")
+            val travelId = it.arguments?.getString("travelId")?.toInt()
+            Log.d(TAG, "NavGraph: travelId $travelId")
             if (travelId != null) {
                 DetailScreen(navController = navController, travelId = travelId, mainViewModel = mainViewModel)
             }
@@ -204,7 +206,7 @@ fun NavGraph(
         composable(
             route = "${Screen.TravelEdit.route}/{roomId}",
         ) {
-            val roomId = it.arguments?.getInt("roomId")
+            val roomId = it.arguments?.getString("roomId")?.toInt()
             if (roomId != null) {
                 CreateTravelScreen(navController = navController, mainViewModel = mainViewModel, roomId = roomId)
             }

@@ -48,6 +48,7 @@ fun DetailScreen(
     travelDetailViewModel: TravelDetailViewModel = hiltViewModel(),
     mainViewModel: MainViewModel,
 ) {
+    Log.d(TAG, "DetailScreen: travelId $travelId")
     val myPaymentListState by travelDetailViewModel.myPaymentListState.collectAsState()
     var myPaymentList by remember {
         mutableStateOf(listOf<TravelPaymentDto>())

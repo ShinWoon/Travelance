@@ -108,7 +108,7 @@ fun BottomCardContainer(
                 icon = painterResource(id = R.drawable.ic_game),
                 action = {
                     Log.d(TAG, "BottomCardContainer: ${homeViewModel.travelRoomInfo.value.roomId}")
-                    navController.navigate("${Screen.GameList.route}/${homeViewModel.travelRoomInfo.value.roomId}")
+                    navController.navigate("${Screen.GameList.route}/{roomId}".replace(oldValue = "{roomId}", newValue = "${homeViewModel.travelRoomInfo.value.roomId}"))
                 }
             )
         }

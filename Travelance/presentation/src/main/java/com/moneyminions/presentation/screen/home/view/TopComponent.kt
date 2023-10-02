@@ -1,6 +1,7 @@
 package com.moneyminions.presentation.screen.home.view
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -26,6 +27,7 @@ import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 
+private const val TAG = "싸피"
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun TopComponent(
@@ -58,7 +60,8 @@ fun TopLeftItem(
     Card(
         modifier = modifier.clickable(
             onClick = {
-                navController.navigate("${Screen.TravelDetail.route}/${homeViewModel.travelRoomInfo.value.roomId}")
+                Log.d(TAG, "TopLeftItem: travelId ${homeViewModel.travelRoomInfo.value.roomId}")
+                navController.navigate("${Screen.TravelDetail.route}/{roomId}".replace(oldValue = "{roomId}", newValue = "${homeViewModel.travelRoomInfo.value.roomId}"))
             },
         ),
         shape = RoundedCornerShape(16.dp),
