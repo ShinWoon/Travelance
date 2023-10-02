@@ -7,11 +7,11 @@ import com.easyone.travelance.domain.travel.entity.Notice;
 import com.easyone.travelance.domain.travel.entity.TravelRoom;
 import com.easyone.travelance.domain.travel.repository.NoticeRepository;
 import com.easyone.travelance.domain.travel.repository.TravelRoomRepository;
-import org.checkerframework.checker.nullness.Opt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,7 +30,6 @@ public class NoticeService {
                 .map(NoticeAllResponseDto::new)
                 .collect(Collectors.toList());
     }
-
     public NoticeAllResponseDto getOneNotice(Long roomId, Long noticeId){
         Notice notice = noticeRepository.findByIdAndTravelRoomId(noticeId, roomId)
                 .orElseThrow(() -> new RuntimeException("공지사항을 찾을 수 없습니다."));
@@ -54,8 +53,13 @@ public class NoticeService {
 
         return "공지사항 등록 성공";
     }
-    public String patchNotice(Long noticeId, NoticeUpdateRequestDto noticeUpdateRequestDto) {
-        Optional<Notice> optionalNotice = noticeRepository.findById(noticeId);
+    public String patchNotice(Long roomId, NoticeUpdateRequestDto noticeUpdateRequestDto) {
+        Optional<TravelRoom> optionalTravelRoom = travelRoomRepository.findById(roomId);
+        if (optionalTravelRoom.isEmpty()){
+            throw new EntityNotFoundException("여행방이 존재하지 않습니다.");
+        }
+
+        Optional<Notice> optionalNotice = noticeRepository.findById(noticeUpdateRequestDto.getNoticeId());
 
         if (optionalNotice.isEmpty()) {
             throw new EntityNotFoundException("공지사항이 존재하지 않습니다.");
@@ -72,14 +76,18 @@ public class NoticeService {
     }
 
 
-    public String deleteNotice(Long noticeId){
-        Optional<Notice> optionalNotice = noticeRepository.findById(noticeId);
+    public String deleteNotice(Long roomId, NoticeUpdateRequestDto noticeUpdateRequestDto){
+        Optional<TravelRoom> optionalTravelRoom = travelRoomRepository.findById(roomId);
+        if (optionalTravelRoom.isEmpty()){
+            throw new EntityNotFoundException("여행방이 존재하지 않습니다.");
+        }
+        Optional<Notice> optionalNotice = noticeRepository.findById(noticeUpdateRequestDto.getNoticeId());
 
         if (optionalNotice.isEmpty()){
             throw new EntityNotFoundException("공지사항이 존재하지 않습니다.");
         }
 
-        noticeRepository.deleteById(noticeId);
+        noticeRepository.deleteById(optionalNotice.get().getId());
 
         return "공지사항이 삭제되었습니다.";
     }

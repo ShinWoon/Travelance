@@ -28,12 +28,12 @@ public class NoticeController {
         return new ResponseEntity<>(noticeList, HttpStatus.OK);
     }
 
-    @GetMapping("/{roomId}/{noticeId}")
-    @Operation(summary = "공지사항 단일 조회")
-    public ResponseEntity<NoticeAllResponseDto> getOneNotice(@PathVariable Long roomId, Long noticeId){
-        NoticeAllResponseDto notice = noticeService.getOneNotice(roomId, noticeId);
-        return new ResponseEntity<>(notice, HttpStatus.OK);
-    }
+//    @GetMapping("/{roomId}/{noticeId}")
+//    @Operation(summary = "공지사항 단일 조회")
+//    public ResponseEntity<NoticeAllResponseDto> getOneNotice(@PathVariable Long roomId, Long noticeId){
+//        NoticeAllResponseDto notice = noticeService.getOneNotice(roomId, noticeId);
+//        return new ResponseEntity<>(notice, HttpStatus.OK);
+//    }
 
     @PostMapping("/save")
     @Operation(summary = "공지사항 등록")
@@ -45,15 +45,16 @@ public class NoticeController {
     @PatchMapping("/{roomId}")
     @Operation(summary = "공지사항 수정")
     public ResponseEntity<String> patchNotice(@PathVariable Long roomId,
-    @RequestBody NoticeUpdateRequestDto noticeUpdateRequestDto){
+                                              @RequestBody NoticeUpdateRequestDto noticeUpdateRequestDto){
         String response = noticeService.patchNotice(roomId, noticeUpdateRequestDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{roomId}")
     @Operation(summary = "공지사항 삭제")
-    public ResponseEntity<String> deleteNotice(@PathVariable Long roomId){
-        String response = noticeService.deleteNotice(roomId);
+    public ResponseEntity<String> deleteNotice(@PathVariable Long roomId,
+                                               @RequestBody NoticeUpdateRequestDto noticeUpdateRequestDto){
+        String response = noticeService.deleteNotice(roomId, noticeUpdateRequestDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
