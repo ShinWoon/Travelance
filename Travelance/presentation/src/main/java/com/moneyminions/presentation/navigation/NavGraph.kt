@@ -135,11 +135,11 @@ fun NavGraph(
             TravelMapScreen(navController = navController)
         }
         composable(
-            route = "${Screen.GameList.route}/{route}",
+            route = "${Screen.GameList.route}/{roomId}",
         ) {
-            val route = it.arguments?.getString("route")?.toInt()
-            if (route != null) {
-                GameListScreen(navController = navController, travelId = route)
+            val roomId = it.arguments?.getString("roomId")?.toInt()
+            if (roomId != null) {
+                GameListScreen(navController = navController, travelId = roomId)
             }
         }
         composable(
