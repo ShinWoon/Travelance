@@ -94,7 +94,7 @@ fun BottomCardContainer(
                 context = "우리의 여행 발자취를 확인해 봐요.",
                 icon = painterResource(id = R.drawable.ic_map_point),
                 action = {
-                    navController.navigate(Screen.TravelMap.route)
+                    navController.navigate("${Screen.TravelMap.route}/home")
                 }
             )
             Spacer(modifier = Modifier.width(8.dp))

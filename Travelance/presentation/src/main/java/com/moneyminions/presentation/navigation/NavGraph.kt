@@ -123,9 +123,10 @@ fun NavGraph(
             CardListScreen(navController = navController, loginViewModel = loginViewModel)
         }
         composable(
-            route = Screen.TravelMap.route,
+            route = "${Screen.TravelMap.route}/{type}",
         ) {
-            TravelMapScreen(navController = navController)
+            val type = it.arguments?.getString("type")
+            TravelMapScreen(navController = navController, type = type)
         }
         composable(
             route = "${Screen.GameList.route}/{travelId}",
