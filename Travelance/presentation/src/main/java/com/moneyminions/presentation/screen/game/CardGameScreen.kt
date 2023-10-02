@@ -2,6 +2,7 @@ package com.moneyminions.presentation.screen.game
 
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,6 +45,11 @@ fun CardGameScreen(
     NetworkResultHandler(state = friendsListState, errorAction = { /*TODO*/ }, successAction = {
         selectedWinnerFriend = cardGameViewModel.getWinner(friendsList)
     })
+    
+    LaunchedEffect(key1 = Unit) {
+        Log.d(TAG, "CardGameScreen: $travelId")
+        cardGameViewModel.getTravelRoomFriends(travelId)
+    }
 
     // CardSlider 애니메이션 완료 시 콜백
     val onSlideComplete: () -> Unit = {

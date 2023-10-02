@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.viewmodel.game
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moneyminions.domain.model.NetworkResult
@@ -12,6 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.random.Random
 
+private const val TAG = "싸피"
 @HiltViewModel
 class CardGameViewModel @Inject constructor(
     private val getTravelRoomFriendsUseCase: GetTravelRoomFriendsUseCase
@@ -22,6 +24,7 @@ class CardGameViewModel @Inject constructor(
     fun getTravelRoomFriends(roomId: Int) = viewModelScope.launch {
         _getTravelRoomFriendsState.value = NetworkResult.Loading
         _getTravelRoomFriendsState.emit(getTravelRoomFriendsUseCase.invoke(roomId))
+        Log.d(TAG, "getTravelRoomFriends: $getTravelRoomFriendState")
     }
 
     fun getWinner(friendsList: List<TravelRoomFriendDto>): TravelRoomFriendDto {

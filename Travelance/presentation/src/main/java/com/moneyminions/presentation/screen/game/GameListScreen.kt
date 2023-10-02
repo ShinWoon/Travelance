@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.screen.game
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,6 +32,7 @@ import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.CardLightGray
 
+private const val TAG = "싸피"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameListScreen(
@@ -38,6 +40,7 @@ fun GameListScreen(
     modifier: Modifier = Modifier,
     travelId: Int,
 ) {
+    Log.d(TAG, "GameListScreen: $travelId")
     val scrollableState = rememberScrollState()
     Column(
         modifier = modifier
