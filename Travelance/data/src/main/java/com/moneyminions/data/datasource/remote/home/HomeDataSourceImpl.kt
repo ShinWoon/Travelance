@@ -1,6 +1,8 @@
 package com.moneyminions.data.datasource.remote.home
 
+import android.util.Log
 import com.moneyminions.data.model.common.response.CommonResponse
+import com.moneyminions.data.model.home.request.AnnouncementEditRequest
 import com.moneyminions.data.model.home.request.AnnouncementRequest
 import com.moneyminions.data.model.home.request.UseCashRequest
 import com.moneyminions.data.model.home.response.AnnouncementResponse
@@ -8,6 +10,7 @@ import com.moneyminions.data.model.home.response.TravelRoomFriendsResponse
 import com.moneyminions.data.model.home.response.TravelRoomInfoResponse
 import com.moneyminions.data.service.BusinessService
 
+private const val TAG = "HomeDataSourceImpl_D210"
 class HomeDataSourceImpl(
     private val businessService: BusinessService,
 ) : HomeDataSource {
@@ -61,6 +64,7 @@ class HomeDataSourceImpl(
         roomId: Int,
         noticeId: Int,
     ): CommonResponse {
+        Log.d(TAG, "deleteAnnouncement: $roomId, $noticeId")
         return businessService.deleteAnnouncement(
             roomId = roomId,
             noticeId = noticeId,
@@ -72,11 +76,12 @@ class HomeDataSourceImpl(
      */
     override suspend fun editAnnouncement(
         roomId: Int,
-        announcementRequest: AnnouncementRequest,
+        announcementEditRequest: AnnouncementEditRequest,
     ): CommonResponse {
+        Log.d(TAG, "editAnnouncement: $roomId \n $announcementEditRequest")
         return businessService.editAnnouncement(
             roomId = roomId,
-            announcementRequest = announcementRequest
+            announcementEditRequest = announcementEditRequest
         )
     }
 }

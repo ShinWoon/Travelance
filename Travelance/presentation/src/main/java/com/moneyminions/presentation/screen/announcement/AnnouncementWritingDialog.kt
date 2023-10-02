@@ -19,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,7 +31,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.common.MinionButtonSet
@@ -41,15 +39,16 @@ import com.moneyminions.presentation.theme.GraphGray
 import com.moneyminions.presentation.theme.Gray
 import com.moneyminions.presentation.theme.PinkLight
 import com.moneyminions.presentation.theme.White
-import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.announcement.AnnouncementViewModel
 
 private const val TAG = "AnnouncementWritingDial_D210"
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnnouncementWritingDialog(
-    announcementViewModel: AnnouncementViewModel = hiltViewModel(),
+    announcementViewModel: AnnouncementViewModel,
     roomId: Int,
+//    announcementDto: AnnouncementDto,
     onDismiss: () -> Unit,
 ) {
     Log.d(TAG, "AnnouncementWritingDialog: $roomId")
@@ -59,16 +58,6 @@ fun AnnouncementWritingDialog(
         cursorColor = Color.Black, // 커서 색상
     )
     var isHintVisible by remember { mutableStateOf(announcementViewModel.content.value.isEmpty()) }
-
-    val saveAnnouncementState by announcementViewModel.saveAnnouncementResult.collectAsState()
-    NetworkResultHandler(
-        state = saveAnnouncementState,
-        errorAction = { /*TODO*/ },
-        successAction = {
-            Log.d(TAG, "AnnouncementWritingDialog: 공지사항 등록 성공")
-            onDismiss()
-        }
-    )
     
     Dialog(
         onDismissRequest = onDismiss,
@@ -82,7 +71,7 @@ fun AnnouncementWritingDialog(
                     .padding(16.dp),
             ) {
                 TopComponent()
-
+                
                 Spacer(modifier = Modifier.height(16.dp))
                 TextFieldWithTitle(
                     title = "제목",
@@ -92,14 +81,14 @@ fun AnnouncementWritingDialog(
                         announcementViewModel.setTitle(it)
                     },
                 )
-
+                
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = "내용",
                     style = CustomTextStyle.pretendardBold16,
                     modifier = Modifier.layoutId("textTitle"),
                 )
-
+                
                 Spacer(modifier = Modifier.size(8.dp))
                 OutlinedTextField(
                     value = announcementViewModel.content.value,
@@ -125,14 +114,14 @@ fun AnnouncementWritingDialog(
                         .fillMaxWidth()
                         .height(100.dp),
                 )
-
+                
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = "링크 제목",
                     style = CustomTextStyle.pretendardBold16,
                     modifier = Modifier.layoutId("textTitle"),
                 )
-
+                
                 TextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = announcementViewModel.link.value,
@@ -164,17 +153,22 @@ fun AnnouncementWritingDialog(
                         disabledIndicatorColor = Gray,
                     ),
                 )
-
+                
                 Spacer(modifier = Modifier.height(16.dp))
                 MinionButtonSet(
                     modifier = Modifier.fillMaxWidth(),
-                    contentLeft = "추가",
+                    contentLeft = if(announcementViewModel.selectNoticeId.value == 0) "추가" else "수정",
                     onClickLeft = {
-                        /**
-                         * 입력시 viewModel -> usecase -> api 로 통신 -> 실패시 알려주기
-                         * 홈 화면 로딩 -> 변경된 데이터 화면에 보이기
-                         */
-//                        announcementViewModel.saveAnnouncement(roomId)
+                        
+                        if(announcementViewModel.checkInput()) {
+                            if(announcementViewModel.selectNoticeId.value == 0) { // 저장
+                                announcementViewModel.saveAnnouncement(roomId = roomId)
+                            } else { // 삭제
+                                announcementViewModel.editAnnouncement(roomId = roomId)
+                            }
+                            announcementViewModel.inputReset()
+                            onDismiss()
+                        }
                     },
                     contentRight = "취소",
                     onClickRight = onDismiss,

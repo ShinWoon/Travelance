@@ -1,6 +1,7 @@
 package com.moneyminions.data.datasource.remote.home
 
 import com.moneyminions.data.model.common.response.CommonResponse
+import com.moneyminions.data.model.home.request.AnnouncementEditRequest
 import com.moneyminions.data.model.home.request.AnnouncementRequest
 import com.moneyminions.data.model.home.request.UseCashRequest
 import com.moneyminions.data.model.home.response.AnnouncementResponse
@@ -51,6 +52,6 @@ interface HomeDataSource {
      */
     suspend fun editAnnouncement(
         roomId: Int,
-        announcementRequest: AnnouncementRequest,
+        announcementEditRequest: AnnouncementEditRequest,
     ): CommonResponse
 }

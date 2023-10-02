@@ -1,6 +1,7 @@
 package com.moneyminions.data.service
 
 import com.moneyminions.data.model.common.response.CommonResponse
+import com.moneyminions.data.model.home.request.AnnouncementEditRequest
 import com.moneyminions.data.model.home.request.AnnouncementRequest
 import com.moneyminions.data.model.home.request.UseCashRequest
 import com.moneyminions.data.model.home.response.AnnouncementResponse
@@ -181,7 +182,7 @@ interface BusinessService {
     /**
      * 공지사항 삭제
      */
-    @DELETE("notice/{roomId}")
+    @DELETE("notice/{roomId}/{noticeId}")
     suspend fun deleteAnnouncement(
         @Path(value = "roomId") roomId: Int,
         @Path(value = "noticeId") noticeId: Int,
@@ -193,7 +194,7 @@ interface BusinessService {
     @PATCH("notice/{roomId}")
     suspend fun editAnnouncement(
         @Path(value = "roomId") roomId: Int,
-        @Body announcementRequest: AnnouncementRequest
+        @Body announcementEditRequest: AnnouncementEditRequest
     ): CommonResponse
 
 

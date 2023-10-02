@@ -1,12 +1,14 @@
 package com.moneyminions.data.mapper
 
+import com.moneyminions.data.model.home.request.AnnouncementEditRequest
 import com.moneyminions.data.model.home.request.AnnouncementRequest
 import com.moneyminions.data.model.home.request.UseCashRequest
-import com.moneyminions.data.model.home.response.TravelRoomFriendsResponse
 import com.moneyminions.data.model.home.response.AnnouncementResponse
+import com.moneyminions.data.model.home.response.TravelRoomFriendsResponse
 import com.moneyminions.data.model.home.response.TravelRoomInfoResponse
 import com.moneyminions.data.model.home.response.TravelRoomMemberUseResponse
 import com.moneyminions.domain.model.home.AnnouncementDto
+import com.moneyminions.domain.model.home.AnnouncementEditDto
 import com.moneyminions.domain.model.home.CashDto
 import com.moneyminions.domain.model.home.TravelMemberUseDto
 import com.moneyminions.domain.model.home.TravelRoomFriendDto
@@ -58,6 +60,15 @@ fun TravelRoomFriendsResponse.toDomain(): TravelRoomFriendDto {
 fun AnnouncementDto.toData(): AnnouncementRequest {
     return AnnouncementRequest(
         roomId = id,
+        content =content,
+        link = link,
+        title = title,
+    )
+}
+
+fun AnnouncementEditDto.toData(): AnnouncementEditRequest {
+    return AnnouncementEditRequest(
+        noticeId = id,
         content =content,
         link = link,
         title = title,

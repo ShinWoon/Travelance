@@ -31,6 +31,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,11 +42,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.moneyminions.domain.model.home.AnnouncementDto
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.FloatingButtonColor
+import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.announcement.AnnouncementViewModel
 
 private const val TAG = "AnnouncementScreen_D210"
@@ -55,10 +58,55 @@ fun AnnouncementScreen(
     roomId: Int,
     announcementViewModel: AnnouncementViewModel = hiltViewModel(),
 ) {
+    announcementViewModel.getAnnouncementList(roomId)
     
-    Log.d(TAG, "AnnouncementScreen: $roomId")
+    // 공지사항 저장
+    val saveAnnouncementState by announcementViewModel.saveAnnouncementResult.collectAsState()
+    NetworkResultHandler(
+        state = saveAnnouncementState,
+        errorAction = { /*TODO*/ },
+        successAction = {
+            Log.d(TAG, "AnnouncementWritingDialog: 공지사항 등록 성공 $it")
+            announcementViewModel.getAnnouncementList(roomId)
+        }
+    )
+    
+    // 공지사항 리스트
+    val getAnnouncementListState by announcementViewModel.getAnnouncementListResult.collectAsState()
+    NetworkResultHandler(
+        state = getAnnouncementListState,
+        errorAction = { /*TODO*/ },
+        successAction = {
+            Log.d(TAG, "AnnouncementScreen: 전체 공지 사항 Get 성공 \n $it")
+            announcementViewModel.refleshAnnouncementList(it.toMutableList())
+        }
+    )
+    
+    // 공지사항 삭제
+    val deleteAnnouncementState by announcementViewModel.deleteAnnouncementResult.collectAsState()
+    NetworkResultHandler(
+        state = deleteAnnouncementState,
+        errorAction = { /*TODO*/ },
+        successAction = {
+            Log.d(TAG, "AnnouncementScreen: 전체 공지 사항 삭제 성공 \n $it")
+            announcementViewModel.getAnnouncementList(roomId)
+        }
+    )
+    
+    // 공지사항 수정
+    val editAnnouncementState by announcementViewModel.editAnnouncementResult.collectAsState()
+    NetworkResultHandler(
+        state = editAnnouncementState,
+        errorAction = { /*TODO*/ },
+        successAction = {
+            Log.d(TAG, "AnnouncementScreen: 전체 공지 사항 수정 성공 \n $it")
+            announcementViewModel.getAnnouncementList(roomId)
+        }
+    )
+    
+    Log.d(TAG, "AnnouncementScreen: $roomId \n")
     var openAnnouncementWritingDialog by remember { mutableStateOf(false) }
-
+    
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         floatingActionButtonPosition = FabPosition.End,
@@ -87,15 +135,12 @@ fun AnnouncementScreen(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                items(5) {
+                items(announcementViewModel.announcementList.value.size) {
                     // todo API 통신시 수정 필요
                     AnnounceItem(
-                        content = "펜션 이름 : 특화 펜션\n" +
-                            "기간 : 2023/09/06 ~ 2023/09/08(2박 3일)\n" +
-                            "비용 : 256,000원\n" +
-                            "현장 결제 : 20,000원\n" +
-                            "체크인 : 15시\n" +
-                            "체크아웃 : 11시",
+                        announcementViewModel = announcementViewModel,
+                        roomId = roomId,
+                        announcementViewModel.announcementList.value[it],
                     )
                 }
             }
@@ -105,15 +150,18 @@ fun AnnouncementScreen(
             AnnouncementWritingDialog(
                 onDismiss = { openAnnouncementWritingDialog = false },
                 roomId = roomId,
-//                announcementViewModel = announcementViewModel,
+                announcementViewModel = announcementViewModel,
             )
         }
     }
 }
 
+
 @Composable
 fun AnnounceItem(
-    content: String,
+    announcementViewModel : AnnouncementViewModel,
+    roomId: Int,
+    announcementDto: AnnouncementDto,
 ) {
     // false: 제목만 보이는 상태 / true: 상세 보기 상태
     var isDetailInfo by remember { mutableStateOf(false) }
@@ -134,14 +182,19 @@ fun AnnounceItem(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                TitleWithLink()
-                EditDropdownMenu()
+                TitleWithLink(announcementDto = announcementDto)
+                EditDropdownMenu(
+                    announcementViewModel = announcementViewModel,
+                    roomId = roomId,
+                    noticeId = announcementDto.id,
+                    announcementDto = announcementDto,
+                )
             }
             
 
             if (isDetailInfo) {
                 Spacer(modifier = Modifier.height(12.dp))
-                Text(text = content, style = CustomTextStyle.pretendardSemiBold12)
+                Text(text = announcementDto.content, style = CustomTextStyle.pretendardSemiBold12)
             }
 
             Box(
@@ -169,11 +222,13 @@ fun AnnounceItem(
 }
 
 @Composable
-fun TitleWithLink() {
+fun TitleWithLink(
+    announcementDto: AnnouncementDto,
+) {
     Row (
         verticalAlignment = Alignment.CenterVertically
     ){
-        Text(text = "제목", style = CustomTextStyle.pretendardBold20)
+        Text(text = announcementDto.title, style = CustomTextStyle.pretendardBold20)
         Spacer(modifier = Modifier.width(4.dp))
         Image(
             painter = painterResource(id = R.drawable.ic_link),
@@ -190,9 +245,15 @@ fun TitleWithLink() {
 }
 
 @Composable
-fun EditDropdownMenu() {
+fun EditDropdownMenu(
+    announcementViewModel : AnnouncementViewModel,
+    roomId: Int,
+    noticeId: Int,
+    announcementDto: AnnouncementDto,
+) {
     // dropDownMenu
     var expandStatus by remember { mutableStateOf(false) }
+    var openAnnouncementWritingDialog by remember { mutableStateOf(false) }
     
     Column(
         modifier = Modifier.background(CardLightGray),
@@ -204,7 +265,7 @@ fun EditDropdownMenu() {
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_three_dot),
-                contentDescription = "back button"
+                contentDescription = "option"
             )
         }
 
@@ -216,7 +277,13 @@ fun EditDropdownMenu() {
             DropdownMenuItem(
                 text = { Text(text = "수정") },
                 onClick = {
-
+                    announcementViewModel.apply {
+                        setTitle(announcementDto.title)
+                        setContent(announcementDto.content)
+                        setLink(announcementDto.link)
+                        setSelectNoticeId(noticeId)
+                    }
+                    openAnnouncementWritingDialog = true
                     expandStatus = false
                 }
             )
@@ -224,10 +291,21 @@ fun EditDropdownMenu() {
             DropdownMenuItem(
                 text = {Text(text = "삭제")},
                 onClick = {
-
+                    announcementViewModel.deleteAnnouncement(
+                        roomId = roomId,
+                        noticeId = noticeId
+                    )
                     expandStatus = false
                 }
             )
         }
+    }
+    
+    if (openAnnouncementWritingDialog) {
+        AnnouncementWritingDialog(
+            onDismiss = { openAnnouncementWritingDialog = false },
+            roomId = roomId,
+            announcementViewModel = announcementViewModel,
+        )
     }
 }
