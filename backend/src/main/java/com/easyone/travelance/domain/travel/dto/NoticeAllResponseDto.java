@@ -7,11 +7,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class NoticeAllResponseDto {
+    private Long noticeId;
     private String title;
     private String content;
     private String link;
 
     public NoticeAllResponseDto(Notice notice) {
+        this.noticeId = notice.getId();
         this.title = notice.getTitle();
         this.content = notice.getContent();
         this.link = notice.getLink();
