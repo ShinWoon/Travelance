@@ -152,7 +152,7 @@ public class TravelPaymentWithService {
             String category = payment.getStoreSector();
             Long amount = payment.getPaymentAmount();
 
-            double percent = (amount.doubleValue() / totalPayment) * 100.0;
+            double percent = Math.floor(((double) amount / totalPayment) * 10.0) /10.0;
 
             CategoryExpenseDto categoryExpenseDto = new CategoryExpenseDto(category, percent);
 
