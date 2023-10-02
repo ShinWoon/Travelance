@@ -20,9 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -142,22 +140,35 @@ public class TravelPaymentWithService {
                 .collect(Collectors.toList());
 
         //4. 여행 공금을 기준으로 카테고리별로 몇 퍼센트 사용했는지
+
+        Map<String, Long> categoryPaymentsMap = new HashMap<>();
+
+        for (Payment payment: payments) {
+            String category = payment.getStoreSector();
+            long amount = payment.getPaymentAmount();
+            if (categoryPaymentsMap.containsKey(category)) {
+                long currentTotal = categoryPaymentsMap.get(category);
+                categoryPaymentsMap.put(category, currentTotal + amount);
+            } else {
+                // 존재하지 않는 카테고리의 경우 0으로 초기화하여 추가
+                categoryPaymentsMap.put(category, amount);
+            }
+        }
+
         List<CategoryExpenseDto> categoryExpenseDtoList = new ArrayList<>();
 
         long totalPayment = payments.stream()
                 .mapToLong(Payment::getPaymentAmount)
                 .sum();
 
-        for (Payment payment: payments) {
-            String category = payment.getStoreSector();
-            Long amount = payment.getPaymentAmount();
+        for (Map.Entry<String, Long> entry : categoryPaymentsMap.entrySet()) {
+            String category = entry.getKey();
+            long amount = entry.getValue();
 
-            double percent = (amount.doubleValue() / totalPayment) * 100.0;
-
+            double percent = ((double) amount / totalPayment) * 100.0;
             CategoryExpenseDto categoryExpenseDto = new CategoryExpenseDto(category, percent);
 
             categoryExpenseDtoList.add(categoryExpenseDto);
-
         }
 
         //5. 나의 공금 전체 내역
