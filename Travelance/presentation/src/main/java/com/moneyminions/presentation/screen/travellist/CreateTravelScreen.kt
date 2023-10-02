@@ -14,6 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,14 +27,17 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.moneyminions.domain.model.traveldetail.TravelRoomInfoDto
 import com.moneyminions.presentation.common.MinionPrimaryButton
 import com.moneyminions.presentation.common.TextFieldWithTitle
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.travellist.view.Calendar
 import com.moneyminions.presentation.screen.travellist.view.DateTextComponent
 import com.moneyminions.presentation.screen.travellist.view.ProfileDialog
+import com.moneyminions.presentation.utils.MoneyUtils
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.MainViewModel
+import com.moneyminions.presentation.viewmodel.travel.TravelEditViewModel
 import com.moneyminions.presentation.viewmodel.travellist.CreateTravelViewModel
 import kotlinx.coroutines.launch
 
@@ -43,8 +47,10 @@ private const val TAG = "CreateTravelScreen_D210"
 @Composable
 fun CreateTravelScreen(
     createTravelViewModel: CreateTravelViewModel = hiltViewModel(),
+    travelEditViewModel: TravelEditViewModel = hiltViewModel(),
     navController: NavHostController,
     mainViewModel: MainViewModel,
+    roomId: Int = -1
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
@@ -76,7 +82,19 @@ fun CreateTravelScreen(
             end.linkTo(parent.end, margin = 16.dp)
         }
     }
-    
+
+    var travelRoomInfo by remember { mutableStateOf(TravelRoomInfoDto()) }
+    if(roomId != -1) {
+        LaunchedEffect(Unit) {
+            travelRoomInfo = mainViewModel.travelRoomInfo
+        }
+    }
+
+    val travelRoomEditState by travelEditViewModel.travelRoomEditState.collectAsState()
+    NetworkResultHandler(state = travelRoomEditState, errorAction = { /*TODO*/ }, successAction = {
+        navController.popBackStack()
+    })
+
     // 프로필 설정 다이얼로그
     var openProfileDialog by remember { mutableStateOf(false) }
 
@@ -100,7 +118,7 @@ fun CreateTravelScreen(
                     TextFieldWithTitle(
                         title = "이름",
                         hint = "여행 이름을 입력하세요",
-                        value = createTravelViewModel.travelName.value,
+                        value = if(roomId == -1) createTravelViewModel.travelName.value else travelRoomInfo.travelName,
                         onValueChange = {
                             createTravelViewModel.setTravelName(it)
                         },
@@ -111,7 +129,7 @@ fun CreateTravelScreen(
                     TextFieldWithTitle(
                         title = "예산",
                         hint = "예산을 입력해주세요",
-                        value = createTravelViewModel.travelBudget.value,
+                        value = if(roomId == -1) createTravelViewModel.travelBudget.value else travelRoomInfo.budget.toString(),
                         onValueChange = {
                             createTravelViewModel.setTravelBudget(it)
                         },
@@ -122,33 +140,41 @@ fun CreateTravelScreen(
                 Column {
                     DateTextComponent(
                         text = "시작 날짜 : ",
-                        value = createTravelViewModel.startDate.value,
+                        value = if(roomId == -1) createTravelViewModel.startDate.value else travelRoomInfo.startDate,
                     )
                     Spacer(
                         modifier = Modifier.size(16.dp),
                     )
                     DateTextComponent(
                         text = "종료 날짜 : ",
-                        value = createTravelViewModel.endDate.value,
+                        value = if(roomId == -1) createTravelViewModel.endDate.value else travelRoomInfo.endDate,
                     )
                 }
                 MinionPrimaryButton(
                     content = "생성",
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    if (createTravelViewModel.InputTravelCheck()) {
-                        coroutineScope.launch {
-                            snackbarHostState.showSnackbar("입력을 확인하세요.")
-                        }
-                    } else {
-                        openProfileDialog = true
+                    when(roomId) {
+                        -1 -> {
+                            if (createTravelViewModel.InputTravelCheck()) {
+                                coroutineScope.launch {
+                                    snackbarHostState.showSnackbar("입력을 확인하세요.")
+                                }
+                            } else {
+                                openProfileDialog = true
 //                        createTravelViewModel.createTravelRoom()
+                            }
+                        }
+                        else -> {
+                            travelEditViewModel.editTravelRoomInfo(roomId = roomId, travelRoomInfoDto = travelRoomInfo)
+                        }
                     }
+
                 }
             }
         }
     }
-    
+
     // 프로필 설정 다이얼로그
     if(openProfileDialog) {
         ProfileDialog(onDismiss = {openProfileDialog = false})

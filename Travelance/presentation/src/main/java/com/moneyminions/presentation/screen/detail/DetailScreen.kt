@@ -34,6 +34,7 @@ import com.moneyminions.presentation.screen.detail.view.DetailTabView
 import com.moneyminions.presentation.screen.detail.view.PublicMoneyDeleteDialog
 import com.moneyminions.presentation.theme.White
 import com.moneyminions.presentation.utils.NetworkResultHandler
+import com.moneyminions.presentation.viewmodel.MainViewModel
 import com.moneyminions.presentation.viewmodel.travel.TravelDetailViewModel
 
 private const val TAG = "싸피"
@@ -45,6 +46,7 @@ fun DetailScreen(
     travelId: Int,
     modifier: Modifier = Modifier,
     travelDetailViewModel: TravelDetailViewModel = hiltViewModel(),
+    mainViewModel: MainViewModel,
 ) {
     val myPaymentListState by travelDetailViewModel.myPaymentListState.collectAsState()
     var myPaymentList by remember {
@@ -128,6 +130,9 @@ fun DetailScreen(
                 type = "detail",
                 modifier = Modifier,
                 navController = navController,
+                setTravelRoomInfo = {travelRoomInfoDto ->
+                    mainViewModel.putTravelRoomInfo(travelRoomInfoDto)
+                }
             )
             DetailTabView(
                 modifier = Modifier,

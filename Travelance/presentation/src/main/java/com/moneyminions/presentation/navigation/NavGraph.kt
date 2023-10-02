@@ -185,7 +185,7 @@ fun NavGraph(
         ) {
             val travelId = it.arguments?.getInt("travelId")
             if (travelId != null) {
-                DetailScreen(navController = navController, travelId = travelId)
+                DetailScreen(navController = navController, travelId = travelId, mainViewModel = mainViewModel)
             }
         }
         composable(
@@ -202,9 +202,12 @@ fun NavGraph(
             }
         }
         composable(
-            route = Screen.TravelEdit.route,
+            route = "${Screen.TravelEdit.route}/{roomId}",
         ) {
-            CreateTravelScreen(navController = navController, mainViewModel = mainViewModel)
+            val roomId = it.arguments?.getInt("roomId")
+            if (roomId != null) {
+                CreateTravelScreen(navController = navController, mainViewModel = mainViewModel, roomId = roomId)
+            }
         }
     }
 } // End of setUpNavGraph
