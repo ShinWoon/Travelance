@@ -2,6 +2,7 @@ package com.moneyminions.data.datasource.remote.home
 
 import com.moneyminions.data.model.common.response.CommonResponse
 import com.moneyminions.data.model.home.request.UseCashRequest
+import com.moneyminions.data.model.home.response.TravelRoomFriendsResponse
 import com.moneyminions.data.model.home.response.TravelRoomInfoResponse
 import com.moneyminions.data.service.BusinessService
 
@@ -25,5 +26,9 @@ class HomeDataSourceImpl (
     
     override suspend fun requestUseCash(useCashRequest: UseCashRequest): CommonResponse {
         return businessService.requestUseCash(useCashRequest = useCashRequest)
+    }
+
+    override suspend fun getTravelRoomFriends(roomId: Int): List<TravelRoomFriendsResponse> {
+        return businessService.getTravelRoomFriends(roomId = roomId)
     }
 }

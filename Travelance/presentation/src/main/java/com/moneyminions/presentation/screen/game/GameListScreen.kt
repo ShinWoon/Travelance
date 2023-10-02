@@ -49,7 +49,7 @@ fun GameListScreen(
             title = "카드 뽑기",
             gameImg = R.drawable.ic_card_game,
             action = {
-                navController.navigate(Screen.CardGame.route)
+                navController.navigate("${Screen.CardGame.route}/$travelId")
             },
         )
         Spacer(modifier = Modifier.height(4.dp))
@@ -65,7 +65,7 @@ fun GameListScreen(
             title = "팀 정하기",
             gameImg = R.drawable.ic_team_building,
             action = {
-                navController.navigate(Screen.TeamBuildingGame.route)
+                navController.navigate("${Screen.TeamBuildingGame.route}/$travelId")
             },
         )
         Spacer(modifier = Modifier.height(4.dp))

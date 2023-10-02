@@ -4,7 +4,10 @@ import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.friend.FriendDto
+import com.moneyminions.domain.model.home.TravelRoomFriendDto
+import com.moneyminions.domain.usecase.home.GetTravelRoomFriendsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,8 +16,16 @@ import javax.inject.Inject
 private const val TAG = "ChooseTeamGameViewModel"
 
 @HiltViewModel
-class ChooseTeamGameViewModel @Inject constructor() : ViewModel() {
-    data class FriendDto(val email: String, val nickName: String, val profileUrl: String)
+class ChooseTeamGameViewModel @Inject constructor(
+    private val travelRoomFriendsUseCase: GetTravelRoomFriendsUseCase
+) : ViewModel() {
+
+    private val _getTravelRoomFriendsState = MutableStateFlow<NetworkResult<List<TravelRoomFriendDto>>>(
+        NetworkResult.Idle)
+    val getTravelRoomFriendState = _getTravelRoomFriendsState.asStateFlow()
+
+
+        data class FriendDto(val email: String, val nickName: String, val profileUrl: String)
 
     val teammate = mutableListOf(
         FriendDto("scoups@example.com", "에스쿱스", "https://i.namu.wiki/i/-qrEP8xH9rwiWXnV5aTPgpuFORmvdzm-g-sK3v_Rg456mVv7gDnCOW8xpNxQ2GTl2SHlde8xmVmijBFZRMEeNlAMe0qyKvRH15reR-7D1aTMi5Cl88qOSXKBwHAQKBDpZ3hltnmjXnOhMDDUKR-5yw.webp"),

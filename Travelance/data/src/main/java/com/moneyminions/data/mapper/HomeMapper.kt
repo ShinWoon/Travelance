@@ -1,10 +1,12 @@
 package com.moneyminions.data.mapper
 
 import com.moneyminions.data.model.home.request.UseCashRequest
+import com.moneyminions.data.model.home.response.TravelRoomFriendsResponse
 import com.moneyminions.data.model.home.response.TravelRoomInfoResponse
 import com.moneyminions.data.model.home.response.TravelRoomMemberUseResponse
 import com.moneyminions.domain.model.home.CashDto
 import com.moneyminions.domain.model.home.TravelMemberUseDto
+import com.moneyminions.domain.model.home.TravelRoomFriendDto
 import com.moneyminions.domain.model.home.TravelRoomInfoDto
 
 fun TravelRoomInfoResponse.toDomain(): TravelRoomInfoDto {
@@ -39,6 +41,14 @@ fun CashDto.toData(): UseCashRequest {
         roomNumber = roomNumber,
         paymentContent = paymentContent,
         paymentAmount = paymentAmount,
+    )
+}
+
+fun TravelRoomFriendsResponse.toDomain(): TravelRoomFriendDto {
+    return TravelRoomFriendDto(
+        email = email,
+        profileUrl = profileUrl,
+        travelNickname = travelNickname,
     )
 }
 

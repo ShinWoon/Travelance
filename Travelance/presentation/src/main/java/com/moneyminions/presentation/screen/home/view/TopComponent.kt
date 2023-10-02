@@ -58,7 +58,7 @@ fun TopLeftItem(
     Card(
         modifier = modifier.clickable(
             onClick = {
-                navController.navigate("${Screen.TravelDetail.route}/${travelName}")
+                navController.navigate("${Screen.TravelDetail.route}/${homeViewModel.travelRoomInfo.value.roomId}")
             },
         ),
         shape = RoundedCornerShape(16.dp),

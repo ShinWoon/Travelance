@@ -7,6 +7,7 @@ import com.moneyminions.data.service.handleApi
 import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.common.CommonResultDto
 import com.moneyminions.domain.model.home.CashDto
+import com.moneyminions.domain.model.home.TravelRoomFriendDto
 import com.moneyminions.domain.model.home.TravelRoomInfoDto
 import com.moneyminions.domain.repository.home.HomeRepository
 import javax.inject.Inject
@@ -33,5 +34,9 @@ class HomeRepositoryImpl @Inject constructor(
      */
     override suspend fun requestUseCash(cashDto: CashDto): NetworkResult<CommonResultDto> {
         return handleApi { homeDataSource.requestUseCash(cashDto.toData()).toDomain() }
+    }
+
+    override suspend fun getTravelRoomFriends(roomId: Int): NetworkResult<List<TravelRoomFriendDto>> {
+        return handleApi { homeDataSource.getTravelRoomFriends(roomId).map { it.toDomain() } }
     }
 }

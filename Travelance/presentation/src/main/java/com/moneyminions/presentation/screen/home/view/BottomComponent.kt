@@ -105,7 +105,7 @@ fun BottomCardContainer(
                 context = "친구들과 함께 게임을 즐겨봐요.",
                 icon = painterResource(id = R.drawable.ic_game),
                 action = {
-                    navController.navigate(Screen.GameList.route)
+                    navController.navigate("${Screen.GameList.route}/${homeViewModel.travelRoomInfo.value.roomId}")
                 }
             )
         }

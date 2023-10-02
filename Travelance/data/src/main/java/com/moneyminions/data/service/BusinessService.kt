@@ -2,6 +2,7 @@ package com.moneyminions.data.service
 
 import com.moneyminions.data.model.common.response.CommonResponse
 import com.moneyminions.data.model.home.request.UseCashRequest
+import com.moneyminions.data.model.home.response.TravelRoomFriendsResponse
 import com.moneyminions.data.model.home.response.TravelRoomInfoResponse
 import com.moneyminions.data.model.login.request.AuthenticationAccountRequest
 import com.moneyminions.data.model.login.request.LoginRequest
@@ -156,6 +157,6 @@ interface BusinessService {
     /**
      * 여행방 친구 조회
      */
-//    @GET("travel/room/{roomId}/UserList")
-//    suspend fun getTravelFriends(@Path("roomId") roomId: Int):
+    @GET("travel/room/{roomId}/UserList")
+    suspend fun getTravelRoomFriends(@Path("roomId") roomId: Int): List<TravelRoomFriendsResponse>
 }
