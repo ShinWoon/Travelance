@@ -1,5 +1,6 @@
 package com.easyone.travelance.domain.travel.controller;
 
+import com.easyone.travelance.domain.common.ResultDto;
 import com.easyone.travelance.domain.travel.dto.NoticeAllResponseDto;
 import com.easyone.travelance.domain.travel.dto.NoticeRequestDto;
 import com.easyone.travelance.domain.travel.dto.NoticeUpdateRequestDto;
@@ -37,24 +38,27 @@ public class NoticeController {
 
     @PostMapping("/save")
     @Operation(summary = "공지사항 등록")
-    public ResponseEntity<String> saveNotice(@RequestBody NoticeRequestDto noticeRequestDto){
+    public ResponseEntity<ResultDto> saveNotice(@RequestBody NoticeRequestDto noticeRequestDto){
         String response = noticeService.saveNotice(noticeRequestDto);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        ResultDto resultDto = new ResultDto(response);
+        return new ResponseEntity<>(resultDto, HttpStatus.OK);
     }
 
     @PatchMapping("/{roomId}")
     @Operation(summary = "공지사항 수정")
-    public ResponseEntity<String> patchNotice(@PathVariable Long roomId,
+    public ResponseEntity<ResultDto> patchNotice(@PathVariable Long roomId,
                                               @RequestBody NoticeUpdateRequestDto noticeUpdateRequestDto){
         String response = noticeService.patchNotice(roomId, noticeUpdateRequestDto);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        ResultDto resultDto = new ResultDto(response);
+        return new ResponseEntity<>(resultDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{roomId}/{noticeId}")
     @Operation(summary = "공지사항 삭제")
-    public ResponseEntity<String> deleteNotice(@PathVariable Long roomId,
+    public ResponseEntity<ResultDto> deleteNotice(@PathVariable Long roomId,
                                                @PathVariable Long noticeId){
         String response = noticeService.deleteNotice(roomId, noticeId);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        ResultDto resultDto = new ResultDto(response);
+        return new ResponseEntity<>(resultDto, HttpStatus.OK);
     }
 }
