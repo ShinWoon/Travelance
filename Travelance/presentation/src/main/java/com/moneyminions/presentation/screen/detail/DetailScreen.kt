@@ -116,9 +116,8 @@ fun DetailScreen(
         )
     }
     Scaffold(
-        // TODO: title 바꾸기
         topBar = {
-            TopBar(navController = navController, topBarTitle = "test")
+            TopBar(navController = navController, topBarTitle = travelDetailInfo.travelRoomInfo[0].travelName)
         }
     ) {
         Column(

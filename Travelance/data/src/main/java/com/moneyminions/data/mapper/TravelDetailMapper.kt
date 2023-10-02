@@ -57,6 +57,7 @@ fun TravelRoomInfoResponse.toDomain(): TravelRoomInfoDto {
         budget = budget,
         endDate = endDate,
         startDate = startDate,
+        travelName = travelName,
     )
 }
 

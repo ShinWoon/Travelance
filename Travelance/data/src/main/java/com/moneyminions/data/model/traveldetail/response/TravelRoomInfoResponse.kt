@@ -9,4 +9,6 @@ data class TravelRoomInfoResponse(
     val endDate: String,
     @SerializedName("startDate")
     val startDate: String,
+    @SerializedName("travelName")
+    val travelName: String,
 )
