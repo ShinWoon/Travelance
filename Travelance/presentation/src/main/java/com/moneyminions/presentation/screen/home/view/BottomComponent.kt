@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavHostController
+import com.moneyminions.domain.model.home.TravelRoomInfoDto
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold14
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardLight10
@@ -47,7 +48,8 @@ private const val TAG = "BottomComponent"
 @Composable
 fun BottomCardContainer(
     navController: NavHostController,
-    homeViewModel: HomeViewModel
+    homeViewModel: HomeViewModel,
+    travelInfo: TravelRoomInfoDto,
 ) {
     
     // 수기 입력 State
@@ -115,7 +117,7 @@ fun BottomCardContainer(
         if(openHandWritingDialog) {
             HandWritingDialog(
                 onDismiss = {openHandWritingDialog = false},
-                roomId = homeViewModel.travelRoomInfo.value.roomId
+                roomId = travelInfo.roomId
             )
             
         }

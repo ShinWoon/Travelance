@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
+import com.moneyminions.domain.model.home.TravelRoomInfoDto
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.common.LottieLoader
@@ -31,18 +32,24 @@ import com.moneyminions.presentation.screen.home.DotsIndicator
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.theme.PinkLightest
+import com.moneyminions.presentation.viewmodel.MainViewModel
 import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 
+private const val TAG = "TravelReadyComponent_D210"
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun TravelReadyComponent(
+    mainViewModel: MainViewModel,
     homeViewModel: HomeViewModel,
+    travelInfo: TravelRoomInfoDto,
     pagerState: PagerState,
     cardHeight: Dp,
     totalDot: Int,
 ) {
     // 여행시작 다이얼로그 State
     var openTravelStartDialog by remember { mutableStateOf(false) }
+    
+    
     
     Card(
         modifier = Modifier

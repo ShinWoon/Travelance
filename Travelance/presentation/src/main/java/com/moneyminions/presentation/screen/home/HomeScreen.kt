@@ -30,6 +30,8 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.moneyminions.domain.model.home.TravelRoomInfoDto
+import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.home.view.BottomCardContainer
 import com.moneyminions.presentation.screen.home.view.FriendComponent
 import com.moneyminions.presentation.screen.home.view.GraphPage
@@ -41,11 +43,13 @@ import com.moneyminions.presentation.viewmodel.MainViewModel
 import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 
 private const val TAG = "HomeScreen_D210"
+
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun HomeScreen(
     navController: NavHostController,
     mainViewModel: MainViewModel,
-    homeViewModel: HomeViewModel = hiltViewModel()
+    homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
     // todo (정산중인 여행방이 있을때 리턴 값 얘기 해야함) 여행방 시작
     val startTravelState by homeViewModel.startTravelResult.collectAsState()
@@ -57,6 +61,7 @@ fun HomeScreen(
         successAction = {
             if(it.result.toInt() != 0) {
                 mainViewModel.putTravelingRoomId(it.result.toInt())
+                navController.navigate(Screen.Home.route)
                 Log.d(TAG, "HomeScreen 여행방 시 성공: $it")
             } else {
                 Log.d(TAG, "HomeScreen: 이미 진행중인 여행이 있음")
@@ -64,6 +69,33 @@ fun HomeScreen(
         }
     )
     
+    
+    Log.d(TAG, "selectRoomId: ${mainViewModel.selectRoomId.value}")
+    if (mainViewModel.selectRoomId.value == 0) { // 진행 중인 방이 없다면.
+        NoRoomScreen()
+    } else {
+        // 홈 정보 GET
+        LaunchedEffect(Unit) {
+            homeViewModel.getTravelRoomInfo(mainViewModel.selectRoomId.value)
+            Log.d(TAG, "HomeScreen:방 정보 얻기 요청")
+        }
+        Home(
+            navController = navController,
+            mainViewModel = mainViewModel,
+            homeViewModel = homeViewModel,
+            travelInfo = homeViewModel.travelRoomInfo.value
+        )
+    }
+}
+
+@SuppressLint("StateFlowValueCalledInComposition")
+@Composable
+fun Home(
+    navController: NavHostController,
+    mainViewModel: MainViewModel,
+    homeViewModel: HomeViewModel,
+    travelInfo: TravelRoomInfoDto
+) {
     // 여행방 정보 GET
     val getTravelRoomInfoState by homeViewModel.getTravelRoomInfoResult.collectAsState()
     NetworkResultHandler(
@@ -72,30 +104,11 @@ fun HomeScreen(
             Log.d(TAG, "HomeScreen: 방 정보 얻기 실패")
         },
         successAction = {
-            Log.d(TAG, "HomeScreen: $it,\n ${it.everyuse} \n ${it.myuse}")
+            Log.d(TAG, "HomeScreen: $it")
             homeViewModel.refreshRoomInfo(it)
         }
     )
     
-    Log.d(TAG, "selectRoomId: ${mainViewModel.selectRoomId.value}")
-    if(mainViewModel.selectRoomId.value == 0) { // 진행 중인 방이 없다면.
-        NoRoomScreen()
-    }
-    else {
-        // 홈 정보 GET
-        LaunchedEffect(Unit) {
-            homeViewModel.getTravelRoomInfo(mainViewModel.selectRoomId.value)
-            Log.d(TAG, "HomeScreen:방 정보 얻기 요청")
-        }
-        Home(navController, homeViewModel)
-    }
-}
-@SuppressLint("StateFlowValueCalledInComposition")
-@Composable
-fun Home(
-    navController: NavHostController,
-    homeViewModel: HomeViewModel,
-) {
 //    Log.d(TAG, "Home: on")
     var scrollableState = rememberScrollState()
     
@@ -112,21 +125,33 @@ fun Home(
             homeViewModel = homeViewModel,
             navController = navController,
         )
-
+        
         Spacer(modifier = Modifier.height(8.dp))
-
-        when(homeViewModel.travelRoomInfo.value.isDone){
-            "BEFORE" -> TravelReadyPager(cardHeight = cardHeight, homeViewModel)
-            "NOW" -> TravelStartPager(cardHeight = cardHeight, homeViewModel)
+        
+        when (travelInfo.isDone) {
+            "BEFORE" -> TravelReadyPager(
+                cardHeight = cardHeight,
+                mainViewModel = mainViewModel,
+                homeViewModel = homeViewModel,
+                travelInfo = travelInfo,
+            )
+            "NOW" -> TravelStartPager(
+                cardHeight = cardHeight,
+                homeViewModel = homeViewModel,
+                travelInfo = travelInfo,
+            )
+            else -> NoRoomScreen()
         }
-
+        
         Spacer(modifier = Modifier.height(16.dp))
         FriendComponent()
-
+        
         Spacer(modifier = Modifier.height(16.dp))
         BottomCardContainer(
             navController = navController,
-            homeViewModel = homeViewModel)
+            homeViewModel = homeViewModel,
+            travelInfo = travelInfo,
+        )
     }
 }
 
@@ -134,7 +159,9 @@ fun Home(
 @Composable
 fun TravelReadyPager(
     cardHeight: Dp,
+    mainViewModel: MainViewModel,
     homeViewModel: HomeViewModel,
+    travelInfo: TravelRoomInfoDto,
 ) {
     val pagerState = rememberPagerState()
     
@@ -146,20 +173,25 @@ fun TravelReadyPager(
         when (page) {
             0 -> {
                 TravelReadyComponent(
+                    mainViewModel = mainViewModel,
                     homeViewModel = homeViewModel,
+                    travelInfo = travelInfo,
                     pagerState = pagerState,
                     cardHeight = cardHeight,
                     totalDot = 4
                 )
             }
+            
             1 -> {
                 GraphPage(
                     pagerState = pagerState,
                     cardHeight = cardHeight,
                     totalDot = 4,
                     homeViewModel = homeViewModel,
+                    travelInfo = travelInfo,
                 )
             }
+            
             2 -> {
                 UseMoneyPage(
                     pagerState = pagerState,
@@ -167,8 +199,10 @@ fun TravelReadyPager(
                     title = "전체 내역",
                     totalDot = 4,
                     homeViewModel = homeViewModel,
+                    travelInfo = travelInfo,
                 )
             }
+            
             3 -> {
                 UseMoneyPage(
                     pagerState = pagerState,
@@ -176,6 +210,7 @@ fun TravelReadyPager(
                     title = "나의 전체 내역",
                     totalDot = 4,
                     homeViewModel = homeViewModel,
+                    travelInfo = travelInfo,
                 )
             }
         }
@@ -187,6 +222,7 @@ fun TravelReadyPager(
 fun TravelStartPager(
     cardHeight: Dp,
     homeViewModel: HomeViewModel,
+    travelInfo: TravelRoomInfoDto,
 ) {
     val pagerState = rememberPagerState()
     
@@ -202,8 +238,10 @@ fun TravelStartPager(
                     cardHeight = cardHeight,
                     totalDot = 3,
                     homeViewModel = homeViewModel,
+                    travelInfo = travelInfo,
                 )
             }
+            
             1 -> {
                 UseMoneyPage(
                     pagerState = pagerState,
@@ -211,8 +249,10 @@ fun TravelStartPager(
                     title = "전체 내역",
                     totalDot = 3,
                     homeViewModel = homeViewModel,
+                    travelInfo = travelInfo,
                 )
             }
+            
             2 -> {
                 UseMoneyPage(
                     pagerState = pagerState,
@@ -220,6 +260,7 @@ fun TravelStartPager(
                     title = "나의 전체 내역",
                     totalDot = 3,
                     homeViewModel = homeViewModel,
+                    travelInfo = travelInfo,
                 )
             }
         }
@@ -238,8 +279,8 @@ fun DotsIndicator(
         modifier = Modifier
             .wrapContentWidth()
             .wrapContentHeight(),
-
-    ) {
+        
+        ) {
         items(totalDots) { index ->
             if (index == selectedIndex) {
                 Box(
@@ -256,7 +297,7 @@ fun DotsIndicator(
                         .background(unSelectedColor),
                 )
             }
-
+            
             if (index != totalDots - 1) {
                 Spacer(modifier = Modifier.padding(horizontal = 2.dp))
             }
