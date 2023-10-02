@@ -19,6 +19,7 @@ import com.naver.maps.map.compose.NaverMap
 @Composable
 fun TravelMapScreen(
     navController: NavHostController,
+    type: String?,
     modifier: Modifier = Modifier,
 ) {
     val locationSource = rememberFusedLocation()
@@ -31,7 +32,7 @@ fun TravelMapScreen(
         modifier = modifier.fillMaxSize(),
         locationSource = locationSource,
         properties = MapProperties(
-            locationTrackingMode = LocationTrackingMode.Follow,
+            locationTrackingMode = if(type == "home") LocationTrackingMode.Follow else LocationTrackingMode.None
         ),
         uiSettings = mapUiSettings,
     ) {
