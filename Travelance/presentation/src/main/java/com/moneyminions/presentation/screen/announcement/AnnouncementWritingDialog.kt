@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.screen.announcement
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,14 +41,18 @@ import com.moneyminions.presentation.theme.GraphGray
 import com.moneyminions.presentation.theme.Gray
 import com.moneyminions.presentation.theme.PinkLight
 import com.moneyminions.presentation.theme.White
+import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.announcement.AnnouncementViewModel
 
+private const val TAG = "AnnouncementWritingDial_D210"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnnouncementWritingDialog(
     announcementViewModel: AnnouncementViewModel = hiltViewModel(),
+    roomId: Int,
     onDismiss: () -> Unit,
 ) {
+    Log.d(TAG, "AnnouncementWritingDialog: $roomId")
     val outlinedTextFieldColors = TextFieldDefaults.outlinedTextFieldColors(
         focusedBorderColor = PinkLight, // 포커스가 있을 때 테두리 색상
         unfocusedBorderColor = GraphGray, // 포커스가 없을 때 테두리 색상
@@ -54,6 +60,16 @@ fun AnnouncementWritingDialog(
     )
     var isHintVisible by remember { mutableStateOf(announcementViewModel.content.value.isEmpty()) }
 
+    val saveAnnouncementState by announcementViewModel.saveAnnouncementResult.collectAsState()
+    NetworkResultHandler(
+        state = saveAnnouncementState,
+        errorAction = { /*TODO*/ },
+        successAction = {
+            Log.d(TAG, "AnnouncementWritingDialog: 공지사항 등록 성공")
+            onDismiss()
+        }
+    )
+    
     Dialog(
         onDismissRequest = onDismiss,
     ) {
@@ -133,7 +149,9 @@ fun AnnouncementWritingDialog(
                     },
                     leadingIcon = {
                         Icon(
-                            modifier = Modifier.size(16.dp).padding(0.dp),
+                            modifier = Modifier
+                                .size(16.dp)
+                                .padding(0.dp),
                             painter = painterResource(id = R.drawable.ic_link),
                             contentDescription = "Localized description",
                         )
@@ -156,6 +174,7 @@ fun AnnouncementWritingDialog(
                          * 입력시 viewModel -> usecase -> api 로 통신 -> 실패시 알려주기
                          * 홈 화면 로딩 -> 변경된 데이터 화면에 보이기
                          */
+//                        announcementViewModel.saveAnnouncement(roomId)
                     },
                     contentRight = "취소",
                     onClickRight = onDismiss,

@@ -76,6 +76,8 @@ fun NavGraph(
         composable(
             route = Screen.Home.route,
         ) {
+            // 현재 정산 중인 방을 선택된 방으로 저장
+            mainViewModel.setSelectRoomId(mainViewModel.getTravelingRoomId())
             HomeScreen(navController = navController, mainViewModel = mainViewModel)
         }
         composable(
@@ -99,9 +101,13 @@ fun NavGraph(
             SettingScreen(navController = navController)
         }
         composable(
-            route = Screen.Announcement.route,
+            route = "${Screen.Announcement.route}/{roomId}",
         ) {
-            AnnouncementScreen(navController = navController)
+            val roomId = it.arguments?.getString("roomId")?.toInt()
+            Log.d(TAG, "NavGraph:roomId $roomId ")
+            if (roomId != null) {
+                AnnouncementScreen(navController = navController, roomId = roomId)
+            }
         }
         composable(
             route = Screen.EditUser.route,
@@ -130,19 +136,19 @@ fun NavGraph(
             TravelMapScreen(navController = navController, type = type)
         }
         composable(
-            route = "${Screen.GameList.route}/{travelId}",
+            route = "${Screen.GameList.route}/{route}",
         ) {
-            val travelId = it.arguments?.getString("travelId")?.toInt()
-            if (travelId != null) {
-                GameListScreen(navController = navController, travelId = travelId)
+            val route = it.arguments?.getString("route")?.toInt()
+            if (route != null) {
+                GameListScreen(navController = navController, travelId = route)
             }
         }
         composable(
-            route = "${Screen.CardGame.route}/{travelId}",
+            route = "${Screen.CardGame.route}/{roomId}",
         ) {
-            val travelId = it.arguments?.getString("travelId")?.toInt()
-            if (travelId != null) {
-                CardGameScreen(navController = navController, travelId = travelId)
+            val roomId = it.arguments?.getString("roomId")?.toInt()
+            if (roomId != null) {
+                CardGameScreen(navController = navController, travelId = roomId)
             }
         }
         composable(

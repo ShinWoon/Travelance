@@ -51,6 +51,7 @@ fun HomeScreen(
     mainViewModel: MainViewModel,
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
+    Log.d(TAG, "HomeScreen: on")
     // todo (정산중인 여행방이 있을때 리턴 값 얘기 해야함) 여행방 시작
     val startTravelState by homeViewModel.startTravelResult.collectAsState()
     NetworkResultHandler(
@@ -69,6 +70,19 @@ fun HomeScreen(
         }
     )
     
+    // 여행방 정보 GET
+    val getTravelRoomInfoState by homeViewModel.getTravelRoomInfoResult.collectAsState()
+    NetworkResultHandler(
+        state = getTravelRoomInfoState,
+        errorAction = {
+            Log.d(TAG, "HomeScreen: 방 정보 얻기 실패")
+        },
+        successAction = {
+            Log.d(TAG, "HomeScreen: $it")
+            homeViewModel.refreshRoomInfo(it)
+        }
+    )
+    
     
     Log.d(TAG, "selectRoomId: ${mainViewModel.selectRoomId.value}")
     if (mainViewModel.selectRoomId.value == 0) { // 진행 중인 방이 없다면.
@@ -79,6 +93,7 @@ fun HomeScreen(
             homeViewModel.getTravelRoomInfo(mainViewModel.selectRoomId.value)
             Log.d(TAG, "HomeScreen:방 정보 얻기 요청")
         }
+//        homeViewModel.getTravelRoomInfo(mainViewModel.selectRoomId.value)
         Home(
             navController = navController,
             mainViewModel = mainViewModel,
@@ -96,18 +111,6 @@ fun Home(
     homeViewModel: HomeViewModel,
     travelInfo: TravelRoomInfoDto
 ) {
-    // 여행방 정보 GET
-    val getTravelRoomInfoState by homeViewModel.getTravelRoomInfoResult.collectAsState()
-    NetworkResultHandler(
-        state = getTravelRoomInfoState,
-        errorAction = {
-            Log.d(TAG, "HomeScreen: 방 정보 얻기 실패")
-        },
-        successAction = {
-            Log.d(TAG, "HomeScreen: $it")
-            homeViewModel.refreshRoomInfo(it)
-        }
-    )
     
 //    Log.d(TAG, "Home: on")
     var scrollableState = rememberScrollState()
@@ -137,7 +140,6 @@ fun Home(
             )
             "NOW" -> TravelStartPager(
                 cardHeight = cardHeight,
-                homeViewModel = homeViewModel,
                 travelInfo = travelInfo,
             )
             else -> NoRoomScreen()
@@ -149,7 +151,6 @@ fun Home(
         Spacer(modifier = Modifier.height(16.dp))
         BottomCardContainer(
             navController = navController,
-            homeViewModel = homeViewModel,
             travelInfo = travelInfo,
         )
     }
@@ -187,7 +188,6 @@ fun TravelReadyPager(
                     pagerState = pagerState,
                     cardHeight = cardHeight,
                     totalDot = 4,
-                    homeViewModel = homeViewModel,
                     travelInfo = travelInfo,
                 )
             }
@@ -198,7 +198,6 @@ fun TravelReadyPager(
                     cardHeight = cardHeight,
                     title = "전체 내역",
                     totalDot = 4,
-                    homeViewModel = homeViewModel,
                     travelInfo = travelInfo,
                 )
             }
@@ -209,7 +208,6 @@ fun TravelReadyPager(
                     cardHeight = cardHeight,
                     title = "나의 전체 내역",
                     totalDot = 4,
-                    homeViewModel = homeViewModel,
                     travelInfo = travelInfo,
                 )
             }
@@ -221,7 +219,6 @@ fun TravelReadyPager(
 @Composable
 fun TravelStartPager(
     cardHeight: Dp,
-    homeViewModel: HomeViewModel,
     travelInfo: TravelRoomInfoDto,
 ) {
     val pagerState = rememberPagerState()
@@ -237,7 +234,6 @@ fun TravelStartPager(
                     pagerState = pagerState,
                     cardHeight = cardHeight,
                     totalDot = 3,
-                    homeViewModel = homeViewModel,
                     travelInfo = travelInfo,
                 )
             }
@@ -248,7 +244,6 @@ fun TravelStartPager(
                     cardHeight = cardHeight,
                     title = "전체 내역",
                     totalDot = 3,
-                    homeViewModel = homeViewModel,
                     travelInfo = travelInfo,
                 )
             }
@@ -259,7 +254,6 @@ fun TravelStartPager(
                     cardHeight = cardHeight,
                     title = "나의 전체 내역",
                     totalDot = 3,
-                    homeViewModel = homeViewModel,
                     travelInfo = travelInfo,
                 )
             }

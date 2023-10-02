@@ -32,7 +32,6 @@ import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.theme.PinkLightest
 import com.moneyminions.presentation.utils.DateUtils
 import com.moneyminions.presentation.utils.MoneyUtils.makeCommaWon
-import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalPagerApi::class)
@@ -42,7 +41,6 @@ fun UseMoneyPage(
     cardHeight: Dp,
     title: String,
     totalDot: Int,
-    homeViewModel: HomeViewModel,
     travelInfo: TravelRoomInfoDto,
 ) {
     Card(
