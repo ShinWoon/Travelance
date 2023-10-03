@@ -71,7 +71,7 @@ fun DetailSettleScreenView(
     var helpDialog by remember { mutableStateOf(false) }
     if (helpDialog) {
         DetailHelpDialog(
-            content = "공금 내역을 길게 눌러 삭제하세요",
+            content = "공금 내역을 길게 눌러 삭제하세요\n\n나의 공금을 전부 입력된 것을 확인한 후 정산하기를 눌러 정산 요청하세요",
             onDismiss = {
                 helpDialog = false
             }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold14
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardSemiBold14
@@ -48,7 +50,7 @@ fun DetailHelpDialog(
                 horizontalAlignment = Alignment.End
             ) {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.Top
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_help),
@@ -56,11 +58,13 @@ fun DetailHelpDialog(
                         contentDescription = "help icon",
                         modifier = modifier.size(24.dp),
                         )
+                    Spacer(modifier = modifier.width(8.dp))
                     Text(
                         text = content,
                         color = DarkerGray,
                         style = pretendardSemiBold14,
-                        textAlign = TextAlign.Center,
+                        textAlign = TextAlign.Start,
+                        lineHeight = 20.sp,
                         modifier = modifier.fillMaxWidth(),
                     )
                 }

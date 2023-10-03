@@ -150,7 +150,7 @@ fun TravelListScreen(
                     key = { _, item: TravelRoomDto ->
                         item.hashCode()
                     }
-                ) { _, item: TravelRoomDto ->
+                ) { index, item: TravelRoomDto ->
                     if(item.isDone == "NOW") {
                         mainViewModel.putTravelingRoomId(item.roomId)
                     }
@@ -159,7 +159,8 @@ fun TravelListScreen(
                         travelRoomDto = item,
                         onRemove = travelListViewModel::removeItem,
                         navController = navController,
-                        mainViewModel = mainViewModel
+                        mainViewModel = mainViewModel,
+                        iconId = getResourceId("ic_travel_${(index + 1)%10}", R.drawable::class.java)
                     )
                 }
             },
@@ -186,7 +187,8 @@ fun TravelRoomItem(
     travelRoomDto: TravelRoomDto,
     onRemove: (TravelRoomDto) -> Unit,
     navController: NavController,
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel,
+    iconId: Int
 ) {
     val context = LocalContext.current
     
@@ -221,9 +223,9 @@ fun TravelRoomItem(
                 TravelCardView(
                     modifier = modifier,
                     travelRoomDto = travelRoomDto,
-                    iconId = getResourceId("ic_travel_2", R.drawable::class.java),
+                    iconId = iconId,
                     navController = navController,
-                    mainViewModel = mainViewModel
+                    mainViewModel = mainViewModel,
                 )
             },
         )

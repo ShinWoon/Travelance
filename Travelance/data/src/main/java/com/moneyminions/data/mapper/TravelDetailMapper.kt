@@ -70,7 +70,6 @@ fun TravelPaymentChangeInfoDto.toData(): TravelPaymentChangeInfoRequest {
 
 fun PaymentCompleteDto.toData(): PaymentCompleteRequest {
     return PaymentCompleteRequest(
-        email = email,
         paymentWithList = paymentWithList.map { it.toData() },
         roomNumber = roomNumber,
     )

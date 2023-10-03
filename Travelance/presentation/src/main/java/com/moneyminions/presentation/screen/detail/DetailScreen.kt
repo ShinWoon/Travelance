@@ -181,6 +181,7 @@ fun DetailScreen(
                             travelDetailViewModel.getMyPaymentList()
                         },
                         setSettle = {
+                            Log.d(TAG, "DetailScreen: 정산요청 ${travelDetailInfo.travelPayment}\n roomId: $travelId")
                             travelDetailViewModel.setSettleState(PaymentCompleteDto(paymentWithList = travelDetailInfo.travelPayment, roomNumber = travelId))
                         },
                         resetIdx = {
