@@ -3,6 +3,9 @@
 package com.moneyminions.presentation.screen.announcement
 
 import android.util.Log
+import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -38,18 +41,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.moneyminions.domain.model.home.AnnouncementDto
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
+import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.FloatingButtonColor
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.announcement.AnnouncementViewModel
+import retrofit2.http.Url
 
 private const val TAG = "AnnouncementScreen_D210"
 @Composable
@@ -58,6 +65,7 @@ fun AnnouncementScreen(
     roomId: Int,
     announcementViewModel: AnnouncementViewModel = hiltViewModel(),
 ) {
+    // 공지사항 리스트 GET
     announcementViewModel.getAnnouncementList(roomId)
     
     // 공지사항 저장
@@ -138,6 +146,7 @@ fun AnnouncementScreen(
                 items(announcementViewModel.announcementList.value.size) {
                     // todo API 통신시 수정 필요
                     AnnounceItem(
+                        navController = navController,
                         announcementViewModel = announcementViewModel,
                         roomId = roomId,
                         announcementViewModel.announcementList.value[it],
@@ -159,6 +168,7 @@ fun AnnouncementScreen(
 
 @Composable
 fun AnnounceItem(
+    navController: NavHostController,
     announcementViewModel : AnnouncementViewModel,
     roomId: Int,
     announcementDto: AnnouncementDto,
@@ -182,7 +192,10 @@ fun AnnounceItem(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                TitleWithLink(announcementDto = announcementDto)
+                TitleWithLink(
+                    navController = navController,
+                    announcementDto = announcementDto
+                )
                 EditDropdownMenu(
                     announcementViewModel = announcementViewModel,
                     roomId = roomId,
@@ -223,8 +236,10 @@ fun AnnounceItem(
 
 @Composable
 fun TitleWithLink(
+    navController: NavHostController,
     announcementDto: AnnouncementDto,
 ) {
+    
     Row (
         verticalAlignment = Alignment.CenterVertically
     ){
@@ -236,13 +251,15 @@ fun TitleWithLink(
             modifier = Modifier
                 .size(24.dp)
                 .clickable {
-                    /**
-                     * 작성한 URL로 이동 웹뷰 하던가 아님 브라우저에서 띄우던가..
-                     */
+                    // WebView
+                    val url = announcementDto.link.replace("/", "*")
+                    Log.d(TAG, "Announcement Screen: 웹뷰 호출 (1) => $url")
+                    navController.navigate("${Screen.WebView.route}/{url}".replace(oldValue = "{url}", newValue = "$url"))
                 },
         )
     }
 }
+
 
 @Composable
 fun EditDropdownMenu(
