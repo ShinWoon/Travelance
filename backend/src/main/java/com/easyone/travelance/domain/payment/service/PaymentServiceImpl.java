@@ -196,6 +196,9 @@ public class PaymentServiceImpl implements PaymentService{
             log.info("금액 정산 & FCM 알림 전송");
             calculateTransfer(travelRoom.getId());
             sendFcmNotificationToAllMembers(travelRoom);
+            travelRoom.setRoomType(RoomType.WAIT);
+            travelRoomRepository.save(travelRoom);
+            log.info("RoomType WAIT 변경");
         } else if (anyMemberDone) {
             travelRoom.setRoomType(RoomType.WAIT);
             travelRoomRepository.save(travelRoom);
