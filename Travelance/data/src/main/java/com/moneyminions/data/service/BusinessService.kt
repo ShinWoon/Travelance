@@ -221,4 +221,10 @@ interface BusinessService {
      */
     @POST("member/add")
     suspend fun addAccountAndCard(@Body memberInfoRequest: MemberInfoRequest): CommonResponse
+
+    /**
+     * 공금 여부 수정(fcm용)
+     */
+    @POST("payment/push/alert")
+    suspend fun updateFCMPaymentInfo(@Body travelPaymentChangeInfoRequest: TravelPaymentChangeInfoRequest): Response<CommonResponse>
 }

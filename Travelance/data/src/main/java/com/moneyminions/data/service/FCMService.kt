@@ -16,7 +16,12 @@ import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.moneyminions.data.R
+import com.moneyminions.data.model.traveldetail.request.TravelPaymentChangeInfoRequest
 import com.moneyminions.data.utils.Constants
+import kotlinx.coroutines.runBlocking
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
 
 private const val TAG = "FCMService D210"
 class FCMService: FirebaseMessagingService() {
@@ -146,13 +151,26 @@ class ConfirmReceiver : BroadcastReceiver() {
             // "확인" 버튼을 눌렀을 때 원하는 동작을 수행합니다.
             Log.d(TAG, "확인 버튼을 눌렀습니다 paymentId : ${intent?.extras?.getLong("PAYMENT_ID")}")
             // 여기에 원하는 동작을 추가하세요.
-        }
-        val notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val notificationId = intent?.getIntExtra("NOTIFICATION_ID", 0) ?: 0
+            runBlocking {
+                val result = Retrofit.Builder()
+                    .baseUrl(Constants.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+                    .create(BusinessService::class.java).updateFCMPaymentInfo(
+                        TravelPaymentChangeInfoRequest(paymentId = intent?.extras?.getLong("PAYMENT_ID")!!.toInt(), true)
+                    )
+                if(result.isSuccessful){
+                    Log.d(TAG, "onReceive: $result")
+                    val notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    val notificationId = intent?.getIntExtra("NOTIFICATION_ID", 0) ?: 0
 
-        // 알림을 제거합니다.
-        notificationManager.cancel(notificationId)
-        Log.d(TAG, "onReceive: $notificationId")
+                    // 알림을 제거합니다.
+                    notificationManager.cancel(notificationId)
+                    Log.d(TAG, "onReceive: $notificationId")
+                }
+            }
+
+        }
     }
 }
 class CancelReceiver : BroadcastReceiver() {
