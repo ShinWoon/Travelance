@@ -70,16 +70,17 @@ class PreferenceDataSource @Inject constructor(
 //        return getString(X_ROLE) ?: "NONE"
 //    }
 
-    fun putFCMToken(){
-        FirebaseMessaging.getInstance().token.addOnCompleteListener {
-            if (!it.isSuccessful) {
-                // 토큰 요청 task가 실패 한 경우 처리
-                return@addOnCompleteListener
-            }
-            // 토큰 요청 task가 성공한 경우 task의 result에 token 값이 내려온다.
-            putString(FCM_TOKEN, it.result)
-            Log.d(TAG, "initFirebase: ${getString(FCM_TOKEN)}")
-        }
+    fun putFCMToken(fcmToken: String){
+//        FirebaseMessaging.getInstance().token.addOnCompleteListener {
+//            if (!it.isSuccessful) {
+//                // 토큰 요청 task가 실패 한 경우 처리
+//                return@addOnCompleteListener
+//            }
+//            // 토큰 요청 task가 성공한 경우 task의 result에 token 값이 내려온다.
+//            putString(FCM_TOKEN, it.result)
+//            Log.d(TAG, "initFirebase: ${getString(FCM_TOKEN)}")
+//        }
+        putString(FCM_TOKEN, fcmToken)
     }
 
     fun getFCMToken(): String{

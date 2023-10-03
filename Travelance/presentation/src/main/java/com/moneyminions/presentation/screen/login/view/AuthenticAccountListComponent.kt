@@ -57,7 +57,7 @@ fun AuthenticAccountListComponent(
         items(Constants.AUTHENTICATION_ACCOUNT_LIST) { it ->
             Log.d(TAG, "current : ${Constants.AUTHENTICATION_ACCOUNT_LIST.indexOf(it)}")
             AccountColumnItem(
-                logo = Constants.ACCOUNT_LOGO_LIST[it.idx],
+                logo = Constants.ACCOUNT_LOGO_LIST[it.idx!!],
                 compoany = it.bankName,
                 isSelected = selectedAccountIndex == Constants.AUTHENTICATION_ACCOUNT_LIST.indexOf(it)
             ) {

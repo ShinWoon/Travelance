@@ -25,7 +25,8 @@ val accountList = listOf<AccountDto>(
 @Composable
 fun AccountListComponent(
     accountList: List<AccountDto>,
-    onDelete: () -> Unit
+    onDelete: (String, String) -> Unit,
+    onPlus: () -> Unit
 ){
     Text(
         text = "계좌 목록",
@@ -41,16 +42,20 @@ fun AccountListComponent(
     LazyColumn{
         items(accountList){
             AccountRowItem(
-                logo = Constants.ACCOUNT_LOGO_LIST[it.idx],
+                logo = Constants.ACCOUNT_LOGO_LIST[it.idx!!],
                 name = it.bankName,
                 number = it.accountNumber!!,
                 type = "delete",
-                onDeleted = onDelete
+                onDeleted = {onDelete(it.bankName, it.accountNumber!!)}
             )
         }
     }
     Spacer(modifier = Modifier.size(16.dp))
-    PlusButtonWithText(text = "계좌 추가하기") {
+    PlusButtonWithText(
+        text = "계좌 추가하기",
+        type = "account"
+    ) {
         //계좌 추가하기 화면으로 이동
+        onPlus()
     }
 }

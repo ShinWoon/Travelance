@@ -9,5 +9,5 @@ data class CardRequest(
     @SerializedName("cardNumber")
     val cardNumber: String,
     @SerializedName("idx")
-    val idx: Int
+    val idx: Int?
 )

@@ -27,8 +27,8 @@ class PreferenceRepositoryImpl @Inject constructor(
 //        return preferenceDataSource.getRole()
 //    }
 
-    override fun putFCMToken() {
-        preferenceDataSource.putFCMToken()
+    override fun putFCMToken(fcmToken: String) {
+        preferenceDataSource.putFCMToken(fcmToken)
     }
 
     override fun getFCMToken(): String {
