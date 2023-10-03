@@ -11,6 +11,8 @@ import com.easyone.travelance.domain.travel.repository.TravelRoomMemberRepositor
 import com.easyone.travelance.domain.travel.repository.TravelRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -93,6 +95,7 @@ public class TravelService {
 
     //유저에 해당하는 방만 보내주기
     @Transactional(readOnly = true)
+    @Cacheable(value = "roomCacheAll", key = "#member.id")
     public List<RoomAllResponseDto> findAllDesc(Member member) {
         // travelroommember도메인에서 member에 해당하는  travelroom을 RoomAllResponseDto로 모두 반환
 
@@ -109,6 +112,7 @@ public class TravelService {
 
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "roomCache", key = "#roomId + '_' + #member.id")
     public RoomStaticResponseDto findById(Long roomId, Member member) {
 
         TravelRoom travelRoom = travelRoomRepository.findByIdAndMemberId(roomId, member.getId())
@@ -150,6 +154,7 @@ public class TravelService {
     }
 
     @Transactional
+    @CacheEvict(value = "roomCache", key = "#roomId + '_' + #member.id")
     public ResultDto delete(Long roomId, Member member) {
 
         TravelRoom travelRoom = travelRoomRepository.findByIdAndMemberId(roomId, member.getId())
@@ -168,6 +173,7 @@ public class TravelService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "userLists", key="#roomId")
     public List<RoomUserResponseDto> getUserList(Long roomId) {
         TravelRoom travelRoom = travelRoomRepository.findById(roomId)
                 .orElseThrow(()-> new IllegalArgumentException("사용자의 여행방이 없습니다. id =" + roomId));

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class TravelPaymentPlusDto {
 
     private List<TravelPaymentResponseDto> travelPaymentResponseDto;
