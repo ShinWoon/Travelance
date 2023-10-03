@@ -54,6 +54,7 @@ class MainActivity : FragmentActivity() {
             var isAuthenticated = remember { mutableStateOf(false) }
             val context = LocalContext.current
 
+<<<<<<< HEAD
             if (Build.VERSION.SDK_INT < 33) {
                 val list = Geocoder(context).getFromLocationName("경상북도 구미시 비산동 108", 5)!!
                 Log.d(TAG, "address list : $list")
@@ -62,6 +63,20 @@ class MainActivity : FragmentActivity() {
                     Log.d(TAG, "33 이상 list : $it")
                 }
             }
+=======
+//            if(Build.VERSION.SDK_INT < 33) {
+//                val list = Geocoder(context).getFromLocationName("경상북도 구미시 비산동 108", 5)!!
+//                Log.d(TAG, "address list : $list")
+//            }else{
+//                val list = Geocoder(context).getFromLocationName("경상북도 구미시 비산동 108", 5){
+//                    Log.d(TAG, "33 이상 list : $it")
+//                }
+//            }
+
+            val navController = rememberAnimatedNavController()
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentRoute = navBackStackEntry?.destination?.route
+>>>>>>> feature/A_Mypage_SH
             MyApplicationTheme {
                 val mainViewModel: MainViewModel = hiltViewModel()
                 Surface(

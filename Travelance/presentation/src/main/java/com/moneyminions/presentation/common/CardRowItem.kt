@@ -20,9 +20,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.moneyminions.presentation.R
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.DarkGray
+import com.moneyminions.presentation.theme.LightGray
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.utils.Constants
 
@@ -36,6 +36,7 @@ fun CardRowItem(
     idx: Int,
     type: String,
     isSelected: Boolean? = false,
+    isUpdate: Boolean? = false,
     onSelected: () -> Unit = {},
     onDeleted: () -> Unit = {}
 ){
@@ -49,7 +50,10 @@ fun CardRowItem(
             }
     ){
         Row(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(8.dp)
+                .then(if (type == "select") Modifier.fillMaxWidth() else Modifier)
+                .clickable(enabled = isUpdate != true, onClick = { onSelected() })
+                .background(if (isUpdate == true) LightGray else Color.Transparent),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ){
@@ -69,9 +73,6 @@ fun CardRowItem(
                             .size(10.dp)
                             .background(color = Color.Transparent, shape = CircleShape)
                             .border(1.dp, DarkGray, shape = CircleShape)
-                            .clickable {
-                                onSelected()
-                            }
                     )
                 }
             }

@@ -71,7 +71,18 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+<<<<<<< HEAD
 
+=======
+        <receiver
+            android:name="com.moneyminions.data.service.ConfirmReceiver"
+            android:enabled="true"
+            android:exported="true">
+<!--            <intent-filter>-->
+<!--                <action android:name="CONFIRM" /> &lt;!&ndash; BroadcastReceiver가 수신할 액션 이름 &ndash;&gt;-->
+<!--            </intent-filter>-->
+        </receiver>
+>>>>>>> feature/A_Mypage_SH
     </application>
 
 </manifest>

@@ -42,6 +42,7 @@ import com.moneyminions.presentation.screen.login.view.AuthenticAccountListCompo
 import com.moneyminions.presentation.screen.mypage.view.AccountColumnItem
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.login.AccountAuthenticationViewModel
+import com.moneyminions.presentation.viewmodel.mypage.EditUserViewModel
 import kotlinx.coroutines.launch
 
 private const val TAG = "AccountAuthenticationSc D210"
@@ -52,6 +53,7 @@ fun AccountAuthenticationScreen(
     navController: NavHostController,
     accountAuthenticationViewModel: AccountAuthenticationViewModel = hiltViewModel()
 ) {
+
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val isShowDialogState = accountAuthenticationViewModel.isShowDialog.collectAsState()
@@ -156,6 +158,11 @@ fun AccountAuthenticationScreen(
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
 @Composable
+<<<<<<< HEAD
 fun AccountAuthenticationScreenPreview() {
     AccountAuthenticationScreen(navController = rememberNavController())
+=======
+fun AccountAuthenticationScreenPreview(){
+//    AccountAuthenticationScreen(navController = rememberNavController())
+>>>>>>> feature/A_Mypage_SH
 }

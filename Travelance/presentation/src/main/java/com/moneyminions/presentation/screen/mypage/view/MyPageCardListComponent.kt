@@ -43,7 +43,7 @@ fun MyPageCardListComponent(
             CardFrame(
                 name = card.name,
                 number = card.number,
-                idx = card.idx
+                idx = card.idx!!
             )
         }
     }

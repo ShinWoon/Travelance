@@ -2,6 +2,9 @@ package com.moneyminions.data.service
 
 import android.Manifest
 import android.app.PendingIntent
+import android.app.RemoteInput
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -63,6 +66,22 @@ class FCMService: FirebaseMessagingService() {
                 PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
 
+        // 확인 버튼을 눌렀을 때의 이벤트 처리
+        val confirmIntent = Intent(this, Class.forName("com.moneyminions.data.service.ConfirmReceiver")).apply {
+            putExtra("ACTION_TYPE", "CONFIRM")
+        }
+        val confirmPendingIntent: PendingIntent =
+            PendingIntent.getBroadcast(
+                this,
+                0,
+                confirmIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+
+
+        // 취소 버튼을 눌렀을 때 아무 일도 일어나지 않게 처리
+        val cancelPendingIntent: PendingIntent? = null
+
 
         // 알림에 대한 UI 정보, 작업
         val notificationBuilder = NotificationCompat.Builder(this, Constants.CHANNEL_ID)
@@ -75,7 +94,16 @@ class FCMService: FirebaseMessagingService() {
             .setGroupSummary(true)
             .setAutoCancel(true)
             .setFullScreenIntent(mainPendingIntent, true)
-
+            .addAction(
+                com.google.android.material.R.drawable.ic_search_black_24,
+                "확인", // 버튼 텍스트
+                confirmPendingIntent // 확인 버튼 클릭 시 PendingIntent
+            )
+            .addAction(
+                com.google.android.material.R.drawable.ic_arrow_back_black_24, // 취소 버튼 아이콘
+                "취소", // 버튼 텍스트
+                cancelPendingIntent // 취소 버튼 클릭 시 PendingIntent
+            )
 
         NotificationManagerCompat.from(this).apply {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -94,4 +122,15 @@ class FCMService: FirebaseMessagingService() {
     }
 
 
+}
+
+class ConfirmReceiver : BroadcastReceiver() {
+    override fun onReceive(context: Context?, intent: Intent?) {
+        Log.d(TAG, "onReceive... ${intent?.extras?.getString("ACTION_TYPE")}")
+        if (intent?.extras?.getString("ACTION_TYPE") == "CONFIRM") {
+            // "확인" 버튼을 눌렀을 때 원하는 동작을 수행합니다.
+            Log.d(TAG, "확인 버튼을 눌렀습니다")
+            // 여기에 원하는 동작을 추가하세요.
+        }
+    }
 }
