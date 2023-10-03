@@ -32,15 +32,16 @@ public class S3Uploader {
 
     // MultipartFile을 전달받아 File로 전환 후 S3에 업로드
     @Transactional
-    public Optional<String> uploadFile(MultipartFile multipartFile, String dirName) throws Exception {
+    public String uploadFile(MultipartFile multipartFile, String dirName) throws Exception {
         if (multipartFile.getSize() != 0) {
             File uploadFile = convert(multipartFile)
                     .orElseThrow(() -> new IllegalArgumentException("multipartFile -> File 전환 실패"));
             System.out.println("uploadFile");
-            return Optional.of(upload(uploadFile, dirName));
+            return upload(uploadFile, dirName);
         }
-        return Optional.empty();
+        return "null";
     }
+
 
     @Transactional
     public String upload(File uploadFile, String dirName) {
