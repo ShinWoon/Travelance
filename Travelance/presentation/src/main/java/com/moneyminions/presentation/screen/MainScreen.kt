@@ -1,28 +1,47 @@
 package com.moneyminions.presentation.screen
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardSemiBold10
 import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.navigation.BottomNavItem
@@ -39,14 +58,51 @@ private const val TAG = "MainScreen_D210"
 //var startDestination: String = Screen.Login.route //나중에 viewModel로 빼야함
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class,
+    ExperimentalPermissionsApi::class
+)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
     startDestination: String,
     navController: NavHostController = rememberAnimatedNavController(),
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel,
+    context: Context
 ) {
+    val isShowDialogState by mainViewModel.isShowDialog.collectAsState()
+    val permissionList: List<String> =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        listOf(
+            Manifest.permission.POST_NOTIFICATIONS
+        )
+    } else{
+        listOf()
+    }
+    val permissionState = rememberMultiplePermissionsState(permissions = permissionList)
+    if (permissionState.allPermissionsGranted) { //모든 권한 허용된 상태
+    } else if (permissionState.shouldShowRationale) {//한번 거절했을때
+        Toast.makeText(context, "사용을 위해서 허가가 필요합니다!", Toast.LENGTH_LONG).show()
+        SideEffect {
+            permissionState.launchMultiplePermissionRequest()
+        }
+        mainViewModel.setIsShowDialog(true)
+    } else { //최초
+        Log.d("권한", "LoginDetailScreen: 최초")
+        SideEffect {
+            permissionState.launchMultiplePermissionRequest()
+        }
+        if(isShowDialogState){
+            Column {
+                AlertDialog(
+                    onDismissRequest = { mainViewModel.setIsShowDialog(false) },
+                    dialogTitle = "서비스 이용 알림",
+                    dialogText = "해당 기능에 대한 권한 사용을 거부하였습니다. 기능 사용을 원하실 경우 휴대폰 설정 > 애플리케이션 관리자에서 해당 앱의 권한을 허용해주세요.",
+                    icon = Icons.Default.Info
+                )
+            }
+        }
+
+    }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     Scaffold(
@@ -132,6 +188,36 @@ fun MainBottomNavigationBar(navController: NavHostController) {
                     indicatorColor = White
                 ),
             )
+        }
+    }
+}
+
+@Composable
+fun AlertDialog(onDismissRequest: () -> Unit, dialogTitle: String, dialogText: String, icon: ImageVector) {
+    Dialog(
+        onDismissRequest = {onDismissRequest()}
+    ) {
+        Surface(
+            color = Color.White,
+            shape = RoundedCornerShape(16.dp),
+        ){
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = dialogTitle
+                )
+                Spacer(modifier = Modifier.size(16.dp))
+                Text(
+                    text = dialogText
+                )
+                Spacer(modifier = Modifier.size(16.dp))
+                Button(
+                    onClick = {onDismissRequest()}
+                ) {
+                    Text(text = "확인")
+                }
+            }
         }
     }
 }

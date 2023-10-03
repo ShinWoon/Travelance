@@ -84,7 +84,7 @@ class MainActivity : FragmentActivity() {
                         else Screen.Login.route
                     Log.d(TAG, "JWTTOKEN: ${mainViewModel.getJwtToken().accessToken}")
                     Log.d(TAG, "startDestination: $startDestination")
-                    MainScreen(startDestination = startDestination, mainViewModel = mainViewModel)
+                    MainScreen(startDestination = startDestination, mainViewModel = mainViewModel, context = applicationContext)
                 }
                 val systemUiController = rememberSystemUiController()
                 SideEffect {

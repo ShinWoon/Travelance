@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.moneyminions.domain.model.login.JwtTokenDto
 import com.moneyminions.domain.model.traveldetail.TravelRoomInfoDto
 import com.moneyminions.domain.usecase.preference.GetJwtTokenUseCase
@@ -12,6 +13,9 @@ import com.moneyminions.domain.usecase.preference.GetRoleUseCase
 import com.moneyminions.domain.usecase.preference.GetTravelingRoomIdUseCase
 import com.moneyminions.domain.usecase.preference.PutTravelingRoomIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val TAG = "MainViewModel_D210"
@@ -50,5 +54,14 @@ class MainViewModel @Inject constructor(
 
     fun putTravelRoomInfo(travelRoomInfoDto: TravelRoomInfoDto) {
         _travelRoomInfo.value = travelRoomInfoDto
+    }
+
+
+    private val _isShowDialog = MutableStateFlow(false)
+    val isShowDialog = _isShowDialog.asStateFlow()
+    fun setIsShowDialog(value: Boolean){
+        viewModelScope.launch {
+            _isShowDialog.emit(value)
+        }
     }
 }
