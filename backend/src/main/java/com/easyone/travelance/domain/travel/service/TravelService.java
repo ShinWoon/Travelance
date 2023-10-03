@@ -30,43 +30,51 @@ public class TravelService {
 
     //방만들기
     @Transactional
-    public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, RoomUserRequestDto roomUserRequestDto) {
+    public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, RoomUserRequestDto roomUserRequestDto) throws Exception {
         //방 만든 직전에는 사전정산 상태
         RoomType roomType = RoomType.BEFORE;
-//        log.info(String.valueOf(profileUrl));
-        log.info(member.getEmail());
-        log.info(roomUserRequestDto.getNickName());
-        try {
-            TravelRoom travelRoom = roomInfoRequestDto.toEntity(roomType);
-            travelRoomRepository.save(travelRoom);
 
-            travelProfileService.saveImage(travelRoom, "https://i.ibb.co/9WLnW7t/20221014514371.jpg", member);
-
-//
-            TravelRoomMember travelRoomMember = TravelRoomMember.builder()
-                    .travelRoom(travelRoom)
-                    .member(member)
-                    .nickName(roomUserRequestDto.getNickName())
-                    .isDone(false)
-                    .build();
-
-            travelRoomMemberRepository.save(travelRoomMember);
-
-            return new RoomIdResponseDto(travelRoom.getId().toString());
+        //현재 정산중 방이 있으면 0을 반환
+        List<TravelRoom> travelRoomMemberList = travelRoomRepository.findAllByTravelRoomMembersMember(member);
+        for (TravelRoom travelRoomIsDone : travelRoomMemberList) {
+            if (travelRoomIsDone.getIsDone()==RoomType.NOW) {
+                return new RoomIdResponseDto("0");
+            }
         }
-        catch (Exception e) {
-            throw new IllegalArgumentException("여행방이 생성되지 않았습니다");
-//            e.printStackTrace();
-//            e.getMessage();
-        }
+
+        TravelRoom travelRoom = roomInfoRequestDto.toEntity(roomType);
+        travelRoomRepository.save(travelRoom);
+
+//            if (profileUrl != null) {
+        travelProfileService.saveImage(travelRoom, "https://i.ibb.co/9WLnW7t/20221014514371.jpg", member);
+//            }
+
+        TravelRoomMember travelRoomMember = TravelRoomMember.builder()
+                .travelRoom(travelRoom)
+                .member(member)
+                .nickName(roomUserRequestDto.getNickName())
+                .isDone(false)
+                .build();
+
+        travelRoomMemberRepository.save(travelRoomMember);
+
+        return new RoomIdResponseDto(travelRoom.getId().toString());
     }
+
 
     //유저가 방에 추가되어 닉네임과 사진을 설정하고, 친구 목록을 반환
     //Profileurl도 같이 반환
     @Transactional
-    public ResultDto adduser(Long roomId, Member member, RoomUserRequestDto roomUserRequestDto) {
+    public ResultDto adduser(Long roomId, Member member, RoomUserRequestDto roomUserRequestDto) throws Exception {
 
-        try {
+
+        //현재 정산중 방이 있으면 0을 반환
+        List<TravelRoom> travelRoomMemberList = travelRoomRepository.findAllByTravelRoomMembersMember(member);
+        for (TravelRoom travelRoomIsDone : travelRoomMemberList) {
+            if (travelRoomIsDone.getIsDone()==RoomType.NOW) {
+                return new ResultDto("참여자를 초대할 수 없습니다");
+            }
+        }
             TravelRoom travelRoom = travelRoomRepository.findById(roomId)
                     .orElseThrow(() -> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
 
@@ -84,10 +92,6 @@ public class TravelService {
 
             travelRoomMemberRepository.save(travelRoomMember);
             return new ResultDto("참여자 방에 저장");
-        }
-        catch (Exception e) {
-            throw new IllegalArgumentException("참여자가 방에 들어오지 못했습니다");
-        }
 
     }
 
