@@ -244,5 +244,5 @@ interface BusinessService {
     suspend fun getTravelSpotDetail(
         @Path("roomId") roomId: Int,
         @Body travelMapDetailRequest: TravelMapDetailRequest
-    ) : TravelMapDetailResponse
+    ) : List<TravelMapDetailResponse>
 }

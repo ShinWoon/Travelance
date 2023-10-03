@@ -9,5 +9,5 @@ interface TravelMapRepository {
 
     suspend fun getTravelSpots(roomId: Int): NetworkResult<List<TravelMapSpotDto>>
 
-    suspend fun getTravelSpotDetail(roomId: Int, travelMapStoreAddressDto: TravelMapStoreAddressDto): NetworkResult<TravelMapDetailDto>
+    suspend fun getTravelSpotDetail(roomId: Int, travelMapStoreAddressDto: TravelMapStoreAddressDto): NetworkResult<List<TravelMapDetailDto>>
 }

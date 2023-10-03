@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -34,21 +36,26 @@ import com.moneyminions.presentation.theme.CategoryShopping
 import com.moneyminions.presentation.theme.CategoryTransportation
 import com.moneyminions.presentation.theme.CategoryUncategorized
 import com.moneyminions.presentation.theme.TextGray
+import com.moneyminions.presentation.theme.White
 import com.moneyminions.presentation.utils.MoneyUtils
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TravelSpotDetailDialog(
-    spotInfo: TravelMapDetailDto,
+    spotInfoList: List<TravelMapDetailDto>,
     onDismissRequest: () -> Unit,
 ) {
     AlertDialog(onDismissRequest = onDismissRequest) {
         Card(
-            colors = CardDefaults.cardColors(getBackgroundColor(category = spotInfo.category))
+            colors = CardDefaults.cardColors(getBackgroundColor(category = spotInfoList[0].category).copy(alpha = 0.7f))
         ) {
-            TravelSpotDetailContentView(
-                spotInfo = spotInfo,
-            )
+            LazyColumn() {
+                itemsIndexed(spotInfoList){index, item ->
+                    TravelSpotDetailContentView(
+                        spotInfo = item,
+                    )
+                }
+            }
         }
     }
 }
@@ -75,14 +82,14 @@ fun TravelSpotDetailContentView(
         }
         Text(
             text = spotInfo.paymentAt,
-            color = TextGray,
+            color = White.copy(alpha = 0.8f),
             style = CustomTextStyle.pretendardSemiBold12,
         )
         Spacer(modifier = modifier.height(16.dp))
-        Divider(
-            color = DividerDefaults.color,
-            thickness = (0.5).dp,
-        )
+//        Divider(
+//            color = DividerDefaults.color,
+//            thickness = (0.5).dp,
+//        )
     }
 }
 

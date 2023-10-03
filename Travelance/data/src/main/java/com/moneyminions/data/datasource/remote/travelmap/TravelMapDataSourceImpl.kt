@@ -11,7 +11,7 @@ class TravelMapDataSourceImpl(
     override suspend fun getTravelSpotDetail(
         roomId: Int,
         travelMapDetailRequest: TravelMapDetailRequest
-    ): TravelMapDetailResponse {
+    ): List<TravelMapDetailResponse> {
         return businessService.getTravelSpotDetail(roomId = roomId, travelMapDetailRequest = travelMapDetailRequest)
     }
 

@@ -20,8 +20,8 @@ class TravelMapRepositoryImpl(
     override suspend fun getTravelSpotDetail(
         roomId: Int,
         travelMapStoreAddressDto: TravelMapStoreAddressDto
-    ): NetworkResult<TravelMapDetailDto> {
-        return handleApi { travelMapDataSource.getTravelSpotDetail(roomId = roomId, travelMapDetailRequest = travelMapStoreAddressDto.toData()).toDomain() }
+    ): NetworkResult<List<TravelMapDetailDto>> {
+        return handleApi { travelMapDataSource.getTravelSpotDetail(roomId = roomId, travelMapDetailRequest = travelMapStoreAddressDto.toData()).map { it.toDomain() } }
     }
 
 }

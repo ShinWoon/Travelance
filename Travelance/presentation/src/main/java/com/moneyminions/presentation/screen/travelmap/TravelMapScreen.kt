@@ -56,8 +56,8 @@ fun TravelMapScreen(
         mutableStateOf(listOf(TravelMapSpotDto()))
     }
     val travelSpotDetailGetState by travelMapViewModel.travelSpotDetailGetState.collectAsState()
-    var travelSpotDetailInfo by remember {
-        mutableStateOf(TravelMapDetailDto())
+    var travelSpotDetailInfoList by remember {
+        mutableStateOf(listOf(TravelMapDetailDto()))
     }
     var travelSpotLatLongitudeList by remember {
         mutableStateOf(listOf(LocationDto()))
@@ -66,7 +66,7 @@ fun TravelMapScreen(
         mutableStateOf(false)
     }
     if(spotDetailDialog) {
-        TravelSpotDetailDialog(spotInfo = travelSpotDetailInfo) {
+        TravelSpotDetailDialog(spotInfoList = travelSpotDetailInfoList) {
             spotDetailDialog = false
         }
     }
@@ -87,7 +87,7 @@ fun TravelMapScreen(
         state = travelSpotDetailGetState,
         errorAction = { /*TODO*/ },
         successAction = {
-            travelSpotDetailInfo = it
+            travelSpotDetailInfoList = it
             spotDetailDialog = true
         })
     LaunchedEffect(Unit) {

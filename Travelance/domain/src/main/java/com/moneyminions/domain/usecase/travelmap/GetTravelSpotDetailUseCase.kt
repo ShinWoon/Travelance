@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetTravelSpotDetailUseCase @Inject constructor(
     private val travelMapRepository: TravelMapRepository
 ) {
-    suspend operator fun invoke(roomId: Int, travelMapStoreAddressDto: TravelMapStoreAddressDto): NetworkResult<TravelMapDetailDto> {
+    suspend operator fun invoke(roomId: Int, travelMapStoreAddressDto: TravelMapStoreAddressDto): NetworkResult<List<TravelMapDetailDto>> {
         return travelMapRepository.getTravelSpotDetail(roomId = roomId, travelMapStoreAddressDto = travelMapStoreAddressDto)
     }
 }
