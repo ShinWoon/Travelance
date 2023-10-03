@@ -58,7 +58,7 @@ private const val TAG = "MainScreen_D210"
 //var startDestination: String = Screen.Login.route //나중에 viewModel로 빼야함
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class,
+@OptIn(ExperimentalAnimationApi::class,
     ExperimentalPermissionsApi::class
 )
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -67,7 +67,7 @@ fun MainScreen(
     startDestination: String,
     navController: NavHostController = rememberAnimatedNavController(),
     mainViewModel: MainViewModel,
-    context: Context
+    context: Context,
 ) {
     val isShowDialogState by mainViewModel.isShowDialog.collectAsState()
     val permissionList: List<String> =
@@ -128,6 +128,7 @@ fun MainScreen(
             mainViewModel = mainViewModel,
         )
     }
+
 }
 
 fun isBottomNavItem(route: String): Boolean {

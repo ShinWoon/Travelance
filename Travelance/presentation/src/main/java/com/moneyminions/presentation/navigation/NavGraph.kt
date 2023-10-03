@@ -18,6 +18,7 @@ import com.google.accompanist.navigation.animation.composable
 import com.kakao.sdk.common.KakaoSdk.type
 import com.moneyminions.presentation.screen.MainScreen
 import com.moneyminions.presentation.screen.announcement.AnnouncementScreen
+import com.moneyminions.presentation.screen.announcement.WebViewScreen
 import com.moneyminions.presentation.screen.detail.DetailScreen
 import com.moneyminions.presentation.screen.example.ExampleScreen
 import com.moneyminions.presentation.screen.game.BottleGameScreen
@@ -182,15 +183,6 @@ fun NavGraph(
         ) {
             HomeScreen(navController = navController, mainViewModel = mainViewModel)
         }
-//        composable(
-//            route = "Screen.SubHome.route/{roomId}",
-//            arguments = listOf(navArgument("roomId") { type = NavType.IntType })
-//        ) {backStackEntry ->
-//            val roomId = backStackEntry.arguments?.getInt("roomId")
-//            if (roomId != null) {
-//                HomeScreen(navController = navController, roomId = roomId)
-//            }
-//        }
         composable(
             route = "${Screen.TravelDetail.route}/{travelId}",
         ) {
@@ -219,6 +211,15 @@ fun NavGraph(
             val roomId = it.arguments?.getString("roomId")?.toInt()
             if (roomId != null) {
                 CreateTravelScreen(navController = navController, mainViewModel = mainViewModel, roomId = roomId)
+            }
+        }
+        composable(
+            route = "${Screen.WebView.route}/{url}",
+        ) {
+            val url = it.arguments?.getString("url")?.replace("*", "/")
+            Log.d(TAG, "NavGraph: 웹뷰 호출 (2) -> url: $url")
+            if (url != null) {
+                WebViewScreen(navController = navController, url = url)
             }
         }
     }

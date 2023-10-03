@@ -40,6 +40,7 @@ class HomeDataSourceImpl(
      * 여행 친구 목록 조회
      */
     override suspend fun getTravelRoomFriends(roomId: Int): List<TravelRoomFriendsResponse> {
+        Log.d(TAG, "getTravelRoomFriends: $roomId")
         return businessService.getTravelRoomFriends(roomId = roomId)
     }
     
