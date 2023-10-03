@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,10 +51,12 @@ class MainViewModel @Inject constructor(
     }
 
     private var _travelRoomInfo = mutableStateOf(TravelRoomInfoDto())
-    val travelRoomInfo = _travelRoomInfo.value
+    val travelRoomInfo: State<TravelRoomInfoDto> = _travelRoomInfo
 
     fun putTravelRoomInfo(travelRoomInfoDto: TravelRoomInfoDto) {
         _travelRoomInfo.value = travelRoomInfoDto
+        Log.d(TAG, "putTravelRoomInfo: _travelinfo : ${_travelRoomInfo.value}")
+        Log.d(TAG, "putTravelRoomInfo: travelinfo : ${travelRoomInfo.value}")
     }
 
 
