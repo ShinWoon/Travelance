@@ -71,7 +71,7 @@ public class FirebaseCloudMessageService {
 
     private String getAccessToken() throws IOException {
         // 클래스패스 내의 리소스로 파일 로드
-        InputStream is = getClass().getResourceAsStream("/travelance-fada4-firebase-adminsdk-66uyr-4c861b19d8");
+        InputStream is = getClass().getResourceAsStream("/travelance-fada4-firebase-adminsdk-66uyr-4c861b19d8.json");
 
         GoogleCredentials googleCredentials = GoogleCredentials
                 .fromStream(is)

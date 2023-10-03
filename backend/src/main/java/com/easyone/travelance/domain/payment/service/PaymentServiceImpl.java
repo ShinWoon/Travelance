@@ -59,7 +59,6 @@ public class PaymentServiceImpl implements PaymentService{
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Transactional
     @KafkaListener(topics = "travelance", groupId = "travelance")
     public void receivePaymentAlert(PaymentAlertRequestDto paymentAlertRequestDto, Acknowledgment ack) throws IOException {
         try {
@@ -74,6 +73,7 @@ public class PaymentServiceImpl implements PaymentService{
         }
     }
 
+    @Transactional
     public void processPayment(PaymentAlertRequestDto paymentAlertRequestDto) throws IOException {
         // 1. memberPrivateId를 통해 member 찾기
         Optional<Member> member = memberRepository.findByPrivateId(paymentAlertRequestDto.getMemberPrivateId());
