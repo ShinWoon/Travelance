@@ -245,4 +245,15 @@ interface BusinessService {
         @Path("roomId") roomId: Int,
         @Body travelMapDetailRequest: TravelMapDetailRequest
     ) : TravelMapDetailResponse
+
+    /**
+     * 초대받은 참가자 -> 여행 참가
+     */
+    @Multipart
+    @POST("travel/room/{roomId}/addUser")
+    suspend fun requestJoinUser(
+        @Path("roomId") roomId: Int,
+        @Part imageFiles: MultipartBody.Part?,
+        @Part("roomUserRequestDto") roomUserRequestDto: RoomUserRequestDto,
+    ): CommonResponse
 }

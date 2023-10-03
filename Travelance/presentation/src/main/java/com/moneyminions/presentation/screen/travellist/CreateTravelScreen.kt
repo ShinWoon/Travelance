@@ -34,7 +34,6 @@ import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.travellist.view.Calendar
 import com.moneyminions.presentation.screen.travellist.view.DateTextComponent
 import com.moneyminions.presentation.screen.travellist.view.ProfileDialog
-import com.moneyminions.presentation.utils.MoneyUtils
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.MainViewModel
 import com.moneyminions.presentation.viewmodel.travel.TravelEditViewModel
@@ -65,7 +64,7 @@ fun CreateTravelScreen(
         },
         successAction = {
             // homeScreen으로 이동 (방 생성 stack pop)
-            Log.d(TAG, "CreateTravelScreen: $it")
+            Log.d(TAG, "CreateTravelScreen 생성 방 번호: $it")
             mainViewModel.setSelectRoomId(it.result.toInt())
             navController.navigate(Screen.SubHome.route) {
                 popUpTo(Screen.TravelList.route)
@@ -84,16 +83,20 @@ fun CreateTravelScreen(
     }
 
     var travelRoomInfo by remember { mutableStateOf(TravelRoomInfoDto()) }
-    if(roomId != -1) {
+    if (roomId != -1) {
         LaunchedEffect(Unit) {
             travelRoomInfo = mainViewModel.travelRoomInfo
         }
     }
 
     val travelRoomEditState by travelEditViewModel.travelRoomEditState.collectAsState()
-    NetworkResultHandler(state = travelRoomEditState, errorAction = { /*TODO*/ }, successAction = {
-        navController.popBackStack()
-    })
+    NetworkResultHandler(
+        state = travelRoomEditState,
+        errorAction = { /*TODO*/ },
+        successAction = {
+            navController.popBackStack()
+        }
+    )
 
     // 프로필 설정 다이얼로그
     var openProfileDialog by remember { mutableStateOf(false) }
@@ -118,7 +121,7 @@ fun CreateTravelScreen(
                     TextFieldWithTitle(
                         title = "이름",
                         hint = "여행 이름을 입력하세요",
-                        value = if(roomId == -1) createTravelViewModel.travelName.value else travelRoomInfo.travelName,
+                        value = if (roomId == -1) createTravelViewModel.travelName.value else travelRoomInfo.travelName,
                         onValueChange = {
                             createTravelViewModel.setTravelName(it)
                         },
@@ -129,7 +132,7 @@ fun CreateTravelScreen(
                     TextFieldWithTitle(
                         title = "예산",
                         hint = "예산을 입력해주세요",
-                        value = if(roomId == -1) createTravelViewModel.travelBudget.value else travelRoomInfo.budget.toString(),
+                        value = if (roomId == -1) createTravelViewModel.travelBudget.value else travelRoomInfo.budget.toString(),
                         onValueChange = {
                             createTravelViewModel.setTravelBudget(it)
                         },
@@ -140,21 +143,21 @@ fun CreateTravelScreen(
                 Column {
                     DateTextComponent(
                         text = "시작 날짜 : ",
-                        value = if(roomId == -1) createTravelViewModel.startDate.value else travelRoomInfo.startDate,
+                        value = if (roomId == -1) createTravelViewModel.startDate.value else travelRoomInfo.startDate,
                     )
                     Spacer(
                         modifier = Modifier.size(16.dp),
                     )
                     DateTextComponent(
                         text = "종료 날짜 : ",
-                        value = if(roomId == -1) createTravelViewModel.endDate.value else travelRoomInfo.endDate,
+                        value = if (roomId == -1) createTravelViewModel.endDate.value else travelRoomInfo.endDate,
                     )
                 }
                 MinionPrimaryButton(
                     content = "생성",
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    when(roomId) {
+                    when (roomId) {
                         -1 -> {
                             if (createTravelViewModel.InputTravelCheck()) {
                                 coroutineScope.launch {
@@ -165,8 +168,12 @@ fun CreateTravelScreen(
 //                        createTravelViewModel.createTravelRoom()
                             }
                         }
+
                         else -> {
-                            travelEditViewModel.editTravelRoomInfo(roomId = roomId, travelRoomInfoDto = travelRoomInfo)
+                            travelEditViewModel.editTravelRoomInfo(
+                                roomId = roomId,
+                                travelRoomInfoDto = travelRoomInfo
+                            )
                         }
                     }
 
@@ -176,8 +183,12 @@ fun CreateTravelScreen(
     }
 
     // 프로필 설정 다이얼로그
-    if(openProfileDialog) {
-        ProfileDialog(onDismiss = {openProfileDialog = false})
+    if (openProfileDialog) {
+        ProfileDialog(
+            mainViewModel = mainViewModel,
+            onDismiss = { openProfileDialog = false },
+            navController = navController,
+        )
     }
 }
 

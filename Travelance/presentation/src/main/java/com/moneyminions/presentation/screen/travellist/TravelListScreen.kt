@@ -49,10 +49,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.moneyminions.domain.model.travellist.TravelRoomDto
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.navigation.Screen
+import com.moneyminions.presentation.screen.travellist.view.ProfileDialog
 import com.moneyminions.presentation.screen.travellist.view.TravelCardView
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.DarkGray
@@ -70,13 +72,17 @@ private const val TAG = "TravelListScreen_D210"
 @Composable
 fun TravelListScreen(
     travelListViewModel: TravelListViewModel = hiltViewModel(),
-    navController: NavController,
+    navController: NavHostController,
     modifier: Modifier = Modifier,
     mainViewModel: MainViewModel
 ) {
     Log.d(TAG, "TravelListScreen: on")
+    Log.d(TAG, "TravelListScreen invite RoomId: ${mainViewModel.inviteRoomId.value}")
+
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
+    var openProfileDialog by remember { mutableStateOf(false) }
+
 
     // 여행 목록 GET
     LaunchedEffect(Unit) {
@@ -163,6 +169,17 @@ fun TravelListScreen(
                     )
                 }
             },
+        )
+    }
+
+    // 프로필 설정 다이얼로그
+    if (mainViewModel.inviteRoomId.value != 0) {
+        openProfileDialog = true
+        ProfileDialog(
+            mainViewModel = mainViewModel,
+            onDismiss = { openProfileDialog = false },
+            roomId = mainViewModel.inviteRoomId.value,
+            navController = navController,
         )
     }
 }
