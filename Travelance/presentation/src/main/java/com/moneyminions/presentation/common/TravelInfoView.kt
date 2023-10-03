@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.common
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,7 +31,7 @@ import com.moneyminions.presentation.utils.DateUtils
 import com.moneyminions.presentation.utils.MoneyUtils.makeComma
 import com.moneyminions.presentation.viewmodel.travel.TravelDetailViewModel
 
-private const val TAG = "싸피"
+private const val TAG = "D210"
 
 @Composable
 fun TravelInfoView(
@@ -56,8 +57,15 @@ fun TravelInfoView(
                     modifier = modifier
                         .size(24.dp)
                         .clickable {
-                            navController.navigate("${Screen.TravelEdit.route}/$roomId")
+                            Log.d(TAG, "TravelInfoView에서 travelInfo $travelRoomInfo")
                             setTravelRoomInfo(travelRoomInfo)
+//                            navController.navigate("${Screen.TravelEdit.route}/$roomId")
+                            navController.navigate(
+                                "${Screen.TravelEdit.route}/{roomId}".replace(
+                                    oldValue = "{roomId}",
+                                    newValue = "${roomId}"
+                                )
+                            )
                         },
                     painter = painterResource(id = R.drawable.ic_edit),
                     tint = DarkerGray,
