@@ -51,8 +51,9 @@ public class PaymentController {
 
     @PostMapping("/complete")
     @Operation(summary = "정산완료 확인", description = "여행 방에 있는 인원 모두가 정산완료를 누르면 push 알림 전송")
-    public ResponseEntity<ResultDto> completeCalculation(@RequestBody CompleteCalculationRequestDto completeCalculationRequestDto) {
-        String response = paymentService.completeCalculation(completeCalculationRequestDto);
+    public ResponseEntity<ResultDto> completeCalculation(@MemberInfo MemberInfoDto memberInfoDto,
+                                                         @RequestBody CompleteCalculationRequestDto completeCalculationRequestDto) {
+        String response = paymentService.completeCalculation(memberInfoDto, completeCalculationRequestDto);
         ResultDto resultDto = new ResultDto(response);
         return new ResponseEntity<>(resultDto, HttpStatus.OK);
     }

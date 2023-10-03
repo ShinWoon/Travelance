@@ -9,7 +9,6 @@ import java.util.List;
 @NoArgsConstructor
 public class CompleteCalculationRequestDto {
     private Long roomNumber;
-    private String email;
     private List<PaymentWith> paymentWithList;
 
     @Data

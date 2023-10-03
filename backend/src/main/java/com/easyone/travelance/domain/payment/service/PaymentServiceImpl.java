@@ -15,6 +15,7 @@ import com.easyone.travelance.domain.travel.enumclass.RoomType;
 import com.easyone.travelance.domain.travel.repository.TravelRoomMemberRepository;
 import com.easyone.travelance.domain.travel.repository.TravelRoomRepository;
 import com.easyone.travelance.global.FCM.FirebaseCloudMessageService;
+import com.easyone.travelance.global.memberInfo.MemberInfoDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,9 +141,10 @@ public class PaymentServiceImpl implements PaymentService{
 
 
     @Override
-    public String completeCalculation(CompleteCalculationRequestDto completeCalculationRequestDto) {
+    public String completeCalculation(MemberInfoDto memberInfoDto,
+                                      CompleteCalculationRequestDto completeCalculationRequestDto) {
         Optional<TravelRoom> travelRoomOptional = travelRoomRepository.findByIdAndMemberEmail(completeCalculationRequestDto.getRoomNumber(),
-                completeCalculationRequestDto.getEmail());
+                memberInfoDto.getEmail());
         if (travelRoomOptional.isEmpty()) {
             throw new EntityNotFoundException("여행방을 찾을 수 없습니다.");
         }
@@ -166,7 +168,7 @@ public class PaymentServiceImpl implements PaymentService{
         // 2. 유저의 Travel Room isDone 변경
         TravelRoomMember travelRoomMember = travelRoomMemberRepository.findByTravelRoom_IdAndMember_Email(
                 completeCalculationRequestDto.getRoomNumber(),
-                completeCalculationRequestDto.getEmail()
+                memberInfoDto.getEmail()
         ).orElseThrow(() -> new EntityNotFoundException("여행방 멤버를 찾을 수 없습니다."));
 
         travelRoomMember.setIsDone(true);
@@ -178,7 +180,7 @@ public class PaymentServiceImpl implements PaymentService{
         boolean allMembersDone = true;
         boolean anyMemberDone = false;
         for (TravelRoomMember member : members) {
-            if (member.getMember().getId().equals(completeCalculationRequestDto.getEmail())) {
+            if (member.getMember().getId().equals(memberInfoDto.getEmail())) {
                 member.setIsDone(true);
                 travelRoomMemberRepository.save(member); // 상태 변경이 있으므로 저장합니다.
             }
