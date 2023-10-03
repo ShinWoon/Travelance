@@ -112,7 +112,7 @@ public class TravelService {
 
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "roomCache", key = "#roomId + '_' + #member.id")
+    @Cacheable(value = "roomCache", key = "#roomId")
     public RoomStaticResponseDto findById(Long roomId, Member member) {
 
         TravelRoom travelRoom = travelRoomRepository.findByIdAndMemberId(roomId, member.getId())
@@ -138,6 +138,7 @@ public class TravelService {
     }
 
     @Transactional
+    @CacheEvict(value = "roomCache", key = "#roomId")
     public ResultDto updateRoom(RoomInfoRequestDto roomInfoRequestDto, Long roomId) {
 
         TravelRoom travelRoom = travelRoomRepository.findById(roomId)
@@ -154,7 +155,7 @@ public class TravelService {
     }
 
     @Transactional
-    @CacheEvict(value = "roomCache", key = "#roomId + '_' + #member.id")
+    @CacheEvict(value = "roomCache", key = "#roomId")
     public ResultDto delete(Long roomId, Member member) {
 
         TravelRoom travelRoom = travelRoomRepository.findByIdAndMemberId(roomId, member.getId())
@@ -197,6 +198,7 @@ public class TravelService {
     }
 
     @Transactional
+    @CacheEvict(value = "roomCache", key = "#roomId")
     public ResultDto startTravel(Long roomId, Member member) {
         try {
             TravelRoom travelRoom = travelRoomRepository.findByIdAndMemberId(roomId, member.getId())
