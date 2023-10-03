@@ -23,10 +23,10 @@ import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 private const val TAG = "FriendComponent"
 @Composable
 fun FriendComponent(
-    homeViewModel: HomeViewModel = hiltViewModel()
+    homeViewModel: HomeViewModel
 ) {
     var context = LocalContext.current
-    
+    val friendInfo = homeViewModel.travelRoomFriendInfo.value
     Column(
         modifier = Modifier.fillMaxWidth(),
     ) {
@@ -60,7 +60,8 @@ fun FriendComponent(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            items(10) {
+            items(friendInfo.size) {
+                // todo 사진 못하면 이름이라도 넣어야 할듯,.....
                 MinionProfile(48.dp)
             }
         }

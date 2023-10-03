@@ -52,7 +52,7 @@ fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
     Log.d(TAG, "HomeScreen: on")
-    // todo (정산중인 여행방이 있을때 리턴 값 얘기 해야함) 여행방 시작
+    // 여행방 시작
     val startTravelState by homeViewModel.startTravelResult.collectAsState()
     NetworkResultHandler(
         state = startTravelState,
@@ -80,8 +80,21 @@ fun HomeScreen(
             Log.d(TAG, "HomeScreen: 방 정보 얻기 실패")
         },
         successAction = {
-            Log.d(TAG, "HomeScreen success: ${it.hashCode()}")
+            Log.d(TAG, "HomeScreen 방 정보 얻기 성공: ${it.hashCode()}")
             homeViewModel.refreshRoomInfo(it)
+        }
+    )
+
+    // 여행방 친구 GET
+    val getTravelRoomFriendState by homeViewModel.getTravelRoomFriendResult.collectAsState()
+    NetworkResultHandler(
+        state = getTravelRoomFriendState,
+        errorAction = {
+            Log.d(TAG, "HomeScreen: 친구 목록 얻기 실패")
+        },
+        successAction = {
+            Log.d(TAG, "HomeScreen 친구 목록 얻기 성공: $it")
+            homeViewModel.refreshRoomFriendInfo(it.toMutableList())
         }
     )
     
@@ -93,8 +106,10 @@ fun HomeScreen(
     } else {
         // 홈 정보 GET
         LaunchedEffect(Unit) {
-            homeViewModel.getTravelRoomInfo(mainViewModel.selectRoomId.value)
-            Log.d(TAG, "HomeScreen:방 정보 얻기 요청")
+            homeViewModel.apply {
+                getTravelRoomInfo(mainViewModel.selectRoomId.value)
+                getTravelRoomFriend(mainViewModel.selectRoomId.value)
+            }
         }
 //        homeViewModel.getTravelRoomInfo(mainViewModel.selectRoomId.value)
         Home(
@@ -149,7 +164,7 @@ fun Home(
         }
         
         Spacer(modifier = Modifier.height(16.dp))
-        FriendComponent()
+        FriendComponent(homeViewModel = homeViewModel)
         
         Spacer(modifier = Modifier.height(16.dp))
         BottomCardContainer(

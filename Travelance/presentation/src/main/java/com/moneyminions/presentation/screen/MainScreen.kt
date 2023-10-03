@@ -1,6 +1,7 @@
 package com.moneyminions.presentation.screen
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -39,13 +40,13 @@ private const val TAG = "MainScreen_D210"
 //var startDestination: String = Screen.Login.route //나중에 viewModel로 빼야함
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
     startDestination: String,
     navController: NavHostController = rememberAnimatedNavController(),
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel,
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -72,6 +73,7 @@ fun MainScreen(
             mainViewModel = mainViewModel,
         )
     }
+
 }
 
 fun isBottomNavItem(route: String): Boolean {

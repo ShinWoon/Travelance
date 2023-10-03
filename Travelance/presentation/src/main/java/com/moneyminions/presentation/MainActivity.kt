@@ -92,6 +92,24 @@ class MainActivity : FragmentActivity() {
                         darkIcons = true,
                     )
                 }
+
+                /**
+                 * 카카오 공유 API 반환 값 수신
+                 */
+                if (Intent.ACTION_VIEW == intent.action) {
+                    val uri = intent.data
+                    if (uri != null) {
+                        Log.d(
+                            TAG,
+                            "onCreate: 카카오 공유 ${uri.getQueryParameter("roomId")} \n ${uri.getQueryParameter("route")} \n ${uri.getQueryParameter("data")}"
+                        )
+                        uri.getQueryParameter("roomId")
+                        uri.getQueryParameter("route")
+                        uri.getQueryParameter("data")
+                    }
+                }
+
+
 //                MainScreen(rememberAnimatedNavController())
 
 ////                 카카오
@@ -142,25 +160,6 @@ class MainActivity : FragmentActivity() {
 //                        },
 //                    )
 //                }
-
-
-                /**
-                 * 카카오 공유 API 반환 값 수신
-                 */
-                if (Intent.ACTION_VIEW == intent.action) {
-                    val uri = intent.data
-                    if (uri != null) {
-                        Log.d(
-                            TAG,
-                            "onCreate: ${uri.getQueryParameter("number")} / ${
-                                uri.getQueryParameter("route")
-                            } /${uri.getQueryParameter("data")}"
-                        )
-                        uri.getQueryParameter("number")
-                        uri.getQueryParameter("route")
-                        uri.getQueryParameter("data")
-                    }
-                }
             }
         }
     }
