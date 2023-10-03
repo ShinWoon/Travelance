@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintSet
@@ -36,6 +37,7 @@ import com.moneyminions.presentation.screen.travellist.view.DateTextComponent
 import com.moneyminions.presentation.screen.travellist.view.ProfileDialog
 import com.moneyminions.presentation.utils.MoneyUtils
 import com.moneyminions.presentation.utils.NetworkResultHandler
+import com.moneyminions.presentation.utils.addFocusCleaner
 import com.moneyminions.presentation.viewmodel.MainViewModel
 import com.moneyminions.presentation.viewmodel.travel.TravelEditViewModel
 import com.moneyminions.presentation.viewmodel.travellist.CreateTravelViewModel
@@ -106,7 +108,10 @@ fun CreateTravelScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it),
+                .padding(it)
+                .addFocusCleaner(
+                    LocalFocusManager.current
+                ),
         ) {
             Column(
                 modifier = Modifier

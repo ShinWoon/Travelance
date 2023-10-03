@@ -23,4 +23,13 @@ class NicknamePasswordViewModel @Inject constructor(
     fun setPassword(password: String){
         _password.value = password
     }
+
+    private val _confirmPassword = mutableStateOf("")
+    val confirmPassword: State<String> = _confirmPassword
+    fun setConfirmPassword(password: String){
+        _confirmPassword.value = password
+    }
+    fun checkPassword(): Boolean{
+        return _password.value==_confirmPassword.value
+    }
 }
