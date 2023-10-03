@@ -25,7 +25,9 @@ public class FirebaseCloudMessageService {
     public void sendMessageTo(String targetToken, String title, String body, Payment payment) throws IOException {
         String message = "";
         if (payment == null){
-            message = makeMessage2(targetToken, title, body, payment);
+            message = makeMessage2(targetToken, title, body);
+            log.warn("FCM 전송 완료");
+            System.out.println("FCM sendMessageTo" + message);
         }else{
             message = makeMessage(targetToken, title, body, payment);
             System.out.println("FCM sendMessageTo" + message);
@@ -70,7 +72,7 @@ public class FirebaseCloudMessageService {
         return objectMapper.writeValueAsString(fcmMessage);
     }
 
-    private String makeMessage2(String targetToken, String title, String body, Payment payment) throws JsonProcessingException {
+    private String makeMessage2(String targetToken, String title, String body) throws JsonProcessingException {
         System.out.println("FCM makeMessageTo2");
 
         FcmMessage.Notification notification = FcmMessage.Notification.builder()
