@@ -9,5 +9,5 @@ data class AccountRequest(
     @SerializedName("bankName")
     val bankName: String,
     @SerializedName("idx")
-    val idx: Int
+    val idx: Int?
 )

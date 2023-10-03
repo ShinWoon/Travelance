@@ -17,8 +17,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.moneyminions.domain.model.common.AccountDto
+import com.moneyminions.domain.model.common.CardDto
+import com.moneyminions.presentation.common.MinionPrimaryButton
 import com.moneyminions.presentation.common.SimpleDeleteDialog
 import com.moneyminions.presentation.common.TopBar
+import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.mypage.view.AccountListComponent
 import com.moneyminions.presentation.screen.mypage.view.CardListComponent
 import com.moneyminions.presentation.screen.mypage.view.EditName
@@ -30,7 +34,7 @@ private const val TAG = "EditUserScreen D210"
 @Composable
 fun EditUserScreen(
     navController: NavHostController,
-    editUserViewModel: EditUserViewModel = hiltViewModel()
+    editUserViewModel: EditUserViewModel
 ) {
     val memberInfoResultState by editUserViewModel.memberInfoResult.collectAsState()
     NetworkResultHandler(
@@ -67,6 +71,29 @@ fun EditUserScreen(
     val cardListState = editUserViewModel.cardList.collectAsState()
 
     val isAccountDeleteDialogShowState = editUserViewModel.isAccountDeleteDialogShow.collectAsState()
+    val isCardDeleteDialogShowState = editUserViewModel.isCardDeleteDialogShow.collectAsState()
+
+    val deleteCardResultState by editUserViewModel.deleteCardResult.collectAsState()
+    NetworkResultHandler(
+        state = deleteCardResultState,
+        errorAction = {
+            Log.d(TAG, "delete Card error... ")
+        },
+        successAction = {
+            editUserViewModel.getMemberInfo()
+        }
+    )
+
+    val deleteAccountResultState by editUserViewModel.deleteAccountResult.collectAsState()
+    NetworkResultHandler(
+        state = deleteAccountResultState,
+        errorAction = {
+            Log.d(TAG, "delete Account error....")
+        },
+        successAction = {
+            editUserViewModel.getMemberInfo()
+        }
+    )
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -88,12 +115,32 @@ fun EditUserScreen(
             Spacer(modifier = Modifier.size(16.dp))
             AccountListComponent(
                 accountList = accountListState.value,
-                onDelete = {
+                onDelete = { bankName, accountNumber ->
+                    editUserViewModel.setDeleteAccountInfo(bankName, accountNumber)
                     editUserViewModel.setIsAccountDeleteDialogShow(true)
+                },
+                onPlus = {
+                    navController.navigate(Screen.AccountAuthentication.route)
                 }
             )
             Spacer(modifier = Modifier.size(16.dp))
-            CardListComponent(cardListState.value)
+            CardListComponent(
+                cardList = cardListState.value,
+                onDelete = { cardName, cardNumber ->
+                    editUserViewModel.setDeleteCardInfo(cardName, cardNumber)
+                    editUserViewModel.setIsCardDeleteDialogShow(true)
+                },
+                onPlus = {
+                    navController.navigate(Screen.AccountAuthentication.route)
+                }
+            )
+            Spacer(modifier = Modifier.size(16.dp))
+            MinionPrimaryButton(
+                content = "마이데이터 자산 추가하기",
+                modifier = Modifier
+            ) {
+                navController.navigate(Screen.AccountAuthentication.route)
+            }
         }
         if(isAccountDeleteDialogShowState.value){
             SimpleDeleteDialog(
@@ -102,6 +149,20 @@ fun EditUserScreen(
                 },
                 onConfirm = {
                     //계좌 삭제 api 호출
+                    editUserViewModel.deleteAccount()
+                    editUserViewModel.setIsAccountDeleteDialogShow(false)
+                }
+            )
+
+        }
+        if(isCardDeleteDialogShowState.value){
+            SimpleDeleteDialog(
+                onDismiss = {
+                    editUserViewModel.setIsCardDeleteDialogShow(false)
+                },
+                onConfirm = {
+                    editUserViewModel.deleteCard()
+                    editUserViewModel.setIsCardDeleteDialogShow(false)
                 }
             )
 
@@ -114,5 +175,5 @@ fun EditUserScreen(
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
 @Composable
 fun EditUserScreenPreview() {
-    EditUserScreen(navController = rememberNavController())
+    EditUserScreen(navController = rememberNavController(), editUserViewModel = hiltViewModel())
 }

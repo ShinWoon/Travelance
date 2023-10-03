@@ -1,6 +1,7 @@
 package com.moneyminions.data.service
 
 import com.moneyminions.data.model.common.response.CommonResponse
+import com.moneyminions.data.model.home.request.AnnouncementEditRequest
 import com.moneyminions.data.model.home.request.AnnouncementRequest
 import com.moneyminions.data.model.home.request.UseCashRequest
 import com.moneyminions.data.model.home.response.AnnouncementResponse
@@ -181,7 +182,7 @@ interface BusinessService {
     /**
      * 공지사항 삭제
      */
-    @DELETE("notice/{roomId}")
+    @DELETE("notice/{roomId}/{noticeId}")
     suspend fun deleteAnnouncement(
         @Path(value = "roomId") roomId: Int,
         @Path(value = "noticeId") noticeId: Int,
@@ -193,7 +194,7 @@ interface BusinessService {
     @PATCH("notice/{roomId}")
     suspend fun editAnnouncement(
         @Path(value = "roomId") roomId: Int,
-        @Body announcementRequest: AnnouncementRequest
+        @Body announcementEditRequest: AnnouncementEditRequest
     ): CommonResponse
 
 
@@ -205,4 +206,25 @@ interface BusinessService {
         @Path("roomId") roomId: Int,
         @Body travelRoomEditRequest: TravelRoomEditRequest
     ): CommonResponse
+    /**
+     * 카드 삭제
+     */
+    @DELETE("card/delete/{cardCoName}/{cardNumber}")
+    suspend fun deleteCard(@Path("cardCoName")cardName: String, @Path("cardNumber") cardNumber: String): CommonResponse
+    /**
+     * 계좌 삭제
+     */
+    @DELETE("account/delete/{accountName}/{account}")
+    suspend fun deleteAccount(@Path("accountName") accountName: String, @Path("account") accountNumber: String): CommonResponse
+    /**
+     * 카드, 계좌 추가 등록
+     */
+    @POST("member/add")
+    suspend fun addAccountAndCard(@Body memberInfoRequest: MemberInfoRequest): CommonResponse
+
+    /**
+     * 공금 여부 수정(fcm용)
+     */
+    @POST("payment/push/alert")
+    suspend fun updateFCMPaymentInfo(@Body travelPaymentChangeInfoRequest: TravelPaymentChangeInfoRequest): Response<CommonResponse>
 }

@@ -11,12 +11,14 @@ import com.moneyminions.data.model.login.response.CardResponse
 import com.moneyminions.data.model.login.response.JoinResponse
 import com.moneyminions.data.model.login.response.LoginResponse
 import com.moneyminions.data.service.BusinessService
+import kotlin.math.log
 
 private const val TAG = "LoginDataSourceImpl D210"
 class LoginDataSourceImpl( //service 만들어야 함!
     private val businessService: BusinessService
 ): LoginDataSource {
     override suspend fun login(loginRequest: LoginRequest): LoginResponse {
+        Log.d(TAG, "login datasourceimpl ${loginRequest}")
         return businessService.login(loginRequest)
     }
 

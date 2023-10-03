@@ -16,8 +16,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,12 +25,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold24
-import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.CardLightGray
 
-private const val TAG = "싸피"
+private const val TAG = "GameListScreen_D210"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameListScreen(

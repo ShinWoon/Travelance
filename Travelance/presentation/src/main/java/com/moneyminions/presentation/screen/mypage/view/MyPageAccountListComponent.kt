@@ -44,7 +44,7 @@ fun MyPageAccountListComponent(
             AccountFrame(
                 name = account.bankName,
                 number = account.accountNumber!!,
-                idx = account.idx
+                idx = account.idx!!
             )
         }
     }

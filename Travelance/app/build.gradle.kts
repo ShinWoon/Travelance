@@ -68,4 +68,5 @@ dependencies {
 
     //kakao
     implementation("com.kakao.sdk:v2-all:2.14.0")
+
 }

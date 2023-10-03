@@ -21,7 +21,9 @@ import com.kakao.sdk.template.model.ItemContent
 import com.kakao.sdk.template.model.Link
 import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.common.CommonResultDto
+import com.moneyminions.domain.model.home.TravelRoomFriendDto
 import com.moneyminions.domain.model.home.TravelRoomInfoDto
+import com.moneyminions.domain.usecase.home.GetTravelRoomFriendsUseCase
 import com.moneyminions.domain.usecase.home.GetTravelRoomInfoUseCase
 import com.moneyminions.domain.usecase.home.StartTravelUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,7 +39,8 @@ private const val TAG = "HomeViewModel"
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val startTravelUseCase: StartTravelUseCase,
-    private val getTravelRoomInfoUseCase: GetTravelRoomInfoUseCase
+    private val getTravelRoomInfoUseCase: GetTravelRoomInfoUseCase,
+    private val getTravelRoomFriendsUseCase: GetTravelRoomFriendsUseCase,
 ): ViewModel(){
     // Home scroll state
     private val _isScrollState = mutableStateOf(ScrollState(0))
@@ -85,12 +88,31 @@ class HomeViewModel @Inject constructor(
         }
     }
     
-    private val _travelRoomInfo = MutableStateFlow(TravelRoomInfoDto())
-    val travelRoomInfo: StateFlow<TravelRoomInfoDto> = _travelRoomInfo.asStateFlow()
+    private val _travelRoomInfo = mutableStateOf(TravelRoomInfoDto())
+    val travelRoomInfo: State<TravelRoomInfoDto> = _travelRoomInfo
     fun refreshRoomInfo(roomInfo: TravelRoomInfoDto) {
-        _travelRoomInfo.update { roomInfo }
+        _travelRoomInfo.value = roomInfo
     }
-    
+
+    /**
+     * 여행방 친구 목록 조회
+     */
+    private val _getTravelRoomFriendResult = MutableStateFlow<NetworkResult <List<TravelRoomFriendDto>>>(NetworkResult.Idle)
+    val getTravelRoomFriendResult = _getTravelRoomFriendResult.asStateFlow()
+    fun getTravelRoomFriend(roomId: Int) {
+        Log.d(TAG, "getTravelRoomFriend roomId: $roomId")
+        viewModelScope.launch {
+            _getTravelRoomFriendResult.emit(getTravelRoomFriendsUseCase.invoke(roomId = roomId))
+        }
+    }
+
+    private val _travelRoomFriendInfo = mutableStateOf(mutableListOf<TravelRoomFriendDto>())
+    val travelRoomFriendInfo: State<MutableList<TravelRoomFriendDto>> = _travelRoomFriendInfo
+    fun refreshRoomFriendInfo(friendList: MutableList<TravelRoomFriendDto>) {
+        _travelRoomFriendInfo.value = friendList
+    }
+
+
     /**
      *  카카오 링크 초대
      */
@@ -103,8 +125,8 @@ class HomeViewModel @Inject constructor(
                 title = "여행방 이름", // 여행방 이름
                 imageUrl = "https://mud-kage.kakao.com/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png",
                 link = Link(
-                    androidExecutionParams = mapOf("type" to "6", "route" to "main", "data" to "data"),
-                    iosExecutionParams = mapOf("type" to "6", "route" to "main", "data" to "data")
+                    androidExecutionParams = mapOf("roomId" to "${_travelRoomInfo.value.roomId}", "route" to "main", "data" to "data"),
+                    iosExecutionParams = mapOf("roomId" to "${_travelRoomInfo.value.roomId}", "route" to "main", "data" to "data")
                 )
             ),
             itemContent = ItemContent(
@@ -117,8 +139,8 @@ class HomeViewModel @Inject constructor(
                     "참여 하기",
                     Link(
                         //
-                        androidExecutionParams = mapOf("number" to "6", "route" to "main", "data" to "data"),
-                        iosExecutionParams = mapOf("number" to "6", "route" to "main", "data" to "data"),
+                        androidExecutionParams = mapOf("roomId" to "${_travelRoomInfo.value.roomId}", "route" to "main", "data" to "data"),
+                        iosExecutionParams = mapOf("roomId" to "${_travelRoomInfo.value.roomId}", "route" to "main", "data" to "data"),
                     )
                 )
             )

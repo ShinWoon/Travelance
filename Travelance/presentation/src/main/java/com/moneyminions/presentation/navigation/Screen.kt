@@ -149,6 +149,12 @@ sealed class Screen(val name: String, val route: String, val title: String) {
         title = NavTitle.EDITTRAVEL
     )
 
+    object WebView: Screen(
+        name = "WebView",
+        route = NavRouteName.WEBVIEW,
+        title = NavTitle.WEBVIEW
+    )
+
     companion object {
         fun checkToolBar(route: String): Boolean {
             return when (if (route.contains("/")) route.split("/")[0] else route) {
@@ -193,6 +199,7 @@ object NavRouteName {
     const val SUBHOME = "sub_home_screen"
     const val TRAVELDONE = "travel_done"
     const val EDITTRAVEL = "edit_travel_screen"
+    const val WEBVIEW = "webview_screen"
 }
 
 object NavTitle {
@@ -220,4 +227,5 @@ object NavTitle {
     const val SUBHOME = "사전정산"
     const val TRAVELDONE = "여행 완료"
     const val EDITTRAVEL = "여행 수정"
+    const val WEBVIEW = "웹뷰"
 }

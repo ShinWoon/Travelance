@@ -7,6 +7,7 @@ import com.moneyminions.data.service.handleApi
 import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.common.CommonResultDto
 import com.moneyminions.domain.model.home.AnnouncementDto
+import com.moneyminions.domain.model.home.AnnouncementEditDto
 import com.moneyminions.domain.model.home.CashDto
 import com.moneyminions.domain.model.home.TravelRoomFriendDto
 import com.moneyminions.domain.model.home.TravelRoomInfoDto
@@ -73,8 +74,8 @@ class HomeRepositoryImpl @Inject constructor(
      */
     override suspend fun editAnnouncement(
         roomId: Int,
-        announcementDto: AnnouncementDto,
+        announcementEditDto: AnnouncementEditDto,
     ): NetworkResult<CommonResultDto> {
-        return handleApi { homeDataSource.editAnnouncement(roomId = roomId, announcementRequest = announcementDto.toData()).toDomain() }
+        return handleApi { homeDataSource.editAnnouncement(roomId = roomId, announcementEditRequest = announcementEditDto.toData()).toDomain() }
     }
 }
