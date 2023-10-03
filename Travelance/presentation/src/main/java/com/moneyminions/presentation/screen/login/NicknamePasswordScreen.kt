@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,7 +43,7 @@ fun NicknamePasswordScreen(
 //    val backStackEntry = navController.currentBackStackEntryAsState()
 //    val current = backStackEntry.value?.destination?.route
     //밑에 current!! 넣어봐라
-
+    val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val joinResultState by loginViewModel.joinResult.collectAsState()
     NetworkResultHandler(
@@ -56,7 +58,9 @@ fun NicknamePasswordScreen(
                 loginViewModel.updateJwtToken(it.accessToken, null, it.role)
                 Log.d(TAG, "최종 로그인 결과 : ${loginViewModel.memberInfo}")
 //                Log.d(TAG, "preference : ${loginViewModel.getJwtToken()} ${loginViewModel.getRole()}")
-                navController.navigate(Screen.Home.route)
+                navController.navigate(Screen.Home.route){
+                    popUpTo(Screen.Login.route){inclusive = true}
+                }
             }
         }
     )
@@ -90,8 +94,8 @@ fun NicknamePasswordScreen(
                 TextFieldWithTitle(
                     title = "비밀번호 확인",
                     hint = "비밀번호를 입력해주세요",
-                    value = "",
-                    onValueChange = {}
+                    value = nicknamePasswordViewModel.confirmPassword.value,
+                    onValueChange = {nicknamePasswordViewModel.setConfirmPassword(it)}
                 )
             }
             MinionPrimaryButton(
@@ -101,9 +105,15 @@ fun NicknamePasswordScreen(
                     .padding(16.dp)
             ) {
                 //TODO VAILD CHECK 해야 함
-                loginViewModel.setNickname(nicknamePasswordViewModel.nickname.value)
-                loginViewModel.setPassword(nicknamePasswordViewModel.password.value)
-                loginViewModel.join()
+                if(nicknamePasswordViewModel.checkPassword()) {
+                    loginViewModel.setNickname(nicknamePasswordViewModel.nickname.value)
+                    loginViewModel.setPassword(nicknamePasswordViewModel.password.value)
+                    loginViewModel.join()
+                }else{
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar("비밀번호가 일치하지 않습니다.")
+                    }
+                }
             }
         }
     }
