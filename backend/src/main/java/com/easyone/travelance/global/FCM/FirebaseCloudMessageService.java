@@ -23,8 +23,13 @@ public class FirebaseCloudMessageService {
     private final ObjectMapper objectMapper;
 
     public void sendMessageTo(String targetToken, String title, String body, Payment payment) throws IOException {
-        String message = makeMessage(targetToken, title, body, payment);
-        System.out.println("FCM sendMessageTo" + message);
+        String message = "";
+        if (payment == null){
+            message = makeMessage2(targetToken, title, body, payment);
+        }else{
+            message = makeMessage(targetToken, title, body, payment);
+            System.out.println("FCM sendMessageTo" + message);
+        }
 
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(message, MediaType.get("application/json; charset=utf-8"));
@@ -45,11 +50,6 @@ public class FirebaseCloudMessageService {
     private String makeMessage(String targetToken, String title, String body, Payment payment) throws JsonProcessingException {
         System.out.println("FCM makeMessageTo");
 
-        FcmMessage.Notification notification = FcmMessage.Notification.builder()
-                .title(title)
-                .body(body)
-                .build();
-
         // 여기에서 모든 값들을 문자열로 변환
         FcmMessage.Data data = FcmMessage.Data.builder()
                 .paymentId(String.valueOf(payment.getId()))
@@ -59,6 +59,27 @@ public class FirebaseCloudMessageService {
 
         FcmMessage.Message message = FcmMessage.Message.builder()
                 .data(data)
+                .token(targetToken)
+                .build();
+
+        FcmMessage fcmMessage = FcmMessage.builder()
+                .validateOnly(false)
+                .message(message)
+                .build();
+
+        return objectMapper.writeValueAsString(fcmMessage);
+    }
+
+    private String makeMessage2(String targetToken, String title, String body, Payment payment) throws JsonProcessingException {
+        System.out.println("FCM makeMessageTo2");
+
+        FcmMessage.Notification notification = FcmMessage.Notification.builder()
+                .title(title)
+                .body(body)
+                .build();
+
+        FcmMessage.Message message = FcmMessage.Message.builder()
+                .notification(notification)
                 .token(targetToken)
                 .build();
 
