@@ -126,7 +126,6 @@ fun PayScreen(
             .fillMaxSize()
             .verticalScroll(scrollableState)
             .padding(16.dp)
-            .imePadding()
             .addFocusCleaner(
                 LocalFocusManager.current
             ),
