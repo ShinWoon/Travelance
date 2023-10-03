@@ -59,6 +59,7 @@ public class PaymentServiceImpl implements PaymentService{
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Transactional
     @KafkaListener(topics = "travelance", groupId = "travelance")
     public void receivePaymentAlert(PaymentAlertRequestDto paymentAlertRequestDto, Acknowledgment ack) throws IOException {
         try {
