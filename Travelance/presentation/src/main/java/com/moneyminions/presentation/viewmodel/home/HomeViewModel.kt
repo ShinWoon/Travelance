@@ -85,10 +85,10 @@ class HomeViewModel @Inject constructor(
         }
     }
     
-    private val _travelRoomInfo = MutableStateFlow(TravelRoomInfoDto())
-    val travelRoomInfo: StateFlow<TravelRoomInfoDto> = _travelRoomInfo.asStateFlow()
+    private val _travelRoomInfo = mutableStateOf(TravelRoomInfoDto())
+    val travelRoomInfo: State<TravelRoomInfoDto> = _travelRoomInfo
     fun refreshRoomInfo(roomInfo: TravelRoomInfoDto) {
-        _travelRoomInfo.update { roomInfo }
+        _travelRoomInfo.value = roomInfo
     }
     
     /**

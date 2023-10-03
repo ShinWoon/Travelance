@@ -63,12 +63,14 @@ fun HomeScreen(
             if(it.result.toInt() != 0) {
                 mainViewModel.putTravelingRoomId(it.result.toInt())
                 navController.navigate(Screen.Home.route)
-                Log.d(TAG, "HomeScreen 여행방 시 성공: $it")
+                Log.d(TAG, "HomeScreen 여행방 시작 성공: $it")
             } else {
                 Log.d(TAG, "HomeScreen: 이미 진행중인 여행이 있음")
             }
         }
     )
+    Log.d(TAG, "HomeScreen: viewModel -> ${homeViewModel.hashCode()}")
+    Log.d(TAG, "HomeScreen default: ${homeViewModel.travelRoomInfo.hashCode()}")
     
     // 여행방 정보 GET
     val getTravelRoomInfoState by homeViewModel.getTravelRoomInfoResult.collectAsState()
@@ -78,7 +80,7 @@ fun HomeScreen(
             Log.d(TAG, "HomeScreen: 방 정보 얻기 실패")
         },
         successAction = {
-            Log.d(TAG, "HomeScreen: $it")
+            Log.d(TAG, "HomeScreen success: ${it.hashCode()}")
             homeViewModel.refreshRoomInfo(it)
         }
     )
@@ -86,6 +88,7 @@ fun HomeScreen(
     
     Log.d(TAG, "selectRoomId: ${mainViewModel.selectRoomId.value}")
     if (mainViewModel.selectRoomId.value == 0) { // 진행 중인 방이 없다면.
+        Log.d(TAG, "HomeScreen: NoRoomScreen on")
         NoRoomScreen()
     } else {
         // 홈 정보 GET
@@ -130,7 +133,8 @@ fun Home(
         )
         
         Spacer(modifier = Modifier.height(8.dp))
-        
+
+        Log.d(TAG, "Home: travel Done check -> ${travelInfo}")
         when (travelInfo.isDone) {
             "BEFORE" -> TravelReadyPager(
                 cardHeight = cardHeight,
@@ -142,7 +146,6 @@ fun Home(
                 cardHeight = cardHeight,
                 travelInfo = travelInfo,
             )
-            else -> NoRoomScreen()
         }
         
         Spacer(modifier = Modifier.height(16.dp))
