@@ -107,7 +107,7 @@ public class PaymentServiceImpl implements PaymentService{
         log.info("DB 저장 완료");
 
         // 5. FCM 알림 전송
-        Long paymentId = savedPayment.getId();
+//        Long paymentId = savedPayment.getId();
         String fcmToken = member.get().getFcmToken();
         if (fcmToken.isEmpty()){
             throw new EntityNotFoundException(member.get().getNickname() + "의 FCM TOKEN이 존재하지 않습니다.");
@@ -116,9 +116,9 @@ public class PaymentServiceImpl implements PaymentService{
             String body = savedPayment.getPaymentContent() + "에서 " + savedPayment.getPaymentAmount() + "원 사용되었습니다.";
 
             // 변경: 이미 주입된 objectMapper 인스턴스 사용
-            String paymentJson = objectMapper.writeValueAsString(savedPayment);
+//            String paymentJson = objectMapper.writeValueAsString(savedPayment);
 
-            firebaseCloudMessageService.sendMessageTo(fcmToken, title, body, paymentJson);
+            firebaseCloudMessageService.sendMessageTo(fcmToken, title, body, savedPayment);
         }
         log.info("알림 전송 완료");
     }

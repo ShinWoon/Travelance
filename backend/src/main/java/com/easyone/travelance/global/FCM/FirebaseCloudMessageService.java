@@ -20,8 +20,8 @@ public class FirebaseCloudMessageService {
     private final String API_URL = "https://fcm.googleapis.com/v1/projects/travelance-fada4/messages:send";
     private final ObjectMapper objectMapper;
 
-    public void sendMessageTo(String targetToken, String title, String body,String targetData) throws IOException {
-        String message = makeMessage(targetToken, title, body, targetData);
+    public void sendMessageTo(String targetToken, String title, String body,Payment payment) throws IOException {
+        String message = makeMessage(targetToken, title, body, payment);
         System.out.println("FCM sendMessageTo");
 
         OkHttpClient client = new OkHttpClient();
@@ -39,10 +39,9 @@ public class FirebaseCloudMessageService {
         System.out.println(response.body().string());
     }
 
-    private String makeMessage(String targetToken, String title, String body, String targetData) throws JsonProcessingException {
+    private String makeMessage(String targetToken, String title, String body, Payment payment) throws JsonProcessingException {
         System.out.println("FCM makeMessageTo");
 
-        Payment payment = objectMapper.readValue(targetData, Payment.class);
 
         FcmMessage.Notification notification = FcmMessage.Notification.builder()
                 .title(title)
