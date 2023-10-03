@@ -49,8 +49,8 @@ public class FirebaseCloudMessageService {
                 .build();
 
         FcmMessage.Data data = FcmMessage.Data.builder()
-                .paymentId(payment.getId())
-                .paymentAmount(payment.getPaymentAmount())
+                .paymentId(String.valueOf(payment.getId()))
+                .paymentAmount(String.valueOf(payment.getPaymentAmount()))
                 .content(payment.getPaymentContent())
                 .build();
 
