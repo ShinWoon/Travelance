@@ -1,11 +1,9 @@
 package com.moneyminions.presentation.viewmodel.travelmap
 
 import android.content.Context
-import android.location.Address
 import android.location.Geocoder
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moneyminions.domain.model.NetworkResult
@@ -19,7 +17,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.io.IOException
 import javax.inject.Inject
 
 private const val TAG = "D210"
