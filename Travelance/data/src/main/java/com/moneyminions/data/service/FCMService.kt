@@ -1,6 +1,7 @@
 package com.moneyminions.data.service
 
 import android.Manifest
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.RemoteInput
 import android.content.BroadcastReceiver
@@ -41,15 +42,16 @@ class FCMService: FirebaseMessagingService() {
 
     private fun sendNotification(remoteMessage: RemoteMessage) {
         var messageTitle = ""
-        var messageBody = ""
-//        var articleId = ""
-//        var type = ""
+        var messageContent = ""
+        var paymentId: Long
+        var notificationId = (System.currentTimeMillis()).toInt()
 
         // background 에 있을경우 혹은 foreground에 있을경우 두 경우 모두
         val notification = remoteMessage.notification
         val data = remoteMessage.data
-        messageTitle = data["title"].toString()
-        messageBody = data["message"].toString()
+        messageTitle = "공금에 등록하시겠습니까?"
+        messageContent = "${data["content"]}에서 ${data["paymentAmount"]}원 결제"
+        paymentId = data["paymentId"]!!.toLong()
 //        type = data[Constants.TYPE] ?: TYPE_REPORT
 //        articleId = if (type == TYPE_REPORT) data[Constants.REPORT_ID].toString() else data[Constants.ARTICLE_ID].toString()
         val mainIntent = Intent(this, Class.forName("com.moneyminions.presentation.MainActivity")).apply {
@@ -61,7 +63,7 @@ class FCMService: FirebaseMessagingService() {
         val mainPendingIntent: PendingIntent =
             PendingIntent.getActivity(
                 this,
-                101,
+                notificationId,
                 mainIntent,
                 PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
@@ -69,18 +71,30 @@ class FCMService: FirebaseMessagingService() {
         // 확인 버튼을 눌렀을 때의 이벤트 처리
         val confirmIntent = Intent(this, Class.forName("com.moneyminions.data.service.ConfirmReceiver")).apply {
             putExtra("ACTION_TYPE", "CONFIRM")
+            putExtra("PAYMENT_ID", paymentId)
+            putExtra("NOTIFICATION_ID", notificationId)
         }
         val confirmPendingIntent: PendingIntent =
             PendingIntent.getBroadcast(
                 this,
-                0,
+                notificationId,
                 confirmIntent,
                 PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
 
 
+
         // 취소 버튼을 눌렀을 때 아무 일도 일어나지 않게 처리
-        val cancelPendingIntent: PendingIntent? = null
+        val cancelIntent = Intent(this, Class.forName("com.moneyminions.data.service.CancelReceiver")).apply {
+            putExtra("NOTIFICATION_ID", notificationId)
+        }
+        val cancelPendingIntent: PendingIntent =
+            PendingIntent.getBroadcast(
+                this,
+                notificationId,
+                cancelIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
 
 
         // 알림에 대한 UI 정보, 작업
@@ -89,7 +103,7 @@ class FCMService: FirebaseMessagingService() {
             .setDefaults(NotificationCompat.DEFAULT_SOUND or NotificationCompat.DEFAULT_VIBRATE)
             .setSmallIcon(androidx.core.R.drawable.notification_bg)
             .setContentTitle(messageTitle)
-            .setContentText(messageBody)
+            .setContentText(messageContent)
             .setContentIntent(mainPendingIntent)
             .setGroupSummary(true)
             .setAutoCancel(true)
@@ -116,8 +130,9 @@ class FCMService: FirebaseMessagingService() {
                     return
                 }
             }
-            Log.d(TAG, "notify...")
-            notify(101, notificationBuilder.build())
+            Log.d(TAG, "notify... $notificationId")
+//            notify(101, notificationBuilder.build())
+            notify(notificationId, notificationBuilder.build() )
         }
     }
 
@@ -129,8 +144,24 @@ class ConfirmReceiver : BroadcastReceiver() {
         Log.d(TAG, "onReceive... ${intent?.extras?.getString("ACTION_TYPE")}")
         if (intent?.extras?.getString("ACTION_TYPE") == "CONFIRM") {
             // "확인" 버튼을 눌렀을 때 원하는 동작을 수행합니다.
-            Log.d(TAG, "확인 버튼을 눌렀습니다")
+            Log.d(TAG, "확인 버튼을 눌렀습니다 paymentId : ${intent?.extras?.getLong("PAYMENT_ID")}")
             // 여기에 원하는 동작을 추가하세요.
         }
+        val notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationId = intent?.getIntExtra("NOTIFICATION_ID", 0) ?: 0
+
+        // 알림을 제거합니다.
+        notificationManager.cancel(notificationId)
+        Log.d(TAG, "onReceive: $notificationId")
+    }
+}
+class CancelReceiver : BroadcastReceiver() {
+    override fun onReceive(context: Context?, intent: Intent?) {
+        val notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationId = intent?.getIntExtra("NOTIFICATION_ID", 0) ?: 0
+
+        // 알림을 제거합니다.
+        notificationManager.cancel(notificationId)
+        Log.d(TAG, "onReceive: $notificationId")
     }
 }

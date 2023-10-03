@@ -27,20 +27,14 @@ import com.moneyminions.data.model.travellist.request.RoomUserRequestDto
 import com.moneyminions.data.model.travellist.response.TravelRoomResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
-<<<<<<< HEAD
 import retrofit2.http.Body
-=======
->>>>>>> feature/A_Mypage_SH
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
-<<<<<<< HEAD
 import retrofit2.http.Part
-=======
->>>>>>> feature/A_Mypage_SH
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -117,7 +111,6 @@ interface BusinessService {
      */
     @POST("api/accounts/access-token/re")
     suspend fun postReAccessToken(@Header("Authorization") refreshToken: String): Response<ReAccessTokenResponse>
-<<<<<<< HEAD
 
     /**
      * 여행방 삭제 API
@@ -213,7 +206,6 @@ interface BusinessService {
         @Path("roomId") roomId: Int,
         @Body travelRoomEditRequest: TravelRoomEditRequest
     ): CommonResponse
-=======
     /**
      * 카드 삭제
      */
@@ -229,5 +221,4 @@ interface BusinessService {
      */
     @POST("member/add")
     suspend fun addAccountAndCard(@Body memberInfoRequest: MemberInfoRequest): CommonResponse
->>>>>>> feature/A_Mypage_SH
 }

@@ -158,11 +158,6 @@ fun AccountAuthenticationScreen(
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
 @Composable
-<<<<<<< HEAD
 fun AccountAuthenticationScreenPreview() {
     AccountAuthenticationScreen(navController = rememberNavController())
-=======
-fun AccountAuthenticationScreenPreview(){
-//    AccountAuthenticationScreen(navController = rememberNavController())
->>>>>>> feature/A_Mypage_SH
 }

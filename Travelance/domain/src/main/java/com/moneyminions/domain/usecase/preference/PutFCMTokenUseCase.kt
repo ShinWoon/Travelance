@@ -6,7 +6,7 @@ import javax.inject.Inject
 class PutFCMTokenUseCase @Inject constructor(
     private val preferenceRepository: PreferenceRepository
 ) {
-    operator fun invoke(){
-        preferenceRepository.putFCMToken()
+    operator fun invoke(fcmToken: String){
+        preferenceRepository.putFCMToken(fcmToken)
     }
 }

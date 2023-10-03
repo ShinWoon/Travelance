@@ -15,11 +15,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
-<<<<<<< HEAD
-=======
 import com.kakao.sdk.common.KakaoSdk.type
 import com.moneyminions.presentation.screen.MainScreen
->>>>>>> feature/A_Mypage_SH
 import com.moneyminions.presentation.screen.announcement.AnnouncementScreen
 import com.moneyminions.presentation.screen.detail.DetailScreen
 import com.moneyminions.presentation.screen.example.ExampleScreen
@@ -53,13 +50,9 @@ fun NavGraph(
     innerPaddings: PaddingValues,
     navController: NavHostController,
     startDestination: String,
-<<<<<<< HEAD
     loginViewModel: LoginViewModel = hiltViewModel() ,
     mainViewModel: MainViewModel,
-=======
-    loginViewModel: LoginViewModel = hiltViewModel(),
     editUserViewModel: EditUserViewModel = hiltViewModel()
->>>>>>> feature/A_Mypage_SH
 ) {
     AnimatedNavHost(
         modifier = Modifier.padding(innerPaddings),

@@ -17,12 +17,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.MainScreen
@@ -54,7 +57,6 @@ class MainActivity : FragmentActivity() {
             var isAuthenticated = remember { mutableStateOf(false) }
             val context = LocalContext.current
 
-<<<<<<< HEAD
             if (Build.VERSION.SDK_INT < 33) {
                 val list = Geocoder(context).getFromLocationName("경상북도 구미시 비산동 108", 5)!!
                 Log.d(TAG, "address list : $list")
@@ -63,20 +65,10 @@ class MainActivity : FragmentActivity() {
                     Log.d(TAG, "33 이상 list : $it")
                 }
             }
-=======
-//            if(Build.VERSION.SDK_INT < 33) {
-//                val list = Geocoder(context).getFromLocationName("경상북도 구미시 비산동 108", 5)!!
-//                Log.d(TAG, "address list : $list")
-//            }else{
-//                val list = Geocoder(context).getFromLocationName("경상북도 구미시 비산동 108", 5){
-//                    Log.d(TAG, "33 이상 list : $it")
-//                }
-//            }
 
             val navController = rememberAnimatedNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
->>>>>>> feature/A_Mypage_SH
             MyApplicationTheme {
                 val mainViewModel: MainViewModel = hiltViewModel()
                 Surface(
