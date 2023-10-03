@@ -39,9 +39,8 @@ public class TravelController {
     public ResponseEntity<RoomIdResponseDto> MakeRoom(@MemberInfo MemberInfoDto memberInfo,
                                                       @RequestPart RoomInfoRequestDto roomInfoRequestDto,
                                                       @RequestPart(value = "imageFiles", required = false) MultipartFile imageFiles,
-                                                      @RequestPart RoomUserRequestDto roomUserRequestDto) {
+                                                      @RequestPart RoomUserRequestDto roomUserRequestDto) throws Exception {
 
-//        System.out.println(imageFiles.isEmpty());
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
 
         RoomIdResponseDto roomIdResponseDto= travelService.save(roomInfoRequestDto, member, roomUserRequestDto);
@@ -55,7 +54,7 @@ public class TravelController {
     public ResponseEntity <ResultDto> AddUser(@MemberInfo MemberInfoDto memberInfo,
                                              @RequestPart(value = "imageFiles", required = false) MultipartFile profileUrl,
                                                @PathVariable Long roomId,
-                                               @RequestPart RoomUserRequestDto roomUserRequestDto) {
+                                               @RequestPart RoomUserRequestDto roomUserRequestDto) throws Exception {
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
         ResultDto resultDto =travelService.adduser(roomId, member, roomUserRequestDto);
         return new ResponseEntity<>(resultDto, HttpStatus.OK);
