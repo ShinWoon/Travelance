@@ -15,6 +15,7 @@ import com.easyone.travelance.global.memberInfo.MemberInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -165,6 +166,7 @@ public class AccountController {
 
     @Operation(summary = "계좌 삭제", description = "현재 로그인한 유저의 등록된 계좌를 삭제하는 메서드입니다.")
     @DeleteMapping("/delete/{accountName}/{account}")
+    @CacheEvict(value = "accountCache", key = "#member.id")
     public ResponseEntity<ResultDto> deleteAccount(
             @MemberInfo MemberInfoDto memberInfoDto,
             @PathVariable String accountName,
