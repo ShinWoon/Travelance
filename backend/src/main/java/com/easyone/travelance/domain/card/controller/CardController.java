@@ -74,7 +74,7 @@ public class CardController {
 
     @Operation(summary = "카드 삭제", description = "현재 로그인한 유저의 등록된 카드를 삭제하는 메서드입니다.")
     @DeleteMapping("/delete/{cardCoName}/{cardNumber}")
-    @CacheEvict(value = "cardCache", key = "#member.id")
+    @CacheEvict(value = "cardCache", key = "#memberInfoDto.email")
     public ResponseEntity<ResultDto> deleteCard(
             @MemberInfo MemberInfoDto memberInfoDto,
             @PathVariable String cardCoName,

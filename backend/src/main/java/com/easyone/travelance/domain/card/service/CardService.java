@@ -7,6 +7,8 @@ import com.easyone.travelance.domain.card.respository.CardRepository;
 import com.easyone.travelance.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -35,6 +37,7 @@ public class CardService {
     }
 
     // 특정 카드들 등록
+    @CacheEvict(value = "cardCache", key = "#member.email")
     public void SaveCard(Member member, SelectedCardRequestDto selectedCardRequestDto) {
         String cardNumber = selectedCardRequestDto.getCardNumber();
 

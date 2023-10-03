@@ -10,6 +10,7 @@ import com.easyone.travelance.domain.member.respository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -105,9 +106,8 @@ public class AccountService {
                 .retrieve()
                 .bodyToFlux(Object.class); // 응답을 Flux<Object> 형태로 받습니다.
     }
-
-
-    public void SaveAccount(MainAccount mainAccount, SelectedAccountRequestDto selectedAccountRequestDto) {
+    @CacheEvict(value = "accountCache", key = "#member.email")
+    public void SaveAccount(Member member,MainAccount mainAccount, SelectedAccountRequestDto selectedAccountRequestDto) {
         String accountNumber = selectedAccountRequestDto.getAccount();
 
         Optional<Account> existingAccount = accountRepository.findByAccount(accountNumber);
