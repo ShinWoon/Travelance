@@ -10,8 +10,7 @@ import com.easyone.travelance.domain.member.respository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -28,14 +27,6 @@ import java.util.Optional;
 @Slf4j
 public class AccountService {
 
-    @Value("${http.auth-token-header.name}")
-    private String authTokenHeaderName;
-
-    @Value("${http.auth-token}")
-    private String authToken;
-
-    //    @Autowired
-    //    private final WebClient.Builder webClientBuilder;
 
     @Autowired
     private WebClient webClient;
@@ -48,9 +39,6 @@ public class AccountService {
 
     @Autowired
     private MemberRepository memberRepository;
-//    @Value("http://localhost:8081")
-//    @Value("http://3.39.110.134:8083")
-//    private String Url;
 
 
     // 1원 이체 요청
