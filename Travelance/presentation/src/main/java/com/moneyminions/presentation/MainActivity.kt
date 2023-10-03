@@ -52,8 +52,8 @@ class MainActivity : FragmentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        createNotificationChannel(notificationManager, CHANNEL_ID, CHANNEL_NAME)
         setContent {
-            createNotificationChannel(notificationManager, CHANNEL_ID, CHANNEL_NAME)
             var isAuthenticated = remember { mutableStateOf(false) }
             val context = LocalContext.current
 
