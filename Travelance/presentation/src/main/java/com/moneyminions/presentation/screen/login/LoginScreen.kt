@@ -81,7 +81,7 @@ fun LoginScreen(
                 loginViewModel.updateJwtToken(it.accessToken,it.refreshToken,it.role)
                 //TODO homeScreen으로 이동
                 navController.navigate(Screen.Home.route){
-                    popUpTo(Screen.Home.route){
+                    popUpTo(Screen.Login.route){
                         inclusive = true
                     }
                 }
