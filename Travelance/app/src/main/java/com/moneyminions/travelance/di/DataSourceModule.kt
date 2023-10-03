@@ -14,6 +14,8 @@ import com.moneyminions.data.datasource.remote.traveledit.TravelEditDataSource
 import com.moneyminions.data.datasource.remote.traveledit.TravelEditDataSourceImpl
 import com.moneyminions.data.datasource.remote.travellist.TravelListDataSource
 import com.moneyminions.data.datasource.remote.travellist.TravelListDataSourceImpl
+import com.moneyminions.data.datasource.remote.travelmap.TravelMapDataSource
+import com.moneyminions.data.datasource.remote.travelmap.TravelMapDataSourceImpl
 import com.moneyminions.data.service.BusinessService
 import com.moneyminions.data.service.example.ExampleService
 import dagger.Module
@@ -65,6 +67,12 @@ object DataSourceModule {
     @Provides
     fun provideTravelEditDataSource(businessService: BusinessService): TravelEditDataSource {
         return TravelEditDataSourceImpl(businessService)
+    }
+
+    @Singleton
+    @Provides
+    fun provideTravelMapDataSource(businessService: BusinessService): TravelMapDataSource {
+        return TravelMapDataSourceImpl(businessService)
     }
  }
 

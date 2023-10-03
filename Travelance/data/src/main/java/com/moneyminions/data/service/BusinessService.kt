@@ -25,6 +25,9 @@ import com.moneyminions.data.model.traveledit.request.TravelRoomEditRequest
 import com.moneyminions.data.model.travellist.request.RoomInfoRequestDto
 import com.moneyminions.data.model.travellist.request.RoomUserRequestDto
 import com.moneyminions.data.model.travellist.response.TravelRoomResponse
+import com.moneyminions.data.model.travelmap.request.TravelMapDetailRequest
+import com.moneyminions.data.model.travelmap.response.TravelMapDetailResponse
+import com.moneyminions.data.model.travelmap.response.TravelMapInfoResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -227,4 +230,19 @@ interface BusinessService {
      */
     @POST("payment/push/alert")
     suspend fun updateFCMPaymentInfo(@Body travelPaymentChangeInfoRequest: TravelPaymentChangeInfoRequest): Response<CommonResponse>
+
+    /**
+     * 여행 장소들 조회
+     */
+    @GET("travel/map/{roomId}")
+    suspend fun getTravelSpots(@Path("roomId") roomId: Int): List<TravelMapInfoResponse>
+
+    /**
+     * 여행 장소 상세 조회
+     */
+    @POST("travel/map/{roomId}/detail")
+    suspend fun getTravelSpotDetail(
+        @Path("roomId") roomId: Int,
+        @Body travelMapDetailRequest: TravelMapDetailRequest
+    ) : TravelMapDetailResponse
 }
