@@ -80,7 +80,11 @@ fun LoginScreen(
                 Log.d(TAG, "LoginScreen에서 member라서 바로 home으로 $it")
                 loginViewModel.updateJwtToken(it.accessToken,it.refreshToken,it.role)
                 //TODO homeScreen으로 이동
-                navController.navigate(Screen.Home.route)
+                navController.navigate(Screen.Home.route){
+                    popUpTo(Screen.Login.route){
+                        inclusive = true
+                    }
+                }
             }else{
                 coroutineScope.launch {
                     loginViewModel.refreshNetworkState()

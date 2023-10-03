@@ -204,12 +204,12 @@ fun PayScreen(
             onClick = {
                 //결제 api 호출
                 payViewModel.postPaymentRequest()
-                payViewModel.setCardNumber("")
-                payViewModel.setCvc("")
-                payViewModel.setAmount("")
-                payViewModel.setStoreName("")
-                payViewModel.setStoreType("")
-                payViewModel.setStoreAddress("")
+//                payViewModel.setCardNumber("")
+//                payViewModel.setCvc("")
+//                payViewModel.setAmount("")
+//                payViewModel.setStoreName("")
+//                payViewModel.setStoreType("")
+//                payViewModel.setStoreAddress("")
             },
             modifier = Modifier.fillMaxWidth()
         ) {

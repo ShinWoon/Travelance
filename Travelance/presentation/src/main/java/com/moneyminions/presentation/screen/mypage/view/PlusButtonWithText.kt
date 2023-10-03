@@ -19,21 +19,20 @@ import com.moneyminions.presentation.screen.travellist.util.clickable
 @Composable
 fun PlusButtonWithText(
     text: String,
+    type: String,
     onClick: () -> Unit
 ){
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxWidth()
+            .clickable { onClick() }
     ){
         Image(
             painter = painterResource(id = R.drawable.ic_rounded_plus),
             contentDescription = "add button",
             modifier = Modifier
                 .size(20.dp)
-                .clickable {
-                    onClick()
-                }
         )
         Spacer(modifier = Modifier.size(8.dp))
         Text(

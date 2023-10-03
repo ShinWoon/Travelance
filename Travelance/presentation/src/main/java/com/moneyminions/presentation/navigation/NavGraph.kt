@@ -15,6 +15,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
+import com.kakao.sdk.common.KakaoSdk.type
+import com.moneyminions.presentation.screen.MainScreen
 import com.moneyminions.presentation.screen.announcement.AnnouncementScreen
 import com.moneyminions.presentation.screen.detail.DetailScreen
 import com.moneyminions.presentation.screen.example.ExampleScreen
@@ -38,6 +40,7 @@ import com.moneyminions.presentation.screen.travellist.TravelListScreen
 import com.moneyminions.presentation.screen.travelmap.TravelMapScreen
 import com.moneyminions.presentation.viewmodel.MainViewModel
 import com.moneyminions.presentation.viewmodel.login.LoginViewModel
+import com.moneyminions.presentation.viewmodel.mypage.EditUserViewModel
 
 private const val TAG = "NavGraph_D210"
 @OptIn(ExperimentalAnimationApi::class)
@@ -49,6 +52,7 @@ fun NavGraph(
     startDestination: String,
     loginViewModel: LoginViewModel = hiltViewModel() ,
     mainViewModel: MainViewModel,
+    editUserViewModel: EditUserViewModel = hiltViewModel()
 ) {
     AnimatedNavHost(
         modifier = Modifier.padding(innerPaddings),
@@ -112,22 +116,22 @@ fun NavGraph(
         composable(
             route = Screen.EditUser.route,
         ) {
-            EditUserScreen(navController = navController)
+            EditUserScreen(navController = navController, editUserViewModel = editUserViewModel)
         }
         composable(
-            route = Screen.AccountAuthentication.route,
+            route = Screen.AccountAuthentication.route
         ) {
             AccountAuthenticationScreen(navController = navController)
         }
         composable(
             route = Screen.AccountList.route,
         ) {
-            AccountListScreen(navController = navController, loginViewModel = loginViewModel)
+            AccountListScreen(navController = navController, loginViewModel = loginViewModel, editUserViewModel = editUserViewModel)
         }
         composable(
             route = Screen.CardList.route,
         ) {
-            CardListScreen(navController = navController, loginViewModel = loginViewModel)
+            CardListScreen(navController = navController, loginViewModel = loginViewModel, editUserViewModel = editUserViewModel)
         }
         composable(
             route = Screen.TravelMap.route,

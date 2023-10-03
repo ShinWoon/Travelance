@@ -23,12 +23,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.moneyminions.presentation.common.AccountRowItem
 import com.moneyminions.presentation.common.MinionPrimaryButton
+import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.mypage.view.accountList
 import com.moneyminions.presentation.utils.Constants
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.login.AccountListViewModel
 import com.moneyminions.presentation.viewmodel.login.LoginViewModel
+import com.moneyminions.presentation.viewmodel.mypage.EditUserViewModel
 import kotlinx.coroutines.launch
 
 private const val TAG = "AccountListScreen D210"
@@ -37,8 +39,11 @@ private const val TAG = "AccountListScreen D210"
 fun AccountListScreen(
     navController: NavHostController,
     accountListViewModel: AccountListViewModel = hiltViewModel(),
-    loginViewModel: LoginViewModel
-) {
+    loginViewModel: LoginViewModel,
+    editUserViewModel: EditUserViewModel
+){
+    accountListViewModel.setExistingAccountList(editUserViewModel)
+
     val coroutineScope = rememberCoroutineScope()
     val accountListResultState by accountListViewModel.accountListResult.collectAsState() //계좌 불러오는 api 결과 상태
     val accountListState =
@@ -60,7 +65,8 @@ fun AccountListScreen(
         key1 = Unit,
         block = {
             accountListViewModel.getAccountList()
-        })
+        }
+    )
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -71,7 +77,7 @@ fun AccountListScreen(
                 var isSelectedState by remember { mutableStateOf(it.isSelected) }
                 Log.d(TAG, "AccountListScreen: $isSelectedState")
                 AccountRowItem(
-                    logo = Constants.ACCOUNT_LOGO_LIST[it.idx],
+                    logo = Constants.ACCOUNT_LOGO_LIST[it.idx!!],
                     name = it.bankName,
                     number = it.accountNumber!!,
                     type = "select",
@@ -82,24 +88,59 @@ fun AccountListScreen(
                         Log.d(TAG, "AccountListScreen: $accountList")
                     }
                 )
+                TopBar(
+                    navController = navController,
+                    topBarTitle = "계좌 목록"
+                )
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    LazyColumn {
+                        items(accountListState.value) {
+                            var isSelectedState by remember { mutableStateOf(it.isSelected) }
+                            Log.d(TAG, "AccountListScreen: $isSelectedState")
+                            AccountRowItem(
+                                logo = Constants.ACCOUNT_LOGO_LIST[it.idx!!],
+                                name = it.bankName,
+                                number = it.accountNumber!!,
+                                type = "select",
+                                isSelected = isSelectedState,
+                                onSelected = {
+                                    isSelectedState = !isSelectedState!!
+                                    it.isSelected = !it.isSelected!!
+                                    Log.d(TAG, "AccountListScreen: $accountList")
+                                }
+                            )
+                        }
+                    }
+                    MinionPrimaryButton(
+                        content = "다음",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    ) {
+                        //닉네임, 비밀번호 설정 화면으로 이동
+                        loginViewModel.setMemberAccountList(accountListState.value.filter { it.isSelected!! })
+                        Log.d(
+                            TAG,
+                            "AccountList mainviewmodel의 memberInfo : ${loginViewModel.memberInfo}"
+                        )
+                        navController.navigate(Screen.CardList.route)
+                    }
+                }
+                MinionPrimaryButton(
+                    content = "다음",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    loginViewModel.setMemberAccountList(accountListState.value.filter { it.isSelected!! })
+                    Log.d(TAG, "mainViewModel에 있는 memberInfo : ${loginViewModel.memberInfo}")
+                    navController.navigate(Screen.CardList.route)
+                }
             }
-        }
-        MinionPrimaryButton(
-            content = "다음",
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            loginViewModel.setMemberAccountList(accountListState.value.filter { it.isSelected!! })
-            Log.d(TAG, "mainViewModel에 있는 memberInfo : ${loginViewModel.memberInfo}")
-            navController.navigate(Screen.CardList.route)
         }
     }
 
-}
-
-@Preview(showBackground = true, backgroundColor = 0xFFFFFF)
-@Composable
-fun AccountListScreenPreview() {
-//    AccountListScreen(navController = rememberNavController())
 }

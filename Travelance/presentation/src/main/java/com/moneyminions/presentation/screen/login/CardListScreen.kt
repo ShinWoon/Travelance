@@ -34,6 +34,7 @@ import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.MainViewModel
 import com.moneyminions.presentation.viewmodel.login.CardListViewModel
 import com.moneyminions.presentation.viewmodel.login.LoginViewModel
+import com.moneyminions.presentation.viewmodel.mypage.EditUserViewModel
 import kotlinx.coroutines.launch
 
 
@@ -43,8 +44,11 @@ private const val TAG = "CardListScreen D210"
 fun CardListScreen(
     navController: NavHostController,
     cardListViewModel: CardListViewModel = hiltViewModel(),
-    loginViewModel: LoginViewModel
+    loginViewModel: LoginViewModel,
+    editUserViewModel: EditUserViewModel
 ){
+    cardListViewModel.setExistingCardList(editUserViewModel)
+
     val coroutineScope = rememberCoroutineScope()
     val cardListResultState by cardListViewModel.cardListResult.collectAsState() //계좌 불러오는 api 결과 상태
     val cardListState  = cardListViewModel.cardList.collectAsState() //내가 이 화면에 사용할 내 계좌 리스트의 상태
@@ -63,7 +67,24 @@ fun CardListScreen(
 
     LaunchedEffect(
         key1 = Unit,
-        block = {cardListViewModel.getCardList()}
+        block = {
+            cardListViewModel.getCardList()
+        }
+    )
+
+    val addAccountAndCardResultState by cardListViewModel.addAccountAndCardResult.collectAsState()
+    NetworkResultHandler(
+        state = addAccountAndCardResultState,
+        errorAction = {
+            Log.d(TAG, "마이데이터 추가 실패,,,")
+        },
+        successAction = {
+            navController.navigate(Screen.EditUser.route) {
+                popUpTo(Screen.EditUser.route){
+                    inclusive = true
+                }
+            }
+        }
     )
 
     Column(
@@ -76,13 +97,15 @@ fun CardListScreen(
             LazyColumn{
                 items(cardListState.value){
                     var isSelectedState by remember { mutableStateOf(it.isSelected) }
+                    val isUpdate = it.isSelected
                     Log.d(TAG, "AccountListScreen: $isSelectedState")
                     CardRowItem(
                         name = it.name,
                         number = it.number,
-                        idx = it.idx,
+                        idx = it.idx!!,
                         type = "select",
                         isSelected = isSelectedState,
+                        isUpdate = isUpdate,
                         onSelected = {
                             isSelectedState = !isSelectedState!!
                             it.isSelected = !it.isSelected!!
@@ -92,14 +115,20 @@ fun CardListScreen(
                 }
             }
             MinionPrimaryButton(
-                content = "다음",
+                content = if (cardListViewModel.isEmptyExistingCardList()) "다음" else "완료",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
+                //닉네임, 비밀번호 설정 화면으로 이동
                 loginViewModel.setMemberCardList(cardListState.value.filter { it.isSelected!! })
                 Log.d(TAG, "CardListScreen에서 mainviewmodel의 memberInfo : ${loginViewModel.memberInfo}")
-                navController.navigate(Screen.NicknamePassword.route)
+                if(cardListViewModel.isEmptyExistingCardList()){
+                    navController.navigate(Screen.NicknamePassword.route)
+                }else{
+                    //여기서 마이데이터 갱신하는 api 호출
+                    cardListViewModel.addAccountAndCard(loginViewModel.memberInfo)
+                }
             }
         }
     }

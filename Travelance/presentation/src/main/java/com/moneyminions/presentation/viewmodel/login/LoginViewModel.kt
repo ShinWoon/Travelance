@@ -27,6 +27,7 @@ import com.moneyminions.domain.usecase.preference.PutRoleUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import com.google.firebase.messaging.FirebaseMessaging
 
 private const val TAG = "LoginViewModel D210"
 @HiltViewModel
@@ -53,11 +54,19 @@ class LoginViewModel @Inject constructor(
                     Log.d(TAG, "kakao login success -> access Token : ${token.accessToken}")
                     Log.d(TAG, "kakao login success -> refresh Token : ${token.refreshToken}")
                     updateJwtToken(token.accessToken, token.refreshToken, null)
-                    putFCMTokenUseCase.invoke()
-                    Log.d(TAG, "preference의 fcmTOKEN : ${getFCMTokenUseCase.invoke()}")
-                    //로그인 api 호출
-                    viewModelScope.launch {
-                        _loginResult.emit(loginUseCase.invoke("KAKAO"))
+//                    putFCMTokenUseCase.invoke()
+                    FirebaseMessaging.getInstance().token.addOnCompleteListener {
+                        if (!it.isSuccessful) {
+                            // 토큰 요청 task가 실패 한 경우 처리
+                            return@addOnCompleteListener
+                        }
+                        // 토큰 요청 task가 성공한 경우 task의 result에 token 값이 내려온다.
+                        putFCMTokenUseCase.invoke(it.result)
+                        Log.d(TAG, "preference의 fcmTOKEN : ${getFCMTokenUseCase.invoke()}")
+                        //로그인 api 호출
+                        viewModelScope.launch {
+                            _loginResult.emit(loginUseCase.invoke("KAKAO"))
+                        }
                     }
                 }
             }
