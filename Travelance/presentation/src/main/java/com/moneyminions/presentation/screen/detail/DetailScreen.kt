@@ -131,6 +131,7 @@ fun DetailScreen(
                 type = "detail",
                 modifier = Modifier,
                 navController = navController,
+                roomId = travelId,
                 setTravelRoomInfo = {travelRoomInfoDto ->
                     mainViewModel.putTravelRoomInfo(travelRoomInfoDto)
                 }

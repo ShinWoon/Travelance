@@ -54,6 +54,7 @@ fun CreateTravelScreen(
     mainViewModel: MainViewModel,
     roomId: Int = -1
 ) {
+    Log.d(TAG, "CreateTravelScreen roomId $roomId")
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
 
@@ -88,7 +89,11 @@ fun CreateTravelScreen(
     var travelRoomInfo by remember { mutableStateOf(TravelRoomInfoDto()) }
     if(roomId != -1) {
         LaunchedEffect(Unit) {
-            travelRoomInfo = mainViewModel.travelRoomInfo
+            travelRoomInfo = mainViewModel.travelRoomInfo.value
+            createTravelViewModel.setStartDate(travelRoomInfo.startDate)
+            createTravelViewModel.setEndDate(travelRoomInfo.endDate)
+            createTravelViewModel.setTravelName(travelRoomInfo.travelName)
+            createTravelViewModel.setTravelBudget(travelRoomInfo.budget.toString())
         }
     }
 
@@ -119,11 +124,13 @@ fun CreateTravelScreen(
                     .padding(top = 16.dp, start = 16.dp, bottom = 8.dp, end = 16.dp),
                 verticalArrangement = Arrangement.SpaceBetween,
             ) {
+                Log.d(TAG, "CreateTravelScreen... $travelRoomInfo")
                 Column {
                     TextFieldWithTitle(
                         title = "이름",
                         hint = "여행 이름을 입력하세요",
-                        value = if(roomId == -1) createTravelViewModel.travelName.value else travelRoomInfo.travelName,
+//                        value = if(roomId == -1) createTravelViewModel.travelName.value else travelRoomInfo.travelName,
+                        value = createTravelViewModel.travelName.value,
                         onValueChange = {
                             createTravelViewModel.setTravelName(it)
                         },
@@ -134,7 +141,7 @@ fun CreateTravelScreen(
                     TextFieldWithTitle(
                         title = "예산",
                         hint = "예산을 입력해주세요",
-                        value = if(roomId == -1) createTravelViewModel.travelBudget.value else travelRoomInfo.budget.toString(),
+                        value = createTravelViewModel.travelBudget.value,
                         onValueChange = {
                             createTravelViewModel.setTravelBudget(it)
                         },
@@ -145,18 +152,18 @@ fun CreateTravelScreen(
                 Column {
                     DateTextComponent(
                         text = "시작 날짜 : ",
-                        value = if(roomId == -1) createTravelViewModel.startDate.value else travelRoomInfo.startDate,
+                        value = createTravelViewModel.startDate.value,
                     )
                     Spacer(
                         modifier = Modifier.size(16.dp),
                     )
                     DateTextComponent(
                         text = "종료 날짜 : ",
-                        value = if(roomId == -1) createTravelViewModel.endDate.value else travelRoomInfo.endDate,
+                        value = createTravelViewModel.endDate.value,
                     )
                 }
                 MinionPrimaryButton(
-                    content = "생성",
+                    content = if(roomId == -1) "생성" else "수정",
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     when(roomId) {
@@ -171,7 +178,15 @@ fun CreateTravelScreen(
                             }
                         }
                         else -> {
-                            travelEditViewModel.editTravelRoomInfo(roomId = roomId, travelRoomInfoDto = travelRoomInfo)
+                            travelEditViewModel.editTravelRoomInfo(
+                                roomId = roomId,
+                                travelRoomInfoDto = TravelRoomInfoDto(
+                                    budget = createTravelViewModel.travelBudget.value.toInt(),
+                                    endDate = createTravelViewModel.endDate.value,
+                                    startDate = createTravelViewModel.startDate.value,
+                                    travelName = createTravelViewModel.travelName.value
+                                )
+                            )
                         }
                     }
 

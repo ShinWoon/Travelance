@@ -213,6 +213,7 @@ fun NavGraph(
             route = "${Screen.TravelEdit.route}/{roomId}",
         ) {
             val roomId = it.arguments?.getString("roomId")?.toInt()
+            Log.d(TAG, "NavGraph roomId : $roomId")
             if (roomId != null) {
                 CreateTravelScreen(navController = navController, mainViewModel = mainViewModel, roomId = roomId)
             }
