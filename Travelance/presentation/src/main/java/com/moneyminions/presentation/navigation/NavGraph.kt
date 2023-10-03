@@ -130,17 +130,20 @@ fun NavGraph(
             CardListScreen(navController = navController, loginViewModel = loginViewModel)
         }
         composable(
-            route = "${Screen.TravelMap.route}/{type}",
+            route = "${Screen.TravelMap.route}/{roomId}/{type}",
         ) {
             val type = it.arguments?.getString("type")
-            TravelMapScreen(navController = navController, type = type)
+            val roomId = it.arguments?.getString("roomId")?.toInt()
+            if (roomId != null) {
+                TravelMapScreen(navController = navController, roomId = roomId, type = type)
+            }
         }
         composable(
-            route = "${Screen.GameList.route}/{route}",
+            route = "${Screen.GameList.route}/{roomId}",
         ) {
-            val route = it.arguments?.getString("route")?.toInt()
-            if (route != null) {
-                GameListScreen(navController = navController, travelId = route)
+            val roomId = it.arguments?.getString("roomId")?.toInt()
+            if (roomId != null) {
+                GameListScreen(navController = navController, travelId = roomId)
             }
         }
         composable(

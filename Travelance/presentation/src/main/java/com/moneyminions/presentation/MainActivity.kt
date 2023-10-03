@@ -52,16 +52,8 @@ class MainActivity : FragmentActivity() {
         setContent {
             createNotificationChannel(notificationManager, CHANNEL_ID, CHANNEL_NAME)
             var isAuthenticated = remember { mutableStateOf(false) }
-            val context = LocalContext.current
 
-            if (Build.VERSION.SDK_INT < 33) {
-                val list = Geocoder(context).getFromLocationName("경상북도 구미시 비산동 108", 5)!!
-                Log.d(TAG, "address list : $list")
-            } else {
-                val list = Geocoder(context).getFromLocationName("경상북도 구미시 비산동 108", 5) {
-                    Log.d(TAG, "33 이상 list : $it")
-                }
-            }
+
             MyApplicationTheme {
                 val mainViewModel: MainViewModel = hiltViewModel()
                 Surface(
@@ -163,28 +155,6 @@ class MainActivity : FragmentActivity() {
                 }
             }
         }
-    }
-}
-
-
-private fun searchAddress(
-    context: Context,
-    address: String
-) {
-    lateinit var list: MutableList<Address>
-    try {
-        list = Geocoder(context).getFromLocationName(address, 5)!!
-    } catch (e: IOException) {
-        e.printStackTrace()
-        Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
-    }
-
-    if (list.size == 0) {
-        Toast.makeText(context, "일치하는 주소가 없습니다.", Toast.LENGTH_SHORT).show()
-    } else {
-        val address = list.get(0)
-        val lat = address.latitude
-        val lng = address.longitude
     }
 }
 

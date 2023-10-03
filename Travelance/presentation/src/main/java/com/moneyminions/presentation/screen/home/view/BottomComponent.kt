@@ -96,7 +96,7 @@ fun BottomCardContainer(
                 context = "우리의 여행 발자취를 확인해 봐요.",
                 icon = painterResource(id = R.drawable.ic_map_point),
                 action = {
-                    navController.navigate("${Screen.TravelMap.route}/home")
+                    navController.navigate("${Screen.TravelMap.route}/{roomId}/{type}".replace(oldValue = "{roomId}/{type}", newValue = "${travelInfo.roomId}/home"))
                 }
             )
             Spacer(modifier = Modifier.width(8.dp))
