@@ -67,31 +67,28 @@ public class TravelService {
     @Transactional
     public ResultDto adduser(Long roomId, Member member, RoomUserRequestDto roomUserRequestDto) throws Exception {
 
+        TravelRoom travelRoom = travelRoomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
 
-        //현재 정산중 방이 있으면 0을 반환
-        List<TravelRoom> travelRoomMemberList = travelRoomRepository.findAllByTravelRoomMembersMember(member);
-        for (TravelRoom travelRoomIsDone : travelRoomMemberList) {
-            if (travelRoomIsDone.getIsDone()==RoomType.NOW && travelRoomMemberRepository.findByTravelRoomAndMember(travelRoomIsDone, member).isPresent()) {
+        if (travelRoomMemberRepository.findByTravelRoomAndMember(travelRoom, member).isPresent()) {
                 return new ResultDto("참여자를 초대할 수 없습니다");
             }
-        }
-            TravelRoom travelRoom = travelRoomRepository.findById(roomId)
-                    .orElseThrow(() -> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
+
 
             //프로필 사진이 있으면, 프로필 사진 저장
 //            if (profileUrl != null) {
                 travelProfileService.saveImage(travelRoom, "https://i.ibb.co/9WLnW7t/20221014514371.jpg", member);
 //            }
 
-            TravelRoomMember travelRoomMember = TravelRoomMember.builder()
-                    .travelRoom(travelRoom)
-                    .member(member)
-                    .isDone(false)
-                    .nickName(roomUserRequestDto.getNickName())
-                    .build();
+        TravelRoomMember travelRoomMember = TravelRoomMember.builder()
+                .travelRoom(travelRoom)
+                .member(member)
+                .isDone(false)
+                .nickName(roomUserRequestDto.getNickName())
+                .build();
 
-            travelRoomMemberRepository.save(travelRoomMember);
-            return new ResultDto("참여자 방에 저장");
+        travelRoomMemberRepository.save(travelRoomMember);
+        return new ResultDto("참여자 방에 저장");
 
     }
 
