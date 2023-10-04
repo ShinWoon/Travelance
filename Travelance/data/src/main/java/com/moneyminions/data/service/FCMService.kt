@@ -148,6 +148,7 @@ class FCMService: FirebaseMessagingService() {
             }
         }else{
             roomId = data["message"]!!.toInt()
+            Log.d(TAG, "sendNotification roomId : $roomId")
             messageTitle = "정산 완료 알림!"
             messageContent = "정산이 완료되었습니다. 확인해보세요!"
             val mainIntent =

@@ -85,60 +85,113 @@ fun SettleResultReceiveScreen(
 
     val isShowDialogState = settleResultReceiveViewModel.isShowDialog.collectAsState()
 
-    Scaffold(
-        topBar = {
-            TopBar(navController = navController, topBarTitle = "정산결과")
-        }
+//    Scaffold(
+//        topBar = {
+//            TopBar(navController = navController, topBarTitle = "정산결과")
+//        }
+//    ) {
+//        Column(
+//            modifier = Modifier.fillMaxSize(),
+//            verticalArrangement = Arrangement.SpaceBetween,
+//        ) {
+//            Column {
+//                Row(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .wrapContentHeight(),
+//                    verticalAlignment = Alignment.Bottom,
+//                ) {
+//                    Image(
+//                        painter = painterResource(id = R.drawable.ic_calender),
+//                        contentDescription = "detail calender icon",
+//                        modifier = Modifier.size(40.dp),
+//                    )
+//                    DetailDateView(
+//                        startDate = settleResultReceiveViewModel.settleResultDto.value?.travelRoomInfo?.startDate ?: "",
+//                        endDate = settleResultReceiveViewModel.settleResultDto.value?.travelRoomInfo?.endDate ?: "",
+//                        modifier = Modifier
+//                    )
+//                    BudgetText(budget = settleResultReceiveViewModel.settleResultDto.value?.travelRoomInfo?.budget ?: 0, modifier = Modifier)
+//                }
+//                Spacer(modifier = Modifier.size(16.dp))
+//                Column(
+//                    modifier = Modifier.background(LightGray)
+//                ) {
+//                    PaymentInfoComponenet(settleResultPaymentInfoDto = settleResultReceiveViewModel.settleResultDto.value?.paymentInfo ?: null )
+//                    Spacer(modifier = Modifier.size(16.dp))
+////                    SettleResultCardView(result = result, modifier = Modifier)
+//                    //내가 돈을 더 많이 써서 받아야 한다면
+//                    if ((settleResultReceiveViewModel.settleResultDto.value?.receiveInfos?.size?:0) >0) {
+//                        UserPaymentInfoComponent(receiveInfos = settleResultReceiveViewModel.settleResultDto.value?.receiveInfos, sendInfos = null)
+//                    } else if((settleResultReceiveViewModel.settleResultDto.value?.sendInfos?.size?:0) >0){ //내가 이체해야 한다면
+//                        UserPaymentInfoComponent(receiveInfos = null, sendInfos = settleResultReceiveViewModel.settleResultDto.value?.sendInfos)
+//                    }
+//                }
+//            }
+//            //내가 돈을 더 많이 써서 받아야 한다면
+//            if ((settleResultReceiveViewModel.settleResultDto.value?.paymentInfo?.transferTotalAmount?:0) <=0) {
+//                MinionPrimaryButton(content = "확인", modifier = Modifier.fillMaxWidth()) {
+//                    navController.navigate(Screen.Home.route){
+//                        popUpTo(Screen.SettleResult.route){inclusive = true}
+//                    }
+//                }
+//            } else { //내가 이체해야 한다면
+//                MinionPrimaryButton(content = "이체", modifier = Modifier.fillMaxWidth()) {
+//                    settleResultReceiveViewModel.setIsShowDialog(true)
+//                }
+//            }
+//        }
+//    }
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceBetween,
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceBetween,
-        ) {
-            Column {
-                Row(
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                verticalAlignment = Alignment.Bottom,
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_calender),
+                    contentDescription = "detail calender icon",
+                    modifier = Modifier.size(40.dp),
+                )
+                DetailDateView(
+                    startDate = settleResultReceiveViewModel.settleResultDto.value?.travelRoomInfo?.startDate ?: "",
+                    endDate = settleResultReceiveViewModel.settleResultDto.value?.travelRoomInfo?.endDate ?: "",
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight(),
-                    verticalAlignment = Alignment.Bottom,
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_calender),
-                        contentDescription = "detail calender icon",
-                        modifier = Modifier.size(40.dp),
-                    )
-                    DetailDateView(
-                        startDate = settleResultReceiveViewModel.settleResultDto.value?.travelRoomInfo?.startDate ?: "",
-                        endDate = settleResultReceiveViewModel.settleResultDto.value?.travelRoomInfo?.endDate ?: "",
-                        modifier = Modifier
-                    )
-                    BudgetText(budget = settleResultReceiveViewModel.settleResultDto.value?.travelRoomInfo?.budget ?: 0, modifier = Modifier)
-                }
+                )
+                BudgetText(budget = settleResultReceiveViewModel.settleResultDto.value?.travelRoomInfo?.budget ?: 0, modifier = Modifier)
+            }
+            Spacer(modifier = Modifier.size(16.dp))
+            Column(
+                modifier = Modifier.background(LightGray)
+            ) {
+                PaymentInfoComponenet(settleResultPaymentInfoDto = settleResultReceiveViewModel.settleResultDto.value?.paymentInfo ?: null )
                 Spacer(modifier = Modifier.size(16.dp))
-                Column(
-                    modifier = Modifier.background(LightGray)
-                ) {
-                    PaymentInfoComponenet(settleResultPaymentInfoDto = settleResultReceiveViewModel.settleResultDto.value?.paymentInfo ?: null )
-                    Spacer(modifier = Modifier.size(16.dp))
 //                    SettleResultCardView(result = result, modifier = Modifier)
-                    //내가 돈을 더 많이 써서 받아야 한다면
-                    if ((settleResultReceiveViewModel.settleResultDto.value?.receiveInfos?.size?:0) >=0) {
-                        UserPaymentInfoComponent(receiveInfos = settleResultReceiveViewModel.settleResultDto.value?.receiveInfos, sendInfos = null)
-                    } else { //내가 이체해야 한다면
-                        UserPaymentInfoComponent(receiveInfos = null, sendInfos = settleResultReceiveViewModel.settleResultDto.value?.sendInfos)
-                    }
+                Log.d(TAG, "SettleResultReceiveScreen receiveInfos.size : ${settleResultReceiveViewModel.settleResultDto.value?.receiveInfos?.size?: -1}")
+                Log.d(TAG, "SettleResultReceiveScreen sendInfos.size : ${settleResultReceiveViewModel.settleResultDto.value?.sendInfos?.size?: -1}")
+                //내가 돈을 더 많이 써서 받아야 한다면
+                if ((settleResultReceiveViewModel.settleResultDto.value?.receiveInfos?.size?:0) >0) {
+                    UserPaymentInfoComponent(receiveInfos = settleResultReceiveViewModel.settleResultDto.value?.receiveInfos, sendInfos = null)
+                } else if((settleResultReceiveViewModel.settleResultDto.value?.sendInfos?.size?:0) >0){ //내가 이체해야 한다면
+                    UserPaymentInfoComponent(receiveInfos = null, sendInfos = settleResultReceiveViewModel.settleResultDto.value?.sendInfos)
                 }
             }
-            //내가 돈을 더 많이 써서 받아야 한다면
-            if ((settleResultReceiveViewModel.settleResultDto.value?.paymentInfo?.transferTotalAmount?:0) <=0) {
-                MinionPrimaryButton(content = "확인", modifier = Modifier.fillMaxWidth()) {
-                    navController.navigate(Screen.Home.route){
-                        popUpTo(Screen.SettleResult.route){inclusive = true}
-                    }
+        }
+        //내가 돈을 더 많이 써서 받아야 한다면
+        if ((settleResultReceiveViewModel.settleResultDto.value?.paymentInfo?.transferTotalAmount?:0) <=0) {
+            MinionPrimaryButton(content = "확인", modifier = Modifier.fillMaxWidth()) {
+                navController.navigate(Screen.Home.route){
+                    popUpTo(Screen.SettleResult.route){inclusive = true}
                 }
-            } else { //내가 이체해야 한다면
-                MinionPrimaryButton(content = "이체", modifier = Modifier.fillMaxWidth()) {
-                    settleResultReceiveViewModel.setIsShowDialog(true)
-                }
+            }
+        } else { //내가 이체해야 한다면
+            MinionPrimaryButton(content = "이체", modifier = Modifier.fillMaxWidth()) {
+                settleResultReceiveViewModel.setIsShowDialog(true)
             }
         }
     }

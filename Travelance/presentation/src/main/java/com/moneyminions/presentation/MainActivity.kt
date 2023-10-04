@@ -74,7 +74,16 @@ class MainActivity : FragmentActivity() {
                     val type = intent.getStringExtra("type")
                     if (type != null) {
                         Log.d(TAG, "onCreate type: $type")
-                        SettleResultReceiveScreen(navController = rememberAnimatedNavController(), roomId = intent.getIntExtra("roomId",0))
+                        Log.d(TAG, "onCreate roomId : ${intent.getIntExtra("roomId",0)}")
+//                        SettleResultReceiveScreen(navController = rememberAnimatedNavController(), roomId = intent.getIntExtra("roomId",0))
+                        val startDestination = Screen.SettleResult.route
+                        Log.d(TAG, "onCreate startDestination $startDestination")
+                        MainScreen(
+                            startDestination = startDestination,
+                            mainViewModel = mainViewModel,
+                            context = applicationContext,
+                            roomId = intent.getIntExtra("roomId",0)
+                        )
                     }
                     else {
                         val startDestination =

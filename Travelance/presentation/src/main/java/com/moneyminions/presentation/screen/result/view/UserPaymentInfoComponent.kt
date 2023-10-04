@@ -18,6 +18,8 @@ import androidx.compose.ui.unit.dp
 import com.moneyminions.domain.model.traveldetail.SettleResultUserInfoDto
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.common.MinionProfile
+import com.moneyminions.presentation.theme.BlueMiddle
+import com.moneyminions.presentation.theme.PinkMiddle
 import com.moneyminions.presentation.utils.DateUtils
 import com.moneyminions.presentation.utils.MoneyUtils
 
@@ -44,7 +46,8 @@ fun UserPaymentInfoComponent(
                     ) {
 
                         Row (
-                            modifier = Modifier.weight(2f)
+                            modifier = Modifier.weight(2f),
+                            verticalAlignment = Alignment.CenterVertically
                         ){
                             MinionProfile(size = 48.dp, img = receiveInfos[idx].profileUrl)
 
@@ -63,7 +66,9 @@ fun UserPaymentInfoComponent(
                         ) {
                             Text(
                                 text = MoneyUtils.makeCommaWon(receiveInfos[idx].paymentAmount) ,
-                                style = CustomTextStyle.pretendardBold16,
+                                style = CustomTextStyle.pretendardBold16.copy(
+                                    color = BlueMiddle
+                                ),
                             )
                         }
                     }
@@ -81,7 +86,8 @@ fun UserPaymentInfoComponent(
                     ) {
 
                         Row (
-                            modifier = Modifier.weight(2f)
+                            modifier = Modifier.weight(2f),
+                            verticalAlignment = Alignment.CenterVertically
                         ){
                             MinionProfile(size = 48.dp, img = sendInfos[idx].profileUrl)
 
@@ -100,7 +106,9 @@ fun UserPaymentInfoComponent(
                         ) {
                             Text(
                                 text = MoneyUtils.makeCommaWon(sendInfos[idx].paymentAmount) ,
-                                style = CustomTextStyle.pretendardBold16,
+                                style = CustomTextStyle.pretendardBold16.copy(
+                                    color = PinkMiddle
+                                ),
                             )
                         }
                     }
