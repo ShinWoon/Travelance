@@ -446,10 +446,8 @@ public class PaymentServiceImpl implements PaymentService{
                 .mapToLong(Payment::getPaymentAmount)
                 .sum();
 
-        // SendInfo에 있는 paymentAmount의 합
-        Long transferTotalAmount = sendInfos.stream()
-                .mapToLong(TransferInfoDto.SendInfo::getPaymentAmount)
-                .sum();
+        // 보내야하는 금액 or 받아야하는 금액
+        Long transferTotalAmount = perAmount-myAmount;
 
         TransferInfoDto.PaymentInfo paymentInfo = new TransferInfoDto.PaymentInfo();
         paymentInfo.setTotalAmount(totalAmount);
