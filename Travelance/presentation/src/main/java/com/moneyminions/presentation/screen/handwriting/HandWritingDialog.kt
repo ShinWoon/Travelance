@@ -49,6 +49,7 @@ fun HandWritingDialog(
         successAction = {
             Log.d(TAG, "HandWritingDialog: ${it.result}")
             onDismiss()
+            handWritingViewModel.initCashResult()
             homeViewModel.getTravelRoomInfo(roomId)
         }
     )

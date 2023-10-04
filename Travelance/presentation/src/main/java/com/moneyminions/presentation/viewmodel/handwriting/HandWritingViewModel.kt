@@ -51,6 +51,12 @@ class HandWritingViewModel @Inject constructor(
             )
         }
     }
+
+    fun initCashResult(){
+        viewModelScope.launch {
+            _cashResult.emit(NetworkResult.Idle)
+        }
+    }
     
     
 }
