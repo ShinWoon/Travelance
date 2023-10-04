@@ -68,12 +68,12 @@ fun TravelCardView(
                     "BEFORE" -> {
                         navController.navigate(Screen.SubHome.route)
                     }
-//                    "BEFORE" -> {navController.navigate("Screen.SubHome.route}/${travelRoomDto.roomId}")}
                     "NOW" -> {
                         navController.navigate(Screen.Home.route)
                     }
-            
-                    "WAIT" -> {}
+                    "WAIT" -> {
+                        navController.navigate(Screen.WaitHome.route)
+                    }
                     "DONE" -> {
                         navController.navigate(
                             "${Screen.TravelDone.route}/{roomId}".replace(

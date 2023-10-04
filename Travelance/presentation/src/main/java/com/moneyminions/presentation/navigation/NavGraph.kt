@@ -230,5 +230,10 @@ fun NavGraph(
                 WebViewScreen(navController = navController, url = data)
             }
         }
+        composable(
+            route = Screen.WaitHome.route,
+        ) {
+            HomeScreen(navController = navController, mainViewModel = mainViewModel)
+        }
     }
 } // End of setUpNavGraph
