@@ -12,6 +12,7 @@ import com.easyone.travelance.domain.member.respository.MemberRepository;
 import com.easyone.travelance.domain.member.service.MemberService;
 import com.easyone.travelance.global.memberInfo.MemberInfo;
 import com.easyone.travelance.global.memberInfo.MemberInfoDto;
+import com.nimbusds.oauth2.sdk.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,10 +58,18 @@ public class AccountController {
         String account = oneRequestDto.getAccount();
 
         return accountService.oneTransferMoney(name, bankName, account)
+                .flatMap(result -> {
+                    if (result instanceof Map) {
+                        Map<String, Object> resultMap = (Map<String, Object>) result;
+                        if (resultMap.containsKey("verify") && resultMap.get("verify") == null) {
+                            return Mono.error(new Exception("잘못된 응답입니다"));
+                        }
+                    }
+                    return Mono.just(result);
+                })
                 .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
-                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND)); // 만약 데이터가 없을 경우의 처리
+                .onErrorResume(e -> Mono.just(new ResponseEntity<>(new Exception(e.getMessage()), HttpStatus.BAD_REQUEST)));
     }
-
     @Operation(summary = "1원이체 확인", description = "1원 이체시 받은 난수와 비교 후 privateId를 반환합니다." +
             "name : 사용자이름, bankname: 은행명, account : 계좌번호, verifyCode : 난수\n\n" +
             "### [DTO] \n\n" + "```\n\n" +
