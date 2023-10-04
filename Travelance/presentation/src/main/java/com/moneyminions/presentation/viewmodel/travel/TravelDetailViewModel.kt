@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val TAG = "싸피"
+private const val TAG = "D210"
 @HiltViewModel
 class TravelDetailViewModel @Inject constructor(
     private val getMyPaymentUseCase: GetMyPaymentUseCase,

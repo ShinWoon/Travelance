@@ -51,7 +51,7 @@ fun DoneTotalComponent(
         Spacer(modifier = modifier.height(8.dp))
         when (text) {
             "사용 카테고리" -> CategoryGraphView(categoryExpenseList = categoryExpenseList)
-            "여행 공지" -> DoneAnnouncementView(noticeAllInfo = noticeAllInfo)
+            "여행 공지" -> DoneAnnouncementView(noticeAllInfo = noticeAllInfo, clickAction = {}, clickedNotice = {})
             "여행 발자취" -> DoneMapView(roomId = roomId)
             else -> {}
         }
