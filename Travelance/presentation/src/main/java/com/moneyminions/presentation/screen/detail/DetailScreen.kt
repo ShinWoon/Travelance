@@ -90,7 +90,13 @@ fun DetailScreen(
             travelDetailViewModel.getTravelDetailInfo(roomId = travelId)
         })
 
-    NetworkResultHandler(state = setSettleStateState, errorAction = { /*TODO*/ }, successAction = {mainViewModel.putTravelingRoomId(0)})
+    NetworkResultHandler(state = setSettleStateState, errorAction = { /*TODO*/ },
+        successAction = {
+            mainViewModel.apply {
+                putTravelingRoomId(0)
+                setSelectRoomId(0)
+            }
+        })
 
     val tabs = listOf("공금내역", "멤버내역")
     var selectedTabIndex = rememberPagerState(pageCount = { tabs.size })

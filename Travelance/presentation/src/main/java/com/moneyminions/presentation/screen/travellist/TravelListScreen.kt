@@ -166,7 +166,7 @@ fun TravelListScreen(
                         onRemove = travelListViewModel::removeItem,
                         navController = navController,
                         mainViewModel = mainViewModel,
-                        iconId = getResourceId("ic_travel_${(index + 1) % 10}", R.drawable::class.java),
+                        iconId = getResourceId("ic_travel_${(index % 10)+1}", R.drawable::class.java),
                     )
                 }
             },
