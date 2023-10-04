@@ -6,6 +6,7 @@ import com.moneyminions.data.mapper.toDomain
 import com.moneyminions.data.service.handleApi
 import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.common.CommonResultDto
+import com.moneyminions.domain.model.traveldetail.FinalPaymentDto
 import com.moneyminions.domain.model.traveldetail.PaymentCompleteDto
 import com.moneyminions.domain.model.traveldetail.SettleResultDto
 import com.moneyminions.domain.model.traveldetail.TravelDetailInfoDto
@@ -35,5 +36,9 @@ class TravelDetailRepositoryImpl @Inject constructor(
 
     override suspend fun getSettleResult(roomId: Int): NetworkResult<SettleResultDto> {
         return handleApi { travelDetailDataSource.getSettleResult(roomId).toDomain() }
+    }
+
+    override suspend fun postFinalPayment(finalPaymentDto: FinalPaymentDto): NetworkResult<CommonResultDto> {
+        return handleApi { travelDetailDataSource.postFinalPayment(finalPaymentDto.toData()).toDomain() }
     }
 }

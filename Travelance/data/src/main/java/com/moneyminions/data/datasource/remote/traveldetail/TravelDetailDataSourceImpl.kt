@@ -1,6 +1,7 @@
 package com.moneyminions.data.datasource.remote.traveldetail
 
 import com.moneyminions.data.model.common.response.CommonResponse
+import com.moneyminions.data.model.traveldetail.request.FinalPaymentRequest
 import com.moneyminions.data.model.traveldetail.response.SettleResultResponse
 import com.moneyminions.data.model.traveldetail.request.PaymentCompleteRequest
 import com.moneyminions.data.model.traveldetail.request.TravelPaymentChangeInfoRequest
@@ -29,5 +30,9 @@ class TravelDetailDataSourceImpl(
 
     override suspend fun getSettleResult(roomId: Int): SettleResultResponse {
         return businessService.getSettleResult(roomId)
+    }
+
+    override suspend fun postFinalPayment(finalPaymentRequest: FinalPaymentRequest): CommonResponse {
+        return businessService.postFinalPayment(finalPaymentRequest)
     }
 }

@@ -2,6 +2,7 @@ package com.moneyminions.domain.repository.traveldetail
 
 import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.common.CommonResultDto
+import com.moneyminions.domain.model.traveldetail.FinalPaymentDto
 import com.moneyminions.domain.model.traveldetail.PaymentCompleteDto
 import com.moneyminions.domain.model.traveldetail.SettleResultDto
 import com.moneyminions.domain.model.traveldetail.TravelDetailInfoDto
@@ -17,4 +18,6 @@ interface TravelDetailRepository {
 
     suspend fun setSettleState(paymentCompleteDto: PaymentCompleteDto): NetworkResult<CommonResultDto>
     suspend fun getSettleResult(roomId: Int): NetworkResult<SettleResultDto>
+
+    suspend fun postFinalPayment(finalPaymentDto: FinalPaymentDto): NetworkResult<CommonResultDto>
 }
