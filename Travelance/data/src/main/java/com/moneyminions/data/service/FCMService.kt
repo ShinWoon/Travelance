@@ -154,9 +154,8 @@ class FCMService: FirebaseMessagingService() {
             messageContent = "정산이 완료되었습니다. 확인해보세요!"
             val mainIntent =
                 Intent(this, Class.forName("com.moneyminions.presentation.MainActivity")).apply {
-//            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//            putExtra(Constants.TYPE, type)
-//            putExtra(Constants.ARTICLE_ID, articleId)
+                    putExtra("type", "settle finish")
+                    putExtra("roomId", roomId)
                 }
 
             val mainPendingIntent: PendingIntent =
