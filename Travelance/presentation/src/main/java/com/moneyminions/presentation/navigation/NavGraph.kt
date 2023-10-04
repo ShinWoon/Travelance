@@ -236,7 +236,9 @@ fun NavGraph(
         ) {
             val roomId = it.arguments?.getString("roomId")?.toInt()
             Log.d(TAG, "NavGraph roomId : $roomId")
-            SettleResultReceiveScreen(navController = navController, roomId = roomId?:0)
+            SettleResultReceiveScreen(navController = navController, roomId = roomId ?: 0)
+        }
+        composable(
             route = Screen.WaitHome.route,
         ) {
             HomeScreen(navController = navController, mainViewModel = mainViewModel)
