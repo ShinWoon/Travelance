@@ -90,8 +90,12 @@ fun DetailScreen(
             travelDetailViewModel.getTravelDetailInfo(roomId = travelId)
         })
 
-    NetworkResultHandler(state = setSettleStateState, errorAction = { /*TODO*/ },
+    NetworkResultHandler(state = setSettleStateState,
+        errorAction = {
+            Log.d(TAG, "DetailScreen: 정산 요청 실패")
+        },
         successAction = {
+            Log.d(TAG, "DetailScreen: 정산 요청 성공")
             mainViewModel.apply {
                 putTravelingRoomId(0)
                 setSelectRoomId(0)
@@ -126,7 +130,10 @@ fun DetailScreen(
     }
     Scaffold(
         topBar = {
-            TopBar(navController = navController, topBarTitle = travelDetailInfo.travelRoomInfo[0].travelName)
+            TopBar(
+                navController = navController,
+                topBarTitle = travelDetailInfo.travelRoomInfo[0].travelName
+            )
         },
     ) {
         Column(
@@ -187,13 +194,22 @@ fun DetailScreen(
                             travelDetailViewModel.getMyPaymentList(roomId = travelId)
                         },
                         setSettle = {
-                            Log.d(TAG, "DetailScreen: 정산요청 ${travelDetailInfo.travelPayment}\n roomId: $travelId")
-                            travelDetailViewModel.setSettleState(PaymentCompleteDto(paymentWithList = travelDetailInfo.travelPayment, roomNumber = travelId))
+                            Log.d(
+                                TAG,
+                                "DetailScreen: 정산요청 ${travelDetailInfo.travelPayment}\n roomId: $travelId"
+                            )
+                            travelDetailViewModel.setSettleState(
+                                PaymentCompleteDto(
+                                    paymentWithList = travelDetailInfo.travelPayment,
+                                    roomNumber = travelId
+                                )
+                            )
                         },
                         resetIdx = {
                             selectedIdx = -1
                         },
                     )
+
                     1 -> DetailMemberScreenView(friendPaymentList = travelDetailInfo.friendPayments)
                 }
             }
