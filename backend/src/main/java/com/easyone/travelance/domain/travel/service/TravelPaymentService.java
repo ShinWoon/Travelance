@@ -10,6 +10,7 @@ import com.easyone.travelance.domain.travel.entity.TravelRoomMember;
 import com.easyone.travelance.domain.travel.repository.TravelRoomMemberRepository;
 import com.easyone.travelance.domain.travel.repository.TravelRoomRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class TravelPaymentService {
 
@@ -38,6 +40,7 @@ public class TravelPaymentService {
 
     @Transactional(readOnly = true)
     public List<PaymentResponseDto> findByTravelIdAndMemberId(Member member, Long roomId) {
+        log.info(member.getId().toString());
         List<Payment> payments = paymentRepository.findAllByTravelRoom_IdAndMemberAndIsWithPaidTrue(roomId, member);
         return getPaymentResponseDtos(member, roomId, payments);
     }
