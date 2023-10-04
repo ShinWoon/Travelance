@@ -42,7 +42,7 @@ public class TravelPaymentWithService {
     private final NoticeService noticeService;
     private final TravelService travelService;
 
-    @Cacheable(value = "paymentWiths", key = "#member.id")
+//    @Cacheable(value = "paymentWiths", key = "#member.id")
     public TravelPaymentPlusDto getPaymentWith(Member member) {
         // 1. 현재 회원이 속한 여행방 중에서 RoomType이 NOW인 것을 조회
         List<TravelRoom> travelRooms = travelRoomRepository.findAllByTravelRoomMembers_MemberAndIsDone(member, RoomType.NOW);
@@ -104,7 +104,7 @@ public class TravelPaymentWithService {
         return result;
     }
 
-    @Cacheable(value = "paymentAlones", key = "#member.id")
+//    @Cacheable(value = "paymentAlones", key = "#member.id")
     public List<TravelPaymentResponseDto> getPaymentAlone(Member member) {
 
         // 1. 현재 회원이 속한 여행방 중에서 RoomType이 NOW인 것을 조회

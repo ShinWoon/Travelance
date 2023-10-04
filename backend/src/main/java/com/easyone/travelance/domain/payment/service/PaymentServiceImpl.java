@@ -302,7 +302,6 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     @Override
-    @CacheEvict(value = "paymentWiths", key = "#member.id")
     public String registerCash(Member member, RegisterCashRequestDto registerCashRequestDto){
         Optional<Member> existMember = memberRepository.findByEmail(member.getEmail());
         Optional<TravelRoom> existTravelRoom = travelRoomRepository.findById(registerCashRequestDto.getRoomNumber());
