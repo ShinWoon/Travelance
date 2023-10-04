@@ -114,7 +114,7 @@ fun UseMoneyItem(
         Row (
             modifier = Modifier.weight(2f)
         ){
-            MinionProfile(48.dp)
+            MinionProfile(size = 48.dp, img = travelMemberUseDto.profileUrl)
     
             Spacer(modifier = Modifier.width(8.dp))
     

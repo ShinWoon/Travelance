@@ -273,4 +273,16 @@ interface BusinessService {
      */
     @DELETE("member/delete")
     suspend fun joinOut(): CommonResponse
+
+    /**
+     * 초대받은 참가자 -> 여행 참가
+     */
+    @Multipart
+    @POST("travel/room/{roomId}/addUser")
+    suspend fun requestJoinUser(
+        @Path("roomId") roomId: Int,
+        @Part imageFiles: MultipartBody.Part?,
+        @Part("roomUserRequestDto") roomUserRequestDto: RoomUserRequestDto,
+    ): CommonResponse
+
 }

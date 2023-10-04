@@ -84,8 +84,30 @@ class MainActivity : FragmentActivity() {
                                     "MainScreen 진행 중인 room ID: ${mainViewModel.getTravelingRoomId()} "
                                 )
                                 mainViewModel.setSelectRoomId(mainViewModel.getTravelingRoomId()) // 진행 중인 여행방을 selectRoom에 저장
-                                Screen.Home.route
+    
+                                /**
+                                 * 카카오 공유 API 반환 값 수신
+                                 */
+                                if (Intent.ACTION_VIEW == intent.action) {
+                                    val uri = intent.data
+                                    if (uri != null) {
+                                        Log.d(
+                                            TAG,
+                                            "onCreate: 카카오 공유 ${uri.getQueryParameter("roomId")} \n ${uri.getQueryParameter("route")} \n ${uri.getQueryParameter("data")}"
+                                        )
+//                                    uri.getQueryParameter("roomId")
+//                                    uri.getQueryParameter("route")
+//                                    uri.getQueryParameter("data")
+                                        uri.getQueryParameter("roomId")?.let { mainViewModel.setInviteRoomId(it.toInt()) }
+                                        Screen.TravelList.route
+                                    } else {
+                                        Screen.Home.route
+                                    }
+                                } else {
+                                    Screen.Home.route
+                                }
                             } else Screen.Login.route
+                        
                         Log.d(TAG, "JWTTOKEN: ${mainViewModel.getJwtToken().accessToken}")
                         Log.d(TAG, "startDestination: $startDestination")
                         MainScreen(
@@ -112,18 +134,18 @@ class MainActivity : FragmentActivity() {
                 /**
                  * 카카오 공유 API 반환 값 수신
                  */
-                if (Intent.ACTION_VIEW == intent.action) {
-                    val uri = intent.data
-                    if (uri != null) {
-                        Log.d(
-                            TAG,
-                            "onCreate: 카카오 공유 ${uri.getQueryParameter("roomId")} \n ${uri.getQueryParameter("route")} \n ${uri.getQueryParameter("data")}"
-                        )
-                        uri.getQueryParameter("roomId")
-                        uri.getQueryParameter("route")
-                        uri.getQueryParameter("data")
-                    }
-                }
+//                if (Intent.ACTION_VIEW == intent.action) {
+//                    val uri = intent.data
+//                    if (uri != null) {
+//                        Log.d(
+//                            TAG,
+//                            "onCreate: 카카오 공유 ${uri.getQueryParameter("roomId")} \n ${uri.getQueryParameter("route")} \n ${uri.getQueryParameter("data")}"
+//                        )
+//                        uri.getQueryParameter("roomId")
+//                        uri.getQueryParameter("route")
+//                        uri.getQueryParameter("data")
+//                    }
+//                }
 
 
 //                MainScreen(rememberAnimatedNavController())

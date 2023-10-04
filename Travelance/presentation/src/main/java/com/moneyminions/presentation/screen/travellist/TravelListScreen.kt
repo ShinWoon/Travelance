@@ -2,7 +2,6 @@ package com.moneyminions.presentation.screen.travellist
 
 import android.annotation.SuppressLint
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeOut
@@ -49,10 +48,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.moneyminions.domain.model.travellist.TravelRoomDto
 import com.moneyminions.presentation.R
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.navigation.Screen
+import com.moneyminions.presentation.screen.travellist.view.ProfileDialog
 import com.moneyminions.presentation.screen.travellist.view.TravelCardView
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.DarkGray
@@ -70,13 +71,16 @@ private const val TAG = "TravelListScreen_D210"
 @Composable
 fun TravelListScreen(
     travelListViewModel: TravelListViewModel = hiltViewModel(),
-    navController: NavController,
+    navController: NavHostController,
     modifier: Modifier = Modifier,
     mainViewModel: MainViewModel,
 ) {
-    Log.d(TAG, "TravelListScreen: on")
+//    Log.d(TAG, "TravelListScreen: on")
+
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
+    var openProfileDialog by remember { mutableStateOf(false) }
+
 
     // 여행 목록 GET
     LaunchedEffect(Unit) {
@@ -108,6 +112,9 @@ fun TravelListScreen(
             }
         },
         successAction = {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("여행방을 나갔습니다.")
+            }
             Log.d(TAG, "삭제 성공 여부 : $it ")
         },
     )
@@ -163,6 +170,18 @@ fun TravelListScreen(
                     )
                 }
             },
+        )
+    }
+
+    // 프로필 설정 다이얼로그
+    if (mainViewModel.inviteRoomId.value != 0) {
+        Log.d(TAG, "TravelListScreen invite RoomId: ${mainViewModel.inviteRoomId.value}")
+        openProfileDialog = true
+        ProfileDialog(
+            mainViewModel = mainViewModel,
+            onDismiss = { openProfileDialog = false },
+            roomId = mainViewModel.inviteRoomId.value,
+            navController = navController,
         )
     }
 }
@@ -234,7 +253,7 @@ fun TravelRoomItem(
         if (!show) {
             Log.d(TAG, "TravelRoomItem: $currentItem, $onRemove")
             onRemove(currentItem) // 삭제 API 요청 -> viewModel에 구현
-            Toast.makeText(context, "Item removed ${currentItem.roomId}", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context, "Item removed ${currentItem.roomId}", Toast.LENGTH_SHORT).show()
             delay(800)
 
 //            bioAuth(

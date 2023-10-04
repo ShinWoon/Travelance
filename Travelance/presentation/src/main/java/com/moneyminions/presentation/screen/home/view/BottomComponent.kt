@@ -41,13 +41,14 @@ import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.handwriting.HandWritingDialog
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.CardLightGray
+import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 
 private const val TAG = "BottomComponent_D210"
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun BottomCardContainer(
     navController: NavHostController,
-//    homeViewModel: HomeViewModel,
+    homeViewModel: HomeViewModel,
     travelInfo: TravelRoomInfoDto,
 ) {
     
@@ -117,7 +118,8 @@ fun BottomCardContainer(
         if(openHandWritingDialog) {
             HandWritingDialog(
                 onDismiss = {openHandWritingDialog = false},
-                roomId = travelInfo.roomId
+                roomId = travelInfo.roomId,
+                homeViewModel = homeViewModel,
             )
             
         }

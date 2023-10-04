@@ -17,7 +17,6 @@ import com.kakao.sdk.share.WebSharerClient
 import com.kakao.sdk.template.model.Button
 import com.kakao.sdk.template.model.Content
 import com.kakao.sdk.template.model.FeedTemplate
-import com.kakao.sdk.template.model.ItemContent
 import com.kakao.sdk.template.model.Link
 import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.common.CommonResultDto
@@ -28,9 +27,7 @@ import com.moneyminions.domain.usecase.home.GetTravelRoomInfoUseCase
 import com.moneyminions.domain.usecase.home.StartTravelUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -122,18 +119,18 @@ class HomeViewModel @Inject constructor(
          */
         val defaultFeed = FeedTemplate(
             content = Content(
-                title = "여행방 이름", // 여행방 이름
-                imageUrl = "https://mud-kage.kakao.com/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png",
+                title = _travelRoomInfo.value.travelName, // 여행방 이름
+                imageUrl = "https://travelance.s3.ap-northeast-2.amazonaws.com/profile/logoimage.png",
                 link = Link(
                     androidExecutionParams = mapOf("roomId" to "${_travelRoomInfo.value.roomId}", "route" to "main", "data" to "data"),
                     iosExecutionParams = mapOf("roomId" to "${_travelRoomInfo.value.roomId}", "route" to "main", "data" to "data")
                 )
             ),
-            itemContent = ItemContent(
-                // 초대자 이름, 프로필 이미지
-                profileText = "초대자 이름",
-                profileImageUrl = "https://mud-kage.kakao.com/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png",
-            ),
+//            itemContent = ItemContent(
+//                // 초대자 이름, 프로필 이미지
+//                profileText = "",
+//                profileImageUrl = "https://mud-kage.kakao.com/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png",
+//            ),
             buttons = listOf(
                 Button(
                     "참여 하기",

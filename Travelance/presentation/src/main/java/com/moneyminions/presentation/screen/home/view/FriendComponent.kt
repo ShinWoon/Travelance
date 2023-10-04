@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.common.MinionProfile
 import com.moneyminions.presentation.screen.travellist.util.clickable
@@ -26,7 +25,7 @@ fun FriendComponent(
     homeViewModel: HomeViewModel
 ) {
     var context = LocalContext.current
-    val friendInfo = homeViewModel.travelRoomFriendInfo.value
+    val friendInfoList = homeViewModel.travelRoomFriendInfo.value
     Column(
         modifier = Modifier.fillMaxWidth(),
     ) {
@@ -60,9 +59,9 @@ fun FriendComponent(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            items(friendInfo.size) {
+            items(friendInfoList.size) {
                 // todo 사진 못하면 이름이라도 넣어야 할듯,.....
-                MinionProfile(48.dp)
+                MinionProfile(size = 48.dp, img = friendInfoList[it].profileUrl)
             }
         }
     }

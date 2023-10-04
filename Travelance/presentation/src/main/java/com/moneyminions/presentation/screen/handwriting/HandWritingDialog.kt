@@ -27,12 +27,14 @@ import com.moneyminions.presentation.common.MinionButtonSet
 import com.moneyminions.presentation.common.TextFieldWithTitle
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.handwriting.HandWritingViewModel
+import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 
 
 private const val TAG = "HandWritingDialog_D210"
 @Composable
 fun HandWritingDialog(
     handWritingViewModel: HandWritingViewModel = hiltViewModel(),
+    homeViewModel: HomeViewModel,
     onDismiss: () -> Unit,
     roomId: Int,
 ) {
@@ -47,6 +49,7 @@ fun HandWritingDialog(
         successAction = {
             Log.d(TAG, "HandWritingDialog: ${it.result}")
             onDismiss()
+            homeViewModel.getTravelRoomInfo(roomId)
         }
     )
     

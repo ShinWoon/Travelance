@@ -20,4 +20,6 @@ data class TravelRoomMemberUseResponse(
     var nickName: String,
     @SerializedName("paymentAt")
     var paymentAt: String,
+    @SerializedName("profileUrl")
+    var profileUrl: String,
 )

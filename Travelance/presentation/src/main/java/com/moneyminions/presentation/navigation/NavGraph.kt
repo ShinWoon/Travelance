@@ -9,14 +9,13 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
-import com.kakao.sdk.common.KakaoSdk.type
-import com.moneyminions.presentation.screen.MainScreen
 import com.moneyminions.presentation.screen.announcement.AnnouncementScreen
 import com.moneyminions.presentation.screen.announcement.WebViewScreen
 import com.moneyminions.presentation.screen.detail.DetailScreen
@@ -53,7 +52,8 @@ fun NavGraph(
     startDestination: String,
     loginViewModel: LoginViewModel = hiltViewModel() ,
     mainViewModel: MainViewModel,
-    editUserViewModel: EditUserViewModel = hiltViewModel()
+    editUserViewModel: EditUserViewModel = hiltViewModel(),
+    snackbarHostState: SnackbarHostState,
 ) {
     AnimatedNavHost(
         modifier = Modifier.padding(innerPaddings),

@@ -50,6 +50,13 @@ class MainViewModel @Inject constructor(
         _selectRoomId.value = roomId
     }
 
+    // 초대 받은 방 번호
+    private val _inviteRoomId = mutableStateOf(0)
+    val inviteRoomId: State<Int> = _inviteRoomId
+    fun setInviteRoomId(roomId: Int) {
+        _inviteRoomId.value = roomId
+    }
+
     private var _travelRoomInfo = mutableStateOf(TravelRoomInfoDto())
     val travelRoomInfo: State<TravelRoomInfoDto> = _travelRoomInfo
 

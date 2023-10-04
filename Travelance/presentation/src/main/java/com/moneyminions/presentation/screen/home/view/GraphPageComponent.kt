@@ -51,6 +51,7 @@ import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.GraphGray
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.theme.PinkLightest
+import com.moneyminions.presentation.utils.MoneyUtils
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalPagerApi::class)
@@ -80,7 +81,7 @@ fun GraphPage(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(text = "사용 현황", style = pretendardBold16)
-                Text(text = "${travelInfo.budget}원", style = pretendardBold16)
+                Text(text = "${MoneyUtils.makeComma(travelInfo.budget)}", style = pretendardBold16)
             }
             
             Card(
@@ -97,8 +98,8 @@ fun GraphPage(
                     .weight(3f),
                 horizontalArrangement = Arrangement.SpaceAround,
             ) {
-                MoneyAmountComponent(title = "사용 금액", money = "${travelInfo.budget-travelInfo.rest}원")
-                MoneyAmountComponent(title = "남은 금액", money = "${travelInfo.rest}원")
+                MoneyAmountComponent(title = "사용 금액", money = "${MoneyUtils.makeComma(travelInfo.budget-travelInfo.rest)}")
+                MoneyAmountComponent(title = "남은 금액", money = "${MoneyUtils.makeComma(travelInfo.rest)}")
             }
             
             Box(
