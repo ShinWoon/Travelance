@@ -422,17 +422,22 @@ public class PaymentServiceImpl implements PaymentService{
             // fromMemberId가 현재 멤버의 ID와 일치하면 SendInfo로 변환
             if(calculation.getFromMemberId().equals(member.getId())){
                 Optional<Member> sendToMember = memberRepository.findById(calculation.getToMemberId());
-                Profile sendToProfile = profileRepository.findByMemberAndTravelRoom(sendToMember.get(), travelRoom);
-                sendInfos.add(new TransferInfoDto.SendInfo(sendToMember.get().getNickname(), sendToProfile.getProfileUrl(), calculation.getAmount()));
+                if (sendToMember.isPresent()) {
+                    Profile sendToProfile = profileRepository.findByMemberAndTravelRoom(sendToMember.get(), travelRoom);
+                    sendInfos.add(new TransferInfoDto.SendInfo(sendToMember.get().getNickname(), sendToProfile.getProfileUrl(), calculation.getAmount()));
+                }
             }
 
             // toMemberId가 현재 멤버의 ID와 일치하면 ReceiveInfo로 변환
             if(calculation.getToMemberId().equals(member.getId())){
                 Optional<Member> receiveFromMember = memberRepository.findById(calculation.getFromMemberId());
-                Profile receiveFromProfile = profileRepository.findByMemberAndTravelRoom(receiveFromMember.get(), travelRoom);
-                receiveInfos.add(new TransferInfoDto.ReceiveInfo(receiveFromMember.get().getNickname(), receiveFromProfile.getProfileUrl(), calculation.getAmount()));
+                if (receiveFromMember.isPresent()) {
+                    Profile receiveFromProfile = profileRepository.findByMemberAndTravelRoom(receiveFromMember.get(), travelRoom);
+                    receiveInfos.add(new TransferInfoDto.ReceiveInfo(receiveFromMember.get().getNickname(), receiveFromProfile.getProfileUrl(), calculation.getAmount()));
+                }
             }
         }
+
         List<TravelRoomMember> allMembers = travelRoom.getTravelRoomMembers();
         List<Payment> payments = paymentRepository.findByIsWithPaidAndTravelRoomId(true, roomId);
 
