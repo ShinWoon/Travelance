@@ -60,10 +60,10 @@ dependencies {
 
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
-
     // Add the dependency for the Firebase SDK for Google Analytics
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-messaging-ktx")
+
     
     // retrofit & okhttp
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")

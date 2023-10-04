@@ -25,8 +25,7 @@ val accountList = listOf<AccountDto>(
 @Composable
 fun AccountListComponent(
     accountList: List<AccountDto>,
-    onDelete: (String, String) -> Unit,
-    onPlus: () -> Unit
+    onDelete: (String, String) -> Unit
 ){
     Text(
         text = "계좌 목록",
@@ -51,11 +50,4 @@ fun AccountListComponent(
         }
     }
     Spacer(modifier = Modifier.size(16.dp))
-    PlusButtonWithText(
-        text = "계좌 추가하기",
-        type = "account"
-    ) {
-        //계좌 추가하기 화면으로 이동
-        onPlus()
-    }
 }
