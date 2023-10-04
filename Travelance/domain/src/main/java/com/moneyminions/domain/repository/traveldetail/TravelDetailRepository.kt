@@ -10,9 +10,9 @@ import com.moneyminions.domain.model.traveldetail.TravelPaymentChangeInfoDto
 import com.moneyminions.domain.model.traveldetail.TravelPaymentDto
 
 interface TravelDetailRepository {
-    suspend fun getMyPaymentList(): NetworkResult<List<TravelPaymentDto>>
+    suspend fun getMyPaymentList(roomId: Int): NetworkResult<List<TravelPaymentDto>>
 
-    suspend fun getTravelDetailInfo(): NetworkResult<TravelDetailInfoDto>
+    suspend fun getTravelDetailInfo(roomId: Int): NetworkResult<TravelDetailInfoDto>
 
     suspend fun updateTravelPaymentInfo(travelPaymentChangeInfoDto: TravelPaymentChangeInfoDto): NetworkResult<CommonResultDto>
 

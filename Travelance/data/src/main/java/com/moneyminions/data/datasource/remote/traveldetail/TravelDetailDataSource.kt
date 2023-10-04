@@ -9,9 +9,9 @@ import com.moneyminions.data.model.traveldetail.response.TravelDetailInfoRespons
 import com.moneyminions.data.model.traveldetail.response.TravelDetailMyPaymentResponse
 
 interface TravelDetailDataSource {
-    suspend fun getMyPaymentList(): List<TravelDetailMyPaymentResponse>
+    suspend fun getMyPaymentList(roomId: Int): List<TravelDetailMyPaymentResponse>
 
-    suspend fun getTravelDetailInfo(): TravelDetailInfoResponse
+    suspend fun getTravelDetailInfo(roomId: Int): TravelDetailInfoResponse
 
     suspend fun updatePaymentInfo(travelPaymentChangeInfoRequest: TravelPaymentChangeInfoRequest): CommonResponse
     suspend fun setSettleState(paymentCompleteRequest: PaymentCompleteRequest): CommonResponse

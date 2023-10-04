@@ -18,12 +18,12 @@ import javax.inject.Inject
 class TravelDetailRepositoryImpl @Inject constructor(
     private val travelDetailDataSource: TravelDetailDataSource
 ) : TravelDetailRepository {
-    override suspend fun getMyPaymentList(): NetworkResult<List<TravelPaymentDto>> {
-        return handleApi { travelDetailDataSource.getMyPaymentList().map { it.toDomain() } }
+    override suspend fun getMyPaymentList(roomId: Int): NetworkResult<List<TravelPaymentDto>> {
+        return handleApi { travelDetailDataSource.getMyPaymentList(roomId = roomId).map { it.toDomain() } }
     }
 
-    override suspend fun getTravelDetailInfo(): NetworkResult<TravelDetailInfoDto> {
-        return handleApi { travelDetailDataSource.getTravelDetailInfo().toDomain() }
+    override suspend fun getTravelDetailInfo(roomId: Int): NetworkResult<TravelDetailInfoDto> {
+        return handleApi { travelDetailDataSource.getTravelDetailInfo(roomId = roomId).toDomain() }
     }
 
     override suspend fun updateTravelPaymentInfo(travelPaymentChangeInfoDto: TravelPaymentChangeInfoDto): NetworkResult<CommonResultDto> {

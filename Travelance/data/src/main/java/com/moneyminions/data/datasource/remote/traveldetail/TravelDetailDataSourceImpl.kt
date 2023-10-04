@@ -12,12 +12,12 @@ import com.moneyminions.data.service.BusinessService
 class TravelDetailDataSourceImpl(
     private val businessService: BusinessService
 ) : TravelDetailDataSource {
-    override suspend fun getMyPaymentList(): List<TravelDetailMyPaymentResponse> {
-        return businessService.getMyPaymentList()
+    override suspend fun getMyPaymentList(roomId: Int): List<TravelDetailMyPaymentResponse> {
+        return businessService.getMyPaymentList(roomId = roomId)
     }
 
-    override suspend fun getTravelDetailInfo(): TravelDetailInfoResponse {
-        return businessService.getTravelDetailInfo()
+    override suspend fun getTravelDetailInfo(roomId: Int): TravelDetailInfoResponse {
+        return businessService.getTravelDetailInfo(roomId)
     }
 
     override suspend fun updatePaymentInfo(travelPaymentChangeInfoRequest: TravelPaymentChangeInfoRequest): CommonResponse {
