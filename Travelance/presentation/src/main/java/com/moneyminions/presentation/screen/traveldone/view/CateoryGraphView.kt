@@ -135,13 +135,15 @@ private fun CategoryChart(
             .size(186.dp),
         contentAlignment = Alignment.Center,
     ) {
-        val chartDataList = listOf(
-            ChartData(CategoryAlcohol, 10f),
-            ChartData(CategoryCoffee, 20f),
-            ChartData(CategoryLeisure, 15f),
-            ChartData(CategoryShopping, 5f),
-            ChartData(CategoryDining, 50f),
-        )
+        val chartDataList = mutableListOf<ChartData>()
+
+        for (expense in categoryExpenseList) {
+            val color = getCategoryColor(expense.category)
+            val data = expense.percent.toFloat()
+            val chartData = ChartData(color, data)
+            chartDataList.add(chartData)
+        }
+
         Canvas(
             modifier = Modifier
                 .size(186.dp)
