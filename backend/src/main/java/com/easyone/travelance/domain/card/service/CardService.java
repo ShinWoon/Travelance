@@ -37,7 +37,7 @@ public class CardService {
     }
 
     // 특정 카드들 등록
-    @CacheEvict(value = "cardCache", key = "#member.email")
+//    @CacheEvict(value = "cardCache", key = "#member.email")
     public void SaveCard(Member member, SelectedCardRequestDto selectedCardRequestDto) {
         String cardNumber = selectedCardRequestDto.getCardNumber();
 

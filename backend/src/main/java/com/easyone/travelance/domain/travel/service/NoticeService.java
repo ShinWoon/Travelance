@@ -26,7 +26,7 @@ public class NoticeService {
     @Autowired
     private TravelRoomRepository travelRoomRepository;
 
-    @Cacheable(value = "allNotices", key="#roomId")
+//    @Cacheable(value = "allNotices", key="#roomId")
     public List<NoticeAllResponseDto> getAllNotice(Long roomId){
         List<Notice> notices = noticeRepository.findByTravelRoomId(roomId);
         return notices.stream()
@@ -39,7 +39,7 @@ public class NoticeService {
         return new NoticeAllResponseDto(notice);
     }
 
-    @CacheEvict(value = "allNotices", key="#noticeRequestDto.roomId")
+//    @CacheEvict(value = "allNotices", key="#noticeRequestDto.roomId")
     public String saveNotice(NoticeRequestDto noticeRequestDto){
         Optional<TravelRoom> travelRoomOpt = travelRoomRepository.findById(noticeRequestDto.getRoomId());
         if (travelRoomOpt.isEmpty()){
@@ -57,7 +57,7 @@ public class NoticeService {
 
         return "공지사항 등록 성공";
     }
-    @CacheEvict(value = "allNotices", key="#roomId")
+//    @CacheEvict(value = "allNotices", key="#roomId")
     public String patchNotice(Long roomId, NoticeUpdateRequestDto noticeUpdateRequestDto) {
         Optional<TravelRoom> optionalTravelRoom = travelRoomRepository.findById(roomId);
         if (optionalTravelRoom.isEmpty()){
@@ -80,7 +80,7 @@ public class NoticeService {
         return "공지사항이 수정되었습니다.";
     }
 
-    @CacheEvict(value = "allNotices", key="#roomId")
+//    @CacheEvict(value = "allNotices", key="#roomId")
     public String deleteNotice(Long roomId, Long noticeId){
         Optional<TravelRoom> optionalTravelRoom = travelRoomRepository.findById(roomId);
         if (optionalTravelRoom.isEmpty()){
