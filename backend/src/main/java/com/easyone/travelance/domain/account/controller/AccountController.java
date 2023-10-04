@@ -68,7 +68,13 @@ public class AccountController {
                     return Mono.just(result);
                 })
                 .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
-                .onErrorResume(e -> Mono.just(new ResponseEntity<>(new Exception(e.getMessage()), HttpStatus.BAD_REQUEST)));
+                .onErrorResume(e -> {
+                    if (e.getMessage().equals("잘못된 응답입니다")) {
+                        return Mono.just(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+                    } else {
+                        return Mono.just(new ResponseEntity<>(new Exception(e.getMessage()), HttpStatus.BAD_REQUEST));
+                    }
+                });
     }
     @Operation(summary = "1원이체 확인", description = "1원 이체시 받은 난수와 비교 후 privateId를 반환합니다." +
             "name : 사용자이름, bankname: 은행명, account : 계좌번호, verifyCode : 난수\n\n" +

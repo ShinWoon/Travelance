@@ -87,7 +87,8 @@ public class TravelService {
                 .isDone(false)
                 .nickName(roomUserRequestDto.getNickName())
                 .build();
-
+            // 캐싱 삭제
+        evictroomCacheAllCache(member.getId());
         travelRoomMemberRepository.save(travelRoomMember);
         return new ResultDto("참여자 방에 저장");
 
@@ -213,6 +214,8 @@ public class TravelService {
             }
 
             travelRoom.setRoomType(RoomType.NOW);
+
+            evictroomCacheAllCache(member.getId());
             return new ResultDto(roomId.toString());
         }
         catch (Exception e) {
