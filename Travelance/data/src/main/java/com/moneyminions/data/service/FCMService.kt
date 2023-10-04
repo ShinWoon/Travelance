@@ -43,7 +43,6 @@ class FCMService: FirebaseMessagingService() {
         remoteMessage.notification?.let {
             Log.d(TAG, "Message Notification Body: ${it.body}")
         }
-
     }
 
     private fun sendNotification(remoteMessage: RemoteMessage) {
@@ -57,7 +56,7 @@ class FCMService: FirebaseMessagingService() {
         val notification = remoteMessage.notification
         val data = remoteMessage.data
         Log.d(TAG, "paymentId : ${data["paymentId"]}")
-        if(data["paymentId"]!=null) {
+        if(data["paymentId"] != "0") {
             messageTitle = "공금에 등록하시겠습니까?"
             messageContent = data["message"]!!
             Log.d(TAG, "sendNotification messageContent : $messageContent")
@@ -147,10 +146,8 @@ class FCMService: FirebaseMessagingService() {
 //            notify(101, notificationBuilder.build())
                 notify(notificationId, notificationBuilder.build())
             }
-        }
-
-        if(data["roomId"] != null){
-            roomId = data["roomId"]!!.toInt()
+        }else{
+            roomId = data["message"]!!.toInt()
             messageTitle = "정산 완료 알림!"
             messageContent = "정산이 완료되었습니다. 확인해보세요!"
             val mainIntent =
