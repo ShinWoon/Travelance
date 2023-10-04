@@ -3,6 +3,8 @@ package com.easyone.travelance.domain.travel.service;
 import com.easyone.travelance.domain.common.ResultDto;
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.respository.ProfileRepository;
+import com.easyone.travelance.domain.payment.entity.Payment;
+import com.easyone.travelance.domain.payment.repository.PaymentRepository;
 import com.easyone.travelance.domain.travel.dto.*;
 import com.easyone.travelance.domain.travel.entity.TravelRoom;
 import com.easyone.travelance.domain.travel.entity.TravelRoomMember;
@@ -29,6 +31,7 @@ public class TravelService {
     private final TravelPaymentService travelPaymentService;
     private final ProfileRepository profileRepository;
     private final TravelProfileService travelProfileService;
+    private final PaymentRepository paymentRepository;
 
     //방만들기
     @Transactional
@@ -127,6 +130,7 @@ public class TravelService {
         Long rest = budget-UseTotal;
 
         //전체 소비내역(공금으로 등록된것만 뽑기)
+
         List<PaymentResponseDto> everyUse = travelPaymentService.findByTravelId(member, roomId);
 
         //내 소비내역(공금으로 등록된것만 뽑기)

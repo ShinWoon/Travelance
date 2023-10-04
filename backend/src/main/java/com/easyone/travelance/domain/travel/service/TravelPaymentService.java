@@ -31,15 +31,14 @@ public class TravelPaymentService {
 
     @Transactional(readOnly = true)
     public List<PaymentResponseDto> findByTravelId(Member member, Long roomId) {
-        List<Payment> payments = paymentRepository.findByTravelRoomId(roomId);
+        List<Payment> payments = paymentRepository.findByTravelRoomIdAndIsWithPaidIsTrue(roomId);
         return getPaymentResponseDtos(member, roomId, payments);
 
     }
 
     @Transactional(readOnly = true)
     public List<PaymentResponseDto> findByTravelIdAndMemberId(Member member, Long roomId) {
-        Long memberId = member.getId();
-        List<Payment> payments = paymentRepository.findByTravelRoomIdAndMemberId(roomId, memberId);
+        List<Payment> payments = paymentRepository.findAllByTravelRoom_IdAndMemberAndIsWithPaidTrue(roomId, member);
         return getPaymentResponseDtos(member, roomId, payments);
     }
 
