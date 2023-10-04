@@ -15,7 +15,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class FCMService{
 
-    public void sendFCMNotification(String token, String title, String body) {
+    public void sendFCMNotification(String token, String title, String body, Long id) {
         try{
 
             Map<String, String> data = new HashMap<>();
@@ -23,6 +23,7 @@ public class FCMService{
             // 메시지
             data.put("title", title);
             data.put("message", body);
+            data.put("paymentId", String.valueOf(id));
 
             // 알림 보낼 대상 설정
             Message message = Message.builder()
@@ -44,12 +45,13 @@ public class FCMService{
         String content = payment.getPaymentContent();
 
         String title = "공금등록 알림";
-        String body = String.format("%s,%s,%s", paymentId, paymentAmount, content);
+        String body = String.format("%s,%s", paymentAmount, content);
+//        String paymentId = String.format("%s", paymentId);
 
         log.info(title);
         log.info(body);
 
-        this.sendFCMNotification(fcmToken, title, body);
+        this.sendFCMNotification(fcmToken, title, body, paymentId);
     }
     
     public void sendFcmComplete(String fcmToken, Long roomId){
@@ -59,7 +61,7 @@ public class FCMService{
         log.info(title);
         log.info(body);
 
-        this.sendFCMNotification(fcmToken, title, body);
+        this.sendFCMNotification(fcmToken, title, body, null);
     }
 
 }
