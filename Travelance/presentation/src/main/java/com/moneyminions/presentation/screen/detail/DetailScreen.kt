@@ -100,6 +100,7 @@ fun DetailScreen(
                 putTravelingRoomId(0)
                 setSelectRoomId(0)
             }
+            travelDetailViewModel.getTravelDetailInfo(roomId = travelId)
         })
 
     val tabs = listOf("공금내역", "멤버내역")

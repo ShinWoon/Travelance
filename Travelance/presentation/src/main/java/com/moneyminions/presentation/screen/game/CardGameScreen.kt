@@ -1,6 +1,14 @@
 package com.moneyminions.presentation.screen.game
 
 import android.util.Log
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -14,6 +22,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.moneyminions.domain.model.home.TravelRoomFriendDto
+import com.moneyminions.presentation.screen.game.cardgameview.CardDoneLottieAnimation
+import com.moneyminions.presentation.screen.game.cardgameview.CardFlipSuccessView
 import com.moneyminions.presentation.screen.game.cardgameview.CardGameStartView
 import com.moneyminions.presentation.screen.game.cardgameview.CardSlider
 import com.moneyminions.presentation.screen.game.cardgameview.ShakeDetector
@@ -36,17 +46,43 @@ fun CardGameScreen(
     val flipComplete = remember { mutableStateOf(false) }
 
     val friendsListState by cardGameViewModel.getTravelRoomFriendState.collectAsState()
-    val friendsList by remember {
+    var friendsList by remember {
         mutableStateOf(listOf(TravelRoomFriendDto()))
     }
+    var showDialog by remember { mutableStateOf(false) }
+
     var selectedWinnerFriend by remember { mutableStateOf(TravelRoomFriendDto()) }
 
     NetworkResultHandler(state = friendsListState, errorAction = { /*TODO*/ }, successAction = {
+        friendsList = it
         selectedWinnerFriend = cardGameViewModel.getWinner(friendsList)
+        Log.d(TAG, "CardGameScreen: $selectedWinnerFriend")
     })
     LaunchedEffect(key1 = Unit) {
         Log.d(TAG, "CardGameScreen: $travelId")
         cardGameViewModel.getTravelRoomFriends(travelId)
+    }
+    var showDone by remember { mutableStateOf(false) }
+    if(showDialog) {
+        var scale by remember { mutableStateOf(1f) }
+        val scaleAnimatable = remember { Animatable(0f) }
+
+        LaunchedEffect(key1 = showDialog) {
+                scaleAnimatable.animateTo(
+                targetValue = 1.0f,
+                animationSpec = tween(durationMillis = 1200, easing = FastOutSlowInEasing)
+            ) {
+                // Animation completed, show the Lottie animation or perform any other action
+                    showDone = true
+            }
+        }
+        CardFlipSuccessView(
+            scale = scale,
+            selectedWinnerFriend = selectedWinnerFriend,
+            showDone = showDone,
+        ) {
+            showDialog = false
+        }
     }
 
     // CardSlider 애니메이션 완료 시 콜백
@@ -66,6 +102,9 @@ fun CardGameScreen(
         modifier = modifier,
         onSlideComplete = onSlideComplete,
         shakeComplete = shakeComplete,
+        dialogShow = {
+            showDialog = true
+        }
     )
 
     // cardSliderComplete 값에 따라 CardGameStartView를 렌더링 여부를 결정

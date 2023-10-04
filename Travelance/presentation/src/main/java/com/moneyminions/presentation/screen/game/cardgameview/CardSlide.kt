@@ -11,6 +11,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.moneyminions.domain.model.home.TravelRoomFriendDto
 
 @Composable
 fun CardSlider(
@@ -19,6 +20,7 @@ fun CardSlider(
     slideInDelayMillis: Int = 700,
     onSlideComplete: () -> Unit,
     shakeComplete: MutableState<Boolean>,
+    dialogShow: () -> Unit,
 ) {
     Box(
         modifier = modifier.fillMaxSize(),
@@ -50,7 +52,7 @@ fun CardSlider(
                 1 -> CardOneView(offset = offset)
                 2 -> CardTwoView(offset = offset)
                 3 -> CardThreeView(offset = offset)
-                4 -> CardFourView(offset = offset, shakeComplete = shakeComplete)
+                4 -> CardFourView(offset = offset, shakeComplete = shakeComplete, dialogShow = dialogShow)
                 else -> { /* 처리할 로직 추가 */ }
             }
         }
