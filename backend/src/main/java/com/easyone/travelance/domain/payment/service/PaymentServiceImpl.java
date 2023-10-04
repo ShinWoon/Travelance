@@ -19,6 +19,7 @@ import com.easyone.travelance.global.memberInfo.MemberInfoDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -134,6 +135,13 @@ public class PaymentServiceImpl implements PaymentService{
 
         Payment payment = paymentOptional.get();
         payment.setIsWithPaid(pushAlertRequestDto.isWithPaid());
+
+        Long memberId = payment.getMember().getId();
+
+        log.info("memberId : " + memberId);
+
+        evictpaymentWithsCache(memberId);
+        evictpaymentAlonesCache(memberId);
 
         paymentRepository.save(payment);
         return "결제내역 저장 성공";
@@ -377,6 +385,17 @@ public class PaymentServiceImpl implements PaymentService{
             travelRoom.setRoomType(RoomType.DONE);
             travelRoomRepository.save(travelRoom);
         }
+    }
+
+
+    @CacheEvict(value = "paymentAlones", key = "#memberId")
+    public void evictpaymentAlonesCache(Long memberId) {
+        // 이 메서드는 CacheEvict 어노테이션을 사용하여 캐시를 비우기 위한 용도로만 사용됩니다.
+    }
+
+    @CacheEvict(value = "paymentWiths", key = "#memberId")
+    public void evictpaymentWithsCache(Long memberId) {
+        // 이 메서드는 CacheEvict 어노테이션을 사용하여 캐시를 비우기 위한 용도로만 사용됩니다.
     }
 
 }
