@@ -4,10 +4,7 @@ import com.easyone.travelance.domain.account.service.AccountService;
 import com.easyone.travelance.domain.common.ResultDto;
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.member.service.MemberService;
-import com.easyone.travelance.domain.payment.dto.CompleteCalculationRequestDto;
-import com.easyone.travelance.domain.payment.dto.PushAlertRequestDto;
-import com.easyone.travelance.domain.payment.dto.RegisterCashRequestDto;
-import com.easyone.travelance.domain.payment.dto.TransferAccountRequestDto;
+import com.easyone.travelance.domain.payment.dto.*;
 import com.easyone.travelance.domain.payment.service.PaymentService;
 import com.easyone.travelance.global.memberInfo.MemberInfo;
 import com.easyone.travelance.global.memberInfo.MemberInfoDto;
@@ -78,6 +75,17 @@ public class PaymentController {
         else{
             throw new RuntimeException("비밀번호가 일치하지 않습니다");
         }
+
+    }
+
+    @GetMapping("/{roomId}/info")
+    @Operation(summary = "공금 관련 계좌이체 정보 제공")
+    public ResponseEntity<TransferInfoDto> transferInfo(@PathVariable Long roomId,
+                                                        @MemberInfo MemberInfoDto memberInfoDto){
+        Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
+        TransferInfoDto transferInfoDto = paymentService.getTransferInfo(roomId, member);
+
+        return new ResponseEntity<>(transferInfoDto, HttpStatus.OK);
 
     }
 

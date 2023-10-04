@@ -43,7 +43,7 @@ public class TravelController {
 
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
 
-        RoomIdResponseDto roomIdResponseDto= travelService.save(roomInfoRequestDto, member, roomUserRequestDto);
+        RoomIdResponseDto roomIdResponseDto= travelService.save(roomInfoRequestDto, member, roomUserRequestDto, imageFiles);
 
         return new ResponseEntity<>(roomIdResponseDto,HttpStatus.CREATED);
     }

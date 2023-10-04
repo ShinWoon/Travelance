@@ -75,7 +75,7 @@ public class TravelPaymentWithService {
                     // FriendPayment DTO 생성
                     TravelPaymentPlusDto.FriendPayment friendPayment = new TravelPaymentPlusDto.FriendPayment();
                     friendPayment.setNickName(travelRoomMember.getTravelNickName());
-//                    friendPayment.setProfileUrl(profile.getProfileUrl());
+                    friendPayment.setProfileUrl(profile.getProfileUrl());
                     friendPayment.setPaymentAmount(totalPayment);
                     friendPayment.setIsDone(travelRoomMember.isDone());
 
