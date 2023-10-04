@@ -16,6 +16,7 @@ import com.easyone.travelance.domain.travel.service.NoticeService;
 import com.easyone.travelance.domain.travel.service.TravelPaymentService;
 import com.easyone.travelance.domain.travel.service.TravelService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TravelPaymentWithService {
     @Autowired
     private TravelRoomRepository travelRoomRepository;
@@ -39,7 +41,6 @@ public class TravelPaymentWithService {
     private final TravelPaymentService travelPaymentService;
     private final NoticeService noticeService;
     private final TravelService travelService;
-
 
     @Cacheable(value = "paymentWiths", key = "#member.id")
     public TravelPaymentPlusDto getPaymentWith(Member member) {
@@ -57,6 +58,7 @@ public class TravelPaymentWithService {
 
         // 2. 해당 roomId와 memberId를 이용해서 Payment 내역 조회 및 DTO 변환
         List<Payment> paymentsList = paymentRepository.findAllByTravelRoom_IdAndMemberAndIsWithPaidTrue(roomId, member);
+        log.info("paymentsList : " + paymentsList);
         List<TravelPaymentResponseDto> travelPaymentResponseDtos = paymentsList.stream()
                 .map(TravelPaymentResponseDto::new)
                 .collect(Collectors.toList());
@@ -71,7 +73,7 @@ public class TravelPaymentWithService {
                             .mapToLong(Payment::getPaymentAmount)
                             .sum();
                     Profile profile = profileRepository.findByMemberAndTravelRoom(travelRoomMember.getMember(), travelRoom); // profileRepository가 필요합니다.
-
+                    log.info("profile : " + profile);
                     // FriendPayment DTO 생성
                     TravelPaymentPlusDto.FriendPayment friendPayment = new TravelPaymentPlusDto.FriendPayment();
                     friendPayment.setNickName(travelRoomMember.getTravelNickName());
