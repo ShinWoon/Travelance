@@ -69,6 +69,7 @@ fun MainScreen(
     navController: NavHostController = rememberAnimatedNavController(),
     mainViewModel: MainViewModel,
     context: Context,
+    roomId: Int? = 0
 ) {
     //  --------------------------여행 목록 GET 호출 부분 --------------------------
     val travelListState by mainViewModel.networkTravelList.collectAsState()
@@ -148,6 +149,7 @@ fun MainScreen(
             navController = navController,
             mainViewModel = mainViewModel,
             snackbarHostState = snackbarHostState,
+            resultRoomId = roomId
         )
     }
 

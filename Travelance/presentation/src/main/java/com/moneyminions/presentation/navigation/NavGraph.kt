@@ -56,6 +56,7 @@ fun NavGraph(
     mainViewModel: MainViewModel,
     editUserViewModel: EditUserViewModel = hiltViewModel(),
     snackbarHostState: SnackbarHostState,
+    resultRoomId: Int?=0
 ) {
     AnimatedNavHost(
         modifier = Modifier.padding(innerPaddings),
@@ -232,11 +233,10 @@ fun NavGraph(
             }
         }
         composable(
-            route = "${Screen.WebView.route}/{roomId}",
+            route = Screen.SettleResult.route,
         ) {
-            val roomId = it.arguments?.getString("roomId")?.toInt()
-            Log.d(TAG, "NavGraph roomId : $roomId")
-            SettleResultReceiveScreen(navController = navController, roomId = roomId ?: 0)
+            Log.d(TAG, "NavGraph resultRoomId : $resultRoomId ")
+            SettleResultReceiveScreen(navController = navController, roomId = resultRoomId?:0)
         }
         composable(
             route = Screen.WaitHome.route,
