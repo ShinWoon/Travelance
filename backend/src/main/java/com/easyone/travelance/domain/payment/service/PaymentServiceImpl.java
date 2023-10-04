@@ -17,6 +17,7 @@ import com.easyone.travelance.domain.travel.enumclass.RoomType;
 import com.easyone.travelance.domain.travel.repository.TravelRoomMemberRepository;
 import com.easyone.travelance.domain.travel.repository.TravelRoomRepository;
 import com.easyone.travelance.domain.travel.service.TravelPaymentService;
+import com.easyone.travelance.global.FCM.FCMService;
 import com.easyone.travelance.global.FCM.FirebaseCloudMessageService;
 import com.easyone.travelance.global.memberInfo.MemberInfoDto;
 import lombok.extern.slf4j.Slf4j;
@@ -59,6 +60,8 @@ public class PaymentServiceImpl implements PaymentService{
     private FirebaseCloudMessageService firebaseCloudMessageService;
     @Autowired
     private WebClient webClient;
+    @Autowired
+    private FCMService fcmService;
 
     private final TravelPaymentService travelPaymentService;
 
@@ -116,7 +119,6 @@ public class PaymentServiceImpl implements PaymentService{
         log.info("DB 저장 완료");
 
         // 5. FCM 알림 전송
-//        Long paymentId = savedPayment.getId();
         String fcmToken = member.get().getFcmToken();
         if (fcmToken.isEmpty()){
             throw new EntityNotFoundException(member.get().getNickname() + "의 FCM TOKEN이 존재하지 않습니다.");
@@ -124,10 +126,9 @@ public class PaymentServiceImpl implements PaymentService{
             String title = "공금에 등록하시겠습니까?";
             String body = savedPayment.getPaymentContent() + "에서 " + savedPayment.getPaymentAmount() + "결제";
 
-            // 변경: 이미 주입된 objectMapper 인스턴스 사용
-//            String paymentJson = objectMapper.writeValueAsString(savedPayment);
+//            firebaseCloudMessageService.sendMessageTo(fcmToken, title, body, savedPayment);
+            fcmService.registerPaid(fcmToken, savedPayment);
 
-            firebaseCloudMessageService.sendMessageTo(fcmToken, title, body, savedPayment);
         }
         log.info("알림 전송 완료");
     }
@@ -290,7 +291,8 @@ public class PaymentServiceImpl implements PaymentService{
             String body = travelRoom.getTravelName() + "의 정산이 완료되었습니다.";
 
             try {
-                firebaseCloudMessageService.sendMessageTo(fcmToken, title, body, null);
+//                firebaseCloudMessageService.sendMessageTo(fcmToken, title, body, null);
+                fcmService.sendFcmComplete(fcmToken, travelRoom.getId());
             } catch (IOException e) {
                 System.out.println("정산 완료 알림 전송 실패");
                 throw new RuntimeException(e);
