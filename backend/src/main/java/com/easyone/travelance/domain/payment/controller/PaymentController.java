@@ -68,7 +68,7 @@ public class PaymentController {
         log.info(String.valueOf(bCryptPasswordEncoder.matches(requestPassword, myPassword)));
 
         if (bCryptPasswordEncoder.matches(requestPassword, myPassword)){
-            String response = paymentService.transferAccount(transferAccountRequestDto);
+            String response = paymentService.transferAccount(member, transferAccountRequestDto);
             ResultDto resultDto = new ResultDto(response);
             return new ResponseEntity<>(resultDto, HttpStatus.OK);
         }
