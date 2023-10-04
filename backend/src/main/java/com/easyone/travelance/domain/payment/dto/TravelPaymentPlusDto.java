@@ -24,7 +24,7 @@ public class TravelPaymentPlusDto {
         private String profileUrl;
         private Long paymentAmount;
         private boolean isDone;
-        
+
     }
 
     @Data
