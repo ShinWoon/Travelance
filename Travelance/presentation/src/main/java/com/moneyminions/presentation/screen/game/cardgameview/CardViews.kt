@@ -79,6 +79,7 @@ fun CardFourView(
     offset: Float,
     shakeComplete: MutableState<Boolean>,
     modifier: Modifier = Modifier,
+    dialogShow: () -> Unit
 ) {
     val controller = remember(true) { FlippableController() }
     var isCardFlipSuccessVisible by remember { mutableStateOf(false) }
@@ -148,6 +149,6 @@ fun CardFourView(
         },
     )
     if (isCardFlipSuccessVisible) {
-        CardFlipSuccessView(modifier = modifier)
+        dialogShow()
     }
 }

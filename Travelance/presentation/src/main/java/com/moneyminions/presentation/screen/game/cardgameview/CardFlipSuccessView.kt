@@ -1,69 +1,70 @@
 package com.moneyminions.presentation.screen.game.cardgameview
 
-import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.moneyminions.domain.model.home.TravelRoomFriendDto
 import com.moneyminions.presentation.R
-import com.moneyminions.presentation.common.LottieLoader
+import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold20
+import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold32
+import com.moneyminions.presentation.common.MinionProfile
+import com.moneyminions.presentation.theme.DarkerGray
 import com.moneyminions.presentation.theme.PinkDarkest
+import com.moneyminions.presentation.theme.pretendard
 
 private const val TAG = "CardFlipSuccessView_D210"
+
 @Composable
 fun CardFlipSuccessView(
+    scale: Float,
+    selectedWinnerFriend: TravelRoomFriendDto,
     modifier: Modifier = Modifier,
-) {
-    var isResultDialog by remember { mutableStateOf(false) }
-    
-    LottieLoader(
-        modifier = Modifier,
-        res = R.raw.lottie_star,
-        startTime = 0f,
-        endTime = 1f,
-        isLoop = false
-    ) {
-        isResultDialog = true
-    }
-    
-    Log.d(TAG, "CardFlipSuccessView: ${isResultDialog}")
-    
-    if (isResultDialog) {
-        ResultDialog(
-            onDismiss = { isResultDialog = false }
-        )
-    }
-}
-
-
-@Composable
-fun ResultDialog(
+    showDone: Boolean,
     onDismiss: () -> Unit,
 ) {
     Dialog(
         onDismissRequest = onDismiss
     ) {
-        Surface(
-            shape = RoundedCornerShape(16.dp),
+        Image(
+            modifier = Modifier
+                .fillMaxSize()
+                .graphicsLayer(scaleX = scale, scaleY = scale),
+            painter = painterResource(id = R.drawable.card_layer_result),
+            contentDescription = "result card",
+        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = modifier.fillMaxSize()
         ) {
-            Box (
-                modifier = Modifier
-                    .background(PinkDarkest)
-                    .height(300.dp)
-                    .width(200.dp)
-            ){
-                // 당첨자 데이터 넣기
-            }
+            MinionProfile(size = 120.dp, img = selectedWinnerFriend.profileUrl)
+            Spacer(modifier = modifier.height(32.dp))
+            Text(
+                text = selectedWinnerFriend.travelNickname,
+                color = DarkerGray,
+                style = pretendardBold32
+            )
+        }
+        if(showDone) {
+            CardDoneLottieAnimation()
         }
     }
 }
