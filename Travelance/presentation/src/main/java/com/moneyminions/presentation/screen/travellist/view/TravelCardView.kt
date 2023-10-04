@@ -33,6 +33,7 @@ import com.moneyminions.presentation.common.CustomTextStyle.pretendardBoldMoney2
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardSemiBold12
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.travellist.util.clickable
+import com.moneyminions.presentation.theme.BlueDarkest
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.DarkGray
 import com.moneyminions.presentation.theme.DarkGrayMiddle
@@ -44,6 +45,7 @@ import com.moneyminions.presentation.utils.MoneyUtils
 import com.moneyminions.presentation.viewmodel.MainViewModel
 
 private const val TAG = "TravelCardView_D210"
+
 @Composable
 fun TravelCardView(
     modifier: Modifier,
@@ -68,7 +70,6 @@ fun TravelCardView(
                     "NOW" -> {
                         navController.navigate(Screen.Home.route)
                     }
-            
                     "WAIT" -> {}
                     "DONE" -> {
                         navController.navigate("${Screen.TravelDone.route}/{roomId}".replace(oldValue = "{roomId}", newValue = "${travelRoomDto.roomId}"))
@@ -191,20 +192,21 @@ fun SettlementStateView(done: String, modifier: Modifier) {
                     color = DarkGrayMiddle,
                 )
             }
-            
+
             "NOW" -> {
-                RippleLoadingAnimation(modifier = modifier)
+                RippleLoadingAnimation(modifier = modifier, circleColor = PinkDarkest)
                 StateText(
                     text = "정산 중",
                     color = PinkDarkest,
                 )
             }
-            
-            // todo 정산 대기 구현 해야함
             "WAIT" -> {
-            
+                RippleLoadingAnimation(modifier = modifier, circleColor = BlueDarkest)
+                StateText(
+                    text = "정산 요청 상태",
+                    color = BlueDarkest,
+                )
             }
-            
             "DONE" -> {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_circle),
@@ -217,7 +219,7 @@ fun SettlementStateView(done: String, modifier: Modifier) {
                     color = GreenMiddle,
                 )
             }
-            
+
             else -> {}
         }
     }

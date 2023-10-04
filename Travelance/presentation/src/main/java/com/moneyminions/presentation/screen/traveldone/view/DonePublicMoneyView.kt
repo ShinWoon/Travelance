@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.moneyminions.domain.model.traveldetail.TravelPaymentDto
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold12
 import com.moneyminions.presentation.theme.DarkerGray
 import com.moneyminions.presentation.theme.Gray
@@ -30,6 +31,8 @@ import com.moneyminions.presentation.theme.PinkLight
 @Composable
 fun DonePublicMoneyView(
     modifier: Modifier = Modifier,
+    allTravelPaymentList: List<TravelPaymentDto>,
+    myPaymentList: List<TravelPaymentDto>,
 ) {
     var switchChecked by remember { mutableStateOf(false) }
     Column(

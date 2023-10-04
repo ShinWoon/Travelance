@@ -28,7 +28,6 @@ import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.DarkerGray
 import com.moneyminions.presentation.utils.DateUtils
 import com.moneyminions.presentation.utils.MoneyUtils.makeComma
-import com.moneyminions.presentation.viewmodel.travel.TravelDetailViewModel
 
 private const val TAG = "싸피"
 
@@ -56,7 +55,7 @@ fun TravelInfoView(
                     modifier = modifier
                         .size(24.dp)
                         .clickable {
-                            navController.navigate("${Screen.TravelEdit.route}/{roomId}".replace(oldValue = "{roomId}", newValue = "${roomId}"))
+                            navController.navigate("${Screen.TravelEdit.route}/{roomId}".replace(oldValue = "{roomId}", newValue = "$roomId"))
                             setTravelRoomInfo(travelRoomInfo)
                         },
                     painter = painterResource(id = R.drawable.ic_edit),
@@ -114,7 +113,7 @@ fun BudgetText(
     modifier: Modifier,
 ) {
     Text(
-        text = if(type == "done") "사용금액:${makeComma(budget)}" else "예산:${makeComma(budget)}",
+        text = if (type == "done") "${makeComma(budget)}" else "예산:${makeComma(budget)}",
         color = DarkerGray,
         style = pretendardBold18,
         modifier = modifier.fillMaxWidth(),

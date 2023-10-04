@@ -6,7 +6,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -15,6 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
@@ -30,18 +31,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.unit.dp
+import com.moneyminions.domain.model.traveldone.CategoryExpenseDto
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardSemiBold12
 import com.moneyminions.presentation.theme.CardLightGray
+import com.moneyminions.presentation.theme.CategoryAccommodation
 import com.moneyminions.presentation.theme.CategoryAlcohol
 import com.moneyminions.presentation.theme.CategoryCoffee
 import com.moneyminions.presentation.theme.CategoryDining
+import com.moneyminions.presentation.theme.CategoryGroceries
 import com.moneyminions.presentation.theme.CategoryLeisure
+import com.moneyminions.presentation.theme.CategoryMinimarts
 import com.moneyminions.presentation.theme.CategoryShopping
+import com.moneyminions.presentation.theme.CategoryTransportation
+import com.moneyminions.presentation.theme.CategoryUncategorized
 import com.moneyminions.presentation.theme.DarkerGray
 
 @Composable
 fun CategoryGraphView(
     modifier: Modifier = Modifier,
+    categoryExpenseList: List<CategoryExpenseDto>,
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -53,9 +61,9 @@ fun CategoryGraphView(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            CategoryChart()
+            CategoryChart(categoryExpenseList = categoryExpenseList)
             Spacer(modifier = modifier.width(40.dp))
-            CategoryInfo()
+            CategoryInfo(categoryExpenseList = categoryExpenseList)
         }
     }
 }
@@ -63,21 +71,17 @@ fun CategoryGraphView(
 @Composable
 fun CategoryInfo(
     modifier: Modifier = Modifier,
+    categoryExpenseList: List<CategoryExpenseDto>,
 ) {
-    Column(
+    LazyColumn(
         modifier = modifier.padding(vertical = 8.dp),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        CategoryChips(color = CategoryDining, text = "식비( 30% )")
-        Spacer(modifier = modifier.height(12.dp))
-        CategoryChips(color = CategoryDining, text = "식비( 30% )")
-        Spacer(modifier = modifier.height(12.dp))
-        CategoryChips(color = CategoryDining, text = "식비( 30% )")
-        Spacer(modifier = modifier.height(12.dp))
-        CategoryChips(color = CategoryDining, text = "식비( 30% )")
-        Spacer(modifier = modifier.height(12.dp))
-        CategoryChips(color = CategoryDining, text = "식비( 30% )")
+        itemsIndexed(categoryExpenseList) { _, item ->
+            CategoryChips(color = getCategoryColor(item.category), text = item.category)
+            Spacer(modifier = modifier.height(12.dp))
+        }
     }
 }
 
@@ -106,7 +110,9 @@ fun CategoryChips(
 }
 
 @Composable
-private fun CategoryChart() {
+private fun CategoryChart(
+    categoryExpenseList: List<CategoryExpenseDto>,
+) {
     val animatable = remember {
         Animatable(-90f)
     }
@@ -189,3 +195,18 @@ private val Float.asAngle: Float
 
 @Immutable
 data class ChartData(val color: Color, val data: Float)
+
+private fun getCategoryColor(category: String): Color {
+    return when (category) {
+        "식비" -> CategoryDining
+        "커피와 디저트" -> CategoryCoffee
+        "주류" -> CategoryAlcohol
+        "마트" -> CategoryGroceries
+        "편의점" -> CategoryMinimarts
+        "교통/자동차" -> CategoryTransportation
+        "숙소" -> CategoryAccommodation
+        "쇼핑" -> CategoryShopping
+        "레저" -> CategoryLeisure
+        else -> CategoryUncategorized
+    }
+}

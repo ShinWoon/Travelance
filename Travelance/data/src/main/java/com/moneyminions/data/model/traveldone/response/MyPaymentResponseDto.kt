@@ -1,6 +1,5 @@
 package com.moneyminions.data.model.traveldone.response
 
-
 import com.google.gson.annotations.SerializedName
 
 data class MyPaymentResponseDto(
@@ -17,5 +16,5 @@ data class MyPaymentResponseDto(
     @SerializedName("storeAddress")
     val storeAddress: String,
     @SerializedName("storeSector")
-    val storeSector: String
+    val storeSector: String,
 )

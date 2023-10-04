@@ -72,7 +72,7 @@ fun TravelListScreen(
     travelListViewModel: TravelListViewModel = hiltViewModel(),
     navController: NavController,
     modifier: Modifier = Modifier,
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel,
 ) {
     Log.d(TAG, "TravelListScreen: on")
     val snackbarHostState = remember { SnackbarHostState() }
@@ -95,7 +95,7 @@ fun TravelListScreen(
         successAction = {
             Log.d(TAG, "travelListResult : $it ")
             travelListViewModel.refresh(it.toMutableList())
-        }
+        },
     )
 
     // 여행 목록 삭제
@@ -109,7 +109,7 @@ fun TravelListScreen(
         },
         successAction = {
             Log.d(TAG, "삭제 성공 여부 : $it ")
-        }
+        },
     )
     Scaffold(
         floatingActionButton = {
@@ -118,14 +118,14 @@ fun TravelListScreen(
                     Text(
                         text = "방 생성",
                         color = DarkGray,
-                        style = CustomTextStyle.pretendardBold14
+                        style = CustomTextStyle.pretendardBold14,
                     )
                 },
                 icon = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_add),
                         tint = PinkDarkest,
-                        contentDescription = "room add icon"
+                        contentDescription = "room add icon",
                     )
                 },
                 containerColor = FloatingButtonColor,
@@ -140,7 +140,6 @@ fun TravelListScreen(
     ) {
         LazyColumn(
             modifier = modifier
-
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .padding(16.dp, 24.dp, 16.dp, 0.dp),
@@ -149,9 +148,9 @@ fun TravelListScreen(
                     items = travelListViewModel.travelList.value,
                     key = { _, item: TravelRoomDto ->
                         item.hashCode()
-                    }
+                    },
                 ) { index, item: TravelRoomDto ->
-                    if(item.isDone == "NOW") {
+                    if (item.isDone == "NOW") {
                         mainViewModel.putTravelingRoomId(item.roomId)
                     }
                     TravelRoomItem(
@@ -160,7 +159,7 @@ fun TravelListScreen(
                         onRemove = travelListViewModel::removeItem,
                         navController = navController,
                         mainViewModel = mainViewModel,
-                        iconId = getResourceId("ic_travel_${(index + 1)%10}", R.drawable::class.java)
+                        iconId = getResourceId("ic_travel_${(index + 1) % 10}", R.drawable::class.java),
                     )
                 }
             },
@@ -188,14 +187,14 @@ fun TravelRoomItem(
     onRemove: (TravelRoomDto) -> Unit,
     navController: NavController,
     mainViewModel: MainViewModel,
-    iconId: Int
+    iconId: Int,
 ) {
     val context = LocalContext.current
-    
+
 //    var isAuthenticated = remember { mutableStateOf(false) }
 //    val fragmentActivity = LocalContext.current as FragmentActivity
 //    val con = BiometricUtils.status(LocalContext.current)
-    
+
     var show by remember { mutableStateOf(true) }
     val currentItem by rememberUpdatedState(travelRoomDto)
     val dismissState = rememberDismissState(
@@ -209,9 +208,9 @@ fun TravelRoomItem(
         },
         positionalThreshold = { 150.dp.toPx() },
     )
-    
+
     AnimatedVisibility(
-        show, exit = fadeOut(spring())
+        show, exit = fadeOut(spring()),
     ) {
         SwipeToDismiss(
             state = dismissState,
@@ -233,11 +232,11 @@ fun TravelRoomItem(
     // 삭제 되는 순간 실행
     LaunchedEffect(show) {
         if (!show) {
-            Log.d(TAG, "TravelRoomItem: ${currentItem}, $onRemove")
+            Log.d(TAG, "TravelRoomItem: $currentItem, $onRemove")
             onRemove(currentItem) // 삭제 API 요청 -> viewModel에 구현
             Toast.makeText(context, "Item removed ${currentItem.roomId}", Toast.LENGTH_SHORT).show()
             delay(800)
-            
+
 //            bioAuth(
 //                isAuthenticated = isAuthenticated,
 //                fragmentActivity = fragmentActivity,
@@ -273,20 +272,22 @@ fun DismissBackground(dismissState: DismissState) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End,
         ) {
-            if (direction == DismissDirection.EndToStart) Icon(
-                Icons.Default.Delete,
-                contentDescription = "delete"
-            )
+            if (direction == DismissDirection.EndToStart) {
+                Icon(
+                    Icons.Default.Delete,
+                    contentDescription = "delete",
+                )
+            }
         }
     }
 }
 
-//fun bioAuth(
+// fun bioAuth(
 //    isAuthenticated: MutableState<Boolean>,
 //    fragmentActivity: FragmentActivity,
 //    con: Boolean,
 //    currentItem: TravelRoomDto
-//) {
+// ) {
 //    if (con && !isAuthenticated.value) {
 //        BiometricUtils.authenticate(
 //            fragmentActivity,
@@ -304,4 +305,4 @@ fun DismissBackground(dismissState: DismissState) {
 //            },
 //        )
 //    }
-//}
+// }
