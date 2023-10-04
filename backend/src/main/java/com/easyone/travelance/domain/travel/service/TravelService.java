@@ -30,16 +30,16 @@ public class TravelService {
 
     //방만들기
     @Transactional
-    public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, RoomUserRequestDto roomUserRequestDto) throws Exception {
+    public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, RoomUserRequestDto roomUserRequestDto, MultipartFile profileUrl) throws Exception {
         //방 만든 직전에는 사전정산 상태
         RoomType roomType = RoomType.BEFORE;
 
         TravelRoom travelRoom = roomInfoRequestDto.toEntity(roomType);
         travelRoomRepository.save(travelRoom);
 
-//            if (profileUrl != null) {
-        travelProfileService.saveImage(travelRoom, "https://i.ibb.co/9WLnW7t/20221014514371.jpg", member);
-//            }
+        if (profileUrl != null) {
+        travelProfileService.saveImage(travelRoom, profileUrl, member);
+        }
 
         TravelRoomMember travelRoomMember = TravelRoomMember.builder()
                 .travelRoom(travelRoom)
@@ -74,7 +74,7 @@ public class TravelService {
 
             //프로필 사진이 있으면, 프로필 사진 저장
 //            if (profileUrl != null) {
-                travelProfileService.saveImage(travelRoom, "https://i.ibb.co/9WLnW7t/20221014514371.jpg", member);
+//                travelProfileService.saveImage(travelRoom, "https://i.ibb.co/9WLnW7t/20221014514371.jpg", member);
 //            }
 
         TravelRoomMember travelRoomMember = TravelRoomMember.builder()
