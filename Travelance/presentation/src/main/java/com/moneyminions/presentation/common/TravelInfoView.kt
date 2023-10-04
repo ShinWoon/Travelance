@@ -62,8 +62,8 @@ fun TravelInfoView(
                             navController.navigate(
                                 "${Screen.TravelEdit.route}/{roomId}".replace(
                                     oldValue = "{roomId}",
-                                    newValue = "${roomId}"
-                                )
+                                    newValue = "$roomId",
+                                ),
                             )
                         },
                     painter = painterResource(id = R.drawable.ic_edit),
@@ -84,8 +84,8 @@ fun TravelInfoView(
                 modifier = modifier.size(40.dp),
             )
             DetailDateView(startDate = travelRoomInfo.startDate, endDate = travelRoomInfo.endDate, modifier = modifier)
-            BudgetText(budget = travelRoomInfo.budget, type = type, modifier = modifier)
         }
+        BudgetText(budget = travelRoomInfo.budget, type = type, modifier = modifier)
     }
 }
 

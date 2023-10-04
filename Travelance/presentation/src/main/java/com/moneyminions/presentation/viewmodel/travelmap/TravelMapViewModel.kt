@@ -51,8 +51,9 @@ class TravelMapViewModel @Inject constructor(
         val locationList = mutableListOf<LocationDto>()
 
         for (spot in spotList) {
-            if(spot.storeAddress != "") {
-                val location = searchAddress(context, spot.storeAddress, spot.storeSector)
+            if(!spot.storeAddress.isNullOrEmpty()) {
+                val category = if(spot.storeSector.isNullOrEmpty()) "" else spot.storeSector!!
+                val location = searchAddress(context, spot.storeAddress!!, category)
                 locationList.add(location)
             }
         }
@@ -62,15 +63,15 @@ class TravelMapViewModel @Inject constructor(
 
 private fun searchAddress(
     context: Context,
-    address: String,
-    category: String,
+    address: String = "",
+    category: String = "",
 ): LocationDto {
     if (Build.VERSION.SDK_INT < 33) {
-        val list = Geocoder(context).getFromLocationName(address, 1)!!
+        val list = address?.let { Geocoder(context).getFromLocationName(it, 1) }!!
         Log.d(TAG, "address list : $list")
         return LocationDto(storeAddress = address, storeCategory = category, latitude = list[0].latitude, longitude = list[0].longitude)
     } else {
-        val list = Geocoder(context).getFromLocationName(address, 1)!!
+        val list = address?.let { Geocoder(context).getFromLocationName(it, 1) }!!
         Log.d(TAG, "searchAddress: address to  ${list[0].latitude}  ${list[0].longitude}")
         return LocationDto(storeAddress = address, storeCategory = category, latitude = list[0].latitude, longitude = list[0].longitude)
     }

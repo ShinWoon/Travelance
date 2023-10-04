@@ -37,7 +37,7 @@ import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.MainViewModel
 import com.moneyminions.presentation.viewmodel.travel.TravelDetailViewModel
 
-private const val TAG = "싸피"
+private const val TAG = "D210"
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -111,20 +111,20 @@ fun DetailScreen(
                 travelDetailViewModel.updateTravelPaymentInfo(
                     TravelPaymentChangeInfoDto(
                         paymentId = selectedTravelInfo.paymentId,
-                        withPaid = selectedTravelInfo.isWithPaid
-                    )
+                        withPaid = selectedTravelInfo.isWithPaid,
+                    ),
                 )
                 deleteDialog = false
-            }
+            },
         )
     }
     Scaffold(
         topBar = {
             TopBar(navController = navController, topBarTitle = travelDetailInfo.travelRoomInfo[0].travelName)
-        }
+        },
     ) {
         Column(
-            modifier = modifier.padding(it)
+            modifier = modifier.padding(it),
         ) {
             TravelInfoView(
                 travelRoomInfo = travelDetailInfo.travelRoomInfo[0],
@@ -132,9 +132,9 @@ fun DetailScreen(
                 modifier = Modifier,
                 navController = navController,
                 roomId = travelId,
-                setTravelRoomInfo = {travelRoomInfoDto ->
+                setTravelRoomInfo = { travelRoomInfoDto ->
                     mainViewModel.putTravelRoomInfo(travelRoomInfoDto)
-                }
+                },
             )
             CommonTabView(
                 modifier = Modifier,
@@ -153,28 +153,28 @@ fun DetailScreen(
                     0 -> DetailSettleScreenView(
                         publicMoneyList = travelDetailInfo.travelPayment,
                         myPaymentList = myPaymentList,
-                        changeValue = {travelPaymentDto ->
+                        changeValue = { travelPaymentDto ->
                             Log.d(
                                 TAG,
-                                "DetailScreen: $travelPaymentDto"
+                                "DetailScreen: $travelPaymentDto",
                             )
                             selectedTravelInfo = travelPaymentDto
                         },
                         deleteDialog = { deleteDialog = true },
                         selectedIdx = selectedIdx,
-                        myPaymentRowSelect = {paymentMap ->
+                        myPaymentRowSelect = { paymentMap ->
                             selectedIdx = paymentMap["index"] as Int
                             selectedTravelInfo = TravelPaymentDto(
                                 isWithPaid = paymentMap["isWithPaid"] as Boolean,
-                                paymentId = paymentMap["paymentId"] as Int
+                                paymentId = paymentMap["paymentId"] as Int,
                             )
                         },
                         myPaymentAccept = {
                             travelDetailViewModel.updateTravelPaymentInfo(
                                 TravelPaymentChangeInfoDto(
                                     paymentId = selectedTravelInfo.paymentId,
-                                    withPaid = selectedTravelInfo.isWithPaid
-                                )
+                                    withPaid = selectedTravelInfo.isWithPaid,
+                                ),
                             )
                         },
                         getMyPayment = {
@@ -186,7 +186,7 @@ fun DetailScreen(
                         },
                         resetIdx = {
                             selectedIdx = -1
-                        }
+                        },
                     )
                     1 -> DetailMemberScreenView(friendPaymentList = travelDetailInfo.friendPayments)
                 }
