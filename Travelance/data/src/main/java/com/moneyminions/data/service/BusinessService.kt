@@ -255,6 +255,7 @@ interface BusinessService {
         @Path("roomId") roomId: Int
     ): SettleResultResponse
 
+    /**
      * 로그아웃
      */
     @POST("api/oauth/logout")
