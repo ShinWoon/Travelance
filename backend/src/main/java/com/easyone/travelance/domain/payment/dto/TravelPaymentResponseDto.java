@@ -2,8 +2,10 @@ package com.easyone.travelance.domain.payment.dto;
 
 import com.easyone.travelance.domain.payment.entity.Payment;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class TravelPaymentResponseDto {
     private Long paymentId;
     private String paymentAt;

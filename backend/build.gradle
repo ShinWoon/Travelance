@@ -74,6 +74,7 @@ dependencies {
 
 	//localdatetime관련
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.5'
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
 }
 
 tasks.named('test') {

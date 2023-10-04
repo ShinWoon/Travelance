@@ -20,12 +20,14 @@ import com.easyone.travelance.global.error.exception.AuthenticationException;
 import com.easyone.travelance.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 @Slf4j
@@ -99,10 +101,14 @@ public class MemberService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_EXISTS));
     }
 
+    @Cacheable(value = "accountCache", key = "#member.email")
     public List<SelectedAccountRequestDto> findAllAccountsForMember(Member member) {
         MainAccount mainAccount = member.getMainAccount();
         List<Account> accounts = mainAccount.getAccountList();
-
+        if (accounts == null) {
+            // cardList가 null인 경우에 대한 처리
+            return Collections.emptyList(); // 또는 다른 적절한 처리 방법 사용
+        }
         List<SelectedAccountRequestDto> accountDtos = new ArrayList<>();
         for (Account account : accounts) {
             SelectedAccountRequestDto accountDto = new SelectedAccountRequestDto();
@@ -114,9 +120,13 @@ public class MemberService {
 
         return accountDtos;
     }
-
+    @Cacheable(value = "cardCache", key = "#member.email")
     public List<SelectedCardRequestDto> findAllCardsForMember(Member member) {
         List<Card> cards = member.getCardList();
+        if (cards == null) {
+            // cardList가 null인 경우에 대한 처리
+            return Collections.emptyList(); // 또는 다른 적절한 처리 방법 사용
+        }
         log.info("cards : " + cards);
         List<SelectedCardRequestDto> cardDtos = new ArrayList<>();
         for (Card card : cards){

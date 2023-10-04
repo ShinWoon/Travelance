@@ -15,6 +15,7 @@ import com.easyone.travelance.global.memberInfo.MemberInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -73,6 +74,7 @@ public class CardController {
 
     @Operation(summary = "카드 삭제", description = "현재 로그인한 유저의 등록된 카드를 삭제하는 메서드입니다.")
     @DeleteMapping("/delete/{cardCoName}/{cardNumber}")
+    @CacheEvict(value = "cardCache", key = "#memberInfoDto.email")
     public ResponseEntity<ResultDto> deleteCard(
             @MemberInfo MemberInfoDto memberInfoDto,
             @PathVariable String cardCoName,
