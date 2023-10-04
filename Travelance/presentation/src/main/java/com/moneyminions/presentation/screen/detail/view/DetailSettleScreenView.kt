@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.screen.detail.view
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,12 +39,14 @@ import com.moneyminions.presentation.theme.DarkerGray
 import com.moneyminions.presentation.theme.Gray
 
 private const val TAG = "싸피"
+@SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailSettleScreenView(
     modifier: Modifier = Modifier,
     publicMoneyList: List<TravelPaymentDto>,
     myPaymentList: List<TravelPaymentDto>,
+    isDone: Boolean,
     changeValue: (TravelPaymentDto) -> Unit,
     deleteDialog: () -> Unit,
     selectedIdx: Int,
@@ -84,7 +87,9 @@ fun DetailSettleScreenView(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
-        Column {
+        Column(
+            modifier = modifier.weight(9f)
+        ) {
             Row(
                 modifier = modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -148,7 +153,10 @@ fun DetailSettleScreenView(
         }
         MinionPrimaryButton(
             content = "정산요청",
-            modifier = modifier.fillMaxWidth(),
+            isEnabled = mutableStateOf(!isDone),
+            modifier = modifier
+                .fillMaxWidth()
+                .weight(1f),
         ) {
             setSettle()
         }
