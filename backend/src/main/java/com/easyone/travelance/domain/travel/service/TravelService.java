@@ -116,7 +116,7 @@ public class TravelService {
 
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "roomCache", key = "#roomId")
+//    @Cacheable(value = "roomCache", key = "#roomId")
     public RoomStaticResponseDto findById(Long roomId, Member member) {
 
         TravelRoom travelRoom = travelRoomRepository.findByIdAndMemberId(roomId, member.getId())
