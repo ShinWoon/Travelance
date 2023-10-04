@@ -1,7 +1,6 @@
 package com.easyone.travelance.global.FCM;
 
 import com.easyone.travelance.domain.payment.entity.Payment;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -95,7 +94,7 @@ public class FirebaseCloudMessageService {
 
     private String getAccessToken() throws IOException {
         // 클래스패스 내의 리소스로 파일 로드
-        InputStream is = getClass().getResourceAsStream("/travelance-fada4-firebase-adminsdk-66uyr-4c861b19d8.json");
+        InputStream is = getClass().getResourceAsStream("/FCM/travelance-fada4-firebase-adminsdk-66uyr-4c861b19d8.json");
 
         GoogleCredentials googleCredentials = GoogleCredentials
                 .fromStream(is)
