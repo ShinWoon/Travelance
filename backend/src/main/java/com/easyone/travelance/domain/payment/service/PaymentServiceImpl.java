@@ -149,8 +149,8 @@ public class PaymentServiceImpl implements PaymentService{
 
         paymentRepository.save(payment);
 
-        evictpaymentWithsCache(memberId);
-        evictpaymentAlonesCache(memberId);
+//        evictpaymentWithsCache(memberId);
+//        evictpaymentAlonesCache(memberId);
 
         return "결제내역 저장 성공";
     }
