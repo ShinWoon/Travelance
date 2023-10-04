@@ -341,7 +341,7 @@ public class PaymentServiceImpl implements PaymentService{
         }
 
         // 1. 해당 roomNumber로 Calculation을 가져옴
-        List<Calculation> calculations = calculationRepository.findByTravelRoom(existTravelRoom.get().getId());
+        List<Calculation> calculations = calculationRepository.findByTravelRoomId(existTravelRoom.get().getId());
 
         // 해당 roomNumber와 fromMemberId가 일치하는 Calculation만 필터링
         List<Calculation> matchedCalculations = calculations.stream()
@@ -392,7 +392,7 @@ public class PaymentServiceImpl implements PaymentService{
 
     public void updateTravelRoomStatus(TravelRoom travelRoom) {
         // 모든 Calculation의 isTransfer가 true인지 확인합니다.
-        boolean allTransferred = calculationRepository.findByTravelRoom(travelRoom.getId())
+        boolean allTransferred = calculationRepository.findByTravelRoomId(travelRoom.getId())
                 .stream()
                 .allMatch(Calculation::isTransfer);
 
@@ -405,7 +405,7 @@ public class PaymentServiceImpl implements PaymentService{
     @Override
     public TransferInfoDto getTransferInfo(Long roomId, Member member){
         TravelRoom travelRoom = travelRoomRepository.findById(roomId).orElseThrow(() -> new EntityNotFoundException("여행방을 찾을 수 없습니다."));
-        List<Calculation> calculations = calculationRepository.findByTravelRoom(roomId);
+        List<Calculation> calculations = calculationRepository.findByTravelRoomId(roomId);
 
         // TravelRoomInfo 설정
         TransferInfoDto.TravelRoomInfo roomInfo = new TransferInfoDto.TravelRoomInfo(
