@@ -19,14 +19,14 @@ public class PaymentResponseDto {
     private String paymentAt;
     private String profileUrl;
 
-    public PaymentResponseDto(Payment payment, Member member, String nickName, String profileUrl) {
+    public PaymentResponseDto(Payment payment, Long id, String nickName, String profileUrl) {
         this.paymentId = payment.getId();
         this.price = payment.getPaymentAmount();
         this.address=payment.getStoreAddress();
         this.category = payment.getStoreSector();
         this.content= payment.getPaymentContent();
         this.paymentAt=payment.getPaymentAt();
-        this.memberId = member.getId();
+        this.memberId = id;
         this.nickName = nickName;
         this.profileUrl=profileUrl;
     }
