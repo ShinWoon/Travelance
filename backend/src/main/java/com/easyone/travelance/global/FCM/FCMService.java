@@ -61,7 +61,7 @@ public class FCMService{
         log.info(title);
         log.info(body);
 
-        this.sendFCMNotification(fcmToken, title, body, null);
+        this.sendFCMNotification(fcmToken, title, body, 0L);
     }
 
 }
