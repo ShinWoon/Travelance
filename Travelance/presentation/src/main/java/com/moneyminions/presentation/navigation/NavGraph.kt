@@ -202,11 +202,11 @@ fun NavGraph(
             NicknamePasswordScreen(navController = navController, loginViewModel = loginViewModel)
         }
         composable(
-            route = "${Screen.TravelDone.route}/{travelName}",
+            route = "${Screen.TravelDone.route}/{roomId}",
         ) {
-            val travelName = it.arguments?.getString("travelName")
-            if (travelName != null) {
-                TravelDoneScreen(navController = navController, travelName = travelName)
+            val roomId = it.arguments?.getString("roomId")?.toInt()
+            if (roomId != null) {
+                TravelDoneScreen(navController = navController, roomId = roomId)
             }
         }
         composable(

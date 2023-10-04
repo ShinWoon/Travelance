@@ -71,7 +71,7 @@ fun TravelCardView(
             
                     "WAIT" -> {}
                     "DONE" -> {
-                        navController.navigate(Screen.TravelDone.route)
+                        navController.navigate("${Screen.TravelDone.route}/{roomId}".replace(oldValue = "{roomId}", newValue = "${travelRoomDto.roomId}"))
                     }
                 }
             },

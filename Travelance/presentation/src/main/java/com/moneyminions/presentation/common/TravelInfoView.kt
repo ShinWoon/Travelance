@@ -56,7 +56,7 @@ fun TravelInfoView(
                     modifier = modifier
                         .size(24.dp)
                         .clickable {
-                            navController.navigate("${Screen.TravelEdit.route}/$roomId")
+                            navController.navigate("${Screen.TravelEdit.route}/{roomId}".replace(oldValue = "{roomId}", newValue = "${roomId}"))
                             setTravelRoomInfo(travelRoomInfo)
                         },
                     painter = painterResource(id = R.drawable.ic_edit),
@@ -77,7 +77,7 @@ fun TravelInfoView(
                 modifier = modifier.size(40.dp),
             )
             DetailDateView(startDate = travelRoomInfo.startDate, endDate = travelRoomInfo.endDate, modifier = modifier)
-            BudgetText(budget = travelRoomInfo.budget, modifier = modifier)
+            BudgetText(budget = travelRoomInfo.budget, type = type, modifier = modifier)
         }
     }
 }
@@ -110,10 +110,11 @@ fun DateText(
 @Composable
 fun BudgetText(
     budget: Int,
+    type: String,
     modifier: Modifier,
 ) {
     Text(
-        text = "예산:${makeComma(budget)}",
+        text = if(type == "done") "사용금액:${makeComma(budget)}" else "예산:${makeComma(budget)}",
         color = DarkerGray,
         style = pretendardBold18,
         modifier = modifier.fillMaxWidth(),
