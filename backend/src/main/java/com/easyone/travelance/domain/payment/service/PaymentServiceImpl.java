@@ -329,7 +329,7 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     @Override
-    public String transferAccount(TransferAccountRequestDto transferAccountRequestDto) {
+    public String transferAccount(Member member, TransferAccountRequestDto transferAccountRequestDto) {
         Optional<TravelRoom> existTravelRoom = travelRoomRepository.findById(transferAccountRequestDto.getRoomNumber());
 
         if (existTravelRoom.isEmpty()){
@@ -341,7 +341,7 @@ public class PaymentServiceImpl implements PaymentService{
 
         // 해당 roomNumber와 fromMemberId가 일치하는 Calculation만 필터링
         List<Calculation> matchedCalculations = calculations.stream()
-                .filter(calculation -> calculation.getFromMemberId().equals(transferAccountRequestDto.getFromMemberId()))
+                .filter(calculation -> calculation.getFromMemberId().equals(member.getId()))
                 .collect(Collectors.toList());
 
         for (Calculation calculation : matchedCalculations) {

@@ -11,5 +11,4 @@ import java.util.List;
 public class TransferAccountRequestDto {
     private Long roomNumber;
     private String password;
-    private Long fromMemberId;
 }

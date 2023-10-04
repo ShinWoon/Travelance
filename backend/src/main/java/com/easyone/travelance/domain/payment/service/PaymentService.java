@@ -8,7 +8,7 @@ public interface PaymentService {
 
     String registerCash(Member member, RegisterCashRequestDto registerCashRequestDto);
     String pushAlertData(PushAlertRequestDto pushAlertRequestDto);
-    String transferAccount(TransferAccountRequestDto transferAccountRequestDto);
+    String transferAccount(Member member, TransferAccountRequestDto transferAccountRequestDto);
     String completeCalculation(MemberInfoDto memberInfoDto, CompleteCalculationRequestDto completeCalculationRequestDto);
 
     TransferInfoDto getTransferInfo(Long roomId, Member member);
