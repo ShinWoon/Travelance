@@ -26,22 +26,24 @@ public class TravelPaymentController {
     private final MemberService memberService;
     private final TravelPaymentWithService travelPaymentWithService;
 
-    @GetMapping(value = "/with")
+    @GetMapping(value = "/{roomId}/with")
     @Operation(summary = "내가 결제한 금액 중, 공금인 내역만 가져옵니다.")
-    public ResponseEntity<TravelPaymentPlusDto> getPaymentWith(@MemberInfo MemberInfoDto memberInfoDto) {
+    public ResponseEntity<TravelPaymentPlusDto> getPaymentWith(@PathVariable Long roomId,
+                                                               @MemberInfo MemberInfoDto memberInfoDto) {
 
         Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
-        TravelPaymentPlusDto travelPaymentPlusDto = travelPaymentWithService.getPaymentWith(member);
+        TravelPaymentPlusDto travelPaymentPlusDto = travelPaymentWithService.getPaymentWith(roomId, member);
 
         return new ResponseEntity<>(travelPaymentPlusDto, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/alone")
+    @GetMapping(value = "/{roomId}/alone")
     @Operation(summary = "내가 결제한 금액 중, 개인 결제 내역만 가져옵니다.")
-    public ResponseEntity<List<TravelPaymentResponseDto>> getPaymentAlone(@MemberInfo MemberInfoDto memberInfoDto) {
+    public ResponseEntity<List<TravelPaymentResponseDto>> getPaymentAlone(@PathVariable Long roomId,
+                                                                          @MemberInfo MemberInfoDto memberInfoDto) {
 
         Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
-        List<TravelPaymentResponseDto> travelPaymentResponseDtoList = travelPaymentWithService.getPaymentAlone(member);
+        List<TravelPaymentResponseDto> travelPaymentResponseDtoList = travelPaymentWithService.getPaymentAlone(roomId, member);
 
         return new ResponseEntity<>(travelPaymentResponseDtoList, HttpStatus.OK);
     }

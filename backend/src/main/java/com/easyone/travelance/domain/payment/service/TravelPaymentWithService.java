@@ -43,17 +43,14 @@ public class TravelPaymentWithService {
     private final TravelService travelService;
 
 //    @Cacheable(value = "paymentWiths", key = "#member.id")
-    public TravelPaymentPlusDto getPaymentWith(Member member) {
-        // 1. 현재 회원이 속한 여행방 중에서 RoomType이 NOW인 것을 조회
-        List<TravelRoom> travelRooms = travelRoomRepository.findAllByTravelRoomMembers_MemberAndIsDone(member, RoomType.NOW);
+    public TravelPaymentPlusDto getPaymentWith(Long roomId, Member member) {
 
-        if (travelRooms.isEmpty()) {
-            throw new EntityNotFoundException("해당 사용자의 NOW 상태의 여행방이 없습니다.");
+        Optional<TravelRoom> optionalTravelRoom = travelRoomRepository.findById(roomId);
+        if (optionalTravelRoom.isEmpty()) {
+            throw new NoSuchElementException("No TravelRoom found with id " + roomId);
         }
 
-        // 첫 번째 NOW 상태의 여행방의 ID를 가져옵니다.
-        TravelRoom travelRoom = travelRooms.get(0);
-        Long roomId = travelRooms.get(0).getId();
+        TravelRoom travelRoom = optionalTravelRoom.get();
         List<TravelRoomMember> travelRoomMembers = travelRoom.getTravelRoomMembers();
 
         // 2. 해당 roomId와 memberId를 이용해서 Payment 내역 조회 및 DTO 변환
@@ -105,20 +102,9 @@ public class TravelPaymentWithService {
     }
 
 //    @Cacheable(value = "paymentAlones", key = "#member.id")
-    public List<TravelPaymentResponseDto> getPaymentAlone(Member member) {
+    public List<TravelPaymentResponseDto> getPaymentAlone(Long roomId, Member member) {
 
-        // 1. 현재 회원이 속한 여행방 중에서 RoomType이 NOW인 것을 조회
-        List<TravelRoom> travelRooms = travelRoomRepository.findAllByTravelRoomMembers_MemberAndIsDone(member, RoomType.NOW);
-
-        if (travelRooms.isEmpty()) {
-            throw new EntityNotFoundException("해당 사용자의 NOW 상태의 여행방이 없습니다.");
-        }
-
-        // 첫 번째 NOW 상태의 여행방의 ID를 가져옵니다.
-        // (멤버가 여러 NOW 상태의 여행방에 속할 경우, 추가적인 로직 필요)
-        Long roomId = travelRooms.get(0).getId();
-
-        // 2. roomId와 memberId를 이용해서 Payment 내역 중 withPaid가 False인 것만 조회
+        // roomId와 memberId를 이용해서 Payment 내역 중 withPaid가 False인 것만 조회
         List<Payment> paymentsList = paymentRepository.findAllByTravelRoom_IdAndMemberAndIsWithPaidFalse(roomId, member);
 
         return paymentsList.stream().map(TravelPaymentResponseDto::new).collect(Collectors.toList());
