@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.moneyminions.domain.model.home.TravelRoomInfoDto
@@ -80,8 +81,8 @@ fun GraphPage(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(text = "사용 현황", style = pretendardBold16)
-                Text(text = "${MoneyUtils.makeComma(travelInfo.budget)}", style = pretendardBold16)
+                Text(text = "사용 현황", style = pretendardBold16, letterSpacing = 1.sp)
+                Text(text = "${MoneyUtils.makeComma(travelInfo.budget)}", style = pretendardBold16, letterSpacing = 0.5.sp)
             }
             
             Card(
@@ -217,9 +218,10 @@ fun MoneyAmountComponent(
             Text(
                 text = title,
                 style = pretendardLight12,
+                letterSpacing = 1.sp
             )
         }
         
-        Text(text = money, style = pretendardSemiBold16)
+        Text(text = money, style = pretendardSemiBold16, letterSpacing = 0.5.sp)
     }
 }

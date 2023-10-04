@@ -3,6 +3,7 @@ package com.moneyminions.presentation.screen.travellist.view
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.moneyminions.domain.model.travellist.TravelRoomDto
 import com.moneyminions.presentation.R
@@ -70,9 +72,15 @@ fun TravelCardView(
                     "NOW" -> {
                         navController.navigate(Screen.Home.route)
                     }
+            
                     "WAIT" -> {}
                     "DONE" -> {
-                        navController.navigate("${Screen.TravelDone.route}/{roomId}".replace(oldValue = "{roomId}", newValue = "${travelRoomDto.roomId}"))
+                        navController.navigate(
+                            "${Screen.TravelDone.route}/{roomId}".replace(
+                                oldValue = "{roomId}",
+                                newValue = "${travelRoomDto.roomId}"
+                            )
+                        )
                     }
                 }
             },
@@ -91,10 +99,18 @@ fun TravelCardView(
                     .fillMaxWidth()
                     .wrapContentHeight(),
             ) {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+                    SettlementStateView(done = travelRoomDto.isDone, modifier = modifier)
+                }
+                
+                Spacer(modifier = Modifier.height(2.dp))
+                
                 TopTravelInfoView(
                     modifier = modifier,
                     travelName = travelRoomDto.travelName,
-                    done = travelRoomDto.isDone,
                     iconId = iconId,
                 )
                 TravelDateView(
@@ -115,16 +131,14 @@ fun TravelCardView(
 fun TopTravelInfoView(
     modifier: Modifier = Modifier,
     travelName: String,
-    done: String,
     iconId: Int,
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         TravelTitleView(travelName = travelName, iconId = iconId, modifier)
-        SettlementStateView(done = done, modifier = modifier)
     }
 }
 
@@ -138,6 +152,7 @@ fun TravelTitleView(travelName: String, iconId: Int, modifier: Modifier) {
             text = travelName,
             style = pretendardBold18,
             color = DarkerGray,
+            letterSpacing = 1.sp,
         )
         Spacer(modifier = modifier.width(8.dp))
         Image(
@@ -245,6 +260,7 @@ fun MoneyAmountView(moneyAmount: Int, modifier: Modifier) {
             text = MoneyUtils.makeComma(moneyAmount),
             style = pretendardBoldMoney20,
             color = DarkerGray,
+            letterSpacing = 0.5.sp
         )
     }
 }
