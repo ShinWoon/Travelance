@@ -33,7 +33,7 @@ public class TravelService {
     private final TravelProfileService travelProfileService;
     private final PaymentRepository paymentRepository;
 
-    //방만들기
+    //방만들기 test
     @Transactional
     @CacheEvict(value = "roomCacheAll", key = "#member.id")
     public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, RoomUserRequestDto roomUserRequestDto, MultipartFile profileUrl) throws Exception {
