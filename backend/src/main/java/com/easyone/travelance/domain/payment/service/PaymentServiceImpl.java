@@ -318,6 +318,7 @@ public class PaymentServiceImpl implements PaymentService{
                 .paymentAmount(registerCashRequestDto.getPaymentAmount())
                 .paymentContent(registerCashRequestDto.getPaymentContent())
                 .paymentAt(formattedDate)
+                .isWithPaid(true)
                 .build();
 
         evictpaymentAlonesCache(member.getId());
