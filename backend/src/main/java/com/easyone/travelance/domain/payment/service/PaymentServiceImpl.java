@@ -261,9 +261,11 @@ public class PaymentServiceImpl implements PaymentService{
                         // 다른 멤버가 더 적은 돈을 지불했을 경우
                         if (otherDifference > 0) {
                             Long transferAmount = Math.min(-difference, otherDifference);
+                            log.info("Setting fromMemberId: " + member.getMember().getId());
+                            log.info("Setting toMemberId: " + otherMember.getMember().getId());
                             Calculation calculation = Calculation.builder()
-                                    .fromMemberId(member.getId())
-                                    .toMemberId(otherMember.getId())
+                                    .fromMemberId(member.getMember().getId())
+                                    .toMemberId(otherMember.getMember().getId())
                                     .amount(transferAmount)
                                     .isTransfer(false)
                                     .travelRoom(travelRoom)
