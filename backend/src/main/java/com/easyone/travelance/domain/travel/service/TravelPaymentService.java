@@ -51,10 +51,11 @@ public class TravelPaymentService {
 
         for (Payment payment: payments) {
             String profileUrl = profileRepository.findByMemberAndTravelRoom(payment.getMember(), travelRoom).getProfileUrl();
-            TravelRoomMember travelRoomMember = travelRoomMemberRepository.findByTravelRoomAndMember(travelRoom, member)
+            TravelRoomMember travelRoomMember = travelRoomMemberRepository.findByTravelRoomAndMember(travelRoom, payment.getMember())
                     .orElseThrow(()-> new IllegalArgumentException("사용자가" + member.getId() + "이 여행방에 없습니다" + roomId));
+            Long id = payment.getMember().getId();
             //이 멤버로 여행방과 일치하는 프로필 가져오기
-            PaymentResponseDto paymentResponseDto = new PaymentResponseDto(payment, member, travelRoomMember.getTravelNickName(), profileUrl);
+            PaymentResponseDto paymentResponseDto = new PaymentResponseDto(payment, id, travelRoomMember.getTravelNickName(), profileUrl);
             paymentArrayList.add(paymentResponseDto);
         }
         return paymentArrayList;
