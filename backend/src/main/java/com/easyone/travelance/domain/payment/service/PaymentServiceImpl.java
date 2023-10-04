@@ -289,14 +289,14 @@ public class PaymentServiceImpl implements PaymentService{
             }
             String title = "알림";
             String body = travelRoom.getTravelName() + "의 정산이 완료되었습니다.";
+            fcmService.sendFcmComplete(fcmToken, travelRoom.getId());
 
-            try {
+//            try {
 //                firebaseCloudMessageService.sendMessageTo(fcmToken, title, body, null);
-                fcmService.sendFcmComplete(fcmToken, travelRoom.getId());
-            } catch (IOException e) {
-                System.out.println("정산 완료 알림 전송 실패");
-                throw new RuntimeException(e);
-            }
+//            } catch (IOException e) {
+//                System.out.println("정산 완료 알림 전송 실패");
+//                throw new RuntimeException(e);
+//            }
         }
     }
 
