@@ -101,7 +101,7 @@ public class MemberService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_EXISTS));
     }
 
-    @Cacheable(value = "accountCache", key = "#member.email")
+//    @Cacheable(value = "accountCache", key = "#member.email")
     public List<SelectedAccountRequestDto> findAllAccountsForMember(Member member) {
         MainAccount mainAccount = member.getMainAccount();
         List<Account> accounts = mainAccount.getAccountList();
@@ -120,7 +120,7 @@ public class MemberService {
 
         return accountDtos;
     }
-    @Cacheable(value = "cardCache", key = "#member.email")
+//    @Cacheable(value = "cardCache", key = "#member.email")
     public List<SelectedCardRequestDto> findAllCardsForMember(Member member) {
         List<Card> cards = member.getCardList();
         if (cards == null) {

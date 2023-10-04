@@ -35,7 +35,7 @@ public class TravelService {
 
     //방만들기 test
     @Transactional
-    @CacheEvict(value = "roomCacheAll", key = "#member.id")
+//    @CacheEvict(value = "roomCacheAll", key = "#member.id")
     public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, RoomUserRequestDto roomUserRequestDto, MultipartFile profileUrl) throws Exception {
         //방 만든 직전에는 사전정산 상태
         RoomType roomType = RoomType.BEFORE;
@@ -55,7 +55,8 @@ public class TravelService {
                 .build();
 
         travelRoomMemberRepository.save(travelRoomMember);
-
+        // 여행 유저 리스트 캐싱 삭제
+//        evictUserListsCache(travelRoom.getId());
         return new RoomIdResponseDto(travelRoom.getId().toString());
     }
 
@@ -63,7 +64,7 @@ public class TravelService {
     //유저가 방에 추가되어 닉네임과 사진을 설정하고, 친구 목록을 반환
     //Profileurl도 같이 반환
     @Transactional
-    @CacheEvict(value = "roomCache", key = "#roomId")
+//    @CacheEvict(value = "roomCache", key = "#roomId")
     public ResultDto adduser(Long roomId, Member member, RoomUserRequestDto roomUserRequestDto, MultipartFile profileUrl) throws Exception {
 
         TravelRoom travelRoom = travelRoomRepository.findById(roomId)
@@ -92,14 +93,14 @@ public class TravelService {
                 .build();
         travelRoomMemberRepository.save(travelRoomMember);
         // 캐싱 삭제
-        evictroomCacheAllCache(member.getId());
+//        evictroomCacheAllCache(member.getId());
         return new ResultDto("참여자 방에 저장");
 
     }
 
     //유저에 해당하는 방만 보내주기
     @Transactional(readOnly = true)
-    @Cacheable(value = "roomCacheAll", key = "#member.id")
+//    @Cacheable(value = "roomCacheAll", key = "#member.id")
     public List<RoomAllResponseDto> findAllDesc(Member member) {
         // travelroommember도메인에서 member에 해당하는  travelroom을 RoomAllResponseDto로 모두 반환
 
@@ -143,7 +144,7 @@ public class TravelService {
     }
 
     @Transactional
-    @CacheEvict(value = "roomCache", key = "#roomId")
+//    @CacheEvict(value = "roomCache", key = "#roomId")
     public ResultDto updateRoom(RoomInfoRequestDto roomInfoRequestDto, Long roomId) {
 
         TravelRoom travelRoom = travelRoomRepository.findById(roomId)
@@ -160,7 +161,7 @@ public class TravelService {
     }
 
     @Transactional
-    @CacheEvict(value = "roomCache", key = "#roomId")
+//    @CacheEvict(value = "roomCache", key = "#roomId")
     public ResultDto delete(Long roomId, Member member) {
 
         TravelRoom travelRoom = travelRoomRepository.findByIdAndMemberId(roomId, member.getId())
@@ -170,7 +171,7 @@ public class TravelService {
 
         if (travelRoomMember!=null) {
             travelRoomMemberRepository.delete(travelRoomMember);
-            evictroomCacheAllCache(member.getId());
+//            evictroomCacheAllCache(member.getId());
             return new ResultDto("여행방 나가기 성공");
         }
         else {
@@ -180,7 +181,7 @@ public class TravelService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "userLists", key="#roomId")
+//    @Cacheable(value = "userLists", key="#roomId")
     public List<RoomUserResponseDto> getUserList(Long roomId) {
         TravelRoom travelRoom = travelRoomRepository.findById(roomId)
                 .orElseThrow(()-> new IllegalArgumentException("사용자의 여행방이 없습니다. id =" + roomId));
@@ -204,7 +205,7 @@ public class TravelService {
     }
 
     @Transactional
-    @CacheEvict(value = "roomCache", key = "#roomId")
+//    @CacheEvict(value = "roomCache", key = "#roomId")
     public ResultDto startTravel(Long roomId, Member member) {
         try {
             TravelRoom travelRoom = travelRoomRepository.findByIdAndMemberId(roomId, member.getId())
@@ -219,7 +220,7 @@ public class TravelService {
 
             travelRoom.setRoomType(RoomType.NOW);
 
-            evictroomCacheAllCache(member.getId());
+//            evictroomCacheAllCache(member.getId());
             return new ResultDto(roomId.toString());
         }
         catch (Exception e) {
@@ -228,9 +229,13 @@ public class TravelService {
 
     }
 
-    @CacheEvict(value = "roomCacheAll", key = "#memberId")
-    public void evictroomCacheAllCache(Long memberId) {
-        // 이 메서드는 CacheEvict 어노테이션을 사용하여 캐시를 비우기 위한 용도로만 사용됩니다.
-    }
+//    @CacheEvict(value = "roomCacheAll", key = "#memberId")
+//    public void evictroomCacheAllCache(Long memberId) {
+//        // 이 메서드는 CacheEvict 어노테이션을 사용하여 캐시를 비우기 위한 용도로만 사용됩니다.
+//    }
 
+//    @CacheEvict(value = "userLists", key="#roomId")
+//    public void evictUserListsCache(Long roomId) {
+//
+//    }
 }

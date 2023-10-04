@@ -29,7 +29,7 @@ public class MapService {
     private final PaymentRepository paymentRepository;
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "mapLists", key="#roomId")
+//    @Cacheable(value = "mapLists", key="#roomId")
     public List<MapAllResponseDto> mapList(Long roomId) {
 
             List<Payment> paymentResponseDtoList = paymentRepository.findByTravelRoomIdAndIsWithPaidIsTrue(roomId);
@@ -49,7 +49,7 @@ public class MapService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "mapDetails", key = "#roomId + '-' + #mapDetailRequestDto.storeAddress")
+//    @Cacheable(value = "mapDetails", key = "#roomId + '-' + #mapDetailRequestDto.storeAddress")
     public List<MapDetailResponseDto> mapDetail(Long roomId, MapDetailRequestDto mapDetailRequestDto) {
         //dto에서 map의 주소를 가져와서 이 여행방의 이 장소에서 결제된 내역을 모두 가져와서 반환한다.
 

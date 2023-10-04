@@ -109,7 +109,7 @@ public class TravelPaymentWithService {
 
         return paymentsList.stream().map(TravelPaymentResponseDto::new).collect(Collectors.toList());
     }
-    @Cacheable(value = "travelDoneInfos", key = "#member.id + '-' + #roomId")
+//    @Cacheable(value = "travelDoneInfos", key = "#member.id + '-' + #roomId")
     public TravelDoneResponseDto TravelDoneInfo(Member member, Long roomId) {
         TravelRoom travelRoom = travelRoomRepository.findByIdAndMemberId(roomId, member.getId())
                 .orElseThrow(()-> new IllegalArgumentException("사용자의 여행방이 없습니다. id =" + roomId));

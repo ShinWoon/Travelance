@@ -106,7 +106,7 @@ public class AccountService {
                 .retrieve()
                 .bodyToFlux(Object.class); // 응답을 Flux<Object> 형태로 받습니다.
     }
-    @CacheEvict(value = "accountCache", key = "#member.email")
+//    @CacheEvict(value = "accountCache", key = "#member.email")
     public void SaveAccount(Member member,MainAccount mainAccount, SelectedAccountRequestDto selectedAccountRequestDto) {
         String accountNumber = selectedAccountRequestDto.getAccount();
 

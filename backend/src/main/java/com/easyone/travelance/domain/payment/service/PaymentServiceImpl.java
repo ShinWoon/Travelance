@@ -333,6 +333,8 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     @Override
+    // 정산
+//    @CacheEvict(value = "roomCacheAll", key = "#member.id")
     public String transferAccount(Member member, TransferAccountRequestDto transferAccountRequestDto) {
         Optional<TravelRoom> existTravelRoom = travelRoomRepository.findById(transferAccountRequestDto.getRoomNumber());
 
@@ -479,13 +481,13 @@ public class PaymentServiceImpl implements PaymentService{
         return transferInfoDto;
     }
 
-    @CacheEvict(value = "paymentAlones", key = "#memberId")
-    public void evictpaymentAlonesCache(Long memberId) {
-        // 이 메서드는 CacheEvict 어노테이션을 사용하여 캐시를 비우기 위한 용도로만 사용됩니다.
-    }
+//    @CacheEvict(value = "paymentAlones", key = "#memberId")
+//    public void evictpaymentAlonesCache(Long memberId) {
+//        // 이 메서드는 CacheEvict 어노테이션을 사용하여 캐시를 비우기 위한 용도로만 사용됩니다.
+//    }
 
-    @CacheEvict(value = "paymentWiths", key = "#memberId")
-    public void evictpaymentWithsCache(Long memberId) {
-        // 이 메서드는 CacheEvict 어노테이션을 사용하여 캐시를 비우기 위한 용도로만 사용됩니다.
-    }
+//    @CacheEvict(value = "paymentWiths", key = "#memberId")
+//    public void evictpaymentWithsCache(Long memberId) {
+//        // 이 메서드는 CacheEvict 어노테이션을 사용하여 캐시를 비우기 위한 용도로만 사용됩니다.
+//    }
 }

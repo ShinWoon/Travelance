@@ -181,7 +181,7 @@ public class AccountController {
 
     @Operation(summary = "계좌 삭제", description = "현재 로그인한 유저의 등록된 계좌를 삭제하는 메서드입니다.")
     @DeleteMapping("/delete/{accountName}/{account}")
-    @CacheEvict(value = "accountCache", key = "#memberInfoDto.email")
+//    @CacheEvict(value = "accountCache", key = "#memberInfoDto.email")
     public ResponseEntity<ResultDto> deleteAccount(
             @MemberInfo MemberInfoDto memberInfoDto,
             @PathVariable String accountName,
