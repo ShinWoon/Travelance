@@ -147,10 +147,11 @@ public class PaymentServiceImpl implements PaymentService{
 
         log.info("memberId : " + memberId);
 
+        paymentRepository.save(payment);
+
         evictpaymentWithsCache(memberId);
         evictpaymentAlonesCache(memberId);
 
-        paymentRepository.save(payment);
         return "결제내역 저장 성공";
     }
 
