@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.common.CommonResultDto
+import com.moneyminions.domain.model.traveldetail.FinalPaymentDto
 import com.moneyminions.domain.model.traveldetail.SettleResultDto
 import com.moneyminions.domain.usecase.traveldetail.GetSettleResultUseCase
+import com.moneyminions.domain.usecase.traveldetail.PostFinalPaymentUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,8 +18,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SettleResultReeiveViewModel @Inject constructor(
-    private val getSettleResultUseCase: GetSettleResultUseCase
+class SettleResultReceiveViewModel @Inject constructor(
+    private val getSettleResultUseCase: GetSettleResultUseCase,
+    private val postFinalPaymentUseCase: PostFinalPaymentUseCase
 ): ViewModel(){
 
     private val _settleResult = MutableStateFlow<NetworkResult<SettleResultDto>>(
@@ -27,6 +30,26 @@ class SettleResultReeiveViewModel @Inject constructor(
     fun getSettleResult(roomId: Int){
         viewModelScope.launch {
             _settleResult.emit(getSettleResultUseCase.invoke(roomId))
+        }
+    }
+
+    private val _settleResultDto = mutableStateOf<SettleResultDto?>(null)
+    val settleResultDto: State<SettleResultDto?> = _settleResultDto
+    fun setSettleResultDto(data: SettleResultDto){
+        _settleResultDto.value = data
+    }
+
+    private val _finalPaymentDto = mutableStateOf<FinalPaymentDto?>(null)
+    val finalPaymentDto: State<FinalPaymentDto?> = _finalPaymentDto
+    fun setFinalPaymentDto(roomId: Int){
+        _finalPaymentDto.value = FinalPaymentDto(password = _password.value, roomNumber = roomId)
+    }
+
+    private val _finalPaymentResult = MutableStateFlow<NetworkResult<CommonResultDto>>(NetworkResult.Idle)
+    val finalPaymentResult = _finalPaymentResult.asStateFlow()
+    fun postFinalPayment(){
+        viewModelScope.launch {
+            _finalPaymentResult.emit(postFinalPaymentUseCase.invoke(_finalPaymentDto.value!!))
         }
     }
 

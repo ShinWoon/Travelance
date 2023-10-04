@@ -68,8 +68,8 @@ fun DetailScreen(
     var selectedIdx by remember { mutableStateOf(-1) }
 
     LaunchedEffect(Unit) {
-        travelDetailViewModel.getMyPaymentList()
-        travelDetailViewModel.getTravelDetailInfo()
+        travelDetailViewModel.getMyPaymentList(roomId = travelId)
+        travelDetailViewModel.getTravelDetailInfo(roomId = travelId)
     }
 
     NetworkResultHandler(state = myPaymentListState, errorAction = { /*TODO*/ }, successAction = {
@@ -87,7 +87,7 @@ fun DetailScreen(
         state = updateTravelPaymentState,
         errorAction = { /*TODO*/ },
         successAction = {
-            travelDetailViewModel.getTravelDetailInfo()
+            travelDetailViewModel.getTravelDetailInfo(roomId = travelId)
         })
 
     NetworkResultHandler(state = setSettleStateState, errorAction = { /*TODO*/ }, successAction = {})
@@ -178,7 +178,7 @@ fun DetailScreen(
                             )
                         },
                         getMyPayment = {
-                            travelDetailViewModel.getMyPaymentList()
+                            travelDetailViewModel.getMyPaymentList(roomId = travelId)
                         },
                         setSettle = {
                             Log.d(TAG, "DetailScreen: 정산요청 ${travelDetailInfo.travelPayment}\n roomId: $travelId")

@@ -17,6 +17,7 @@ import com.moneyminions.data.model.login.response.JoinResponse
 import com.moneyminions.data.model.login.response.LoginResponse
 import com.moneyminions.data.model.login.response.MemberInfoResponse
 import com.moneyminions.data.model.login.response.ReAccessTokenResponse
+import com.moneyminions.data.model.traveldetail.request.FinalPaymentRequest
 import com.moneyminions.data.model.traveldetail.response.SettleResultResponse
 import com.moneyminions.data.model.traveldetail.request.PaymentCompleteRequest
 import com.moneyminions.data.model.traveldetail.request.TravelPaymentChangeInfoRequest
@@ -127,14 +128,14 @@ interface BusinessService {
     /**
      * 개인 결제 금액 요청
      */
-    @GET("travel/payment/alone")
-    suspend fun getMyPaymentList(): List<TravelDetailMyPaymentResponse>
+    @GET("travel/payment/{roomId}/alone")
+    suspend fun getMyPaymentList(@Path(value = "roomId") roomId: Int): List<TravelDetailMyPaymentResponse>
 
     /**
      * 여행 상세 요청
      */
-    @GET("travel/payment/with")
-    suspend fun getTravelDetailInfo(): TravelDetailInfoResponse
+    @GET("travel/payment/{roomId}/with")
+    suspend fun getTravelDetailInfo(@Path(value = "roomId") roomId: Int): TravelDetailInfoResponse
 
     /**
      * 공금 여부 수정
@@ -283,6 +284,14 @@ interface BusinessService {
         @Path("roomId") roomId: Int,
         @Part imageFiles: MultipartBody.Part?,
         @Part("roomUserRequestDto") roomUserRequestDto: RoomUserRequestDto,
+    ): CommonResponse
+
+    /**
+     * 최종 이체
+     */
+    @POST("payment/transfer")
+    suspend fun postFinalPayment(
+        @Body finalPaymentRequest: FinalPaymentRequest
     ): CommonResponse
 
 }

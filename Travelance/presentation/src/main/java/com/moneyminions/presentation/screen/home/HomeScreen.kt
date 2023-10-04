@@ -157,7 +157,7 @@ fun Home(
                 homeViewModel = homeViewModel,
                 travelInfo = travelInfo,
             )
-            "NOW" -> TravelStartPager(
+            "NOW", "WAIT" -> TravelStartPager(
                 cardHeight = cardHeight,
                 travelInfo = travelInfo,
             )

@@ -30,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavHostController
@@ -158,6 +159,7 @@ fun BottomItem(
                 Text(
                     text = context,
                     style = pretendardLight10,
+                    letterSpacing = 1.sp
                 )
 
                 Box(

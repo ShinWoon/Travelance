@@ -28,11 +28,12 @@ import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.viewmodel.home.HomeViewModel
 
 private const val TAG = "싸피"
+
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun TopComponent(
     homeViewModel: HomeViewModel,
-    navController: NavController
+    navController: NavController,
 ) {
     Row(
         modifier = Modifier
@@ -54,14 +55,19 @@ fun TopComponent(
 fun TopLeftItem(
     homeViewModel: HomeViewModel,
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
 ) {
     val travelName = "test"
     Card(
         modifier = modifier.clickable(
             onClick = {
                 Log.d(TAG, "TopLeftItem: travelId ${homeViewModel.travelRoomInfo.value.roomId}")
-                navController.navigate("${Screen.TravelDetail.route}/{roomId}".replace(oldValue = "{roomId}", newValue = "${homeViewModel.travelRoomInfo.value.roomId}"))
+                navController.navigate(
+                    "${Screen.TravelDetail.route}/{roomId}".replace(
+                        oldValue = "{roomId}",
+                        newValue = "${homeViewModel.travelRoomInfo.value.roomId}"
+                    )
+                )
             },
         ),
         shape = RoundedCornerShape(16.dp),
@@ -78,13 +84,12 @@ fun TopLeftItem(
                 text = homeViewModel.travelRoomInfo.value.travelName,
                 style = pretendardBold20,
             )
-            if(homeViewModel.isTravelStart.value) {
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    painter = painterResource(id = R.drawable.ic_right_arrow),
-                    contentDescription = "move detail",
-                )
-            }
+            
+            Icon(
+                modifier = Modifier.size(24.dp),
+                painter = painterResource(id = R.drawable.ic_right_arrow),
+                contentDescription = "move detail",
+            )
         }
     }
 }

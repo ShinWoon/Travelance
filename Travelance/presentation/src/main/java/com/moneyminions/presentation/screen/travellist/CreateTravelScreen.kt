@@ -136,6 +136,7 @@ fun CreateTravelScreen(
                         onValueChange = {
                             createTravelViewModel.setTravelName(it)
                         },
+                        maxLine = 12
                     )
                     Spacer(
                         modifier = Modifier.size(16.dp),

@@ -249,14 +249,10 @@ fun TitleWithLink(
                 .size(24.dp)
                 .clickable {
                     // WebView
-                    val url = announcementDto.link.replace("/", "*")
+                    val url = announcementDto.link
                     Log.d(TAG, "Announcement Screen: 웹뷰 호출 (1) => $url")
-                    navController.navigate(
-                        "${Screen.WebView.route}/{url}".replace(
-                            oldValue = "{url}",
-                            newValue = "$url"
-                        )
-                    )
+                    navController.currentBackStackEntry?.savedStateHandle?.set(key = "data", value = url)
+                    navController.navigate(Screen.WebView.route)
                 },
         )
     }

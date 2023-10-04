@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -34,6 +35,7 @@ import com.moneyminions.presentation.screen.login.NicknamePasswordScreen
 import com.moneyminions.presentation.screen.mypage.EditUserScreen
 import com.moneyminions.presentation.screen.mypage.MyPageScreeen
 import com.moneyminions.presentation.screen.mypage.SettingScreen
+import com.moneyminions.presentation.screen.result.SettleResultReceiveScreen
 import com.moneyminions.presentation.screen.traveldone.TravelDoneScreen
 import com.moneyminions.presentation.screen.travellist.CreateTravelScreen
 import com.moneyminions.presentation.screen.travellist.TravelListScreen
@@ -219,13 +221,27 @@ fun NavGraph(
             }
         }
         composable(
-            route = "${Screen.WebView.route}/{url}",
-        ) {
-            val url = it.arguments?.getString("url")?.replace("*", "/")
-            Log.d(TAG, "NavGraph: 웹뷰 호출 (2) -> url: $url")
-            if (url != null) {
-                WebViewScreen(navController = navController, url = url)
+            route = Screen.WebView.route
+        ){
+            val data = remember {
+                navController.previousBackStackEntry?.savedStateHandle?.get<String>("data")
             }
+            Log.d(TAG, "NavGraph: 웹뷰 호출 (2) -> url: $data")
+            if (data != null) {
+                WebViewScreen(navController = navController, url = data)
+            }
+        }
+        composable(
+            route = "${Screen.WebView.route}/{roomId}",
+        ) {
+            val roomId = it.arguments?.getString("roomId")?.toInt()
+            Log.d(TAG, "NavGraph roomId : $roomId")
+            SettleResultReceiveScreen(navController = navController, roomId = roomId ?: 0)
+        }
+        composable(
+            route = Screen.WaitHome.route,
+        ) {
+            HomeScreen(navController = navController, mainViewModel = mainViewModel)
         }
     }
 } // End of setUpNavGraph

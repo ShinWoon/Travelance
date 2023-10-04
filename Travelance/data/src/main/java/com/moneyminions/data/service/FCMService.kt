@@ -19,6 +19,7 @@ import com.moneyminions.data.R
 import com.moneyminions.data.model.traveldetail.request.TravelPaymentChangeInfoRequest
 import com.moneyminions.data.utils.Constants
 import kotlinx.coroutines.runBlocking
+import okhttp3.internal.notify
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
@@ -58,7 +59,7 @@ class FCMService: FirebaseMessagingService() {
 
         if(data["paymentId"]!=null) {
             messageTitle = "공금에 등록하시겠습니까?"
-            messageContent = "${data["content"]}에서 ${data["paymentAmount"]}원 결제"
+            messageContent = data["message"]!!
             Log.d(TAG, "sendNotification messageContent : $messageContent")
             paymentId = data["paymentId"]!!.toLong()
 
