@@ -254,4 +254,14 @@ interface BusinessService {
     suspend fun getSettleResult(
         @Path("roomId") roomId: Int
     ): SettleResultResponse
+
+     * 로그아웃
+     */
+    @POST("api/oauth/logout")
+    suspend fun logout(): CommonResponse
+    /**
+     * 회원탈퇴
+     */
+    @DELETE("member/delete")
+    suspend fun joinOut(): CommonResponse
 }

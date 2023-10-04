@@ -42,5 +42,9 @@ class PreferenceRepositoryImpl @Inject constructor(
     override fun getTravelingRoomId(): Int {
         return preferenceDataSource.getTravelingRoomId()
     }
-    
+
+    override fun refreshPreference() {
+        preferenceDataSource.refreshPreference()
+    }
+
 }
