@@ -35,17 +35,18 @@ import com.moneyminions.presentation.common.DetailDateView
 import com.moneyminions.presentation.common.MinionPrimaryButton
 import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.common.TravelInfoView
+import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.result.view.SettleResultCardView
 import com.moneyminions.presentation.theme.LightGray
 import com.moneyminions.presentation.utils.NetworkResultHandler
-import com.moneyminions.presentation.viewmodel.result.SettleResultReeiveViewModel
+import com.moneyminions.presentation.viewmodel.result.SettleResultReceiveViewModel
 
 private const val TAG = "SettleResultReceiveScre D210"
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun SettleResultReceiveScreen(
     navController: NavHostController,
-    settleResultReceiveViewModel: SettleResultReeiveViewModel = hiltViewModel(),
+    settleResultReceiveViewModel: SettleResultReceiveViewModel = hiltViewModel(),
     roomId: Int
 ) {
     LaunchedEffect(
@@ -64,9 +65,22 @@ fun SettleResultReceiveScreen(
         },
         successAction = {
             Log.d(TAG, "SettleResultReceiveScreen result : $it")
+            settleResultReceiveViewModel.setSettleResultDto(it)
         }
     )
 
+    val postFinalPaymentResultState by settleResultReceiveViewModel.finalPaymentResult.collectAsState()
+    NetworkResultHandler(
+        state = postFinalPaymentResultState,
+        errorAction = {
+            Log.d(TAG, "이체 실패")
+        },
+        successAction = {
+            navController.navigate(Screen.Home.route){
+                popUpTo(Screen.SettleResult.route){inclusive = true}
+            }
+        }
+    )
 
     val isShowDialogState = settleResultReceiveViewModel.isShowDialog.collectAsState()
 
@@ -92,11 +106,11 @@ fun SettleResultReceiveScreen(
                         modifier = Modifier.size(40.dp),
                     )
                     DetailDateView(
-                        startDate = "2023/10/04",
-                        endDate = "2023/10/15",
+                        startDate = settleResultReceiveViewModel.settleResultDto.value?.travelRoomInfo?.startDate ?: "",
+                        endDate = settleResultReceiveViewModel.settleResultDto.value?.travelRoomInfo?.endDate ?: "",
                         modifier = Modifier
                     )
-                    BudgetText(budget = 100000, modifier = Modifier)
+                    BudgetText(budget = settleResultReceiveViewModel.settleResultDto.value?.travelRoomInfo?.budget ?: 0, modifier = Modifier)
                 }
                 Spacer(modifier = Modifier.size(16.dp))
                 Box(
@@ -105,10 +119,11 @@ fun SettleResultReceiveScreen(
 //                    SettleResultCardView(result = result, modifier = Modifier)
                 }
             }
-            if (result == "get") {
+            //내가 돈을 더 많이 써서 받아야 한다면
+            if ((settleResultReceiveViewModel.settleResultDto.value?.paymentInfo?.transferTotalAmount?:0) <=0) {
                 MinionPrimaryButton(content = "확인", modifier = Modifier.fillMaxWidth()) {
                 }
-            } else {
+            } else { //내가 이체해야 한다면
                 MinionPrimaryButton(content = "이체", modifier = Modifier.fillMaxWidth()) {
                     settleResultReceiveViewModel.setIsShowDialog(true)
                 }
@@ -129,6 +144,8 @@ fun SettleResultReceiveScreen(
         },
         onConfirm = {
             //여기서 비밀번호 담아서 api 호출 (이체하는)
+            settleResultReceiveViewModel.setFinalPaymentDto(roomId)
+            settleResultReceiveViewModel.postFinalPayment()
         }
     )
 }

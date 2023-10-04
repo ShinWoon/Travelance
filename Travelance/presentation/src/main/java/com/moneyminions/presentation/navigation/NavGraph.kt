@@ -35,6 +35,7 @@ import com.moneyminions.presentation.screen.login.NicknamePasswordScreen
 import com.moneyminions.presentation.screen.mypage.EditUserScreen
 import com.moneyminions.presentation.screen.mypage.MyPageScreeen
 import com.moneyminions.presentation.screen.mypage.SettingScreen
+import com.moneyminions.presentation.screen.result.SettleResultReceiveScreen
 import com.moneyminions.presentation.screen.traveldone.TravelDoneScreen
 import com.moneyminions.presentation.screen.travellist.CreateTravelScreen
 import com.moneyminions.presentation.screen.travellist.TravelListScreen
@@ -231,6 +232,11 @@ fun NavGraph(
             }
         }
         composable(
+            route = "${Screen.WebView.route}/{roomId}",
+        ) {
+            val roomId = it.arguments?.getString("roomId")?.toInt()
+            Log.d(TAG, "NavGraph roomId : $roomId")
+            SettleResultReceiveScreen(navController = navController, roomId = roomId?:0)
             route = Screen.WaitHome.route,
         ) {
             HomeScreen(navController = navController, mainViewModel = mainViewModel)
