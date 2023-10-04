@@ -61,7 +61,7 @@ public class AccountController {
                 .flatMap(result -> {
                     if (result instanceof Map) {
                         Map<String, Object> resultMap = (Map<String, Object>) result;
-                        if (resultMap.containsKey("verify") && resultMap.get("verify") == null) {
+                        if (resultMap.containsKey("verifyCode") && resultMap.get("verifyCode") == null) {
                             return Mono.error(new Exception("잘못된 응답입니다"));
                         }
                     }
