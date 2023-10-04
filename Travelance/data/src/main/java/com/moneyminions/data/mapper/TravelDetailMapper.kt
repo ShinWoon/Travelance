@@ -1,5 +1,6 @@
 package com.moneyminions.data.mapper
 
+import com.moneyminions.data.model.traveldetail.request.FinalPaymentRequest
 import com.moneyminions.data.model.traveldetail.request.PaymentCompleteRequest
 import com.moneyminions.data.model.traveldetail.request.PaymentWithRequest
 import com.moneyminions.data.model.traveldetail.request.TravelPaymentChangeInfoRequest
@@ -12,6 +13,7 @@ import com.moneyminions.data.model.traveldetail.response.TravelDetailInfoRespons
 import com.moneyminions.data.model.traveldetail.response.TravelDetailMyPaymentResponse
 import com.moneyminions.data.model.traveldetail.response.TravelPaymentResponse
 import com.moneyminions.data.model.traveldetail.response.TravelRoomInfoResponse
+import com.moneyminions.domain.model.traveldetail.FinalPaymentDto
 import com.moneyminions.domain.model.traveldetail.FriendPaymentDto
 import com.moneyminions.domain.model.traveldetail.PaymentCompleteDto
 import com.moneyminions.domain.model.traveldetail.SettleResultDto
@@ -127,5 +129,12 @@ fun SettleResultResponse.toDomain(): SettleResultDto{
         travelRoomInfo = travelRoomInfo.toDomain(),
         receiveInfos = receiveInfos.map { it.toDomain() },
         sendInfos = sendInfos.map { it.toDomain() }
+    )
+}
+
+fun FinalPaymentDto.toData(): FinalPaymentRequest{
+    return FinalPaymentRequest(
+        password = password,
+        roomNumber = roomNumber
     )
 }

@@ -17,6 +17,7 @@ import com.moneyminions.data.model.login.response.JoinResponse
 import com.moneyminions.data.model.login.response.LoginResponse
 import com.moneyminions.data.model.login.response.MemberInfoResponse
 import com.moneyminions.data.model.login.response.ReAccessTokenResponse
+import com.moneyminions.data.model.traveldetail.request.FinalPaymentRequest
 import com.moneyminions.data.model.traveldetail.response.SettleResultResponse
 import com.moneyminions.data.model.traveldetail.request.PaymentCompleteRequest
 import com.moneyminions.data.model.traveldetail.request.TravelPaymentChangeInfoRequest
@@ -283,6 +284,14 @@ interface BusinessService {
         @Path("roomId") roomId: Int,
         @Part imageFiles: MultipartBody.Part?,
         @Part("roomUserRequestDto") roomUserRequestDto: RoomUserRequestDto,
+    ): CommonResponse
+
+    /**
+     * 최종 이체
+     */
+    @POST("payment/transfer")
+    suspend fun postFinalPayment(
+        @Body finalPaymentRequest: FinalPaymentRequest
     ): CommonResponse
 
 }
