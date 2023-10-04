@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.moneyminions.domain.model.MemberInfo
 import com.moneyminions.domain.model.NetworkResult
 import com.moneyminions.domain.model.common.CommonResultDto
+import com.moneyminions.domain.usecase.login.JoinOutUseCase
 import com.moneyminions.domain.usecase.login.LogoutUseCase
 import com.moneyminions.domain.usecase.preference.PutFCMTokenUseCase
 import com.moneyminions.domain.usecase.preference.PutJwtTokenUseCase
@@ -19,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     private val logoutUseCase: LogoutUseCase,
+    private val joinOutUseCase: JoinOutUseCase,
     private val refreshPreferenceUseCase: RefreshPreferenceUseCase
 ): ViewModel(){
 
@@ -27,6 +29,15 @@ class SettingViewModel @Inject constructor(
     fun logout(){
         viewModelScope.launch {
             _logoutResult.emit(logoutUseCase.invoke())
+            refreshPreferenceUseCase.invoke()
+        }
+    }
+
+    private val _joinOutResult = MutableStateFlow<NetworkResult<CommonResultDto>>(NetworkResult.Idle)
+    val joinOutResult = _joinOutResult.asStateFlow()
+    fun joinOut(){
+        viewModelScope.launch {
+            _joinOutResult.emit(joinOutUseCase.invoke())
             refreshPreferenceUseCase.invoke()
         }
     }

@@ -20,4 +20,5 @@ interface LoginDataSource {
     suspend fun getCardList(): List<CardResponse>
     suspend fun join(memberInfoRequest: MemberInfoRequest): JoinResponse
     suspend fun logout(): CommonResponse
+    suspend fun joinOut(): CommonResponse
 }

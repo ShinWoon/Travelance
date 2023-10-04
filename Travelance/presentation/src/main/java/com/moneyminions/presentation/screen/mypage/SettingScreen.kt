@@ -43,6 +43,20 @@ fun SettingScreen(
             }
         }
     )
+
+    val joinOutResultState by settingViewModel.joinOutResult.collectAsState()
+    NetworkResultHandler(
+        state = joinOutResultState,
+        errorAction = {
+            Log.d(TAG, "회원탈퇴 오류")
+        },
+        successAction = {
+            navController.navigate(Screen.Login.route){
+                popUpTo(Screen.Home.route){ inclusive = true }
+            }
+        }
+    )
+
     Column (
         modifier = Modifier.fillMaxSize()
     ){
@@ -57,7 +71,8 @@ fun SettingScreen(
             settingViewModel.logout()
         }
         SettingItem(icon = painterResource(id = R.drawable.ic_withdraw), color = WithDrawRed, text = "회원탈퇴") {
-            //회원 가입 로직
+            //회원 탈퇴 로직
+            settingViewModel.joinOut()
         }
 
     }

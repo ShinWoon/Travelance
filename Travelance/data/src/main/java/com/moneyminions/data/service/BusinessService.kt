@@ -251,4 +251,9 @@ interface BusinessService {
      */
     @POST("api/oauth/logout")
     suspend fun logout(): CommonResponse
+    /**
+     * 회원탈퇴
+     */
+    @DELETE("member/delete")
+    suspend fun joinOut(): CommonResponse
 }

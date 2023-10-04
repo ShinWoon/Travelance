@@ -19,4 +19,5 @@ interface LoginRepository {
     suspend fun getCardList(): NetworkResult<List<CardDto>>
     suspend fun join(memberInfo: MemberInfo): NetworkResult<JwtTokenDto>
     suspend fun logout(): NetworkResult<CommonResultDto>
+    suspend fun joinOut(): NetworkResult<CommonResultDto>
 }

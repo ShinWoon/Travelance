@@ -55,4 +55,8 @@ class LoginRepositoryImpl @Inject constructor(
         return handleApi { loginDataSource.logout().toDomain() }
     }
 
+    override suspend fun joinOut(): NetworkResult<CommonResultDto> {
+        return handleApi { loginDataSource.joinOut().toDomain() }
+    }
+
 }
