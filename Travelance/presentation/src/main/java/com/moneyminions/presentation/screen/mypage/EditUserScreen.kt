@@ -2,9 +2,11 @@ package com.moneyminions.presentation.screen.mypage
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -97,10 +99,11 @@ fun EditUserScreen(
 
     Column(
         modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(horizontal = 16.dp),
         ) {
             Spacer(modifier = Modifier.size(16.dp))
@@ -118,9 +121,6 @@ fun EditUserScreen(
                 onDelete = { bankName, accountNumber ->
                     editUserViewModel.setDeleteAccountInfo(bankName, accountNumber)
                     editUserViewModel.setIsAccountDeleteDialogShow(true)
-                },
-                onPlus = {
-                    navController.navigate(Screen.AccountAuthentication.route)
                 }
             )
             Spacer(modifier = Modifier.size(16.dp))
@@ -129,18 +129,15 @@ fun EditUserScreen(
                 onDelete = { cardName, cardNumber ->
                     editUserViewModel.setDeleteCardInfo(cardName, cardNumber)
                     editUserViewModel.setIsCardDeleteDialogShow(true)
-                },
-                onPlus = {
-                    navController.navigate(Screen.AccountAuthentication.route)
                 }
             )
             Spacer(modifier = Modifier.size(16.dp))
-            MinionPrimaryButton(
-                content = "마이데이터 자산 추가하기",
-                modifier = Modifier
-            ) {
-                navController.navigate(Screen.AccountAuthentication.route)
-            }
+        }
+        MinionPrimaryButton(
+            content = "마이데이터 자산 추가하기",
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            navController.navigate(Screen.AccountAuthentication.route)
         }
         if(isAccountDeleteDialogShowState.value){
             SimpleDeleteDialog(
