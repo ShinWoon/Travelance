@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.screen.home
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,7 +17,8 @@ fun NoRoomScreen() {
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp, 16.dp, 16.dp, 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
         Text(text = "진행 중인 여행이 없습니다.", style = CustomTextStyle.pretendardBold20)
     }

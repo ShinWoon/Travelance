@@ -1,6 +1,5 @@
 package com.moneyminions.presentation.navigation
 
-import android.util.Log
 import com.moneyminions.presentation.R
 
 private const val TAG = "싸피"
@@ -154,6 +153,12 @@ sealed class Screen(val name: String, val route: String, val title: String) {
         route = NavRouteName.WEBVIEW,
         title = NavTitle.WEBVIEW
     )
+    
+    object WaitHome: Screen(
+        name = "WaitHome",
+        route = NavRouteName.WAITHOME,
+        title = NavTitle.WAITHOME
+    )
 
     object SettleResult: Screen(
         name = "SettleResult",
@@ -203,6 +208,7 @@ object NavRouteName {
     const val CARDLIST = "card_list_screen"
     const val NICKNAMEPASSWORD = "nickname_password"
     const val SUBHOME = "sub_home_screen"
+    const val WAITHOME = "wait_home_screen"
     const val TRAVELDONE = "travel_done"
     const val EDITTRAVEL = "edit_travel_screen"
     const val WEBVIEW = "webview_screen"
@@ -232,6 +238,7 @@ object NavTitle {
     const val CARDLIST = "카드 목록"
     const val NICKNAMEPASSWORD = "프로필 설정"
     const val SUBHOME = "사전정산"
+    const val WAITHOME = "정산 요청 상태"
     const val TRAVELDONE = "여행 완료"
     const val EDITTRAVEL = "여행 수정"
     const val WEBVIEW = "웹뷰"

@@ -26,6 +26,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -50,6 +51,7 @@ import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.theme.TextGray
 import com.moneyminions.presentation.theme.White
+import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.MainViewModel
 
 private const val TAG = "MainScreen_D210"
@@ -68,6 +70,22 @@ fun MainScreen(
     mainViewModel: MainViewModel,
     context: Context,
 ) {
+    //  --------------------------여행 목록 GET 호출 부분 --------------------------
+    val travelListState by mainViewModel.networkTravelList.collectAsState()
+    NetworkResultHandler(
+        state = travelListState,
+        errorAction = {},
+        successAction = {
+            Log.d(TAG, "실행시 => travelListResult : $it ")
+            mainViewModel.checkTravelRoom(it.toMutableList())
+        },
+    )
+    
+    LaunchedEffect(Unit) {
+        mainViewModel.getTravelList()
+    }
+    // ------------------------------------------------------------------------------
+    
     val isShowDialogState by mainViewModel.isShowDialog.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val permissionList: List<String> =
@@ -134,6 +152,7 @@ fun MainScreen(
     }
 
 }
+
 
 fun isBottomNavItem(route: String): Boolean {
     return when (route) {
