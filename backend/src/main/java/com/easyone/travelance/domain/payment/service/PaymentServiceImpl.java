@@ -320,6 +320,9 @@ public class PaymentServiceImpl implements PaymentService{
                 .paymentAt(formattedDate)
                 .build();
 
+        evictpaymentAlonesCache(member.getId());
+        evictpaymentWithsCache(member.getId());
+
         paymentRepository.save(payment);
 
         return "현금 결제내역 저장 성공";
