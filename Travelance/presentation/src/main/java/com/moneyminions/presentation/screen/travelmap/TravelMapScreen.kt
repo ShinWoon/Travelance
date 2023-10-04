@@ -90,11 +90,11 @@ fun TravelMapScreen(
                 context = context,
                 spotList = travelSpotList
             )
+            centerPlace = travelMapViewModel.calculateCenterLocation(travelSpotLatLongitudeList)
+            cameraPositionState.position = CameraPosition(LatLng(centerPlace.latitude, centerPlace.longitude), 11.0)
+            Log.d(TAG, "TravelMapScreen: ${centerPlace.latitude} ${centerPlace.longitude}")
+            Log.d(TAG, "TravelMapScreen: list 값 $travelSpotLatLongitudeList")
         }
-        centerPlace = travelMapViewModel.calculateCenterLocation(travelSpotLatLongitudeList)
-        cameraPositionState.position = CameraPosition(LatLng(centerPlace.latitude, centerPlace.longitude), 11.0)
-        Log.d(TAG, "TravelMapScreen: ${centerPlace.latitude} ${centerPlace.longitude}")
-        Log.d(TAG, "TravelMapScreen: list 값 $travelSpotLatLongitudeList")
     })
     NetworkResultHandler(
         state = travelSpotDetailGetState,
@@ -140,19 +140,21 @@ fun MapMarkers(
 ) {
     val scope = rememberCoroutineScope()
     locations.forEachIndexed { idx, item ->
-        Marker(
-            state = MarkerState(position = LatLng(item.latitude, item.longitude)),
-            icon = OverlayImage.fromResource(getMarkerIcon(item.storeCategory)),
-            width = 24.dp,
-            height = 24.dp,
-            onClick = {
-                markerClick(item)
-                cameraPositionState.position =
-                    CameraPosition(LatLng(item.latitude, item.longitude), 14.0)
-                Log.d(TAG, "MapMarkers: $item")
-                true
-            }
-        )
+        if(item.storeCategory != "") {
+            Marker(
+                state = MarkerState(position = LatLng(item.latitude, item.longitude)),
+                icon = OverlayImage.fromResource(getMarkerIcon(item.storeCategory)),
+                width = 24.dp,
+                height = 24.dp,
+                onClick = {
+                    markerClick(item)
+                    cameraPositionState.position =
+                        CameraPosition(LatLng(item.latitude, item.longitude), 14.0)
+                    Log.d(TAG, "MapMarkers: $item")
+                    true
+                }
+            )
+        }
     }
 }
 

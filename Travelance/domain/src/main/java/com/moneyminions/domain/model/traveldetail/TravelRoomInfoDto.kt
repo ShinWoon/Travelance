@@ -5,4 +5,5 @@ data class TravelRoomInfoDto(
     val endDate: String = "",
     val startDate: String = "",
     val travelName: String = "",
+    val done: Boolean = true,
 )

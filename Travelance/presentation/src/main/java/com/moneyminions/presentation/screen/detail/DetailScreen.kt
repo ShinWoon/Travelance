@@ -175,6 +175,7 @@ fun DetailScreen(
                         },
                         deleteDialog = { deleteDialog = true },
                         selectedIdx = selectedIdx,
+                        isDone = travelDetailInfo.travelRoomInfo[0].done,
                         myPaymentRowSelect = { paymentMap ->
                             selectedIdx = paymentMap["index"] as Int
                             selectedTravelInfo = TravelPaymentDto(

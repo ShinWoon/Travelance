@@ -11,4 +11,6 @@ data class TravelRoomInfoResponse(
     val startDate: String,
     @SerializedName("travelName")
     val travelName: String,
+    @SerializedName("done")
+    val done: Boolean,
 )
