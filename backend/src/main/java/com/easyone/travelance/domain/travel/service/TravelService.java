@@ -34,14 +34,6 @@ public class TravelService {
         //방 만든 직전에는 사전정산 상태
         RoomType roomType = RoomType.BEFORE;
 
-        //현재 정산중 방이 있으면 0을 반환
-        List<TravelRoom> travelRoomMemberList = travelRoomRepository.findAllByTravelRoomMembersMember(member);
-        for (TravelRoom travelRoomIsDone : travelRoomMemberList) {
-            if (travelRoomIsDone.getIsDone()==RoomType.NOW) {
-                return new RoomIdResponseDto("0");
-            }
-        }
-
         TravelRoom travelRoom = roomInfoRequestDto.toEntity(roomType);
         travelRoomRepository.save(travelRoom);
 
@@ -70,9 +62,14 @@ public class TravelService {
         TravelRoom travelRoom = travelRoomRepository.findById(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 여행방이 없습니다. id =" + roomId));
 
-        if (travelRoomMemberRepository.findByTravelRoomAndMember(travelRoom, member).isPresent()) {
-                return new ResultDto("참여자를 초대할 수 없습니다");
+        //현재 정산중 방이고, 그 멤버가 정산중 방이 있을 때
+
+        List<TravelRoom> travelRoomMemberList = travelRoomRepository.findAllByTravelRoomMembersMember(member);
+        for (TravelRoom travelRoomIsDone : travelRoomMemberList) {
+            if ((travelRoom.getIsDone()==RoomType.NOW && travelRoomIsDone.getIsDone()==RoomType.NOW) || travelRoomMemberRepository.findByTravelRoomAndMember(travelRoom, member).isPresent() ) {
+                return new ResultDto("0");
             }
+        }
 
 
             //프로필 사진이 있으면, 프로필 사진 저장
