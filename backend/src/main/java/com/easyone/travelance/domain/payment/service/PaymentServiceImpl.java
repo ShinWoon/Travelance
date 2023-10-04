@@ -415,28 +415,31 @@ public class PaymentServiceImpl implements PaymentService{
                 travelRoom.getTravelName()
         );
 
-        List<TransferInfoDto.SendInfo> sendInfos = new ArrayList<>();
-        List<TransferInfoDto.ReceiveInfo> receiveInfos = new ArrayList<>();
+        List<TransferInfoDto.SendInfo> sendInfos = calculations.stream()
+                .filter(calc -> calc.getFromMemberId().equals(member.getId()))
+                .map(calc -> {
+                    Member sendToMember = memberRepository.findById(calc.getToMemberId()).orElse(null);
+                    if (sendToMember != null) {
+                        Profile sendToProfile = profileRepository.findByMemberAndTravelRoom(sendToMember, travelRoom);
+                        return new TransferInfoDto.SendInfo(sendToMember.getNickname(), sendToProfile.getProfileUrl(), calc.getAmount());
+                    }
+                    return null;
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
 
-        for(Calculation calculation : calculations){
-            // fromMemberId가 현재 멤버의 ID와 일치하면 SendInfo로 변환
-            if(calculation.getFromMemberId().equals(member.getId())){
-                Optional<Member> sendToMember = memberRepository.findById(calculation.getToMemberId());
-                if (sendToMember.isPresent()) {
-                    Profile sendToProfile = profileRepository.findByMemberAndTravelRoom(sendToMember.get(), travelRoom);
-                    sendInfos.add(new TransferInfoDto.SendInfo(sendToMember.get().getNickname(), sendToProfile.getProfileUrl(), calculation.getAmount()));
-                }
-            }
-
-            // toMemberId가 현재 멤버의 ID와 일치하면 ReceiveInfo로 변환
-            if(calculation.getToMemberId().equals(member.getId())){
-                Optional<Member> receiveFromMember = memberRepository.findById(calculation.getFromMemberId());
-                if (receiveFromMember.isPresent()) {
-                    Profile receiveFromProfile = profileRepository.findByMemberAndTravelRoom(receiveFromMember.get(), travelRoom);
-                    receiveInfos.add(new TransferInfoDto.ReceiveInfo(receiveFromMember.get().getNickname(), receiveFromProfile.getProfileUrl(), calculation.getAmount()));
-                }
-            }
-        }
+        List<TransferInfoDto.ReceiveInfo> receiveInfos = calculations.stream()
+                .filter(calc -> calc.getToMemberId().equals(member.getId()))
+                .map(calc -> {
+                    Member receiveFromMember = memberRepository.findById(calc.getFromMemberId()).orElse(null);
+                    if (receiveFromMember != null) {
+                        Profile receiveFromProfile = profileRepository.findByMemberAndTravelRoom(receiveFromMember, travelRoom);
+                        return new TransferInfoDto.ReceiveInfo(receiveFromMember.getNickname(), receiveFromProfile.getProfileUrl(), calc.getAmount());
+                    }
+                    return null;
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
 
         List<TravelRoomMember> allMembers = travelRoom.getTravelRoomMembers();
         List<Payment> payments = paymentRepository.findByIsWithPaidAndTravelRoomId(true, roomId);
