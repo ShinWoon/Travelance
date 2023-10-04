@@ -79,7 +79,7 @@ public class TravelPaymentWithService {
                     friendPayment.setNickName(travelRoomMember.getTravelNickName());
                     friendPayment.setProfileUrl(profile.getProfileUrl());
                     friendPayment.setPaymentAmount(totalPayment);
-                    friendPayment.setIsDone(travelRoomMember.isDone());
+                    friendPayment.setDone(travelRoomMember.isDone());
 
                     return friendPayment;
                 })

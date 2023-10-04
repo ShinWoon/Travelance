@@ -25,9 +25,6 @@ public class TravelPaymentPlusDto {
         private Long paymentAmount;
         private boolean isDone;
 
-        public void setIsDone(boolean done) {
-            this.isDone = done;
-        }
     }
 
     @Data
