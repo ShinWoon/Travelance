@@ -28,7 +28,7 @@ spring:
       matching-strategy: ant_path_matcher
 
   redis:
-    host: redis
+    host: j9d210.p.ssafy.io
     port: 6379
 
   kafka:

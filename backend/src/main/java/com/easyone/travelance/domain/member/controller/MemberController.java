@@ -117,7 +117,7 @@ public class MemberController {
 
         MainAccount mainAccount = member.getMainAccount();
         for (SelectedAccountRequestDto selectedAccountRequestDto : selectedAccountRequestDtoList) {
-            accountService.SaveAccount(mainAccount, selectedAccountRequestDto);
+            accountService.SaveAccount(member, mainAccount, selectedAccountRequestDto);
         }
 
         // 카드 등록 로직
@@ -184,7 +184,7 @@ public class MemberController {
 //        log.warn("mainAccount : " + mainAccount);
 //        log.warn("Received JSON data: " + selectedAccountRequestDtoList);
         for (SelectedAccountRequestDto selectedAccountRequestDto : selectedAccountRequestDtoList) {
-            accountService.SaveAccount(mainAccount, selectedAccountRequestDto);
+            accountService.SaveAccount(member, mainAccount, selectedAccountRequestDto);
         }
         
         // 카드 등록 로직

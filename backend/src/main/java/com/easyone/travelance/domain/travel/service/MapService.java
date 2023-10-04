@@ -11,6 +11,7 @@ import com.easyone.travelance.domain.travel.repository.TravelRoomMemberRepositor
 import com.easyone.travelance.domain.travel.repository.TravelRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ public class MapService {
     private final PaymentRepository paymentRepository;
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "mapLists", key="#roomId")
     public List<MapAllResponseDto> mapList(Long roomId) {
 
         //추후 완료된 여행방에 대한 위치정보도 반환해야하기 때문에 roomId를 받아서 전달!
@@ -58,6 +60,7 @@ public class MapService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "mapDetails", key = "#roomId + '-' + #mapDetailRequestDto.storeAddress")
     public List<MapDetailResponseDto> mapDetail(Long roomId, MapDetailRequestDto mapDetailRequestDto) {
         //dto에서 map의 주소를 가져와서 이 여행방의 이 장소에서 결제된 내역을 모두 가져와서 반환한다.
 

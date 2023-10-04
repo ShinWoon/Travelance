@@ -3,6 +3,7 @@ package com.easyone.travelance.domain.travel.dto;
 import com.easyone.travelance.domain.member.entity.Member;
 import com.easyone.travelance.domain.travel.entity.TravelRoom;
 import com.easyone.travelance.domain.travel.enumclass.RoomType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ public class RoomStaticResponseDto {
     private String travelName;
     private Long budget;
     private double percent; // 예산 대비 사용량 %
+    @JsonProperty("useTotal")
     private Long UseTotal;
     private Long rest;
     private String isDone;
