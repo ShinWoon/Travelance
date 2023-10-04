@@ -13,4 +13,5 @@ interface PreferenceRepository {
     
     fun putTravelingRoomId(roomId: Int)
     fun getTravelingRoomId(): Int
+    fun refreshPreference()
 }

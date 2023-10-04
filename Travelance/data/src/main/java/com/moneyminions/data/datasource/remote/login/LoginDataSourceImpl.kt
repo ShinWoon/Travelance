@@ -43,4 +43,12 @@ class LoginDataSourceImpl( //service 만들어야 함!
         return businessService.join(memberInfoRequest)
     }
 
+    override suspend fun logout(): CommonResponse {
+        return businessService.logout()
+    }
+
+    override suspend fun joinOut(): CommonResponse {
+        return businessService.joinOut()
+    }
+
 }
