@@ -39,7 +39,6 @@ class HandWritingViewModel @Inject constructor(
     private val _cashResult = MutableStateFlow<NetworkResult<CommonResultDto>>(NetworkResult.Idle)
     val cashResult = _cashResult.asStateFlow()
     fun requestCash(roomId: Int) {
-//        Log.d(TAG, "requestCash: $cashDto")
         viewModelScope.launch {
             _cashResult.emit(
                 cashUseCase.invoke(

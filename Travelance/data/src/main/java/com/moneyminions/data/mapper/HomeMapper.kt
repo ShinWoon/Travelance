@@ -38,6 +38,7 @@ fun TravelRoomMemberUseResponse.toDomain(): TravelMemberUseDto {
         memberId = memberId,
         nickName = nickName,
         paymentAt = paymentAt,
+        profileUrl = profileUrl,
     )
 }
 

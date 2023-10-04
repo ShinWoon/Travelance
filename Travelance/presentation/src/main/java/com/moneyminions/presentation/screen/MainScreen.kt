@@ -16,27 +16,27 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -50,7 +50,6 @@ import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.theme.PinkDarkest
 import com.moneyminions.presentation.theme.TextGray
 import com.moneyminions.presentation.theme.White
-import com.moneyminions.presentation.theme.pretendard
 import com.moneyminions.presentation.viewmodel.MainViewModel
 
 private const val TAG = "MainScreen_D210"
@@ -70,6 +69,7 @@ fun MainScreen(
     context: Context,
 ) {
     val isShowDialogState by mainViewModel.isShowDialog.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
     val permissionList: List<String> =
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         listOf(
@@ -119,6 +119,9 @@ fun MainScreen(
                 MainBottomNavigationBar(navController = navController)
             }
         },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         containerColor = White,
     ) {
         NavGraph(
@@ -126,6 +129,7 @@ fun MainScreen(
             startDestination = startDestination,
             navController = navController,
             mainViewModel = mainViewModel,
+            snackbarHostState = snackbarHostState,
         )
     }
 
@@ -157,7 +161,7 @@ fun MainBottomNavigationBar(navController: NavHostController) {
             val selected = item.route == backStackEntry.value?.destination?.route
             val current = backStackEntry.value?.destination?.route
 
-            Log.d(TAG, "MainBottomNavigationBar: $selected / $current")
+//            Log.d(TAG, "MainBottomNavigationBar: $selected / $current")
 
             NavigationBarItem(
                 selected = selected,

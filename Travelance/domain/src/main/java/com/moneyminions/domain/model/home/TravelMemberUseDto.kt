@@ -9,4 +9,5 @@ data class TravelMemberUseDto(
     var memberId: Int = 0,
     var nickName: String = "",
     var paymentAt: String = "",
+    var profileUrl: String = "",
 )

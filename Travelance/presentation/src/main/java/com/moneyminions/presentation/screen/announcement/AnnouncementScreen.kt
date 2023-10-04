@@ -3,9 +3,6 @@
 package com.moneyminions.presentation.screen.announcement
 
 import android.util.Log
-import android.view.ViewGroup
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -34,6 +31,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,10 +39,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.moneyminions.domain.model.home.AnnouncementDto
@@ -56,7 +52,6 @@ import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.FloatingButtonColor
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.announcement.AnnouncementViewModel
-import retrofit2.http.Url
 
 private const val TAG = "AnnouncementScreen_D210"
 @Composable
@@ -66,7 +61,9 @@ fun AnnouncementScreen(
     announcementViewModel: AnnouncementViewModel = hiltViewModel(),
 ) {
     // 공지사항 리스트 GET
-    announcementViewModel.getAnnouncementList(roomId)
+    LaunchedEffect(Unit) {
+        announcementViewModel.getAnnouncementList(roomId)
+    }
     
     // 공지사항 저장
     val saveAnnouncementState by announcementViewModel.saveAnnouncementResult.collectAsState()
@@ -254,7 +251,12 @@ fun TitleWithLink(
                     // WebView
                     val url = announcementDto.link.replace("/", "*")
                     Log.d(TAG, "Announcement Screen: 웹뷰 호출 (1) => $url")
-                    navController.navigate("${Screen.WebView.route}/{url}".replace(oldValue = "{url}", newValue = "$url"))
+                    navController.navigate(
+                        "${Screen.WebView.route}/{url}".replace(
+                            oldValue = "{url}",
+                            newValue = "$url"
+                        )
+                    )
                 },
         )
     }

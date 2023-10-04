@@ -51,7 +51,8 @@ fun HomeScreen(
     mainViewModel: MainViewModel,
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
-    Log.d(TAG, "HomeScreen: on")
+    
+//    Log.d(TAG, "HomeScreen: on")
     // 여행방 시작
     val startTravelState by homeViewModel.startTravelResult.collectAsState()
     NetworkResultHandler(
@@ -69,8 +70,8 @@ fun HomeScreen(
             }
         }
     )
-    Log.d(TAG, "HomeScreen: viewModel -> ${homeViewModel.hashCode()}")
-    Log.d(TAG, "HomeScreen default: ${homeViewModel.travelRoomInfo.hashCode()}")
+//    Log.d(TAG, "HomeScreen: viewModel -> ${homeViewModel.hashCode()}")
+//    Log.d(TAG, "HomeScreen default: ${homeViewModel.travelRoomInfo.hashCode()}")
     
     // 여행방 정보 GET
     val getTravelRoomInfoState by homeViewModel.getTravelRoomInfoResult.collectAsState()
@@ -80,7 +81,7 @@ fun HomeScreen(
             Log.d(TAG, "HomeScreen: 방 정보 얻기 실패")
         },
         successAction = {
-            Log.d(TAG, "HomeScreen 방 정보 얻기 성공: ${it.hashCode()}")
+            Log.d(TAG, "HomeScreen 방 정보 얻기 성공 $it")
             homeViewModel.refreshRoomInfo(it)
         }
     )
@@ -148,8 +149,7 @@ fun Home(
         )
         
         Spacer(modifier = Modifier.height(8.dp))
-
-        Log.d(TAG, "Home: travel Done check -> ${travelInfo}")
+        
         when (travelInfo.isDone) {
             "BEFORE" -> TravelReadyPager(
                 cardHeight = cardHeight,
@@ -169,6 +169,7 @@ fun Home(
         Spacer(modifier = Modifier.height(16.dp))
         BottomCardContainer(
             navController = navController,
+            homeViewModel = homeViewModel,
             travelInfo = travelInfo,
         )
     }

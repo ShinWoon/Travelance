@@ -104,11 +104,11 @@ fun ProfileDialog(
                             Log.d(TAG, "ProfileDialog: 여행방 등록 메서드 call")
                             // 이미지 url -> file로
                             Log.d(TAG, " -> ProfileDialog url: ${createTravelViewModel.profileImage.value} ")
-                            val imageFile = UploadUtils.createMultipartFromUri(context, "file", createTravelViewModel.profileImage.value)
+                            val imageFile = UploadUtils.createMultipartFromUri(context, "imageFiles", createTravelViewModel.profileImage.value)
                             if (imageFile != null) {
                                 Log.d(TAG, " -> ProfileDialog imageFile: ${imageFile.body}")
                             }
-
+                            Log.d(TAG, "ProfileDialog: 룸 생성 체크: $roomId")
                             if(roomId == 0) {
                                 createTravelViewModel.createTravelRoom(imageFile)
                             } else {

@@ -2,7 +2,6 @@ package com.moneyminions.presentation.screen.travellist
 
 import android.annotation.SuppressLint
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeOut
@@ -76,8 +75,7 @@ fun TravelListScreen(
     modifier: Modifier = Modifier,
     mainViewModel: MainViewModel
 ) {
-    Log.d(TAG, "TravelListScreen: on")
-    Log.d(TAG, "TravelListScreen invite RoomId: ${mainViewModel.inviteRoomId.value}")
+//    Log.d(TAG, "TravelListScreen: on")
 
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
@@ -114,6 +112,9 @@ fun TravelListScreen(
             }
         },
         successAction = {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("여행방을 나갔습니다.")
+            }
             Log.d(TAG, "삭제 성공 여부 : $it ")
         }
     )
@@ -174,6 +175,7 @@ fun TravelListScreen(
 
     // 프로필 설정 다이얼로그
     if (mainViewModel.inviteRoomId.value != 0) {
+        Log.d(TAG, "TravelListScreen invite RoomId: ${mainViewModel.inviteRoomId.value}")
         openProfileDialog = true
         ProfileDialog(
             mainViewModel = mainViewModel,
@@ -250,7 +252,7 @@ fun TravelRoomItem(
         if (!show) {
             Log.d(TAG, "TravelRoomItem: ${currentItem}, $onRemove")
             onRemove(currentItem) // 삭제 API 요청 -> viewModel에 구현
-            Toast.makeText(context, "Item removed ${currentItem.roomId}", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context, "Item removed ${currentItem.roomId}", Toast.LENGTH_SHORT).show()
             delay(800)
             
 //            bioAuth(
