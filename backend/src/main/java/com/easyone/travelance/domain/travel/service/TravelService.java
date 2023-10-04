@@ -126,10 +126,10 @@ public class TravelService {
         // 남는 금액
         Long rest = budget-UseTotal;
 
-        //전체 소비내역
+        //전체 소비내역(공금으로 등록된것만 뽑기)
         List<PaymentResponseDto> everyUse = travelPaymentService.findByTravelId(member, roomId);
 
-        //내 소비내역
+        //내 소비내역(공금으로 등록된것만 뽑기)
         List<PaymentResponseDto> myUse = travelPaymentService.findByTravelIdAndMemberId(member, roomId);
 
         return new RoomStaticResponseDto(travelRoom, budgetPer, UseTotal, rest, everyUse, myUse);
