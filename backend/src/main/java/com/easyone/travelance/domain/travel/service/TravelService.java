@@ -32,6 +32,7 @@ public class TravelService {
 
     //방만들기
     @Transactional
+    @CacheEvict(value = "roomCacheAll", key = "#member.id")
     public RoomIdResponseDto save(RoomInfoRequestDto roomInfoRequestDto, Member member, RoomUserRequestDto roomUserRequestDto, MultipartFile profileUrl) throws Exception {
         //방 만든 직전에는 사전정산 상태
         RoomType roomType = RoomType.BEFORE;
