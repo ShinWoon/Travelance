@@ -59,6 +59,27 @@ class TravelMapViewModel @Inject constructor(
         }
         return locationList
     }
+
+    fun calculateCenterLocation(spotList: List<LocationDto>): LocationDto {
+        if(spotList.isEmpty()) return LocationDto(latitude = 35.9078, longitude = 127.7669)
+
+        var totalLatitude = 0.0
+        var totalLongitude = 0.0
+
+        for (location in spotList) {
+            if(!location.storeAddress.isNullOrEmpty()) {
+                totalLatitude += location.latitude
+                totalLongitude += location.longitude
+            }
+        }
+        val centerLatitude = totalLatitude / spotList.size
+        val centerLongitude = totalLongitude / spotList.size
+
+        Log.d(TAG, "calculateCenterLocation: $totalLatitude $totalLongitude")
+        Log.d(TAG, "calculateCenterLocation: $centerLatitude $centerLongitude")
+
+        return LocationDto(latitude = centerLatitude, longitude = centerLongitude)
+    }
 }
 
 private fun searchAddress(

@@ -24,6 +24,8 @@ import com.moneyminions.presentation.R
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.travelmap.TravelMapViewModel
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraPosition
+import com.naver.maps.map.compose.CameraPositionState
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
 import com.naver.maps.map.compose.LocationTrackingMode
 import com.naver.maps.map.compose.MapProperties
@@ -31,6 +33,7 @@ import com.naver.maps.map.compose.MapUiSettings
 import com.naver.maps.map.compose.Marker
 import com.naver.maps.map.compose.MarkerState
 import com.naver.maps.map.compose.NaverMap
+import com.naver.maps.map.compose.rememberCameraPositionState
 import com.naver.maps.map.overlay.OverlayImage
 
 private const val TAG = "D210"
@@ -62,6 +65,13 @@ fun TravelMapScreen(
     var travelSpotLatLongitudeList by remember {
         mutableStateOf(listOf(LocationDto()))
     }
+    var centerPlace by remember {
+        mutableStateOf(LocationDto(latitude = 35.9078, longitude = 127.7669))
+    }
+    var cameraPositionState: CameraPositionState = rememberCameraPositionState {
+        position = CameraPosition(LatLng(centerPlace.latitude, centerPlace.longitude), 6.0)
+    }
+
     var spotDetailDialog by remember {
         mutableStateOf(false)
     }
@@ -73,7 +83,7 @@ fun TravelMapScreen(
 
     val context = LocalContext.current
     NetworkResultHandler(state = travelMapGetState, errorAction = { /*TODO*/ }, successAction = {
-        Log.d(TAG, "TravelMapScreen: ${it}")
+        Log.d(TAG, "TravelMapScreen: $it")
         travelSpotList = it
         if (travelSpotList.isNotEmpty() && travelSpotList[0].storeAddress != "") {
             travelSpotLatLongitudeList = travelMapViewModel.setAddressToLatLongitude(
@@ -81,6 +91,9 @@ fun TravelMapScreen(
                 spotList = travelSpotList
             )
         }
+        centerPlace = travelMapViewModel.calculateCenterLocation(travelSpotLatLongitudeList)
+        cameraPositionState.position = CameraPosition(LatLng(centerPlace.latitude, centerPlace.longitude), 11.0)
+        Log.d(TAG, "TravelMapScreen: ${centerPlace.latitude} ${centerPlace.longitude}")
         Log.d(TAG, "TravelMapScreen: list 값 $travelSpotLatLongitudeList")
     })
     NetworkResultHandler(
@@ -93,9 +106,11 @@ fun TravelMapScreen(
     LaunchedEffect(Unit) {
         travelMapViewModel.getTravelSpotList(roomId)
     }
+
     NaverMap(
         modifier = modifier.fillMaxSize(),
         locationSource = locationSource,
+        cameraPositionState = cameraPositionState,
         properties = MapProperties(
             locationTrackingMode = if (type == "home") LocationTrackingMode.Follow else LocationTrackingMode.None
         ),
@@ -104,6 +119,7 @@ fun TravelMapScreen(
         if (travelSpotLatLongitudeList.size > 0) {
             MapMarkers(
                 locations = travelSpotLatLongitudeList,
+                cameraPositionState = cameraPositionState,
                 markerClick = { locationInfo ->
                     travelMapViewModel.getTravelSpotDetail(
                         roomId = roomId,
@@ -119,7 +135,8 @@ fun TravelMapScreen(
 @Composable
 fun MapMarkers(
     locations: List<LocationDto>,
-    markerClick: (LocationDto) -> Unit
+    cameraPositionState: CameraPositionState,
+    markerClick: (LocationDto) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     locations.forEachIndexed { idx, item ->
@@ -130,6 +147,8 @@ fun MapMarkers(
             height = 24.dp,
             onClick = {
                 markerClick(item)
+                cameraPositionState.position =
+                    CameraPosition(LatLng(item.latitude, item.longitude), 14.0)
                 Log.d(TAG, "MapMarkers: $item")
                 true
             }
