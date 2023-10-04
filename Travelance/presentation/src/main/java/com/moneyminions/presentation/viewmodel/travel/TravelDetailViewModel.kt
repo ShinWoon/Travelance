@@ -39,15 +39,15 @@ class TravelDetailViewModel @Inject constructor(
     private val _setSettleStateState = MutableStateFlow<NetworkResult<CommonResultDto>>(NetworkResult.Idle)
     val setSettleStateState = _setSettleStateState.asStateFlow()
 
-    fun getMyPaymentList() = viewModelScope.launch {
+    fun getMyPaymentList(roomId: Int) = viewModelScope.launch {
         _myPaymentListState.value = NetworkResult.Loading
-        _myPaymentListState.emit(getMyPaymentUseCase.invoke())
+        _myPaymentListState.emit(getMyPaymentUseCase.invoke(roomId = roomId))
         Log.d(TAG, "getMyPaymentList: ${myPaymentListState.value}")
     }
 
-    fun getTravelDetailInfo() = viewModelScope.launch {
+    fun getTravelDetailInfo(roomId: Int) = viewModelScope.launch {
         _travelDetailInfoState.value = NetworkResult.Loading
-        _travelDetailInfoState.emit(getTravelDetailInfoUseCase.invoke())
+        _travelDetailInfoState.emit(getTravelDetailInfoUseCase.invoke(roomId = roomId))
         Log.d(TAG, "getTravelDetailInfo: ${travelDetailInfoState.value}")
     }
 

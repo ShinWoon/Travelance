@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetMyPaymentUseCase @Inject constructor(
     private val travelDetailRepository: TravelDetailRepository
 ){
-    suspend operator fun invoke(): NetworkResult<List<TravelPaymentDto>> {
-        return travelDetailRepository.getMyPaymentList()
+    suspend operator fun invoke(roomId: Int): NetworkResult<List<TravelPaymentDto>> {
+        return travelDetailRepository.getMyPaymentList(roomId = roomId)
     }
 }
