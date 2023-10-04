@@ -32,6 +32,7 @@ fun TextFieldWithTitle(
     value: String,
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType? = KeyboardType.Text,
+    maxLine: Int = 200,
 ) {
     val outlinedTextFieldColors = TextFieldDefaults.outlinedTextFieldColors(
         focusedBorderColor = PinkLight, // 포커스가 있을 때 테두리 색상
@@ -70,6 +71,7 @@ fun TextFieldWithTitle(
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = keyboardType!!,
             ),
+            maxLines = maxLine,
             modifier = Modifier
                 .layoutId("textField")
                 .fillMaxWidth(),

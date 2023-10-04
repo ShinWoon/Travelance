@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -219,12 +220,14 @@ fun NavGraph(
             }
         }
         composable(
-            route = "${Screen.WebView.route}/{url}",
-        ) {
-            val url = it.arguments?.getString("url")?.replace("*", "/")
-            Log.d(TAG, "NavGraph: 웹뷰 호출 (2) -> url: $url")
-            if (url != null) {
-                WebViewScreen(navController = navController, url = url)
+            route = Screen.WebView.route
+        ){
+            val data = remember {
+                navController.previousBackStackEntry?.savedStateHandle?.get<String>("data")
+            }
+            Log.d(TAG, "NavGraph: 웹뷰 호출 (2) -> url: $data")
+            if (data != null) {
+                WebViewScreen(navController = navController, url = data)
             }
         }
     }
