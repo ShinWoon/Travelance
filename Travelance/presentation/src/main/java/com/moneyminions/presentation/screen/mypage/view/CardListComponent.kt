@@ -22,8 +22,7 @@ import com.moneyminions.presentation.theme.GraphGray
 @Composable
 fun CardListComponent(
     cardList: List<CardDto>,
-    onDelete: (String, String) -> Unit,
-    onPlus: () -> Unit
+    onDelete: (String, String) -> Unit
 ){
     Text(
         text = "카드 목록",
@@ -51,11 +50,4 @@ fun CardListComponent(
         }
     }
     Spacer(modifier = Modifier.size(16.dp))
-    PlusButtonWithText(
-        text = "카드 추가하기",
-        type = "card"
-    ) {
-        //카드 추가하기 화면으로 이동
-        onPlus()
-    }
 }

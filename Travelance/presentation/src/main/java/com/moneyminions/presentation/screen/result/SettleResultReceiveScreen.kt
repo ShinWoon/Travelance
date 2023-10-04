@@ -80,14 +80,6 @@ fun SettleResultReceiveScreen(
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             Column {
-//            TravelInfoView(
-//                startDate = "2023/09/05",
-//                endDate = "2023/09/07",
-//                budget = 30000,
-//                type = "result",
-//                modifier = Modifier,
-//                navController = navcontroller,
-//            )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
