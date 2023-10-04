@@ -29,7 +29,6 @@ import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.DarkerGray
 import com.moneyminions.presentation.utils.DateUtils
 import com.moneyminions.presentation.utils.MoneyUtils.makeComma
-import com.moneyminions.presentation.viewmodel.travel.TravelDetailViewModel
 
 private const val TAG = "D210"
 
@@ -85,7 +84,7 @@ fun TravelInfoView(
                 modifier = modifier.size(40.dp),
             )
             DetailDateView(startDate = travelRoomInfo.startDate, endDate = travelRoomInfo.endDate, modifier = modifier)
-            BudgetText(budget = travelRoomInfo.budget, modifier = modifier)
+            BudgetText(budget = travelRoomInfo.budget, type = type, modifier = modifier)
         }
     }
 }
@@ -118,10 +117,11 @@ fun DateText(
 @Composable
 fun BudgetText(
     budget: Int,
+    type: String,
     modifier: Modifier,
 ) {
     Text(
-        text = "예산:${makeComma(budget)}",
+        text = if (type == "done") "${makeComma(budget)}" else "예산:${makeComma(budget)}",
         color = DarkerGray,
         style = pretendardBold18,
         modifier = modifier.fillMaxWidth(),

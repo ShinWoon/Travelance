@@ -22,6 +22,7 @@ import com.moneyminions.data.model.traveldetail.request.PaymentCompleteRequest
 import com.moneyminions.data.model.traveldetail.request.TravelPaymentChangeInfoRequest
 import com.moneyminions.data.model.traveldetail.response.TravelDetailInfoResponse
 import com.moneyminions.data.model.traveldetail.response.TravelDetailMyPaymentResponse
+import com.moneyminions.data.model.traveldone.response.TravelDoneTotalInfoResponse
 import com.moneyminions.data.model.traveledit.request.TravelRoomEditRequest
 import com.moneyminions.data.model.travellist.request.RoomInfoRequestDto
 import com.moneyminions.data.model.travellist.request.RoomUserRequestDto
@@ -246,6 +247,13 @@ interface BusinessService {
         @Path("roomId") roomId: Int,
         @Body travelMapDetailRequest: TravelMapDetailRequest
     ) : List<TravelMapDetailResponse>
+
+    /**
+     * 여행 완료 방 조회
+     */
+    @POST("travel/payment/{roomId}/travelDone")
+    suspend fun getTravelDoneInfo(@Path("roomId") roomId: Int): TravelDoneTotalInfoResponse
+
 
     /**
      * 정산 결과 조회

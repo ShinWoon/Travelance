@@ -18,12 +18,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.moneyminions.presentation.theme.PinkDarkest
 import kotlinx.coroutines.delay
 
 @Composable
 fun RippleLoadingAnimation(
-    circleColor: Color = PinkDarkest,
+    circleColor: Color,
     animationDelay: Int = 1500,
     modifier: Modifier,
 ) {

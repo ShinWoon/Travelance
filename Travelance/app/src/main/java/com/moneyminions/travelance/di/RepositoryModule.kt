@@ -6,6 +6,7 @@ import com.moneyminions.data.datasource.remote.home.HomeDataSource
 import com.moneyminions.data.datasource.remote.login.LoginDataSource
 import com.moneyminions.data.datasource.remote.mypage.MyPageDataSource
 import com.moneyminions.data.datasource.remote.traveldetail.TravelDetailDataSource
+import com.moneyminions.data.datasource.remote.traveldone.TravelDoneDataSource
 import com.moneyminions.data.datasource.remote.traveledit.TravelEditDataSource
 import com.moneyminions.data.datasource.remote.travellist.TravelListDataSource
 import com.moneyminions.data.datasource.remote.travelmap.TravelMapDataSource
@@ -15,15 +16,18 @@ import com.moneyminions.data.repository.home.HomeRepositoryImpl
 import com.moneyminions.data.repository.login.LoginRepositoryImpl
 import com.moneyminions.data.repository.mypage.MyPageRepositoryImpl
 import com.moneyminions.data.repository.traveldetail.TravelDetailRepositoryImpl
+import com.moneyminions.data.repository.traveldone.TravelDoneRepositoryImpl
 import com.moneyminions.data.repository.traveledit.TravelEditRepositoryImpl
 import com.moneyminions.data.repository.travellist.TravelListRepositoryImpl
 import com.moneyminions.data.repository.travelmap.TravelMapRepositoryImpl
+import com.moneyminions.domain.model.traveldone.TravelDoneInfoTotalDto
 import com.moneyminions.domain.repository.PreferenceRepository
 import com.moneyminions.domain.repository.example.ExampleRepository
 import com.moneyminions.domain.repository.home.HomeRepository
 import com.moneyminions.domain.repository.login.LoginRepository
 import com.moneyminions.domain.repository.mypage.MyPageRepository
 import com.moneyminions.domain.repository.traveldetail.TravelDetailRepository
+import com.moneyminions.domain.repository.traveldone.TravelDoneRepository
 import com.moneyminions.domain.repository.traveledit.TravelEditRepository
 import com.moneyminions.domain.repository.travellist.TravelListRepository
 import com.moneyminions.domain.repository.travelmap.TravelMapRepository
@@ -92,5 +96,11 @@ object RepositoryModule {
     @Provides
     fun provideTravelMapRepository(travelMapDataSource: TravelMapDataSource): TravelMapRepository {
         return TravelMapRepositoryImpl(travelMapDataSource)
+    }
+
+    @Singleton
+    @Provides
+    fun provideTravelDoneRepository(travelDoneDataSource: TravelDoneDataSource): TravelDoneRepository{
+        return TravelDoneRepositoryImpl(travelDoneDataSource)
     }
 }

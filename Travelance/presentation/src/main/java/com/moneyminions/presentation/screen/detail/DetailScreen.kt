@@ -26,11 +26,11 @@ import com.moneyminions.domain.model.traveldetail.PaymentCompleteDto
 import com.moneyminions.domain.model.traveldetail.TravelDetailInfoDto
 import com.moneyminions.domain.model.traveldetail.TravelPaymentChangeInfoDto
 import com.moneyminions.domain.model.traveldetail.TravelPaymentDto
+import com.moneyminions.presentation.common.CommonTabView
 import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.common.TravelInfoView
 import com.moneyminions.presentation.screen.detail.view.DetailMemberScreenView
 import com.moneyminions.presentation.screen.detail.view.DetailSettleScreenView
-import com.moneyminions.presentation.screen.detail.view.DetailTabView
 import com.moneyminions.presentation.screen.detail.view.PublicMoneyDeleteDialog
 import com.moneyminions.presentation.theme.White
 import com.moneyminions.presentation.utils.NetworkResultHandler
@@ -136,12 +136,11 @@ fun DetailScreen(
                     mainViewModel.putTravelRoomInfo(travelRoomInfoDto)
                 }
             )
-            DetailTabView(
+            CommonTabView(
                 modifier = Modifier,
                 tabs = tabs,
                 selectedTabIndex = selectedTabIndex,
                 tabWidths = tabWidths,
-                travelDetailViewModel = travelDetailViewModel,
             )
             HorizontalPager(
                 state = selectedTabIndex,

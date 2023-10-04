@@ -13,12 +13,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.moneyminions.domain.model.traveldone.CategoryExpenseDto
+import com.moneyminions.domain.model.traveldone.NoticeAllDto
 import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.theme.DarkerGray
 
 @Composable
 fun DoneTotalView(
     modifier: Modifier = Modifier,
+    roomId: Int,
+    noticeAllInfo: List<NoticeAllDto>,
+    categoryExpenseList: List<CategoryExpenseDto>,
 ) {
     Column(
         modifier = modifier
@@ -27,9 +32,9 @@ fun DoneTotalView(
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        DoneTotalComponent(text = "사용 카테고리")
-        DoneTotalComponent(text = "여행 공지")
-        DoneTotalComponent(text = "여행 발자취")
+        DoneTotalComponent(text = "사용 카테고리", categoryExpenseList = categoryExpenseList)
+        DoneTotalComponent(text = "여행 공지", noticeAllInfo = noticeAllInfo)
+        DoneTotalComponent(text = "여행 발자취", roomId = roomId)
     }
 }
 
@@ -37,12 +42,15 @@ fun DoneTotalView(
 fun DoneTotalComponent(
     text: String,
     modifier: Modifier = Modifier,
+    roomId: Int = 0,
+    noticeAllInfo: List<NoticeAllDto> = listOf(),
+    categoryExpenseList: List<CategoryExpenseDto> = listOf(),
 ) {
     Column {
         DoneTotalCommonTitle(text = text)
         Spacer(modifier = modifier.height(8.dp))
         when (text) {
-            "사용 카테고리" -> CategoryGraphView()
+            "사용 카테고리" -> CategoryGraphView(categoryExpenseList = categoryExpenseList)
             "여행 공지" -> DoneAnnouncementView()
             "여행 발자취" -> DoneMapView()
             else -> {}
