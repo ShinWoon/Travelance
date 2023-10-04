@@ -95,4 +95,11 @@ class PreferenceDataSource @Inject constructor(
         return getInt(ROOM_ID)
     }
 
+    fun refreshPreference() {
+        putString(X_ACCESS_TOKEN, null)
+        putString(X_REFRESH_TOKEN, null)
+        putString(X_ROLE, null)
+        putString(FCM_TOKEN, null)
+        putInt(ROOM_ID, 0)
+    }
 }

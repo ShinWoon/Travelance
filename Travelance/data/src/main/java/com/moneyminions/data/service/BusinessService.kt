@@ -245,4 +245,10 @@ interface BusinessService {
         @Path("roomId") roomId: Int,
         @Body travelMapDetailRequest: TravelMapDetailRequest
     ) : List<TravelMapDetailResponse>
+
+    /**
+     * 로그아웃
+     */
+    @POST("api/oauth/logout")
+    suspend fun logout(): CommonResponse
 }
