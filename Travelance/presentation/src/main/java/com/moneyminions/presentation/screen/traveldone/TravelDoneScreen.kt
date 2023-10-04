@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.screen.traveldone
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -22,10 +23,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.moneyminions.domain.model.traveldone.NoticeAllDto
 import com.moneyminions.domain.model.traveldone.TravelDoneInfoTotalDto
 import com.moneyminions.presentation.common.CommonTabView
 import com.moneyminions.presentation.common.TopBar
 import com.moneyminions.presentation.common.TravelInfoView
+import com.moneyminions.presentation.navigation.Screen
+import com.moneyminions.presentation.screen.traveldone.view.DoneAnnouncementDialog
 import com.moneyminions.presentation.screen.traveldone.view.DoneMembersView
 import com.moneyminions.presentation.screen.traveldone.view.DonePublicMoneyView
 import com.moneyminions.presentation.screen.traveldone.view.DoneTotalView
@@ -33,6 +37,7 @@ import com.moneyminions.presentation.theme.White
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.traveldone.TravelDoneViewModel
 
+private const val TAG = "D210"
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TravelDoneScreen(
@@ -45,11 +50,34 @@ fun TravelDoneScreen(
     var travelDoneTotalInfo by remember {
         mutableStateOf(TravelDoneInfoTotalDto())
     }
-    NetworkResultHandler(state = travelDoneInfoGetState, errorAction = { /*TODO*/ }, successAction = {
-        travelDoneTotalInfo = it
-    })
+    var noticeInfoDialog by remember {
+        mutableStateOf(false)
+    }
+    var selectedNoticeInfo by remember {
+        mutableStateOf(NoticeAllDto())
+    }
+    NetworkResultHandler(
+        state = travelDoneInfoGetState,
+        errorAction = { /*TODO*/ },
+        successAction = {
+            travelDoneTotalInfo = it
+        })
     LaunchedEffect(Unit) {
         travelDoneViewModel.getTravelDoneInfo(roomId = roomId)
+    }
+
+    if (noticeInfoDialog) {
+        DoneAnnouncementDialog(noticeInfo = selectedNoticeInfo, onDismissRequest = {
+            noticeInfoDialog = false
+        },
+            linkClick = {
+                val url = selectedNoticeInfo.link
+                navController.currentBackStackEntry?.savedStateHandle?.set(
+                    key = "data",
+                    value = url
+                )
+                navController.navigate(Screen.WebView.route)
+            })
     }
 
     val tabs = listOf("전체", "공금내역", "멤버들")
@@ -63,7 +91,10 @@ fun TravelDoneScreen(
     }
     Scaffold(
         topBar = {
-            TopBar(navController = navController, topBarTitle = travelDoneTotalInfo.travelDoneInfoDto.travelName)
+            TopBar(
+                navController = navController,
+                topBarTitle = travelDoneTotalInfo.travelDoneInfoDto.travelName
+            )
         },
     ) {
         Column(
@@ -91,15 +122,28 @@ fun TravelDoneScreen(
             ) { page ->
                 when (page) {
                     0 -> DoneTotalView(
-                        roomId = roomId,
                         noticeAllInfo = travelDoneTotalInfo.noticeAllDtoList,
                         categoryExpenseList = travelDoneTotalInfo.categoryExpenseDtoList,
+                        clickedNotice = {
+                            selectedNoticeInfo = it
+                            Log.d(TAG, "TravelDoneScreen: $it")
+                        },
+                        clickAction = {
+                            noticeInfoDialog = true
+                        },
+                        moveToMap = {
+                            navController.navigate("${Screen.TravelMap.route}/{roomId}/{type}".replace(oldValue = "{roomId}/{type}", newValue = "${roomId}/{done}"))
+                        }
                     )
+
                     1 -> DonePublicMoneyView(
                         allTravelPaymentList = travelDoneTotalInfo.allTravelPaymentDto,
                         myPaymentList = travelDoneTotalInfo.myPaymentDtoList,
                     )
-                    2 -> DoneMembersView()
+
+                    2 -> DoneMembersView(
+                        memberInfoList = travelDoneTotalInfo.roomUserDtoList
+                    )
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.screen.traveldone.view
 
+import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
@@ -46,6 +47,8 @@ import com.moneyminions.presentation.theme.CategoryTransportation
 import com.moneyminions.presentation.theme.CategoryUncategorized
 import com.moneyminions.presentation.theme.DarkerGray
 
+private const val TAG = "D210"
+
 @Composable
 fun CategoryGraphView(
     modifier: Modifier = Modifier,
@@ -76,7 +79,7 @@ fun CategoryInfo(
     LazyColumn(
         modifier = modifier.padding(vertical = 8.dp),
         verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.Start,
     ) {
         itemsIndexed(categoryExpenseList) { _, item ->
             CategoryChips(color = getCategoryColor(item.category), text = item.category)
@@ -135,13 +138,17 @@ private fun CategoryChart(
             .size(186.dp),
         contentAlignment = Alignment.Center,
     ) {
-        val chartDataList = listOf(
-            ChartData(CategoryAlcohol, 10f),
-            ChartData(CategoryCoffee, 20f),
-            ChartData(CategoryLeisure, 15f),
-            ChartData(CategoryShopping, 5f),
-            ChartData(CategoryDining, 50f),
-        )
+        val chartDataList = mutableListOf<ChartData>()
+
+        for (expense in categoryExpenseList) {
+            val color = getCategoryColor(expense.category)
+            var data = expense.percent.toFloat() * 100
+            if (data < 1f) data = 1f
+            val chartData = ChartData(color, data)
+            chartDataList.add(chartData)
+        }
+
+        Log.d(TAG, "CategoryChart: datalist $chartDataList")
         Canvas(
             modifier = Modifier
                 .size(186.dp)
@@ -158,6 +165,7 @@ private fun CategoryChart(
                 val chartData = chartDataList[index]
                 val sweepAngle = chartData.data.asAngle
                 val angleInRadians = (startAngle + sweepAngle / 2).degreeToAngle
+                Log.d(TAG, "CategoryChart: ${chartDataList[index].data}")
 
                 if (startAngle <= currentSweepAngle) {
                     drawArc(

@@ -67,6 +67,10 @@ fun DonePublicMoneyView(
             )
         }
         Spacer(modifier = modifier.height(8.dp))
-//        SettleCardView()
+        if (switchChecked) {
+            TravelDoneSettleCardView(travelPaymentList = myPaymentList)
+        } else {
+            TravelDoneSettleCardView(travelPaymentList = allTravelPaymentList)
+        }
     }
 }

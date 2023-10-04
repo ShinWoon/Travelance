@@ -1,8 +1,5 @@
-package com.moneyminions.presentation.screen.detail.view
+package com.moneyminions.presentation.screen.traveldone.view
 
-import android.util.Log
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,19 +16,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.moneyminions.domain.model.traveldetail.TravelPaymentDto
-import com.moneyminions.presentation.common.CustomTextStyle.pretendardSemiBold12
+import com.moneyminions.presentation.common.CustomTextStyle
+import com.moneyminions.presentation.screen.detail.view.DetailCommonText
 import com.moneyminions.presentation.theme.TextGray
 import com.moneyminions.presentation.utils.MoneyUtils
 
-private const val TAG = "D210"
-
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DetailPublicMoneySettleContentView(
+fun TravelDoneSettleContentView(
     modifier: Modifier = Modifier,
-    publicMoneyPayment: TravelPaymentDto,
-    changeValue: (TravelPaymentDto) -> Unit,
-    deleteDialog: () -> Unit,
+    travelMoneyPayment: TravelPaymentDto,
 ) {
     Column(
         modifier = modifier
@@ -40,15 +33,7 @@ fun DetailPublicMoneySettleContentView(
     ) {
         Column(
             modifier = modifier
-                .wrapContentHeight()
-                .combinedClickable(
-                    onClick = {},
-                    onLongClick = {
-                        Log.d(TAG, "DetailPublicMoneySettleContentView: long clicked")
-                        changeValue(TravelPaymentDto(isWithPaid = !(publicMoneyPayment.isWithPaid), paymentId = publicMoneyPayment.paymentId))
-                        deleteDialog()
-                    },
-                ),
+                .wrapContentHeight(),
         ) {
             Row(
                 modifier = modifier
@@ -56,13 +41,13 @@ fun DetailPublicMoneySettleContentView(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                DetailCommonText(text = publicMoneyPayment.paymentContent)
-                DetailCommonText(text = MoneyUtils.makeComma(publicMoneyPayment.paymentAmount))
+                DetailCommonText(text = travelMoneyPayment.paymentContent)
+                DetailCommonText(text = MoneyUtils.makeComma(travelMoneyPayment.paymentAmount))
             }
             Text(
-                text = publicMoneyPayment.paymentAt,
+                text = travelMoneyPayment.paymentAt,
                 color = TextGray,
-                style = pretendardSemiBold12,
+                style = CustomTextStyle.pretendardSemiBold12,
             )
         }
         Spacer(modifier = modifier.height(16.dp))

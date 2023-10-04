@@ -13,7 +13,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.moneyminions.domain.model.home.TravelRoomFriendDto
 import com.moneyminions.presentation.screen.game.cardgameview.CardGameStartView
 import com.moneyminions.presentation.screen.game.cardgameview.CardSlider
@@ -45,7 +44,6 @@ fun CardGameScreen(
     NetworkResultHandler(state = friendsListState, errorAction = { /*TODO*/ }, successAction = {
         selectedWinnerFriend = cardGameViewModel.getWinner(friendsList)
     })
-    
     LaunchedEffect(key1 = Unit) {
         Log.d(TAG, "CardGameScreen: $travelId")
         cardGameViewModel.getTravelRoomFriends(travelId)

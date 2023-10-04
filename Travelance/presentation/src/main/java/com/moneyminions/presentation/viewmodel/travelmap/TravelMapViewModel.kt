@@ -51,26 +51,48 @@ class TravelMapViewModel @Inject constructor(
         val locationList = mutableListOf<LocationDto>()
 
         for (spot in spotList) {
-            if(spot.storeAddress != "") {
-                val location = searchAddress(context, spot.storeAddress, spot.storeSector)
+            if(!spot.storeAddress.isNullOrEmpty()) {
+                val category = if(spot.storeSector.isNullOrEmpty()) "" else spot.storeSector!!
+                val location = searchAddress(context, spot.storeAddress!!, category)
                 locationList.add(location)
             }
         }
         return locationList
     }
+
+    fun calculateCenterLocation(spotList: List<LocationDto>): LocationDto {
+        if(spotList.isEmpty()) return LocationDto(latitude = 35.9078, longitude = 127.7669)
+
+        var totalLatitude = 0.0
+        var totalLongitude = 0.0
+
+        for (location in spotList) {
+            if(!location.storeAddress.isNullOrEmpty()) {
+                totalLatitude += location.latitude
+                totalLongitude += location.longitude
+            }
+        }
+        val centerLatitude = totalLatitude / spotList.size
+        val centerLongitude = totalLongitude / spotList.size
+
+        Log.d(TAG, "calculateCenterLocation: $totalLatitude $totalLongitude")
+        Log.d(TAG, "calculateCenterLocation: $centerLatitude $centerLongitude")
+
+        return LocationDto(latitude = centerLatitude, longitude = centerLongitude)
+    }
 }
 
 private fun searchAddress(
     context: Context,
-    address: String,
-    category: String,
+    address: String = "",
+    category: String = "",
 ): LocationDto {
     if (Build.VERSION.SDK_INT < 33) {
-        val list = Geocoder(context).getFromLocationName(address, 1)!!
+        val list = address?.let { Geocoder(context).getFromLocationName(it, 1) }!!
         Log.d(TAG, "address list : $list")
         return LocationDto(storeAddress = address, storeCategory = category, latitude = list[0].latitude, longitude = list[0].longitude)
     } else {
-        val list = Geocoder(context).getFromLocationName(address, 1)!!
+        val list = address?.let { Geocoder(context).getFromLocationName(it, 1) }!!
         Log.d(TAG, "searchAddress: address to  ${list[0].latitude}  ${list[0].longitude}")
         return LocationDto(storeAddress = address, storeCategory = category, latitude = list[0].latitude, longitude = list[0].longitude)
     }

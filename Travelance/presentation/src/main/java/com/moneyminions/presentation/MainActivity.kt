@@ -2,14 +2,10 @@ package com.moneyminions.presentation
 
 import android.annotation.SuppressLint
 import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
-import android.location.Address
-import android.location.Geocoder
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -21,7 +17,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -37,7 +32,6 @@ import com.moneyminions.presentation.utils.Constants.CHANNEL_NAME
 import com.moneyminions.presentation.utils.createNotificationChannel
 import com.moneyminions.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.IOException
 
 private const val TAG = "MainActivity D210"
 
@@ -47,6 +41,7 @@ class MainActivity : FragmentActivity() {
     private val notificationManager: NotificationManager by lazy {
         getSystemService(NOTIFICATION_SERVICE) as NotificationManager
     }
+
     @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -57,8 +52,6 @@ class MainActivity : FragmentActivity() {
         setContent {
             val intent: Intent = intent
 
-
-
             var isAuthenticated = remember { mutableStateOf(false) }
 
             val navController = rememberAnimatedNavController()
@@ -68,7 +61,7 @@ class MainActivity : FragmentActivity() {
                 val mainViewModel: MainViewModel = hiltViewModel()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = White
+                    color = White,
                 ) {
                     // Intent로부터 데이터 추출
                     val type = intent.getStringExtra("type")
@@ -90,10 +83,10 @@ class MainActivity : FragmentActivity() {
                             if (mainViewModel.getJwtToken().role == "MEMBER") {
                                 Log.d(
                                     TAG,
-                                    "MainScreen 진행 중인 room ID: ${mainViewModel.getTravelingRoomId()} "
+                                    "MainScreen 진행 중인 room ID: ${mainViewModel.getTravelingRoomId()} ",
                                 )
                                 mainViewModel.setSelectRoomId(mainViewModel.getTravelingRoomId()) // 진행 중인 여행방을 selectRoom에 저장
-    
+
                                 /**
                                  * 카카오 공유 API 반환 값 수신
                                  */
@@ -102,7 +95,7 @@ class MainActivity : FragmentActivity() {
                                     if (uri != null) {
                                         Log.d(
                                             TAG,
-                                            "onCreate: 카카오 공유 ${uri.getQueryParameter("roomId")} \n ${uri.getQueryParameter("route")} \n ${uri.getQueryParameter("data")}"
+                                            "onCreate: 카카오 공유 ${uri.getQueryParameter("roomId")} \n ${uri.getQueryParameter("route")} \n ${uri.getQueryParameter("data")}",
                                         )
 //                                    uri.getQueryParameter("roomId")
 //                                    uri.getQueryParameter("route")
@@ -115,14 +108,16 @@ class MainActivity : FragmentActivity() {
                                 } else {
                                     Screen.Home.route
                                 }
-                            } else Screen.Login.route
-                        
+                            } else {
+                                Screen.Login.route
+                            }
+
                         Log.d(TAG, "JWTTOKEN: ${mainViewModel.getJwtToken().accessToken}")
                         Log.d(TAG, "startDestination: $startDestination")
                         MainScreen(
                             startDestination = startDestination,
                             mainViewModel = mainViewModel,
-                            context = applicationContext
+                            context = applicationContext,
                         )
                     }
                 }
@@ -156,13 +151,11 @@ class MainActivity : FragmentActivity() {
 //                    }
 //                }
 
-
 //                MainScreen(rememberAnimatedNavController())
 
-////                 카카오
+// //                 카카오
 //                var keyHash = Utility.getKeyHash(this)
 //                Log.d(TAG, "Kakao HashKey : $keyHash")
-
 
                 /**
                  * 지문 인증 실행 부분에서 구현하면 됨 (mainActivity는 FragmentActivity()로 상속되게 함)
@@ -211,4 +204,3 @@ class MainActivity : FragmentActivity() {
         }
     }
 }
-
