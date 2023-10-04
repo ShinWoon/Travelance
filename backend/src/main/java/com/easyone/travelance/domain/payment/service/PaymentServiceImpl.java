@@ -2,8 +2,10 @@ package com.easyone.travelance.domain.payment.service;
 
 import com.easyone.travelance.domain.member.entity.MainAccount;
 import com.easyone.travelance.domain.member.entity.Member;
+import com.easyone.travelance.domain.member.entity.Profile;
 import com.easyone.travelance.domain.member.respository.MainAccountRepository;
 import com.easyone.travelance.domain.member.respository.MemberRepository;
+import com.easyone.travelance.domain.member.respository.ProfileRepository;
 import com.easyone.travelance.domain.payment.dto.*;
 import com.easyone.travelance.domain.payment.entity.Calculation;
 import com.easyone.travelance.domain.payment.entity.Payment;
@@ -14,9 +16,9 @@ import com.easyone.travelance.domain.travel.entity.TravelRoomMember;
 import com.easyone.travelance.domain.travel.enumclass.RoomType;
 import com.easyone.travelance.domain.travel.repository.TravelRoomMemberRepository;
 import com.easyone.travelance.domain.travel.repository.TravelRoomRepository;
+import com.easyone.travelance.domain.travel.service.TravelPaymentService;
 import com.easyone.travelance.global.FCM.FirebaseCloudMessageService;
 import com.easyone.travelance.global.memberInfo.MemberInfoDto;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -31,10 +33,7 @@ import org.threeten.bp.format.DateTimeFormatter;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -54,11 +53,18 @@ public class PaymentServiceImpl implements PaymentService{
     @Autowired
     private CalculationRepository calculationRepository;
     @Autowired
+    private ProfileRepository profileRepository;
+    @Autowired
     private FirebaseCloudMessageService firebaseCloudMessageService;
     @Autowired
     private WebClient webClient;
-    @Autowired
-    private ObjectMapper objectMapper;
+
+    private final TravelPaymentService travelPaymentService;
+
+    public PaymentServiceImpl(TravelPaymentService travelPaymentService) {
+        this.travelPaymentService = travelPaymentService;
+    }
+
 
     @Transactional
     @KafkaListener(topics = "travelance", groupId = "travelance")
@@ -377,6 +383,77 @@ public class PaymentServiceImpl implements PaymentService{
             travelRoom.setRoomType(RoomType.DONE);
             travelRoomRepository.save(travelRoom);
         }
+    }
+
+    @Override
+    public TransferInfoDto getTransferInfo(Long roomId, Member member){
+        TravelRoom travelRoom = travelRoomRepository.findById(roomId).orElseThrow(() -> new EntityNotFoundException("여행방을 찾을 수 없습니다."));
+        List<Calculation> calculations = calculationRepository.findByTravelRoom(roomId);
+
+        // TravelRoomInfo 설정
+        TransferInfoDto.TravelRoomInfo roomInfo = new TransferInfoDto.TravelRoomInfo(
+                travelRoom.getStartDate(),
+                travelRoom.getEndDate(),
+                travelRoom.getBudget(),
+                travelRoom.getTravelName()
+        );
+
+        List<TransferInfoDto.SendInfo> sendInfos = new ArrayList<>();
+        List<TransferInfoDto.ReceiveInfo> receiveInfos = new ArrayList<>();
+
+        for(Calculation calculation : calculations){
+            // fromMemberId가 현재 멤버의 ID와 일치하면 SendInfo로 변환
+            if(calculation.getFromMemberId().equals(member.getId())){
+                Optional<Member> sendToMember = memberRepository.findById(calculation.getToMemberId());
+                Profile sendToProfile = profileRepository.findByMemberAndTravelRoom(sendToMember.get(), travelRoom);
+                sendInfos.add(new TransferInfoDto.SendInfo(sendToMember.get().getNickname(), sendToProfile.getProfileUrl(), calculation.getAmount()));
+            }
+
+            // toMemberId가 현재 멤버의 ID와 일치하면 ReceiveInfo로 변환
+            if(calculation.getToMemberId().equals(member.getId())){
+                Optional<Member> receiveFromMember = memberRepository.findById(calculation.getFromMemberId());
+                Profile receiveFromProfile = profileRepository.findByMemberAndTravelRoom(receiveFromMember.get(), travelRoom);
+                receiveInfos.add(new TransferInfoDto.ReceiveInfo(receiveFromMember.get().getNickname(), receiveFromProfile.getProfileUrl(), calculation.getAmount()));
+            }
+        }
+        List<TravelRoomMember> allMembers = travelRoom.getTravelRoomMembers();
+        List<Payment> payments = paymentRepository.findByIsWithPaidAndTravelRoomId(true, roomId);
+
+        // 인원당 금액
+
+        Long totalAmount = 0L;
+        for (Payment payment : payments) {
+            totalAmount += payment.getPaymentAmount();
+        }
+        log.warn("총 금액:" + totalAmount);
+
+        Long perAmount = totalAmount / allMembers.size();
+        log.warn("1인당 지출금액" + perAmount);
+
+        // 현재 멤버의 금액 (isWithPaid가 true이면서 memberId가 일치하는 값의 합)
+        Long myAmount = payments.stream()
+                .filter(payment -> payment.getMember().getId().equals(member.getId()))
+                .mapToLong(Payment::getPaymentAmount)
+                .sum();
+
+        // SendInfo에 있는 paymentAmount의 합
+        Long transferTotalAmount = sendInfos.stream()
+                .mapToLong(TransferInfoDto.SendInfo::getPaymentAmount)
+                .sum();
+
+        TransferInfoDto.PaymentInfo paymentInfo = new TransferInfoDto.PaymentInfo();
+        paymentInfo.setTotalAmount(totalAmount);
+        paymentInfo.setPerAmount(perAmount);
+        paymentInfo.setMyAmount(myAmount);
+        paymentInfo.setTransferTotalAmount(transferTotalAmount);
+
+        TransferInfoDto transferInfoDto = new TransferInfoDto();
+        transferInfoDto.setTravelRoomInfo(roomInfo);
+        transferInfoDto.setPaymentInfo(paymentInfo);
+        transferInfoDto.setSendInfos(sendInfos);
+        transferInfoDto.setReceiveInfos(receiveInfos);
+
+        return transferInfoDto;
     }
 
 }
