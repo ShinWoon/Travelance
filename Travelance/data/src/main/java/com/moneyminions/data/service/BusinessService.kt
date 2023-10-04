@@ -128,14 +128,14 @@ interface BusinessService {
     /**
      * 개인 결제 금액 요청
      */
-    @GET("travel/payment/alone")
-    suspend fun getMyPaymentList(): List<TravelDetailMyPaymentResponse>
+    @GET("travel/payment/{roomId}/alone")
+    suspend fun getMyPaymentList(@Path(value = "roomId") roomId: Int): List<TravelDetailMyPaymentResponse>
 
     /**
      * 여행 상세 요청
      */
-    @GET("travel/payment/with")
-    suspend fun getTravelDetailInfo(): TravelDetailInfoResponse
+    @GET("travel/payment/{roomId}/with")
+    suspend fun getTravelDetailInfo(@Path(value = "roomId") roomId: Int): TravelDetailInfoResponse
 
     /**
      * 공금 여부 수정
