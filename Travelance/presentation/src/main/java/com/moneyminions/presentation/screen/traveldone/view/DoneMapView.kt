@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 @Composable
 fun DoneMapView(
     modifier: Modifier = Modifier,
+    roomId: Int,
 ) {
     Box(
         modifier = modifier.fillMaxWidth(),
