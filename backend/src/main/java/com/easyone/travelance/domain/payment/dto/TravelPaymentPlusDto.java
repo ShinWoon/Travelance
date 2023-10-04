@@ -35,6 +35,7 @@ public class TravelPaymentPlusDto {
         private String endDate;
         private Long budget;
         private String travelName;
+        private boolean isDone;
     }
 
 }

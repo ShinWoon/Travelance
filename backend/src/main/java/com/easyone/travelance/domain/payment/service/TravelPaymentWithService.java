@@ -89,6 +89,12 @@ public class TravelPaymentWithService {
         roomInfo.setEndDate(travelRoom.getEndDate());
         roomInfo.setBudget(travelRoom.getBudget());
         roomInfo.setTravelName(travelRoom.getTravelName());
+        // 여기에서 현재 사용자에 해당하는 TravelRoomMember 객체를 찾고, 그 객체의 isDone 값을 가져옵니다.
+        Optional<TravelRoomMember> currentUserTravelRoomMember = travelRoomMembers.stream()
+                .filter(trm -> trm.getMember().equals(member))
+                .findFirst();
+
+        currentUserTravelRoomMember.ifPresent(trm -> roomInfo.setDone(trm.isDone())); // 만약 해당 사용자에 대한 TravelRoomMember 객체가 있으면, 그 객체의 isDone 값을 사용
 
         List<TravelPaymentPlusDto.TravelRoomInfo> travelRoomInfos = Collections.singletonList(roomInfo);
 
