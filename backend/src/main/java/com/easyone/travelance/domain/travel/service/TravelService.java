@@ -221,8 +221,9 @@ public class TravelService {
 
     }
 
-    @CacheEvict(value = "roomCacheAll", key = "#member.id")
+    @CacheEvict(value = "roomCacheAll", key = "#memberId")
     public void evictroomCacheAllCache(Long memberId) {
         // 이 메서드는 CacheEvict 어노테이션을 사용하여 캐시를 비우기 위한 용도로만 사용됩니다.
     }
+
 }
