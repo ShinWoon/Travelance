@@ -56,7 +56,7 @@ public class TravelController {
                                                @PathVariable Long roomId,
                                                @RequestPart RoomUserRequestDto roomUserRequestDto) throws Exception {
         Member member = memberService.findMemberByEmail(memberInfo.getEmail());
-        ResultDto resultDto =travelService.adduser(roomId, member, roomUserRequestDto);
+        ResultDto resultDto =travelService.adduser(roomId, member, roomUserRequestDto, profileUrl);
         return new ResponseEntity<>(resultDto, HttpStatus.OK);
     }
 

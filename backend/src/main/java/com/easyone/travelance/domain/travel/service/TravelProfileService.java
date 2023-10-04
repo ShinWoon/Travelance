@@ -25,7 +25,7 @@ public class TravelProfileService {
     public void saveImage(TravelRoom travelRoom, MultipartFile imageFile, Member member) throws Exception {
         String imageUrl = awsS3Service.uploadFile(imageFile, "profile");
         UserProfileRequestDto requestDto = UserProfileRequestDto.builder()
-                .imageName("쿼카")
+                .imageName(imageFile.getOriginalFilename())
                 .imageUrl(imageUrl)
                 .build();
 
