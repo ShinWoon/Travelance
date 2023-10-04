@@ -56,7 +56,7 @@ class FCMService: FirebaseMessagingService() {
         // background 에 있을경우 혹은 foreground에 있을경우 두 경우 모두
         val notification = remoteMessage.notification
         val data = remoteMessage.data
-
+        Log.d(TAG, "paymentId : ${data["paymentId"]}")
         if(data["paymentId"]!=null) {
             messageTitle = "공금에 등록하시겠습니까?"
             messageContent = data["message"]!!
