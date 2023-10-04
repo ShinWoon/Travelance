@@ -51,9 +51,9 @@ fun CardRowItem(
     ){
         Row(
             modifier = Modifier.padding(8.dp)
-                .then(if (type == "select") Modifier.fillMaxWidth() else Modifier)
-                .clickable(enabled = isUpdate != true, onClick = { onSelected() })
-                .background(if (isUpdate == true) LightGray else Color.Transparent),
+                .then(if (type == "select") Modifier.fillMaxWidth() else Modifier),
+//                .clickable(enabled = isUpdate != true, onClick = { onSelected() })
+//                .background(if (isUpdate == true) LightGray else Color.Transparent),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ){

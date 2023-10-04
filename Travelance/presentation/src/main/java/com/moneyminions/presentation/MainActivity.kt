@@ -29,6 +29,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.MainScreen
+import com.moneyminions.presentation.screen.result.SettleResultReceiveScreen
 import com.moneyminions.presentation.theme.MyApplicationTheme
 import com.moneyminions.presentation.theme.White
 import com.moneyminions.presentation.utils.Constants.CHANNEL_ID
@@ -54,6 +55,10 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         createNotificationChannel(notificationManager, CHANNEL_ID, CHANNEL_NAME)
         setContent {
+            val intent: Intent = intent
+
+
+
             var isAuthenticated = remember { mutableStateOf(false) }
 
             val navController = rememberAnimatedNavController()
@@ -65,16 +70,30 @@ class MainActivity : FragmentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = White
                 ) {
-                    val startDestination =
-                        if (mainViewModel.getJwtToken().role == "MEMBER") {
-                            Log.d(TAG, "MainScreen 진행 중인 room ID: ${mainViewModel.getTravelingRoomId()} ")
-                            mainViewModel.setSelectRoomId(mainViewModel.getTravelingRoomId()) // 진행 중인 여행방을 selectRoom에 저장
-                            Screen.Home.route
-                        }
-                        else Screen.Login.route
-                    Log.d(TAG, "JWTTOKEN: ${mainViewModel.getJwtToken().accessToken}")
-                    Log.d(TAG, "startDestination: $startDestination")
-                    MainScreen(startDestination = startDestination, mainViewModel = mainViewModel, context = applicationContext)
+                    // Intent로부터 데이터 추출
+                    val type = intent.getStringExtra("type")
+                    if (type != null) {
+                        Log.d(TAG, "onCreate type: $type")
+                        SettleResultReceiveScreen(navController = rememberAnimatedNavController(), roomId = intent.getIntExtra("roomId",0))
+                    }
+                    else {
+                        val startDestination =
+                            if (mainViewModel.getJwtToken().role == "MEMBER") {
+                                Log.d(
+                                    TAG,
+                                    "MainScreen 진행 중인 room ID: ${mainViewModel.getTravelingRoomId()} "
+                                )
+                                mainViewModel.setSelectRoomId(mainViewModel.getTravelingRoomId()) // 진행 중인 여행방을 selectRoom에 저장
+                                Screen.Home.route
+                            } else Screen.Login.route
+                        Log.d(TAG, "JWTTOKEN: ${mainViewModel.getJwtToken().accessToken}")
+                        Log.d(TAG, "startDestination: $startDestination")
+                        MainScreen(
+                            startDestination = startDestination,
+                            mainViewModel = mainViewModel,
+                            context = applicationContext
+                        )
+                    }
                 }
                 val systemUiController = rememberSystemUiController()
                 SideEffect {
