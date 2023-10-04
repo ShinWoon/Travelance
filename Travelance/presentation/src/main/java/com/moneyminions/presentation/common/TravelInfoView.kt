@@ -117,7 +117,7 @@ fun DateText(
 @Composable
 fun BudgetText(
     budget: Int,
-    type: String,
+    type: String = "",
     modifier: Modifier,
 ) {
     Text(
