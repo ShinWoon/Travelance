@@ -149,8 +149,8 @@ public class PaymentServiceImpl implements PaymentService{
 
         paymentRepository.save(payment);
 
-        evictpaymentWithsCache(memberId);
-        evictpaymentAlonesCache(memberId);
+//        evictpaymentWithsCache(memberId);
+//        evictpaymentAlonesCache(memberId);
 
         return "결제내역 저장 성공";
     }
@@ -326,8 +326,8 @@ public class PaymentServiceImpl implements PaymentService{
         
         log.info("현금결제 : " + member.getId());
 
-        evictpaymentAlonesCache(member.getId());
-        evictpaymentWithsCache(member.getId());
+//        evictpaymentAlonesCache(member.getId());
+//        evictpaymentWithsCache(member.getId());
 
         return "현금 결제내역 저장 성공";
     }
