@@ -60,6 +60,7 @@ public class TravelService {
     //유저가 방에 추가되어 닉네임과 사진을 설정하고, 친구 목록을 반환
     //Profileurl도 같이 반환
     @Transactional
+    @CacheEvict(value = "roomCache", key = "#roomId")
     public ResultDto adduser(Long roomId, Member member, RoomUserRequestDto roomUserRequestDto, MultipartFile profileUrl) throws Exception {
 
         TravelRoom travelRoom = travelRoomRepository.findById(roomId)
@@ -164,6 +165,7 @@ public class TravelService {
 
         if (travelRoomMember!=null) {
             travelRoomMemberRepository.delete(travelRoomMember);
+            evictroomCacheAllCache(member.getId());
             return new ResultDto("여행방 나가기 성공");
         }
         else {
@@ -217,5 +219,10 @@ public class TravelService {
             return new ResultDto("여행방 시작 실패");
         }
 
+    }
+
+    @CacheEvict(value = "roomCacheAll", key = "#member.id")
+    public void evictroomCacheAllCache(Long memberId) {
+        // 이 메서드는 CacheEvict 어노테이션을 사용하여 캐시를 비우기 위한 용도로만 사용됩니다.
     }
 }
