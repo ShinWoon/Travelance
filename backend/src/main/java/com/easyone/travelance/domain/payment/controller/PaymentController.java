@@ -32,9 +32,22 @@ public class PaymentController {
     @Operation(summary = "현금 사용내역 등록")
     public ResponseEntity<ResultDto> registerCash(@MemberInfo MemberInfoDto memberInfoDto,
                                                   @RequestBody RegisterCashRequestDto registerCashRequestDto) {
+
+        // 시작 시간 기록
+        long startTime = System.currentTimeMillis();
+
         Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
         String response = paymentService.registerCash(member, registerCashRequestDto);
         ResultDto resultDto = new ResultDto(response);
+
+        // 종료 시간 기록
+        long endTime = System.currentTimeMillis();
+
+        // 실행 시간 계산
+        long executionTime = endTime - startTime;
+
+        log.info("registerCash : " + executionTime);
+
         return new ResponseEntity<>(resultDto, HttpStatus.OK);
     }
 

@@ -11,6 +11,7 @@ import com.easyone.travelance.global.memberInfo.MemberInfo;
 import com.easyone.travelance.global.memberInfo.MemberInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/travel/payment")
@@ -29,9 +31,19 @@ public class TravelPaymentController {
     @GetMapping(value = "/with")
     @Operation(summary = "내가 결제한 금액 중, 공금인 내역만 가져옵니다.")
     public ResponseEntity<TravelPaymentPlusDto> getPaymentWith(@MemberInfo MemberInfoDto memberInfoDto) {
+        // 시작 시간 기록
+        long startTime = System.currentTimeMillis();
 
         Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
         TravelPaymentPlusDto travelPaymentPlusDto = travelPaymentWithService.getPaymentWith(member);
+
+        // 종료 시간 기록
+        long endTime = System.currentTimeMillis();
+
+        // 실행 시간 계산
+        long executionTime = endTime - startTime;
+
+        log.info("getPaymentWith : " + executionTime);
 
         return new ResponseEntity<>(travelPaymentPlusDto, HttpStatus.OK);
     }
@@ -40,8 +52,21 @@ public class TravelPaymentController {
     @Operation(summary = "내가 결제한 금액 중, 개인 결제 내역만 가져옵니다.")
     public ResponseEntity<List<TravelPaymentResponseDto>> getPaymentAlone(@MemberInfo MemberInfoDto memberInfoDto) {
 
+        // 시작 시간 기록
+        long startTime = System.currentTimeMillis();
+
         Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
         List<TravelPaymentResponseDto> travelPaymentResponseDtoList = travelPaymentWithService.getPaymentAlone(member);
+
+
+        // 종료 시간 기록
+        long endTime = System.currentTimeMillis();
+
+        // 실행 시간 계산
+        long executionTime = endTime - startTime;
+
+        log.info("getPaymentAlone : " + executionTime);
+
 
         return new ResponseEntity<>(travelPaymentResponseDtoList, HttpStatus.OK);
     }
