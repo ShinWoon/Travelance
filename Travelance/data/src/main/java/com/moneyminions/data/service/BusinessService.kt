@@ -17,6 +17,7 @@ import com.moneyminions.data.model.login.response.JoinResponse
 import com.moneyminions.data.model.login.response.LoginResponse
 import com.moneyminions.data.model.login.response.MemberInfoResponse
 import com.moneyminions.data.model.login.response.ReAccessTokenResponse
+import com.moneyminions.data.model.traveldetail.response.SettleResultResponse
 import com.moneyminions.data.model.traveldetail.request.PaymentCompleteRequest
 import com.moneyminions.data.model.traveldetail.request.TravelPaymentChangeInfoRequest
 import com.moneyminions.data.model.traveldetail.response.TravelDetailInfoResponse
@@ -245,4 +246,12 @@ interface BusinessService {
         @Path("roomId") roomId: Int,
         @Body travelMapDetailRequest: TravelMapDetailRequest
     ) : List<TravelMapDetailResponse>
+
+    /**
+     * 정산 결과 조회
+     */
+    @GET("payment/{roomId}/info")
+    suspend fun getSettleResult(
+        @Path("roomId") roomId: Int
+    ): SettleResultResponse
 }
