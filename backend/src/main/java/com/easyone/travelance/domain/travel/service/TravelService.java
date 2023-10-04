@@ -90,9 +90,9 @@ public class TravelService {
                 .isDone(false)
                 .nickName(roomUserRequestDto.getNickName())
                 .build();
-            // 캐싱 삭제
-        evictroomCacheAllCache(member.getId());
         travelRoomMemberRepository.save(travelRoomMember);
+        // 캐싱 삭제
+        evictroomCacheAllCache(member.getId());
         return new ResultDto("참여자 방에 저장");
 
     }
