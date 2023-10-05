@@ -370,6 +370,11 @@ public class PaymentServiceImpl implements PaymentService{
             transferRequestToBankDto.setAmount(calculation.getAmount());
             transferRequestToBankDto.setMemo(existTravelRoom.get().getTravelName());
             log.info("계좌이체 요청");
+
+            // 5-1. 로컬 데이트타입
+            transferRequestToBankDto.setTransferAt(java.time.LocalDateTime.now());
+            log.info("시간까지 옴");
+            
             // 6. 계좌 이체 요청
             try {
                 ResponseEntity<String> result = webClient.post()
