@@ -395,7 +395,7 @@ public class PaymentServiceImpl implements PaymentService{
                 updateTravelRoomStatus(existTravelRoom.get());
                 log.info("방 상태 업데이트");
 
-                return result.getBody();
+//                return result.getBody();
 
             } catch (Exception e) {
                 throw new RuntimeException(e);
