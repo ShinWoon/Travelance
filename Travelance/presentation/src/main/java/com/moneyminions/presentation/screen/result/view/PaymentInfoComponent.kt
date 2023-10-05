@@ -82,7 +82,7 @@ fun PaymentInfoComponenet(
             )
             Text(
                 text = if((settleResultPaymentInfoDto?.transferTotalAmount?:0)>=0) "-${MoneyUtils.makeComma(settleResultPaymentInfoDto?.transferTotalAmount?:0)}"
-                        else "+${MoneyUtils.makeComma(settleResultPaymentInfoDto?.transferTotalAmount?:0)}",
+                        else "+${MoneyUtils.makeComma(Math.abs(settleResultPaymentInfoDto?.transferTotalAmount?:0))}",
                 style = CustomTextStyle.pretendardSemiBold16.copy(
                     color = if((settleResultPaymentInfoDto?.transferTotalAmount?:0)>=0) PinkMiddle else BlueMiddle
                 )
