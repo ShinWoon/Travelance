@@ -33,6 +33,7 @@ public class TravelPaymentService {
 
     @Transactional(readOnly = true)
     public List<PaymentResponseDto> findByTravelId(Member member, Long roomId) {
+        log.info("개인내역!! ---"+member.getId(), roomId);
         List<Payment> payments = paymentRepository.findByTravelRoomIdAndIsWithPaidIsTrue(roomId);
         return getPaymentResponseDtos(member, roomId, payments);
 
@@ -40,7 +41,7 @@ public class TravelPaymentService {
 
     @Transactional(readOnly = true)
     public List<PaymentResponseDto> findByTravelIdAndMemberId(Member member, Long roomId) {
-        log.info(member.getId().toString());
+        log.info("공금내역!! ---"+member.getId(), roomId);
         List<Payment> payments = paymentRepository.findAllByTravelRoom_IdAndMemberAndIsWithPaidTrue(roomId, member);
         return getPaymentResponseDtos(member, roomId, payments);
     }
