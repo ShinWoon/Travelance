@@ -58,6 +58,7 @@ class FCMService: FirebaseMessagingService() {
     private fun sendNotification(remoteMessage: RemoteMessage) {
         var messageTitle = ""
         var messageBody = ""
+        var notificationId = (System.currentTimeMillis()).toInt()
 //        var articleId = ""
 //        var type = ""
 
@@ -77,7 +78,7 @@ class FCMService: FirebaseMessagingService() {
         val mainPendingIntent: PendingIntent =
             PendingIntent.getActivity(
                 this,
-                101,
+                notificationId,
                 mainIntent,
                 PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
@@ -108,7 +109,7 @@ class FCMService: FirebaseMessagingService() {
                 }
             }
             Log.d(TAG, "notify...")
-            notify(101, notificationBuilder.build())
+            notify(notificationId, notificationBuilder.build())
         }
     }
 
