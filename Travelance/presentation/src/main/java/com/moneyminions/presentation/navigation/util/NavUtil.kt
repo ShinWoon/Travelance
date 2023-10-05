@@ -21,5 +21,6 @@ fun getScreenTitle(route: String): String = when(if (route.contains("/")) route.
     NavRouteName.SUBHOME -> NavTitle.SUBHOME
     NavRouteName.EDITTRAVEL -> NavTitle.EDITTRAVEL
     NavRouteName.WAITHOME -> NavTitle.WAITHOME
+    NavRouteName.SETTLERESULT -> NavTitle.SETTLERESULT
     else -> ""
 }

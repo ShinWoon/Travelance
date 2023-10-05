@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -89,13 +90,15 @@ fun NicknamePasswordScreen(
                     title = "비밀번호",
                     hint = "비밀번호를 입력해주세요",
                     value = nicknamePasswordViewModel.password.value,
-                    onValueChange = {nicknamePasswordViewModel.setPassword(it)}
+                    onValueChange = {nicknamePasswordViewModel.setPassword(it)},
+                    keyboardType = KeyboardType.Number
                 )
                 TextFieldWithTitle(
                     title = "비밀번호 확인",
                     hint = "비밀번호를 입력해주세요",
                     value = nicknamePasswordViewModel.confirmPassword.value,
-                    onValueChange = {nicknamePasswordViewModel.setConfirmPassword(it)}
+                    onValueChange = {nicknamePasswordViewModel.setConfirmPassword(it)},
+                    keyboardType = KeyboardType.Number
                 )
             }
             MinionPrimaryButton(
