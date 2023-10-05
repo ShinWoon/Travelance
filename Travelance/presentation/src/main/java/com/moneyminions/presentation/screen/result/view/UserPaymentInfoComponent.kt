@@ -41,12 +41,10 @@ fun UserPaymentInfoComponent(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Start,
+                        horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-
                         Row (
-                            modifier = Modifier.weight(2f),
                             verticalAlignment = Alignment.CenterVertically
                         ){
                             MinionProfile(size = 48.dp, img = receiveInfos[idx].profileUrl)
@@ -58,7 +56,6 @@ fun UserPaymentInfoComponent(
                                 style = CustomTextStyle.pretendardBold16,
                             )
                         }
-
                         Box(
                             modifier = Modifier
                                 .weight(1f),
@@ -81,12 +78,11 @@ fun UserPaymentInfoComponent(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Start,
+                        horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
                         Row (
-                            modifier = Modifier.weight(2f),
                             verticalAlignment = Alignment.CenterVertically
                         ){
                             MinionProfile(size = 48.dp, img = sendInfos[idx].profileUrl)
@@ -100,8 +96,6 @@ fun UserPaymentInfoComponent(
                         }
 
                         Box(
-                            modifier = Modifier
-                                .weight(1f),
                             contentAlignment = Alignment.CenterStart,
                         ) {
                             Text(

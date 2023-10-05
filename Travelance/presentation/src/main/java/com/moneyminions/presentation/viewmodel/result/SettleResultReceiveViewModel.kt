@@ -1,5 +1,6 @@
 package com.moneyminions.presentation.viewmodel.result
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val TAG = "SettleResultReceiveView D210"
 @HiltViewModel
 class SettleResultReceiveViewModel @Inject constructor(
     private val getSettleResultUseCase: GetSettleResultUseCase,
@@ -49,6 +51,7 @@ class SettleResultReceiveViewModel @Inject constructor(
     val finalPaymentResult = _finalPaymentResult.asStateFlow()
     fun postFinalPayment(){
         viewModelScope.launch {
+            Log.d(TAG, "postFinalPayment에서 dto : ${_finalPaymentDto.value} ")
             _finalPaymentResult.emit(postFinalPaymentUseCase.invoke(_finalPaymentDto.value!!))
         }
     }

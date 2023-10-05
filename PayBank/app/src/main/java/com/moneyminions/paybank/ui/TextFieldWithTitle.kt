@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun TextFieldWithTitle(
+    modifier: Modifier,
     title: String,
     hint: String?,
     value: String,
@@ -57,7 +59,7 @@ fun TextFieldWithTitle(
 
 
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier
     ) {
         Text(
             text = title,
@@ -102,5 +104,5 @@ fun TextFieldWithTitle(
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
 @Composable
 fun TextFieldWithTitlePreview(){
-    TextFieldWithTitle(title = "title", hint = "hint", value = "", onValueChange = {})
+    TextFieldWithTitle(modifier = Modifier, title = "title", hint = "hint", value = "", onValueChange = {})
 }
