@@ -391,15 +391,15 @@ public class PaymentServiceImpl implements PaymentService{
                 calculation.setTransferedAt(java.time.LocalDateTime.now());
                 calculationRepository.save(calculation);
 
+                updateTravelRoomStatus(existTravelRoom.get());
+                log.info("방 상태 업데이트");
+
                 return result.getBody();
 
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
-
-        updateTravelRoomStatus(existTravelRoom.get());
-        log.info("방 상태 업데이트");
 
         return "모든 이체가 완료되었습니다."; // 모든 계산이 완료된 후에 반환될 메시지
     }
