@@ -141,7 +141,7 @@ fun UseMoneyItem(
         ) {
             Text(
                 text = makeCommaWon(travelMemberUseDto.price) ,
-                style = CustomTextStyle.pretendardBold16,
+                style = CustomTextStyle.pretendardBoldMoney16,
             )
         }
     }

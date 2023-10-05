@@ -217,6 +217,12 @@ object CustomTextStyle {
         fontSize = 20.sp,
         letterSpacing = 0.5.sp,
     )
+    
+    val pretendardBoldMoney16 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.pretendard_bold)),
+        fontSize = 16.sp,
+        letterSpacing = 0.5.sp,
+    )
 
     val pretendardExtraBold64 = TextStyle(
         fontFamily = FontFamily(Font(R.font.pretendard_extra_bold)),
