@@ -220,7 +220,7 @@ public class PaymentServiceImpl implements PaymentService{
             travelRoomRepository.save(travelRoom);
             log.info("RoomType WAIT 변경");
         }
-        return null;
+        return "정산요청 성공";
     }
 
     public void calculateTransfer(Long travelRoomId) {
