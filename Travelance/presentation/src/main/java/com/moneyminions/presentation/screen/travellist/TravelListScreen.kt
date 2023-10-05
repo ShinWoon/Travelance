@@ -100,6 +100,7 @@ fun TravelListScreen(
         },
         successAction = {
             Log.d(TAG, "travelListResult : $it ")
+            travelListViewModel.initTravelListResult()
             travelListViewModel.refresh(it.toMutableList())
         },
     )
@@ -173,8 +174,10 @@ fun TravelListScreen(
                             R.drawable::class.java
                         ),
                         failAction = {
-                            travelListViewModel.getTravelList()
-//                                     travelListViewModel.refresh()
+                            Log.d(TAG, "TravelListScreen: fail 엑션 실행")
+//                            travelListViewModel.getTravelList()
+                            val changeTravelList = travelListViewModel.travelList.value
+                            travelListViewModel.refresh(changeTravelList)
                         },
                     )
                 }
@@ -228,6 +231,8 @@ fun TravelRoomItem(
     val currentItem by rememberUpdatedState(travelRoomDto)
     val dismissState = rememberDismissState(
         confirmValueChange = {
+            Log.d(TAG, "TravelRoomItem: $it")
+            var result = false
             if (it == DismissValue.DismissedToStart) { // 오른쪽 -> 왼쪽으로 스와이프시 삭제
                 bioAuth(
                     isAuthenticated = isAuthenticated,
@@ -239,12 +244,14 @@ fun TravelRoomItem(
                     if (isAuthenticated as Boolean) {
                         Log.d(TAG, "TravelRoomItem: 삭제 실행 ")
                         show = false
+                        result = true
                     } else {
                         Log.d(TAG, "TravelRoomItem: 실패")
                         failAction()
+                        result = false
                     }
                 }
-                true
+                result
             } else {
                 false
             }

@@ -37,6 +37,11 @@ class TravelListViewModel @Inject constructor(
             _networkTravelList.emit(getTravelListUseCase.invoke())
         }
     }
+    fun initTravelListResult(){
+        viewModelScope.launch {
+            _networkTravelList.emit(NetworkResult.Idle)
+        }
+    }
     
     private val _travelList = mutableStateOf(mutableListOf<TravelRoomDto>())
     val travelList: State<MutableList<TravelRoomDto>> = _travelList
