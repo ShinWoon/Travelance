@@ -33,6 +33,7 @@ public class TravelPaymentService {
 
     @Transactional(readOnly = true)
     public List<PaymentResponseDto> findByTravelId(Member member, Long roomId) {
+        log.info("개인내역!! ---"+member.getId()+"룸정보"+roomId);
         List<Payment> payments = paymentRepository.findByTravelRoomIdAndIsWithPaidIsTrue(roomId);
         return getPaymentResponseDtos(member, roomId, payments);
 
@@ -40,7 +41,7 @@ public class TravelPaymentService {
 
     @Transactional(readOnly = true)
     public List<PaymentResponseDto> findByTravelIdAndMemberId(Member member, Long roomId) {
-        log.info(member.getId().toString());
+        log.info("공금내역!! ---"+member.getId()+"룸정보"+roomId);
         List<Payment> payments = paymentRepository.findAllByTravelRoom_IdAndMemberAndIsWithPaidTrue(roomId, member);
         return getPaymentResponseDtos(member, roomId, payments);
     }
@@ -53,6 +54,7 @@ public class TravelPaymentService {
         ArrayList<PaymentResponseDto> paymentArrayList = new ArrayList<>();
 
         for (Payment payment: payments) {
+            log.info("payment문제인가!! ---"+payment.getPaymentContent());
             String profileUrl = profileRepository.findByMemberAndTravelRoom(payment.getMember(), travelRoom).getProfileUrl();
             TravelRoomMember travelRoomMember = travelRoomMemberRepository.findByTravelRoomAndMember(travelRoom, payment.getMember())
                     .orElseThrow(()-> new IllegalArgumentException("사용자가" + member.getId() + "이 여행방에 없습니다" + roomId));
