@@ -66,7 +66,8 @@ public class TravelPaymentService {
 
     @Transactional(readOnly = true)
     public Long TotalPriceTravelId(Long roomId) {
-        List<Payment> payments = paymentRepository.findByTravelRoomId(roomId);
+//        List<Payment> payments = paymentRepository.findByTravelRoomId(roomId);
+        List<Payment> payments = paymentRepository.findByTravelRoomIdAndIsWithPaidIsTrue(roomId);
 
         if (payments.size()!=0) {
             Long totalprice = payments.stream()
