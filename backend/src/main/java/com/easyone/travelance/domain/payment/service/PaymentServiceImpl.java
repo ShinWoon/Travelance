@@ -322,6 +322,8 @@ public class PaymentServiceImpl implements PaymentService{
                 .paymentAmount(registerCashRequestDto.getPaymentAmount())
                 .paymentContent(registerCashRequestDto.getPaymentContent())
                 .paymentAt(formattedDateString)
+                .storeSector("그 외")
+                .storeAddress("")
                 .isWithPaid(true)
                 .build();
 
