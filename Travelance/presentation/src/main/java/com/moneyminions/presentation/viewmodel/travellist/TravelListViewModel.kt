@@ -1,6 +1,8 @@
 package com.moneyminions.presentation.viewmodel.travellist
 
 import android.util.Log
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moneyminions.domain.model.NetworkResult
@@ -12,9 +14,7 @@ import com.moneyminions.domain.usecase.travellist.DeleteTravelRoomUseCase
 import com.moneyminions.domain.usecase.travellist.GetTravelListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -38,18 +38,16 @@ class TravelListViewModel @Inject constructor(
         }
     }
     
-    private val _travelList = MutableStateFlow((emptyList<TravelRoomDto>()))
-    val travelList: StateFlow<List<TravelRoomDto>> = _travelList.asStateFlow()
+    private val _travelList = mutableStateOf(mutableListOf<TravelRoomDto>())
+    val travelList: State<MutableList<TravelRoomDto>> = _travelList
 
     /**
      * 여행방 갱신
      */
     fun refresh(travelList: MutableList<TravelRoomDto>) {
-        _travelList.update {
-            travelList
-        }
+        _travelList.value = travelList
     }
-
+    
     /**
      * 여행방 삭제 API
      */

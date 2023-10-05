@@ -172,6 +172,10 @@ fun TravelListScreen(
                             "ic_travel_${(index % 10) + 1}",
                             R.drawable::class.java
                         ),
+                        failAction = {
+                            travelListViewModel.getTravelList()
+//                                     travelListViewModel.refresh()
+                        },
                     )
                 }
             },
@@ -212,6 +216,7 @@ fun TravelRoomItem(
     navController: NavController,
     mainViewModel: MainViewModel,
     iconId: Int,
+    failAction: () -> Unit,
 ) {
     val context = LocalContext.current
     
@@ -236,6 +241,7 @@ fun TravelRoomItem(
                         show = false
                     } else {
                         Log.d(TAG, "TravelRoomItem: 실패")
+                        failAction()
                     }
                 }
                 true
@@ -318,7 +324,6 @@ fun bioAuth(
     currentItem: TravelRoomDto,
     onComplete: (Any?) -> Unit
 ) {
-    var result = false
     Log.d(TAG, "bioAuth: $con $isAuthenticated")
     if (con && !isAuthenticated) {
         BiometricUtils.authenticate(
@@ -327,16 +332,16 @@ fun bioAuth(
             negativeText = "Password",
             onSuccess = {
                 Log.d(TAG, "지문인증 성공")
-
                 onComplete(true)
             },
             onError = { _, _ ->
                 Log.d(TAG, "지문인증 에러")
+                onComplete(false)
             },
             onFailed = {
                 Log.d(TAG, "지문 인증 실패")
+                onComplete(false)
             },
         )
     }
-    Log.d(TAG, "bioAuth: test111 $result")
 }
