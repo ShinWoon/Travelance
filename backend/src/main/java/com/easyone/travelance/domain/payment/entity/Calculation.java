@@ -31,10 +31,4 @@ public class Calculation {
     @JoinColumn(name = "room_id")
     private TravelRoom travelRoom;
 
-    public void setIsTransfer(boolean isTransfer) {
-        this.isTransfer = isTransfer;
-    }
-
-    public void setTransferedAt(org.threeten.bp.LocalDateTime now) {
-    }
 }

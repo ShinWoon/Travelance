@@ -385,9 +385,10 @@ public class PaymentServiceImpl implements PaymentService{
                         .toEntity(String.class)
                         .block();
 
+
                 // 이체 성공시 해당 Calculation의 isTransfer와 transferedAt 업데이트
-                calculation.setIsTransfer(true);
-                calculation.setTransferedAt(LocalDateTime.now());
+                calculation.setTransfer(true);
+                calculation.setTransferedAt(java.time.LocalDateTime.now());
                 calculationRepository.save(calculation);
 
                 return result.getBody();
@@ -396,7 +397,9 @@ public class PaymentServiceImpl implements PaymentService{
                 throw new RuntimeException(e);
             }
         }
+
         updateTravelRoomStatus(existTravelRoom.get());
+        log.info("방 상태 업데이트");
 
         return "모든 이체가 완료되었습니다."; // 모든 계산이 완료된 후에 반환될 메시지
     }
@@ -406,6 +409,8 @@ public class PaymentServiceImpl implements PaymentService{
         boolean allTransferred = calculationRepository.findByTravelRoomId(travelRoom.getId())
                 .stream()
                 .allMatch(Calculation::isTransfer);
+
+        log.info(String.valueOf(allTransferred));
 
         if (allTransferred) {
             travelRoom.setRoomType(RoomType.DONE);
