@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.moneyminions.domain.model.traveldetail.PaymentCompleteDto
@@ -80,10 +81,10 @@ fun PaymentInfoComponenet(
                 style = CustomTextStyle.pretendardSemiBold16
             )
             Text(
-                text = if((settleResultPaymentInfoDto?.transferTotalAmount?:0)>=0) "+${MoneyUtils.makeComma(settleResultPaymentInfoDto?.transferTotalAmount?:0)}"
-                        else "-${MoneyUtils.makeComma(settleResultPaymentInfoDto?.transferTotalAmount?:0)}",
+                text = if((settleResultPaymentInfoDto?.transferTotalAmount?:0)>=0) "-${MoneyUtils.makeComma(settleResultPaymentInfoDto?.transferTotalAmount?:0)}"
+                        else "+${MoneyUtils.makeComma(settleResultPaymentInfoDto?.transferTotalAmount?:0)}",
                 style = CustomTextStyle.pretendardSemiBold16.copy(
-                    color = if((settleResultPaymentInfoDto?.transferTotalAmount?:0)>=0) BlueMiddle else PinkMiddle
+                    color = if((settleResultPaymentInfoDto?.transferTotalAmount?:0)>=0) PinkMiddle else BlueMiddle
                 )
             )
         }
