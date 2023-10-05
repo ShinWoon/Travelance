@@ -1,13 +1,12 @@
 package com.moneyminions.presentation.screen.traveldone.view
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -29,16 +28,21 @@ fun DoneTotalView(
     clickedNotice: (NoticeAllDto) -> Unit,
     clickAction: () -> Unit,
     moveToMap: () -> Unit,
+    showMap: @Composable () -> Unit,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        DoneTotalComponent(text = "사용 카테고리", categoryExpenseList = categoryExpenseList)
-        DoneTotalComponent(text = "여행 공지", noticeAllInfo = noticeAllInfo, clickAction = clickAction, clickedNotice = clickedNotice)
-        DoneTotalComponent(text = "여행 발자취", moveToMap = moveToMap)
+    val scrollableState = rememberScrollState()
+    Box(modifier = modifier.fillMaxSize()) {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .verticalScroll(scrollableState)
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            DoneTotalComponent(text = "사용 카테고리", categoryExpenseList = categoryExpenseList)
+            DoneTotalComponent(text = "여행 공지", noticeAllInfo = noticeAllInfo, clickAction = clickAction, clickedNotice = clickedNotice)
+            DoneTotalComponent(text = "여행 발자취", moveToMap = moveToMap, showMap = showMap)
+        }
     }
 }
 
@@ -51,17 +55,18 @@ fun DoneTotalComponent(
     clickedNotice: (NoticeAllDto) -> Unit = {},
     clickAction: () -> Unit = {},
     moveToMap: () -> Unit = {},
+    showMap: @Composable () -> Unit = {},
 ) {
     Column {
         DoneTotalCommonTitle(text = text)
-        Spacer(modifier = modifier.height(8.dp))
+        Spacer(modifier = modifier.height(12.dp))
         when (text) {
             "사용 카테고리" -> CategoryGraphView(categoryExpenseList = categoryExpenseList)
             "여행 공지" -> DoneAnnouncementView(noticeAllInfo = noticeAllInfo, clickAction = clickAction, clickedNotice = clickedNotice)
-            "여행 발자취" -> DoneMapView(moveToMap = moveToMap)
+            "여행 발자취" -> DoneMapView(moveToMap = moveToMap, showMap = showMap)
             else -> {}
         }
-        Spacer(modifier = modifier.height(24.dp))
+        Spacer(modifier = modifier.height(36.dp))
     }
 }
 

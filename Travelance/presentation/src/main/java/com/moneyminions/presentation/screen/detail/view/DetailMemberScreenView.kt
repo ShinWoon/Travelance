@@ -22,9 +22,10 @@ fun DetailMemberScreenView(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 8.dp)
+            .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 8.dp),
     ) {
         Card(
+            modifier = modifier.fillMaxSize(),
             colors = CardDefaults.cardColors(CardLightGray),
             shape = RoundedCornerShape(16.dp),
         ) {

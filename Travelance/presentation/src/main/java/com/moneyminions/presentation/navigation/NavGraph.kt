@@ -45,6 +45,7 @@ import com.moneyminions.presentation.viewmodel.login.LoginViewModel
 import com.moneyminions.presentation.viewmodel.mypage.EditUserViewModel
 
 private const val TAG = "NavGraph_D210"
+
 @OptIn(ExperimentalAnimationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -52,11 +53,11 @@ fun NavGraph(
     innerPaddings: PaddingValues,
     navController: NavHostController,
     startDestination: String,
-    loginViewModel: LoginViewModel = hiltViewModel() ,
+    loginViewModel: LoginViewModel = hiltViewModel(),
     mainViewModel: MainViewModel,
     editUserViewModel: EditUserViewModel = hiltViewModel(),
     snackbarHostState: SnackbarHostState,
-    resultRoomId: Int?=0
+    resultRoomId: Int? = 0,
 ) {
     AnimatedNavHost(
         modifier = Modifier.padding(innerPaddings),
@@ -123,7 +124,7 @@ fun NavGraph(
             EditUserScreen(navController = navController, editUserViewModel = editUserViewModel)
         }
         composable(
-            route = Screen.AccountAuthentication.route
+            route = Screen.AccountAuthentication.route,
         ) {
             AccountAuthenticationScreen(navController = navController)
         }
@@ -143,7 +144,7 @@ fun NavGraph(
             val type = it.arguments?.getString("type")
             val roomId = it.arguments?.getString("roomId")?.toInt()
             if (roomId != null) {
-                TravelMapScreen(navController = navController, roomId = roomId, type = type)
+                TravelMapScreen(roomId = roomId, type = type)
             }
         }
         composable(
@@ -222,8 +223,8 @@ fun NavGraph(
             }
         }
         composable(
-            route = Screen.WebView.route
-        ){
+            route = Screen.WebView.route,
+        ) {
             val data = remember {
                 navController.previousBackStackEntry?.savedStateHandle?.get<String>("data")
             }
@@ -236,7 +237,7 @@ fun NavGraph(
             route = Screen.SettleResult.route,
         ) {
             Log.d(TAG, "NavGraph resultRoomId : $resultRoomId ")
-            SettleResultReceiveScreen(navController = navController, roomId = resultRoomId?:0)
+            SettleResultReceiveScreen(navController = navController, roomId = resultRoomId ?: 0)
         }
         composable(
             route = Screen.WaitHome.route,

@@ -33,11 +33,13 @@ import com.moneyminions.presentation.screen.traveldone.view.DoneAnnouncementDial
 import com.moneyminions.presentation.screen.traveldone.view.DoneMembersView
 import com.moneyminions.presentation.screen.traveldone.view.DonePublicMoneyView
 import com.moneyminions.presentation.screen.traveldone.view.DoneTotalView
+import com.moneyminions.presentation.screen.travelmap.TravelMapScreen
 import com.moneyminions.presentation.theme.White
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.traveldone.TravelDoneViewModel
 
 private const val TAG = "D210"
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TravelDoneScreen(
@@ -61,23 +63,27 @@ fun TravelDoneScreen(
         errorAction = { /*TODO*/ },
         successAction = {
             travelDoneTotalInfo = it
-        })
+            Log.d(TAG, "TravelDoneScreen: $travelDoneTotalInfo")
+        },
+    )
     LaunchedEffect(Unit) {
         travelDoneViewModel.getTravelDoneInfo(roomId = roomId)
     }
 
     if (noticeInfoDialog) {
-        DoneAnnouncementDialog(noticeInfo = selectedNoticeInfo, onDismissRequest = {
-            noticeInfoDialog = false
-        },
+        DoneAnnouncementDialog(
+            noticeInfo = selectedNoticeInfo, onDismissRequest = {
+                noticeInfoDialog = false
+            },
             linkClick = {
                 val url = selectedNoticeInfo.link
                 navController.currentBackStackEntry?.savedStateHandle?.set(
                     key = "data",
-                    value = url
+                    value = url,
                 )
                 navController.navigate(Screen.WebView.route)
-            })
+            },
+        )
     }
 
     val tabs = listOf("전체", "공금내역", "멤버들")
@@ -93,7 +99,7 @@ fun TravelDoneScreen(
         topBar = {
             TopBar(
                 navController = navController,
-                topBarTitle = travelDoneTotalInfo.travelDoneInfoDto.travelName
+                topBarTitle = travelDoneTotalInfo.travelDoneInfoDto.travelName,
             )
         },
     ) {
@@ -132,8 +138,11 @@ fun TravelDoneScreen(
                             noticeInfoDialog = true
                         },
                         moveToMap = {
-                            navController.navigate("${Screen.TravelMap.route}/{roomId}/{type}".replace(oldValue = "{roomId}/{type}", newValue = "${roomId}/{done}"))
-                        }
+                            navController.navigate("${Screen.TravelMap.route}/{roomId}/{type}".replace(oldValue = "{roomId}/{type}", newValue = "$roomId/{done}"))
+                        },
+                        showMap = {
+                            TravelMapScreen(roomId = roomId, type = "done")
+                        },
                     )
 
                     1 -> DonePublicMoneyView(
@@ -142,7 +151,7 @@ fun TravelDoneScreen(
                     )
 
                     2 -> DoneMembersView(
-                        memberInfoList = travelDoneTotalInfo.roomUserDtoList
+                        memberInfoList = travelDoneTotalInfo.roomUserDtoList,
                     )
                 }
             }

@@ -1,6 +1,8 @@
 package com.moneyminions.presentation.screen.traveldone.view
 
+import android.util.Log
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +18,8 @@ import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.DarkerGray
 
+private const val TAG = "TravelDoneSettleCardVie_D210"
+
 @Composable
 fun TravelDoneSettleCardView(
     modifier: Modifier = Modifier,
@@ -23,13 +27,14 @@ fun TravelDoneSettleCardView(
 ) {
     Card(
         modifier = modifier
-            .fillMaxWidth(),
+            .fillMaxSize(),
         colors = CardDefaults.cardColors(CardLightGray),
     ) {
         LazyColumn(
             modifier = modifier.padding(horizontal = 16.dp, vertical = 12.dp),
         ) {
             if (travelPaymentList.isEmpty()) {
+                Log.d(TAG, "TravelDoneSettleCardView: 공금 내역이 없습니다")
                 item {
                     Row {
                         Text(
@@ -43,7 +48,6 @@ fun TravelDoneSettleCardView(
             }
             itemsIndexed(travelPaymentList) { index, item ->
                 TravelDoneSettleContentView(
-                    modifier = modifier,
                     travelMoneyPayment = item,
                 )
             }

@@ -81,16 +81,19 @@ fun DetailScreen(
         errorAction = { /*TODO*/ },
         successAction = {
             travelDetailInfo = it
-        })
+        },
+    )
 
     NetworkResultHandler(
         state = updateTravelPaymentState,
         errorAction = { /*TODO*/ },
         successAction = {
             travelDetailViewModel.getTravelDetailInfo(roomId = travelId)
-        })
+        },
+    )
 
-    NetworkResultHandler(state = setSettleStateState,
+    NetworkResultHandler(
+        state = setSettleStateState,
         errorAction = {
             Log.d(TAG, "DetailScreen: 정산 요청 실패")
         },
@@ -101,7 +104,8 @@ fun DetailScreen(
                 setSelectRoomId(0)
             }
             travelDetailViewModel.getTravelDetailInfo(roomId = travelId)
-        })
+        },
+    )
 
     val tabs = listOf("공금내역", "멤버내역")
     var selectedTabIndex = rememberPagerState(pageCount = { tabs.size })
@@ -133,7 +137,7 @@ fun DetailScreen(
         topBar = {
             TopBar(
                 navController = navController,
-                topBarTitle = travelDetailInfo.travelRoomInfo[0].travelName
+                topBarTitle = travelDetailInfo.travelRoomInfo[0].travelName,
             )
         },
     ) {
@@ -198,13 +202,13 @@ fun DetailScreen(
                         setSettle = {
                             Log.d(
                                 TAG,
-                                "DetailScreen: 정산요청 ${travelDetailInfo.travelPayment}\n roomId: $travelId"
+                                "DetailScreen: 정산요청 ${travelDetailInfo.travelPayment}\n roomId: $travelId",
                             )
                             travelDetailViewModel.setSettleState(
                                 PaymentCompleteDto(
                                     paymentWithList = travelDetailInfo.travelPayment,
-                                    roomNumber = travelId
-                                )
+                                    roomNumber = travelId,
+                                ),
                             )
                         },
                         resetIdx = {

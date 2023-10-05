@@ -41,7 +41,6 @@ private const val TAG = "D210"
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalNaverMapApi::class)
 @Composable
 fun TravelMapScreen(
-    navController: NavHostController,
     roomId: Int,
     type: String?,
     modifier: Modifier = Modifier,
@@ -75,9 +74,10 @@ fun TravelMapScreen(
     var spotDetailDialog by remember {
         mutableStateOf(false)
     }
-    if(spotDetailDialog) {
+    if (spotDetailDialog) {
         TravelSpotDetailDialog(spotInfoList = travelSpotDetailInfoList) {
             spotDetailDialog = false
+            travelMapViewModel.initTravelSpotDetailGetState()
         }
     }
 
@@ -88,7 +88,7 @@ fun TravelMapScreen(
         if (travelSpotList.isNotEmpty() && travelSpotList[0].storeAddress != "") {
             travelSpotLatLongitudeList = travelMapViewModel.setAddressToLatLongitude(
                 context = context,
-                spotList = travelSpotList
+                spotList = travelSpotList,
             )
             centerPlace = travelMapViewModel.calculateCenterLocation(travelSpotLatLongitudeList)
             cameraPositionState.position = CameraPosition(LatLng(centerPlace.latitude, centerPlace.longitude), 11.0)
@@ -102,7 +102,8 @@ fun TravelMapScreen(
         successAction = {
             travelSpotDetailInfoList = it
             spotDetailDialog = true
-        })
+        },
+    )
     LaunchedEffect(Unit) {
         travelMapViewModel.getTravelSpotList(roomId)
     }
@@ -112,7 +113,7 @@ fun TravelMapScreen(
         locationSource = locationSource,
         cameraPositionState = cameraPositionState,
         properties = MapProperties(
-            locationTrackingMode = if (type == "home") LocationTrackingMode.Follow else LocationTrackingMode.None
+            locationTrackingMode = if (type == "home") LocationTrackingMode.Follow else LocationTrackingMode.None,
         ),
         uiSettings = mapUiSettings,
     ) {
@@ -123,9 +124,9 @@ fun TravelMapScreen(
                 markerClick = { locationInfo ->
                     travelMapViewModel.getTravelSpotDetail(
                         roomId = roomId,
-                        travelMapStoreAddressDto = TravelMapStoreAddressDto(storeAddress = locationInfo.storeAddress)
+                        travelMapStoreAddressDto = TravelMapStoreAddressDto(storeAddress = locationInfo.storeAddress),
                     )
-                }
+                },
             )
         }
     }
@@ -140,7 +141,7 @@ fun MapMarkers(
 ) {
     val scope = rememberCoroutineScope()
     locations.forEachIndexed { idx, item ->
-        if(item.storeCategory != "") {
+        if (item.storeCategory != "") {
             Marker(
                 state = MarkerState(position = LatLng(item.latitude, item.longitude)),
                 icon = OverlayImage.fromResource(getMarkerIcon(item.storeCategory)),
@@ -152,7 +153,7 @@ fun MapMarkers(
                         CameraPosition(LatLng(item.latitude, item.longitude), 14.0)
                     Log.d(TAG, "MapMarkers: $item")
                     true
-                }
+                },
             )
         }
     }

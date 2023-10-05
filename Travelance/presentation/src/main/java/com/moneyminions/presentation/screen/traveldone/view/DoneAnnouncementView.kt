@@ -21,16 +21,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.moneyminions.domain.model.traveldone.NoticeAllDto
 import com.moneyminions.presentation.R
-import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold14
+import com.moneyminions.presentation.common.CustomTextStyle
 import com.moneyminions.presentation.common.CustomTextStyle.pretendardBold16
-import com.moneyminions.presentation.common.CustomTextStyle.pretendardSemiBold14
-import com.moneyminions.presentation.common.CustomTextStyle.pretendardSemiBold16
 import com.moneyminions.presentation.screen.travellist.util.clickable
 import com.moneyminions.presentation.theme.CardLightGray
 import com.moneyminions.presentation.theme.DarkerGray
-import com.moneyminions.presentation.theme.pretendard
 
 private const val TAG = "D210"
+
 @Composable
 fun DoneAnnouncementView(
     modifier: Modifier = Modifier,
@@ -38,31 +36,33 @@ fun DoneAnnouncementView(
     clickedNotice: (NoticeAllDto) -> Unit,
     clickAction: () -> Unit,
 ) {
-    LazyRow(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        if(noticeAllInfo.isEmpty()) {
-            item {
-                Card(
-                    modifier = modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(CardLightGray)
-                ) {
-                    Text(
-                        text = "공지가 없습니다",
-                        color = DarkerGray,
-                        style = pretendardSemiBold16,
-                        modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                    )
+    Column {
+        LazyRow(
+            modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            if (noticeAllInfo.isEmpty()) {
+                item {
+                    Card(
+                        modifier = modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(CardLightGray),
+                    ) {
+                        Text(
+                            text = "공지가 없습니다",
+                            color = DarkerGray,
+                            style = CustomTextStyle.pretendardSemiBold16,
+                            modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                        )
+                    }
                 }
             }
-        }
-        itemsIndexed(noticeAllInfo) {index, item ->
-            DoneAnnouncementCard(
-                noticeInfo = item,
-                clickedNotice = clickedNotice,
-                clickAction = clickAction,
-            )
+            itemsIndexed(noticeAllInfo) { index, item ->
+                DoneAnnouncementCard(
+                    noticeInfo = item,
+                    clickedNotice = clickedNotice,
+                    clickAction = clickAction,
+                )
+            }
         }
     }
 }
@@ -72,7 +72,7 @@ fun DoneAnnouncementCard(
     modifier: Modifier = Modifier,
     noticeInfo: NoticeAllDto,
     clickedNotice: (NoticeAllDto) -> Unit,
-    clickAction: () -> Unit
+    clickAction: () -> Unit,
 ) {
     Card(
         colors = CardDefaults.cardColors(CardLightGray),
@@ -87,7 +87,7 @@ fun DoneAnnouncementCard(
                     clickedNotice(noticeInfo)
                     Log.d(TAG, "DoneAnnouncementCard: clicked")
                     clickAction()
-                }
+                },
             ),
     ) {
         Column(
@@ -95,7 +95,7 @@ fun DoneAnnouncementCard(
                 .fillMaxSize()
                 .padding(start = 16.dp, top = 16.dp, bottom = 8.dp, end = 8.dp),
             horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.SpaceBetween
+            verticalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
                 text = noticeInfo.title,
@@ -103,13 +103,13 @@ fun DoneAnnouncementCard(
                 style = pretendardBold16,
                 textAlign = TextAlign.Start,
                 modifier = modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             )
-            if(noticeInfo.link != "") {
+            if (noticeInfo.link != "") {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_link),
                     modifier = modifier.size(24.dp),
-                    contentDescription = "link icon"
+                    contentDescription = "link icon",
                 )
             }
         }
