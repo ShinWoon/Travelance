@@ -343,9 +343,11 @@ public class PaymentServiceImpl implements PaymentService{
         if (existTravelRoom.isEmpty()){
             throw new EntityNotFoundException("여행방이 존재하지 않습니다.");
         }
+        log.info("여행방 찾기완료");
 
         // 1. 해당 roomNumber로 Calculation을 가져옴
         List<Calculation> calculations = calculationRepository.findByTravelRoomId(existTravelRoom.get().getId());
+        log.info("정산 정보 찾기완료");
 
         // 해당 roomNumber와 fromMemberId가 일치하는 Calculation만 필터링
         List<Calculation> matchedCalculations = calculations.stream()
