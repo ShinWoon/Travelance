@@ -1,6 +1,7 @@
 package com.moneyminions.paybank.ui
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
@@ -30,6 +31,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,6 +43,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,16 +69,23 @@ import com.moneyminions.paybank.util.NetworkResultHandler
 import com.moneyminions.paybank.util.createNotificationChannel
 import com.moneyminions.paybank.util.initFirebase
 import com.moneyminions.paybank.viewmodel.PayViewModel
+import kotlinx.coroutines.launch
 
 
 private const val TAG = "PayScreen D210"
-@OptIn(ExperimentalPermissionsApi::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PayScreen(
     context: Context,
     payViewModel: PayViewModel = hiltViewModel()
 ){
+
+
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+
     val isShowDialogState by payViewModel.isShowDialog.collectAsState()
     val permissionList: List<String> =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -108,113 +121,159 @@ fun PayScreen(
 
     }
 
+    val postFcmTokenResultState by payViewModel.postFcmTokenResult.collectAsState()
+    NetworkResultHandler(
+        state = postFcmTokenResultState,
+        errorAction = {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("등록 실패")
+            }
+        },
+        successAction = {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("등록 성공")
+            }
+        }
+    )
+
     val postPaymentResultState by payViewModel.postPaymentResult.collectAsState()
     NetworkResultHandler(
         state = postPaymentResultState,
         errorAction = {
             Log.d(TAG, "Payment post error... ")
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("결제 실패")
+            }
         },
         successAction = {
             Log.d(TAG, "Payment post success... ")
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("결제 성공")
+            }
         }
     )
 
     val scrollableState = rememberScrollState()
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(scrollableState)
-            .padding(16.dp)
-            .addFocusCleaner(
-                LocalFocusManager.current
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
     ) {
-        Spacer(modifier = Modifier.size(16.dp))
-        Button(
-            onClick = {
-                //FCM 토큰 전송 API
-                payViewModel.postFcmToken(FcmTokenRequest(Constants.fcmToken))
-            },
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollableState)
+                .padding(16.dp)
+                .addFocusCleaner(
+                    LocalFocusManager.current
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("FCM 토큰 전송")
-        }
-        Spacer(modifier = Modifier.size(16.dp))
-        TextFieldWithTitle(
-            title = "카드 번호",
-            hint = "카드 번호를 입력하시오",
-            value = payViewModel.cardNumber.value,
-            keyboardType = KeyboardType.Number,
-            onValueChange = {
-                payViewModel.setCardNumber(it)
-            },
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-        TextFieldWithTitle(
-            title = "cvc",
-            hint = "카드 뒷면에 있는 cvc를 입력하시오",
-            value = payViewModel.cvc.value,
-            keyboardType = KeyboardType.Number,
-            onValueChange = {
-                payViewModel.setCvc(it)
+            Spacer(modifier = Modifier.size(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                TextFieldWithTitle(
+                    modifier = Modifier.weight(1f),
+                    title = "이름",
+                    hint = "이름 입력하시오",
+                    value = payViewModel.name.value,
+                    onValueChange = {
+                        payViewModel.setName(it)
+                    },
+                )
+                Button(
+                    modifier = Modifier.weight(1f),
+                    onClick = {
+                        //FCM 토큰 전송 API
+                        payViewModel.postFcmToken()
+                    },
+                ) {
+                    Text("FCM 토큰 전송")
+                }
             }
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-        TextFieldWithTitle(
-            title = "결제 금액",
-            hint = "결제 금액을 입력하시오",
-            value = payViewModel.amount.value,
-            keyboardType = KeyboardType.Number,
-            onValueChange = {
-                payViewModel.setAmount(it)
-            }
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-        TextFieldWithTitle(
-            title = "가맹점명",
-            hint = "가맹점명을 입력하시오",
-            value = payViewModel.storeName.value,
-            onValueChange = {
-                payViewModel.setStoreName(it)
-            }
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-        TextFieldWithTitle(
-            title = "가맹점 업종",
-            hint = "가맹점 업종을 입력하시오",
-            value = payViewModel.storeType.value,
-            onValueChange = {
-                payViewModel.setStoreType(it)
-            }
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-        TextFieldWithTitle(
-            title = "가맹점 주소",
-            hint = "가맹점 주소를 입력하시오",
-            value = payViewModel.storeAddress.value,
-            onValueChange = {
-                payViewModel.setStoreAddress(it)
-            }
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-        Button(
-            onClick = {
-                //결제 api 호출
-                payViewModel.postPaymentRequest()
+            Spacer(modifier = Modifier.size(16.dp))
+            TextFieldWithTitle(
+                modifier = Modifier.fillMaxWidth(),
+                title = "카드 번호",
+                hint = "카드 번호를 입력하시오",
+                value = payViewModel.cardNumber.value,
+                keyboardType = KeyboardType.Number,
+                onValueChange = {
+                    payViewModel.setCardNumber(it)
+                },
+            )
+            Spacer(modifier = Modifier.size(16.dp))
+            TextFieldWithTitle(
+                modifier = Modifier.fillMaxWidth(),
+                title = "cvc",
+                hint = "카드 뒷면에 있는 cvc를 입력하시오",
+                value = payViewModel.cvc.value,
+                keyboardType = KeyboardType.Number,
+                onValueChange = {
+                    payViewModel.setCvc(it)
+                }
+            )
+            Spacer(modifier = Modifier.size(16.dp))
+            TextFieldWithTitle(
+                modifier = Modifier.fillMaxWidth(),
+                title = "결제 금액",
+                hint = "결제 금액을 입력하시오",
+                value = payViewModel.amount.value,
+                keyboardType = KeyboardType.Number,
+                onValueChange = {
+                    payViewModel.setAmount(it)
+                }
+            )
+            Spacer(modifier = Modifier.size(16.dp))
+            TextFieldWithTitle(
+                modifier = Modifier.fillMaxWidth(),
+                title = "가맹점명",
+                hint = "가맹점명을 입력하시오",
+                value = payViewModel.storeName.value,
+                onValueChange = {
+                    payViewModel.setStoreName(it)
+                }
+            )
+            Spacer(modifier = Modifier.size(16.dp))
+            TextFieldWithTitle(
+                modifier = Modifier.fillMaxWidth(),
+                title = "가맹점 업종",
+                hint = "가맹점 업종을 입력하시오",
+                value = payViewModel.storeType.value,
+                onValueChange = {
+                    payViewModel.setStoreType(it)
+                }
+            )
+            Spacer(modifier = Modifier.size(16.dp))
+            TextFieldWithTitle(
+                modifier = Modifier.fillMaxWidth(),
+                title = "가맹점 주소",
+                hint = "가맹점 주소를 입력하시오",
+                value = payViewModel.storeAddress.value,
+                onValueChange = {
+                    payViewModel.setStoreAddress(it)
+                }
+            )
+            Spacer(modifier = Modifier.size(16.dp))
+            Button(
+                onClick = {
+                    //결제 api 호출
+                    payViewModel.postPaymentRequest()
 //                payViewModel.setCardNumber("")
 //                payViewModel.setCvc("")
 //                payViewModel.setAmount("")
 //                payViewModel.setStoreName("")
 //                payViewModel.setStoreType("")
 //                payViewModel.setStoreAddress("")
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = "결제"
-            )
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "결제"
+                )
+            }
         }
     }
 

@@ -8,9 +8,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.moneyminions.paybank.model.FcmTokenRequest
 import com.moneyminions.paybank.model.NetworkResult
+import com.moneyminions.paybank.model.NormalResponse
 import com.moneyminions.paybank.model.PaymentRequest
 import com.moneyminions.paybank.model.PaymentResponse
 import com.moneyminions.paybank.service.BankService
+import com.moneyminions.paybank.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,10 +26,17 @@ class PayViewModel @Inject constructor(
     private val bankService: BankService
 ): ViewModel() {
 
-    fun postFcmToken(fcmTokenRequest: FcmTokenRequest){
-        Log.d(TAG, "postFcmToken: ${fcmTokenRequest.fcmToken}")
+    private val _name = mutableStateOf("")
+    val name: State<String> = _name
+    fun setName(name: String){
+        _name.value = name
+    }
+    private val _postFcmTokenResult = MutableStateFlow<NetworkResult<NormalResponse>>(NetworkResult.Idle)
+    val postFcmTokenResult = _postFcmTokenResult.asStateFlow()
+    fun postFcmToken(){
+        Log.d(TAG, "postFcmToken: $name , ${Constants.fcmToken}")
         viewModelScope.launch {
-            bankService.postFcmToken(fcmTokenRequest)
+            bankService.postFcmToken(FcmTokenRequest(name = _name.value, fcmToken = Constants.fcmToken))
         }
     }
 
