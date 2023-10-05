@@ -47,10 +47,24 @@ class TravelListViewModel @Inject constructor(
     val travelList: State<MutableList<TravelRoomDto>> = _travelList
 
     /**
-     * 여행방 갱신
+     * 여행방 갱신 & 정산중인 여행 상태 check
      */
     fun refresh(travelList: MutableList<TravelRoomDto>) {
         _travelList.value = travelList
+    
+        val travelingRoomId = getTravelingRoomIdUseCase.invoke()
+    
+        travelList.forEach{
+            // 현재 진행 중인 방과 ID가 똑같으면서 && 진행 상태가 NOW가 아니라면 -> 진행 상태를 갱신
+            if(travelingRoomId == it.roomId && it.isDone != "NOW") {
+                putTravelingRoomIdUseCase(0)
+            }
+        
+            // 진행 중인 여행방 id 갱신
+            if(it.isDone == "NOW") {
+                putTravelingRoomIdUseCase(it.roomId)
+            }
+        }
     }
     
     /**

@@ -100,8 +100,8 @@ fun HomeScreen(
     )
     
     
-    Log.d(TAG, "selectRoomId: ${mainViewModel.selectRoomId.value}")
-    if (mainViewModel.selectRoomId.value == 0) { // 진행 중인 방이 없다면.
+    Log.d(TAG, "selectRoomId: ${mainViewModel.selectRoomId.value} / ${mainViewModel.getTravelingRoomId()}")
+    if (mainViewModel.selectRoomId.value == 0 && mainViewModel.getTravelingRoomId() == 0) { // 진행 중인 방이 없다면.
         Log.d(TAG, "HomeScreen: NoRoomScreen on")
         NoRoomScreen()
     } else {

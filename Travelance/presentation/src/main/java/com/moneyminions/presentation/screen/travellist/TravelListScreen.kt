@@ -234,6 +234,8 @@ fun TravelRoomItem(
             Log.d(TAG, "TravelRoomItem: $it")
             var result = false
             if (it == DismissValue.DismissedToStart) { // 오른쪽 -> 왼쪽으로 스와이프시 삭제
+                
+                // 지문인증
                 bioAuth(
                     isAuthenticated = isAuthenticated,
                     fragmentActivity = fragmentActivity,

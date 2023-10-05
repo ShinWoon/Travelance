@@ -95,6 +95,7 @@ class MainViewModel @Inject constructor(
     fun checkTravelRoom(travelRoomList: MutableList<TravelRoomDto>) {
         val travelingRoomId = getTravelingRoomId()
         
+        var check = false
         travelRoomList.forEach{
             // 현재 진행 중인 방과 ID가 똑같으면서 && 진행 상태가 NOW가 아니라면 -> 진행 상태를 갱신
             if(travelingRoomId == it.roomId && it.isDone != "NOW") {
@@ -104,7 +105,10 @@ class MainViewModel @Inject constructor(
             // 진행 중인 여행방 id 갱신
             if(it.isDone == "NOW") {
                 putTravelingRoomId(it.roomId)
+                check = true
             }
         }
+        
+        if(!check) putTravelingRoomId(0)
     }
 }
