@@ -367,7 +367,7 @@ public class PaymentServiceImpl implements PaymentService{
             // 5. amount와 memo 설정
             transferRequestToBankDto.setAmount(calculation.getAmount());
             transferRequestToBankDto.setMemo(existTravelRoom.get().getTravelName());
-
+            log.info("계좌이체 요청");
             // 6. 계좌 이체 요청
             try {
                 ResponseEntity<String> result = webClient.post()
