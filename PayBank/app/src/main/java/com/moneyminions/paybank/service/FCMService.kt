@@ -87,7 +87,7 @@ class FCMService: FirebaseMessagingService() {
         val notificationBuilder = NotificationCompat.Builder(this, Constants.CHANNEL_ID)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setDefaults(NotificationCompat.DEFAULT_SOUND or NotificationCompat.DEFAULT_VIBRATE)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.paybank_logo)
             .setContentTitle(messageTitle)
             .setContentText(messageBody)
             .setContentIntent(mainPendingIntent)
