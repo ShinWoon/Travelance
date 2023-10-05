@@ -313,14 +313,15 @@ public class PaymentServiceImpl implements PaymentService{
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedDate = LocalDateTime.now().format(formatter);
+        LocalDateTime formattedDate = LocalDateTime.now().plusHours(9);
+        String formattedDateString = formattedDate.format(formatter);
 
         Payment payment = Payment.builder()
                 .member(existMember.get())
                 .travelRoom(existTravelRoom.get())
                 .paymentAmount(registerCashRequestDto.getPaymentAmount())
                 .paymentContent(registerCashRequestDto.getPaymentContent())
-                .paymentAt(formattedDate)
+                .paymentAt(formattedDateString)
                 .isWithPaid(true)
                 .build();
 
