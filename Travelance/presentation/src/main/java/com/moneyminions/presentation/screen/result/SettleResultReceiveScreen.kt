@@ -15,10 +15,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -42,6 +45,7 @@ import com.moneyminions.presentation.screen.result.view.UserPaymentInfoComponent
 import com.moneyminions.presentation.theme.LightGray
 import com.moneyminions.presentation.utils.NetworkResultHandler
 import com.moneyminions.presentation.viewmodel.result.SettleResultReceiveViewModel
+import kotlinx.coroutines.launch
 
 private const val TAG = "SettleResultReceiveScre D210"
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -51,6 +55,8 @@ fun SettleResultReceiveScreen(
     settleResultReceiveViewModel: SettleResultReceiveViewModel = hiltViewModel(),
     roomId: Int
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(
         key1 = Unit,
         block = {
@@ -75,6 +81,9 @@ fun SettleResultReceiveScreen(
         state = postFinalPaymentResultState,
         errorAction = {
             Log.d(TAG, "이체 실패")
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("계좌 잔액 또는 비밀번호를 확인하시오!")
+            }
         },
         successAction = {
             navController.navigate(Screen.Home.route){
@@ -146,7 +155,9 @@ fun SettleResultReceiveScreen(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
-        Column {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
