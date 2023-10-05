@@ -30,6 +30,11 @@ class TravelMapViewModel @Inject constructor(
     
     private val _travelSpotDetailGetState = MutableStateFlow<NetworkResult<List<TravelMapDetailDto>>>(NetworkResult.Idle)
     val travelSpotDetailGetState = _travelSpotDetailGetState.asStateFlow()
+    fun initTravelSpotDetailGetState(){
+        viewModelScope.launch {
+            _travelSpotDetailGetState.emit(NetworkResult.Idle)
+        }
+    }
     
     fun getTravelSpotList(roomId: Int) = viewModelScope.launch { 
         _travelSpotGetState.value = NetworkResult.Loading

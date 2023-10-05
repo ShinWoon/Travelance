@@ -41,7 +41,7 @@ fun DonePublicMoneyView(
             .padding(horizontal = 16.dp, vertical = 8.dp),
     ) {
         Row(
-            modifier = modifier.fillMaxWidth(),
+            modifier = modifier.fillMaxWidth().weight(1f),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -68,9 +68,9 @@ fun DonePublicMoneyView(
         }
         Spacer(modifier = modifier.height(8.dp))
         if (switchChecked) {
-            TravelDoneSettleCardView(travelPaymentList = myPaymentList)
+            TravelDoneSettleCardView(travelPaymentList = myPaymentList, modifier = Modifier.weight(9f))
         } else {
-            TravelDoneSettleCardView(travelPaymentList = allTravelPaymentList)
+            TravelDoneSettleCardView(travelPaymentList = allTravelPaymentList, modifier = Modifier.weight(9f))
         }
     }
 }

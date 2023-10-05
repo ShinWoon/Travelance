@@ -1,6 +1,5 @@
 package com.moneyminions.presentation.screen.traveldone.view
 
-import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -55,7 +55,7 @@ fun CategoryGraphView(
     categoryExpenseList: List<CategoryExpenseDto>,
 ) {
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().height(240.dp),
     ) {
         Row(
             modifier = modifier
@@ -77,8 +77,7 @@ fun CategoryInfo(
     categoryExpenseList: List<CategoryExpenseDto>,
 ) {
     LazyColumn(
-        modifier = modifier.padding(vertical = 8.dp),
-        verticalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier.fillMaxHeight().padding(vertical = 8.dp),
         horizontalAlignment = Alignment.Start,
     ) {
         itemsIndexed(categoryExpenseList) { _, item ->
@@ -148,7 +147,6 @@ private fun CategoryChart(
             chartDataList.add(chartData)
         }
 
-        Log.d(TAG, "CategoryChart: datalist $chartDataList")
         Canvas(
             modifier = Modifier
                 .size(186.dp)
@@ -165,7 +163,6 @@ private fun CategoryChart(
                 val chartData = chartDataList[index]
                 val sweepAngle = chartData.data.asAngle
                 val angleInRadians = (startAngle + sweepAngle / 2).degreeToAngle
-                Log.d(TAG, "CategoryChart: ${chartDataList[index].data}")
 
                 if (startAngle <= currentSweepAngle) {
                     drawArc(
