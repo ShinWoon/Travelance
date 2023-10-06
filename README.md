@@ -48,8 +48,8 @@
 ![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-4285F4.svg?&style=for-the-badge&logo=Jetpack%20Compose&logoColor=white)
 ![Firebase](https://img.shields.io/badge/firebase-FFCA28.svg?&style=for-the-badge&logo=firebase&logoColor=white)
 
-![Naver Map](https://img.shields.io/badge/Naver%20Map-03C75A?&style=for-the-badge&logo=Naver&logoColor=White)
-![Kakao](https://img.shields.io/badge/Kakao%20API-FFCD00?&style=for-the-badge&logo=Kakao&logoColor=White)
+![Naver Map](https://img.shields.io/badge/Naver%20Map-03C75A?&style=for-the-badge&logo=Naver&logoColor=white)
+![Kakao](https://img.shields.io/badge/Kakao%20API-FFCD00?&style=for-the-badge&logo=Kakao&logoColor=white)
 <br/>
 
 ### 💻 **Backend**
@@ -79,7 +79,6 @@
 
 ![Gitlab](https://img.shields.io/badge/Gitlab-FC6D26.svg?style=for-the-badge&logo=Gitlab&logoColor=white)
 ![Jira](https://img.shields.io/badge/Jira-0052CC.svg?style=for-the-badge&logo=Jira&logoColor=white)
-![Swagger](https://img.shields.io/badge/Swagger-85EA2D.svg?style=for-the-badge&logo=Swagger&logoColor=white)
 ![Figma](https://img.shields.io/badge/Figma-F24E1E.svg?style=for-the-badge&logo=Figma&logoColor=white)
 ![Notion](https://img.shields.io/badge/Notion-000000.svg?style=for-the-badge&logo=Notion&logoColor=white)
 
