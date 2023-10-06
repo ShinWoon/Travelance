@@ -1,6 +1,6 @@
 # ✈ 여행 공금 관리 서비스 TRAVELANCE 💸
 
-![Header](./images/Header.png)
+![Header](./images/header.png)
 
 ```
 📢 SSFAY 9기 2학기 특화프로젝트
