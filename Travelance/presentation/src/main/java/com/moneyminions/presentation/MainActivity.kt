@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.kakao.sdk.common.util.Utility
 import com.moneyminions.presentation.navigation.Screen
 import com.moneyminions.presentation.screen.MainScreen
 import com.moneyminions.presentation.screen.result.SettleResultReceiveScreen
@@ -153,9 +154,9 @@ class MainActivity : FragmentActivity() {
 
 //                MainScreen(rememberAnimatedNavController())
 
-// //                 카카오
-//                var keyHash = Utility.getKeyHash(this)
-//                Log.d(TAG, "Kakao HashKey : $keyHash")
+ //                 카카오
+                var keyHash = Utility.getKeyHash(this)
+                Log.d(TAG, "Kakao HashKey : $keyHash")
 
                 /**
                  * 지문 인증 실행 부분에서 구현하면 됨 (mainActivity는 FragmentActivity()로 상속되게 함)
