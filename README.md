@@ -75,7 +75,7 @@
 ![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
 ![S3](https://img.shields.io/badge/amazons3-%23569A31.svg?style=for-the-badge&logo=redis&logoColor=white)
 
-### **Collaboration Tools**
+### 🤝 **Collaboration Tools**
 
 ![Gitlab](https://img.shields.io/badge/Gitlab-FC6D26.svg?style=for-the-badge&logo=Gitlab&logoColor=white)
 ![Jira](https://img.shields.io/badge/Jira-0052CC.svg?style=for-the-badge&logo=Jira&logoColor=white)
