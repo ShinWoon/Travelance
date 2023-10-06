@@ -47,6 +47,7 @@
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
 ![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-4285F4.svg?&style=for-the-badge&logo=Jetpack%20Compose&logoColor=white)
 ![Firebase](https://img.shields.io/badge/firebase-FFCA28.svg?&style=for-the-badge&logo=firebase&logoColor=white)
+![Naver Map](https://img.shields.io/badge/NaverMap-03C75A?&style=for-the-badge&logo=Naver&logoColor=White)
 
 <br/>
 
@@ -99,21 +100,21 @@
 
   <img src="./images/1원인증.gif" width="250"/>
 
-
-### - 여행 등록 및 친구 초대
+### - 여행 등록
 
   <img src="./images/방생성.gif" width="250"/>
 
+### - 친구 초대
+
+  <img src="./images/친구초대.gif" width="250"/>
 
 ### - 공지사항 등록
 
   <img src="./images/공지사항.gif" width="250"/>
 
-
 ### - 현금결제 등록
 
   <img src="./images/현금입력.gif" width="250"/>
-
 
 ### - 카드사용 시 PUSH 알림
 
@@ -149,8 +150,11 @@
 
 ### - 여행 완료
 
-  <img src="./images/완료페이지.gif" width="250"/>
+<img src="./images/여행마무리.gif" width="250"/> <img src="./images/여행완료2.gif" width="250"/>
 
+### - 여행방 삭제
+
+  <img src="./images/여행방삭제.gif" width="250"/> 
 <br/>
 
 ---
