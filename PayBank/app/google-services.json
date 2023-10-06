@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "608652530162",
+    "project_id": "travel-6a9f8",
+    "storage_bucket": "travel-6a9f8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:608652530162:android:4416209a3f1a64444b9b6b",
+        "android_client_info": {
+          "package_name": "com.moneyminions.paybank"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADIhkezkFsyIE5zvVUbwIDrf0ycOGHooQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
