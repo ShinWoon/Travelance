@@ -294,4 +294,9 @@ interface BusinessService {
         @Body finalPaymentRequest: FinalPaymentRequest
     ): CommonResponse
 
+    /**
+     * REFRESH 만료
+     */
+    @POST("api/oauth/logout")
+    suspend fun expireRefreshTokenlogout()
 }

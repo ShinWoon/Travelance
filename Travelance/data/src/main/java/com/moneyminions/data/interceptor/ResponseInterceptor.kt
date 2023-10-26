@@ -93,7 +93,15 @@ class ResponseInterceptor(
                 when (errorResponse.errorCode) {
                     "Auth-009" -> {
                         Log.d(TAG, "intercept: 다시 로그인 해야합니다.")
-                        throw (IOException("required_re_login"))
+                        runBlocking {
+                            val result = Retrofit.Builder()
+                                .baseUrl(BASE_URL)
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build()
+                                .create(BusinessService::class.java).expireRefreshTokenlogout()
+                        }
+                        preferenceDataSource.refreshPreference()
+//                        throw (IOException("required_re_login"))
                     }
                 }
             }
