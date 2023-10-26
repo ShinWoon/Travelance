@@ -10,6 +10,6 @@
     <application>
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
-            android:value="q8k18lp72n" />
+            android:value="[NAVER MAP KEY]" />
     </application>
 </manifest>
